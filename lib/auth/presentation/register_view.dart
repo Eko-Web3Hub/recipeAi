@@ -73,7 +73,7 @@ class _RegisterViewState extends State<RegisterView> {
                   firstText: '${AppText.alreadyAMember} ',
                   secondText: AppText.signIn,
                   onPressed: () {
-                    context.push('/login');
+                    context.go('/login');
                   },
                 ),
               ),
@@ -120,7 +120,7 @@ class _HeadTitle extends StatelessWidget {
 }
 
 class _CheckBoxReglement extends StatefulWidget {
-  const _CheckBoxReglement({super.key});
+  const _CheckBoxReglement();
 
   @override
   State<_CheckBoxReglement> createState() => _CheckBoxReglementState();

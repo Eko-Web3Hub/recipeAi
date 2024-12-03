@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 InputBorder _inputBorder = OutlineInputBorder(
-  borderSide: BorderSide(
+  borderSide: const BorderSide(
     width: 1.5,
     color: Color(0xffD9D9D9),
   ),
