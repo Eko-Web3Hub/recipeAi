@@ -7,7 +7,7 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 
 class RegisterUsecase {
-  final AuthService _authService;
+  final IAuthService _authService;
   final IAuthUserService _authUserService;
   final IUserPersonnalInfoRepository _userPersonnalInfoRepository;
 

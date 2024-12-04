@@ -49,6 +49,7 @@ class AuthService implements IAuthService {
         email: email,
         password: password,
       );
+
       return true;
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.message!);

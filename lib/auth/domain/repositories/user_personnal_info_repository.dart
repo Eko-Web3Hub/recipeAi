@@ -5,7 +5,8 @@ abstract class IUserPersonnalInfoRepository {
   Future<void> save(UserPersonnalInfo userPersonnalInfo);
 }
 
-class UserPersonnalInfoRepository implements IUserPersonnalInfoRepository {
+class FirestoreUserPersonnalInfoRepository
+    implements IUserPersonnalInfoRepository {
   @override
   Future<UserPersonnalInfo> get() {
     throw UnimplementedError();
