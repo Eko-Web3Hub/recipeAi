@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/nav/router.dart';
 
 void main() {
+  di.registerModule(AppModule());
   runApp(const MyApp());
 }
 
