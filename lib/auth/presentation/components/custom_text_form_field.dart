@@ -16,17 +16,19 @@ class CustomTextFormField extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.controller,
+    required this.validator,
   });
 
   final String hintText;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 55,
       child: TextFormField(
+        validator: validator,
         controller: controller,
         cursorColor: Theme.of(context).primaryColor,
         decoration: InputDecoration(

@@ -9,11 +9,13 @@ class FormFieldWithLabel extends StatelessWidget {
     required this.label,
     required this.hintText,
     required this.controller,
+    required this.validator,
   });
 
   final String label;
   final String hintText;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class FormFieldWithLabel extends StatelessWidget {
         CustomTextFormField(
           hintText: hintText,
           controller: controller,
+          validator: validator,
         ),
       ],
     );

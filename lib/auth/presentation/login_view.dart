@@ -7,6 +7,7 @@ import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dar
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/functions.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -37,12 +38,14 @@ class _LoginViewState extends State<LoginView> {
                 label: AppText.email,
                 hintText: AppText.enterEmail,
                 controller: _emailController,
+                validator: nonEmptyStringValidator,
               ),
               const Gap(30.0),
               FormFieldWithLabel(
                 label: AppText.password,
                 hintText: AppText.enterPassword,
                 controller: _passwordController,
+                validator: nonEmptyStringValidator,
               ),
               const Gap(50.0),
               MainBtn(

@@ -8,6 +8,7 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/functions.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -22,6 +23,14 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmController =
       TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _acceptTerms = false;
+
+  void _handleRegister() {
+    if (_formKey.currentState!.validate()) {
+      // Register user
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,54 +40,70 @@ class _RegisterViewState extends State<RegisterView> {
           padding: const EdgeInsets.symmetric(
             horizontal: horizontalScreenPadding,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(10),
-              const _HeadTitle(),
-              const Gap(20),
-              FormFieldWithLabel(
-                label: AppText.name,
-                hintText: AppText.enterName,
-                controller: _nameController,
-              ),
-              const Gap(10),
-              FormFieldWithLabel(
-                label: AppText.email,
-                hintText: AppText.enterEmail,
-                controller: _emailController,
-              ),
-              const Gap(10),
-              FormFieldWithLabel(
-                label: AppText.password,
-                hintText: AppText.enterPassword,
-                controller: _passwordController,
-              ),
-              const Gap(10),
-              FormFieldWithLabel(
-                label: AppText.confirmPassword,
-                hintText: AppText.enterConfirmPassword,
-                controller: _passwordConfirmController,
-              ),
-              const _CheckBoxReglement(),
-              const Gap(20),
-              MainBtn(
-                text: AppText.signUp,
-                showRightIcon: true,
-                onPressed: () {},
-              ),
-              const Spacer(),
-              Center(
-                child: AuthBottomAction(
-                  firstText: '${AppText.alreadyAMember} ',
-                  secondText: AppText.signIn,
-                  onPressed: () {
-                    context.go('/login');
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(10),
+                const _HeadTitle(),
+                const Gap(20),
+                FormFieldWithLabel(
+                  label: AppText.name,
+                  hintText: AppText.enterName,
+                  controller: _nameController,
+                  validator: nonEmptyStringValidator,
+                ),
+                const Gap(10),
+                FormFieldWithLabel(
+                  label: AppText.email,
+                  hintText: AppText.enterEmail,
+                  controller: _emailController,
+                  validator: emailValidator,
+                ),
+                const Gap(10),
+                FormFieldWithLabel(
+                  label: AppText.password,
+                  hintText: AppText.enterPassword,
+                  controller: _passwordController,
+                  validator: passwordValidator,
+                ),
+                const Gap(10),
+                FormFieldWithLabel(
+                  label: AppText.confirmPassword,
+                  hintText: AppText.enterConfirmPassword,
+                  controller: _passwordConfirmController,
+                  validator: (value) => confirmPasswordValidator(
+                    value,
+                    _passwordController.text,
+                  ),
+                ),
+                _CheckBoxReglement(
+                  (value) {
+                    setState(() {
+                      _acceptTerms = value;
+                    });
                   },
                 ),
-              ),
-              const Gap(21),
-            ],
+                const Gap(20),
+                MainBtn(
+                  text: AppText.signUp,
+                  showRightIcon: true,
+                  onPressed: _acceptTerms ? _handleRegister : null,
+                ),
+                const Spacer(),
+                Center(
+                  child: AuthBottomAction(
+                    firstText: '${AppText.alreadyAMember} ',
+                    secondText: AppText.signIn,
+                    onPressed: () {
+                      context.go('/login');
+                    },
+                  ),
+                ),
+                const Gap(21),
+              ],
+            ),
           ),
         ),
       ),
@@ -120,7 +145,11 @@ class _HeadTitle extends StatelessWidget {
 }
 
 class _CheckBoxReglement extends StatefulWidget {
-  const _CheckBoxReglement();
+  const _CheckBoxReglement(
+    this.onChanged,
+  );
+
+  final Function(bool) onChanged;
 
   @override
   State<_CheckBoxReglement> createState() => _CheckBoxReglementState();
@@ -147,6 +176,7 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
           onChanged: (bool? newValue) {
             setState(() {
               value = newValue!;
+              widget.onChanged(value);
             });
           },
         ),
