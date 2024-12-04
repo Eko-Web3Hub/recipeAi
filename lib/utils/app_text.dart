@@ -19,4 +19,5 @@ abstract class AppText {
   static const String alreadyAMember = "Already a member?";
   static const String fieldCannotBeEmpty = 'This field is required';
   static const String invalidEmail = 'Invalid email';
+  static const String registerFailed = 'Register failed';
 }

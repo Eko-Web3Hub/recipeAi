@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class IAuthService {
-  Stream<User?> get authStateChanges;
-
   Future<void> signOut();
 
   Future<bool> login({required String email, required String password});
@@ -22,9 +20,6 @@ class AuthService implements IAuthService {
   final FirebaseAuth _firebaseAuth;
 
   AuthService(this._firebaseAuth);
-
-  @override
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   @override
   Future<void> signOut() async {
