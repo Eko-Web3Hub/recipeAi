@@ -40,14 +40,16 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<bool> register(
-      {required String email, required String password}) async {
+  Future<bool> register({
+    required String email,
+    required String password,
+  }) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return false;
+      return true;
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.message!);
     }
