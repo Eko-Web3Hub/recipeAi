@@ -40,7 +40,9 @@ class RegisterController extends Cubit<RegisterControllerState?> {
       );
 
       if (result) {
-        emit(RegisterControllerSuccess());
+        emit(
+          RegisterControllerSuccess(),
+        );
         return;
       }
     } on AuthException catch (e) {
