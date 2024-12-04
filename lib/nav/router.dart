@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
-import 'package:recipe_ai/auth/presentation/register_view.dart';
+import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 
 GoRouter createRouter() => GoRouter(

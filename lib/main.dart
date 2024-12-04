@@ -5,6 +5,8 @@ import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/nav/router.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   di.registerModule(AppModule());
   runApp(const MyApp());
 }

@@ -1,5 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:recipe_ai/auth/application/register_controller.dart';
+import 'package:recipe_ai/auth/presentation/register/register_controller.dart';
 
 void main() {
   RegisterController buildController() {
