@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
+import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 
 GoRouter createRouter() => GoRouter(
       initialLocation: '/',
@@ -26,6 +27,11 @@ GoRouter createRouter() => GoRouter(
           name: 'Register',
           path: '/register',
           builder: (context, state) => const RegisterView(),
+        ),
+        GoRoute(
+          name: 'UserPreferences',
+          path: '/user-preferences',
+          builder: (context, state) => const UserPreferencesView(),
         ),
       ],
     );

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/register_usecase.dart';
 import 'package:recipe_ai/auth/presentation/components/auth_bottom_action.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/register/register_controller.dart';
@@ -47,95 +48,123 @@ class _RegisterViewState extends State<RegisterView> {
       create: (_) => RegisterController(
         di<RegisterUsecase>(),
       ),
-      child: Scaffold(
-        body: Builder(builder: (context) {
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizontalScreenPadding,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Gap(10),
-                    const _HeadTitle(),
-                    const Gap(20),
-                    FormFieldWithLabel(
-                      label: AppText.name,
-                      hintText: AppText.enterName,
-                      controller: _nameController,
-                      validator: nonEmptyStringValidator,
-                      keyboardType: TextInputType.name,
-                    ),
-                    const Gap(10),
-                    FormFieldWithLabel(
-                      label: AppText.email,
-                      hintText: AppText.enterEmail,
-                      controller: _emailController,
-                      validator: emailValidator,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    const Gap(10),
-                    FormFieldWithLabel(
-                      label: AppText.password,
-                      hintText: AppText.enterPassword,
-                      controller: _passwordController,
-                      validator: passwordValidator,
-                      inputType: InputType.password,
-                      keyboardType: TextInputType.visiblePassword,
-                    ),
-                    const Gap(10),
-                    FormFieldWithLabel(
-                      label: AppText.confirmPassword,
-                      hintText: AppText.enterConfirmPassword,
-                      controller: _passwordConfirmController,
-                      validator: (value) => confirmPasswordValidator(
-                        value,
-                        _passwordController.text,
+      child: BlocListener<RegisterController, RegisterControllerState?>(
+        listener: (context, state) {
+          if (state is RegisterControllerSuccess) {
+            context.go('/home');
+            showSnackBar(
+              context,
+              AppText.registerSuccess,
+            );
+          } else if (state is RegisterControllerFailed) {
+            showSnackBar(
+              context,
+              state.message!,
+              isError: true,
+            );
+          }
+        },
+        child: Scaffold(
+          body: Builder(builder: (context) {
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: horizontalScreenPadding,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Gap(10),
+                      const HeadTitle(
+                        title: AppText.createAnAccount,
+                        subTitle: AppText.registerDetails,
                       ),
-                      inputType: InputType.password,
-                      keyboardType: TextInputType.visiblePassword,
-                    ),
-                    _CheckBoxReglement(
-                      (value) {
-                        setState(() {
-                          _acceptTerms = value;
-                        });
-                      },
-                    ),
-                    const Gap(20),
-                    MainBtn(
-                      text: AppText.signUp,
-                      showRightIcon: true,
-                      onPressed:
-                          _acceptTerms ? () => _handleRegister(context) : null,
-                    ),
-                    const Spacer(),
-                    Center(
-                      child: AuthBottomAction(
-                        firstText: '${AppText.alreadyAMember} ',
-                        secondText: AppText.signIn,
-                        onPressed: () {
-                          context.go('/login');
+                      const Gap(20),
+                      FormFieldWithLabel(
+                        label: AppText.name,
+                        hintText: AppText.enterName,
+                        controller: _nameController,
+                        validator: nonEmptyStringValidator,
+                        keyboardType: TextInputType.name,
+                      ),
+                      const Gap(10),
+                      FormFieldWithLabel(
+                        label: AppText.email,
+                        hintText: AppText.enterEmail,
+                        controller: _emailController,
+                        validator: emailValidator,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      const Gap(10),
+                      FormFieldWithLabel(
+                        label: AppText.password,
+                        hintText: AppText.enterPassword,
+                        controller: _passwordController,
+                        validator: passwordValidator,
+                        inputType: InputType.password,
+                        keyboardType: TextInputType.visiblePassword,
+                      ),
+                      const Gap(10),
+                      FormFieldWithLabel(
+                        label: AppText.confirmPassword,
+                        hintText: AppText.enterConfirmPassword,
+                        controller: _passwordConfirmController,
+                        validator: (value) => confirmPasswordValidator(
+                          value,
+                          _passwordController.text,
+                        ),
+                        inputType: InputType.password,
+                        keyboardType: TextInputType.visiblePassword,
+                      ),
+                      _CheckBoxReglement(
+                        (value) {
+                          setState(() {
+                            _acceptTerms = value;
+                          });
                         },
                       ),
-                    ),
-                    const Gap(21),
-                  ],
+                      const Gap(20),
+                      MainBtn(
+                        text: AppText.signUp,
+                        showRightIcon: true,
+                        onPressed: _acceptTerms
+                            ? () => _handleRegister(context)
+                            : null,
+                      ),
+                      const Spacer(),
+                      Center(
+                        child: AuthBottomAction(
+                          firstText: '${AppText.alreadyAMember} ',
+                          secondText: AppText.signIn,
+                          onPressed: () {
+                            context.go('/login');
+                          },
+                        ),
+                      ),
+                      const Gap(21),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
 }
 
-class _HeadTitle extends StatelessWidget {
-  const _HeadTitle();
+class HeadTitle extends StatelessWidget {
+  const HeadTitle({
+    super.key,
+    required this.title,
+    required this.subTitle,
+  });
+
+  final String title;
+  final String subTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +173,7 @@ class _HeadTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppText.createAnAccount,
+          title,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             fontSize: 20,
@@ -154,7 +183,7 @@ class _HeadTitle extends StatelessWidget {
         ),
         const Gap(5),
         Text(
-          AppText.registerDetails,
+          subTitle,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             fontSize: 11,
