@@ -67,6 +67,7 @@ class _RegisterViewState extends State<RegisterView> {
                       hintText: AppText.enterName,
                       controller: _nameController,
                       validator: nonEmptyStringValidator,
+                      keyboardType: TextInputType.name,
                     ),
                     const Gap(10),
                     FormFieldWithLabel(
@@ -74,6 +75,7 @@ class _RegisterViewState extends State<RegisterView> {
                       hintText: AppText.enterEmail,
                       controller: _emailController,
                       validator: emailValidator,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     const Gap(10),
                     FormFieldWithLabel(
@@ -81,6 +83,8 @@ class _RegisterViewState extends State<RegisterView> {
                       hintText: AppText.enterPassword,
                       controller: _passwordController,
                       validator: passwordValidator,
+                      inputType: InputType.password,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                     const Gap(10),
                     FormFieldWithLabel(
@@ -91,6 +95,8 @@ class _RegisterViewState extends State<RegisterView> {
                         value,
                         _passwordController.text,
                       ),
+                      inputType: InputType.password,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                     _CheckBoxReglement(
                       (value) {

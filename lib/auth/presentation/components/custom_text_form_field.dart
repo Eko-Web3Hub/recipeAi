@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../utils/constant.dart';
+
 InputBorder _inputBorder = OutlineInputBorder(
   borderSide: const BorderSide(
     width: 1.5,
@@ -17,17 +19,22 @@ class CustomTextFormField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     required this.validator,
+    this.inputType = InputType.text,
+    this.keyboardType,
   });
 
   final String hintText;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final InputType inputType;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: TextFormField(
+        keyboardType: keyboardType,
         validator: validator,
         controller: controller,
         cursorColor: Theme.of(context).primaryColor,
@@ -46,6 +53,7 @@ class CustomTextFormField extends StatelessWidget {
           enabledBorder: _inputBorder,
           focusedBorder: _inputBorder,
         ),
+        obscureText: inputType == InputType.password,
       ),
     );
   }
