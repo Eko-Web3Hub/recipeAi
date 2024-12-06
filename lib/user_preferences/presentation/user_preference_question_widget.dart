@@ -28,6 +28,7 @@ class UserPreferenceQuestionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         HeadTitle(
@@ -129,6 +130,7 @@ class _CustomCheckBoxState extends State<_CustomCheckBox> {
         child: Icon(
           Icons.check,
           color: isSelected ? Colors.white : Colors.black,
+          size: 15,
         ),
       ),
     );

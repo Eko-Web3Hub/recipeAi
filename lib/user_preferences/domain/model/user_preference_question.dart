@@ -6,7 +6,7 @@ enum UserPreferenceQuestionType {
 
 UserPreferenceQuestionType userPreferenceQuestionTypeFromString(String type) {
   switch (type) {
-    case 'multiple-choice':
+    case 'multipleChoice':
       return UserPreferenceQuestionType.multipleChoice;
     default:
       throw UnimplementedError();
