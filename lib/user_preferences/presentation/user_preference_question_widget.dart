@@ -18,7 +18,7 @@ class UserPreferenceQuestionWidget extends StatelessWidget {
           question as UserPreferenceQuestionMultipleChoice;
 
       return _MultipleChoiceQuestion(
-        options: multipleChoiceQuestion.options,
+        question: multipleChoiceQuestion,
       );
     } else {
       throw UnimplementedError();
@@ -47,16 +47,16 @@ class UserPreferenceQuestionWidget extends StatelessWidget {
 
 class _MultipleChoiceQuestion extends StatelessWidget {
   const _MultipleChoiceQuestion({
-    required this.options,
+    required this.question,
   });
 
-  final List<String> options;
+  final UserPreferenceQuestionMultipleChoice question;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: options
+      children: question.options
           .map(
             (option) => Padding(
               padding: const EdgeInsets.only(
@@ -64,6 +64,10 @@ class _MultipleChoiceQuestion extends StatelessWidget {
               ),
               child: _CheckBoxOption(
                 option: option,
+                onChanged: (isSelected) {
+                  print('Option: $option, isSelected: $isSelected');
+                  question.answer(option);
+                },
               ),
             ),
           )
@@ -75,15 +79,21 @@ class _MultipleChoiceQuestion extends StatelessWidget {
 class _CheckBoxOption extends StatelessWidget {
   const _CheckBoxOption({
     required this.option,
+    required this.onChanged,
   });
 
   final String option;
+  final Function(bool) onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const _CustomCheckBox(),
+        _CustomCheckBox(
+          (isSelected) {
+            onChanged(isSelected);
+          },
+        ),
         const Gap(22),
         Text(
           option,
@@ -100,7 +110,11 @@ class _CheckBoxOption extends StatelessWidget {
 }
 
 class _CustomCheckBox extends StatefulWidget {
-  const _CustomCheckBox();
+  const _CustomCheckBox(
+    this.onChanged,
+  );
+
+  final Function(bool) onChanged;
 
   @override
   State<_CustomCheckBox> createState() => _CustomCheckBoxState();
@@ -112,9 +126,12 @@ class _CustomCheckBoxState extends State<_CustomCheckBox> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => setState(
-        () => isSelected = !isSelected,
-      ),
+      onTap: () {
+        setState(() {
+          isSelected = !isSelected;
+        });
+        widget.onChanged(isSelected);
+      },
       child: Container(
         width: 20.0,
         height: 20.0,

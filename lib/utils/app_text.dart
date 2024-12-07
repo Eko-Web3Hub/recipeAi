@@ -22,4 +22,5 @@ abstract class AppText {
   static const String registerFailed = 'Register failed';
   static const String registerSuccess = 'You have successfully registered';
   static const String next = 'Next';
+  static const String previous = 'Previous';
 }

@@ -10,8 +10,16 @@ import 'package:recipe_ai/user_preferences/presentation/user_preference_quizz_co
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-class UserPreferencesView extends StatelessWidget {
+class UserPreferencesView extends StatefulWidget {
   const UserPreferencesView({super.key});
+
+  @override
+  State<UserPreferencesView> createState() => _UserPreferencesViewState();
+}
+
+class _UserPreferencesViewState extends State<UserPreferencesView> {
+  final PageController _pageController = PageController();
+  int _currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +40,9 @@ class UserPreferencesView extends StatelessWidget {
                     );
                   }
 
+                  final questions =
+                      (state as UserPreferenceQuizzLoaded).questions;
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: horizontalScreenPadding,
@@ -42,14 +53,47 @@ class UserPreferencesView extends StatelessWidget {
                         const Gap(10),
                         Expanded(
                           child: UserPreferenceQuestionList(
-                            questions:
-                                (state as UserPreferenceQuizzLoaded).questions,
+                            questions: questions,
+                            controller: _pageController,
+                            onPageChanged: (index) {
+                              print(index);
+                              setState(() {
+                                _currentPageIndex = index;
+                              });
+                            },
                           ),
                         ),
-                        MainBtn(
-                          text: AppText.next,
-                          showRightIcon: true,
-                          onPressed: () {},
+                        Row(
+                          children: [
+                            Visibility(
+                              visible: _currentPageIndex != 0,
+                              child: Expanded(
+                                child: MainBtn(
+                                  text: AppText.previous,
+                                  onPressed: () {
+                                    _pageController.previousPage(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeIn,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            const Gap(10.0),
+                            Expanded(
+                              child: MainBtn(
+                                text: AppText.next,
+                                showRightIcon: _currentPageIndex == 0,
+                                onPressed: () {
+                                  _pageController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeIn,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                         const Gap(31.0),
                       ],
