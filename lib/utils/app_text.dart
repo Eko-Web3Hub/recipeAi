@@ -28,4 +28,5 @@ abstract class AppText {
       'Do you want to receive notifications ?';
   static const String yes = 'Yes';
   static const String no = 'No';
+  static const String letCreateMealToday = 'Let’s create delicious meals today';
 }
