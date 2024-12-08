@@ -26,7 +26,7 @@ class UserPreferenceSubmitBtnController
         );
 
   final UserPreferenceService _userPreferenceService;
-  final AuthUserService _authUserService;
+  final IAuthUserService _authUserService;
 
   void submit(List<UserPreferenceQuestion> questions) async {
     emit(UserPreferenceSubmitBtnLoading());
@@ -39,8 +39,10 @@ class UserPreferenceSubmitBtnController
 
         prefences = {
           ...preference,
+          ...prefences,
         };
       }
+      await Future.delayed(const Duration(seconds: 3));
       await _userPreferenceService.saveUserPreference(
         uid,
         UserPreference(prefences),

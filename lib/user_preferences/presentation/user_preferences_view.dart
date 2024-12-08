@@ -125,7 +125,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                                   create: (context) =>
                                       UserPreferenceSubmitBtnController(
                                     di<UserPreferenceService>(),
-                                    di<AuthUserService>(),
+                                    di<IAuthUserService>(),
                                   ),
                                   child: BlocBuilder<
                                           UserPreferenceSubmitBtnController,
