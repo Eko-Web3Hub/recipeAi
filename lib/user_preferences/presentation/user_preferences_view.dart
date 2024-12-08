@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/notification/presentation/notification_dialog.dart';
+import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/user_preferences/presentation/submit_user_preference_btn_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/user_preference_submit_btn_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_quizz_controller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
@@ -118,24 +123,52 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                               child: Center(
                                 child: BlocProvider(
                                   create: (context) =>
-                                      SubmitUserPreferenceBtnController(),
-                                  child: MainBtn(
-                                    text: _currentPageIndex ==
-                                            questions.length - 1
-                                        ? AppText.finish
-                                        : AppText.next,
-                                    showRightIcon: _currentPageIndex == 0,
-                                    onPressed: () async {
-                                      if (_currentPageIndex ==
-                                          questions.length - 1) {
-                                        final enableNotif =
-                                            await showNotificationDialog();
-                                        return;
-                                      }
-
-                                      _nextPage();
-                                    },
+                                      UserPreferenceSubmitBtnController(
+                                    di<UserPreferenceService>(),
+                                    di<AuthUserService>(),
                                   ),
+                                  child: BlocBuilder<
+                                          UserPreferenceSubmitBtnController,
+                                          UserPreferenceSubmitBtnState>(
+                                      builder: (context,
+                                          userPreferenceSubmitBtnState) {
+                                    return BlocListener<
+                                        UserPreferenceSubmitBtnController,
+                                        UserPreferenceSubmitBtnState>(
+                                      listener: (context, state) {
+                                        if (state
+                                            is UserPreferenceSubmitBtnSuccess) {
+                                          context.go('/home');
+                                        }
+                                      },
+                                      child: MainBtn(
+                                        isLoading: userPreferenceSubmitBtnState
+                                            is UserPreferenceSubmitBtnLoading,
+                                        text: _currentPageIndex ==
+                                                questions.length - 1
+                                            ? AppText.finish
+                                            : AppText.next,
+                                        showRightIcon: _currentPageIndex == 0,
+                                        onPressed: () async {
+                                          final userPreferenceSubmitBtnController =
+                                              context.read<
+                                                  UserPreferenceSubmitBtnController>();
+                                          if (_currentPageIndex ==
+                                              questions.length - 1) {
+                                            final enableNotif =
+                                                await showNotificationDialog();
+                                            log('enableNotif: $enableNotif');
+
+                                            userPreferenceSubmitBtnController
+                                                .submit(questions);
+                                            return;
+                                          }
+
+                                          _nextPage();
+                                        },
+                                      ),
+                                    );
+                                  }),
                                 ),
                               ),
                             ),

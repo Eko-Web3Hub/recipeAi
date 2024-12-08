@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 
 class MainBtn extends StatelessWidget {
   const MainBtn({
@@ -11,6 +12,7 @@ class MainBtn extends StatelessWidget {
     this.height = 60,
     this.backgroundColor,
     this.textColor,
+    this.isLoading = false,
   });
 
   final String text;
@@ -19,6 +21,7 @@ class MainBtn extends StatelessWidget {
   final double height;
   final Color? backgroundColor;
   final Color? textColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -30,29 +33,33 @@ class MainBtn extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            text,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-              height: 24 / 16,
-              color: textColor ?? Colors.white,
+      onPressed: isLoading ? null : onPressed,
+      child: isLoading
+          ? const CustomCircularLoader(
+              size: 20,
+            )
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    height: 24 / 16,
+                    color: textColor ?? Colors.white,
+                  ),
+                ),
+                Visibility(
+                  visible: showRightIcon,
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 30.0),
+                    child: _ArrowIconWidget(),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Visibility(
-            visible: showRightIcon,
-            child: const Padding(
-              padding: EdgeInsets.only(left: 30.0),
-              child: _ArrowIconWidget(),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
