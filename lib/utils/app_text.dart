@@ -29,4 +29,6 @@ abstract class AppText {
   static const String yes = 'Yes';
   static const String no = 'No';
   static const String letCreateMealToday = 'Let’s create delicious meals today';
+  static const String somethingWentWrong =
+      'Something went wrong. Please try again';
 }

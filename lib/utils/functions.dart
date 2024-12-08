@@ -46,3 +46,7 @@ String? confirmPasswordValidator(String? value, String password) {
   }
   return null;
 }
+
+String capitalizeFirtLetter(String s) {
+  return s[0].toUpperCase() + s.substring(1);
+}

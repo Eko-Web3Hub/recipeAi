@@ -27,7 +27,10 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<bool> login({required String email, required String password}) async {
+  Future<bool> login({
+    required String email,
+    required String password,
+  }) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: email,

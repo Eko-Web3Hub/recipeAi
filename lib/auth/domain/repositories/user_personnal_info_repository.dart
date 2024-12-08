@@ -4,4 +4,5 @@ import 'package:recipe_ai/ddd/entity.dart';
 abstract class IUserPersonnalInfoRepository {
   Future<UserPersonnalInfo?> get(EntityId uid);
   Future<void> save(UserPersonnalInfo userPersonnalInfo);
+  Stream<UserPersonnalInfo?> watch(EntityId uid);
 }

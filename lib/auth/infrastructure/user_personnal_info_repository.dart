@@ -35,4 +35,16 @@ class FirestoreUserPersonnalInfoRepository
           UserPersonnalInfoSerialization.toJson(userPersonnalInfo),
         );
   }
+
+  @override
+  Stream<UserPersonnalInfo?> watch(EntityId uid) {
+    final docRef = _firestore.collection(_collection).doc(uid.value);
+    return docRef.snapshots().map((doc) {
+      if (!doc.exists) {
+        return null;
+      }
+      final data = doc.data()!;
+      return UserPersonnalInfoSerialization.fromMap(data);
+    });
+  }
 }
