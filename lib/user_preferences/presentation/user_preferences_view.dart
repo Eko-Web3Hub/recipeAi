@@ -6,6 +6,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/notification/presentation/notification_dialog.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
+import 'package:recipe_ai/user_preferences/presentation/submit_user_preference_btn_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_quizz_controller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
@@ -29,8 +30,8 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
     super.dispose();
   }
 
-  void showNotificationDialog() {
-    showDialog(
+  Future<bool?> showNotificationDialog() {
+    return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -43,6 +44,13 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
           backgroundColor: Colors.white,
         );
       },
+    );
+  }
+
+  void _nextPage() {
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
     );
   }
 
@@ -107,23 +115,28 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                             ),
                             const Gap(10.0),
                             Expanded(
-                              child: MainBtn(
-                                text: _currentPageIndex == questions.length - 1
-                                    ? AppText.finish
-                                    : AppText.next,
-                                showRightIcon: _currentPageIndex == 0,
-                                onPressed: () {
-                                  if (_currentPageIndex ==
-                                      questions.length - 1) {
-                                    showNotificationDialog();
-                                    return;
-                                  }
+                              child: Center(
+                                child: BlocProvider(
+                                  create: (context) =>
+                                      SubmitUserPreferenceBtnController(),
+                                  child: MainBtn(
+                                    text: _currentPageIndex ==
+                                            questions.length - 1
+                                        ? AppText.finish
+                                        : AppText.next,
+                                    showRightIcon: _currentPageIndex == 0,
+                                    onPressed: () async {
+                                      if (_currentPageIndex ==
+                                          questions.length - 1) {
+                                        final enableNotif =
+                                            await showNotificationDialog();
+                                        return;
+                                      }
 
-                                  _pageController.nextPage(
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeIn,
-                                  );
-                                },
+                                      _nextPage();
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ],
