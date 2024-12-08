@@ -24,6 +24,8 @@ abstract class UserPreferenceQuestion extends Equatable {
     required this.type,
   });
 
+  Map<String, dynamic> toJson();
+
   @override
   List<Object?> get props => [title, description, type];
 }
@@ -60,8 +62,21 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
 
   List<String> get retrieveSelectedOptions => selectedOptions;
 
+  bool isOptionSelected(String option) => selectedOptions.contains(option);
+
   @override
   List<Object?> get props => [...super.props, options, type];
 
   final List<String> selectedOptions = [];
+
+  @override
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{};
+
+    for (final option in options) {
+      json[option] = selectedOptions.contains(option);
+    }
+
+    return json;
+  }
 }

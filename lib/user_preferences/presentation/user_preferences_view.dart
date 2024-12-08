@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/notification/presentation/notification_dialog.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
@@ -17,12 +18,37 @@ class UserPreferencesView extends StatefulWidget {
   State<UserPreferencesView> createState() => _UserPreferencesViewState();
 }
 
-class _UserPreferencesViewState extends State<UserPreferencesView> {
+class _UserPreferencesViewState extends State<UserPreferencesView>
+    with AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void showNotificationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+          insetPadding: const EdgeInsets.symmetric(horizontal: 33),
+          content: const NotificationDialog(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.white,
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (context) => UserPreferenceQuizzController(
         di.get<IUserPreferenceQuizzRepository>(),
@@ -56,7 +82,6 @@ class _UserPreferencesViewState extends State<UserPreferencesView> {
                             questions: questions,
                             controller: _pageController,
                             onPageChanged: (index) {
-                              print(index);
                               setState(() {
                                 _currentPageIndex = index;
                               });
@@ -83,9 +108,17 @@ class _UserPreferencesViewState extends State<UserPreferencesView> {
                             const Gap(10.0),
                             Expanded(
                               child: MainBtn(
-                                text: AppText.next,
+                                text: _currentPageIndex == questions.length - 1
+                                    ? AppText.finish
+                                    : AppText.next,
                                 showRightIcon: _currentPageIndex == 0,
                                 onPressed: () {
+                                  if (_currentPageIndex ==
+                                      questions.length - 1) {
+                                    showNotificationDialog();
+                                    return;
+                                  }
+
                                   _pageController.nextPage(
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeIn,
@@ -107,4 +140,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

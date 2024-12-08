@@ -8,18 +8,24 @@ class MainBtn extends StatelessWidget {
     required this.text,
     this.showRightIcon = false,
     this.onPressed,
+    this.height = 60,
+    this.backgroundColor,
+    this.textColor,
   });
 
   final String text;
   final VoidCallback? onPressed;
   final bool showRightIcon;
+  final double height;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor,
-        minimumSize: const Size(double.infinity, 60),
+        backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+        minimumSize: Size(double.infinity, height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -35,7 +41,7 @@ class MainBtn extends StatelessWidget {
               fontWeight: FontWeight.w600,
               fontSize: 16,
               height: 24 / 16,
-              color: Colors.white,
+              color: textColor ?? Colors.white,
             ),
           ),
           Visibility(

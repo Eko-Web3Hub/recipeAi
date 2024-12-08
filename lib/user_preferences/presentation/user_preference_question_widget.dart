@@ -64,8 +64,8 @@ class _MultipleChoiceQuestion extends StatelessWidget {
               ),
               child: _CheckBoxOption(
                 option: option,
+                isSelected: question.isOptionSelected(option),
                 onChanged: (isSelected) {
-                  print('Option: $option, isSelected: $isSelected');
                   question.answer(option);
                 },
               ),
@@ -79,10 +79,12 @@ class _MultipleChoiceQuestion extends StatelessWidget {
 class _CheckBoxOption extends StatelessWidget {
   const _CheckBoxOption({
     required this.option,
+    this.isSelected = false,
     required this.onChanged,
   });
 
   final String option;
+  final bool isSelected;
   final Function(bool) onChanged;
 
   @override
@@ -93,6 +95,7 @@ class _CheckBoxOption extends StatelessWidget {
           (isSelected) {
             onChanged(isSelected);
           },
+          initialState: isSelected,
         ),
         const Gap(22),
         Text(
@@ -110,11 +113,10 @@ class _CheckBoxOption extends StatelessWidget {
 }
 
 class _CustomCheckBox extends StatefulWidget {
-  const _CustomCheckBox(
-    this.onChanged,
-  );
+  const _CustomCheckBox(this.onChanged, {this.initialState = false});
 
   final Function(bool) onChanged;
+  final bool initialState;
 
   @override
   State<_CustomCheckBox> createState() => _CustomCheckBoxState();
@@ -122,6 +124,12 @@ class _CustomCheckBox extends StatefulWidget {
 
 class _CustomCheckBoxState extends State<_CustomCheckBox> {
   bool isSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isSelected = widget.initialState;
+  }
 
   @override
   Widget build(BuildContext context) {

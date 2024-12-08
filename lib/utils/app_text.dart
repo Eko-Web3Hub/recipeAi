@@ -23,4 +23,9 @@ abstract class AppText {
   static const String registerSuccess = 'You have successfully registered';
   static const String next = 'Next';
   static const String previous = 'Previous';
+  static const String finish = 'Finish';
+  static const String wantToReceiveNotification =
+      'Do you want to receive notifications ?';
+  static const String yes = 'Yes';
+  static const String no = 'No';
 }
