@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
+import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -13,21 +17,38 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: horizontalScreenPadding,
           ),
           child: Column(
             children: [
-              Gap(20.0),
-              Row(
+              const Gap(20.0),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _HeadLeftSection(),
                   _HeadRightSection(),
                 ],
+              ),
+              BlocProvider(
+                create: (context) => SignOutBtnControlller(
+                  di<IAuthService>(),
+                ),
+                child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+                    builder: (context, btnLogOutState) {
+                  return Builder(builder: (context) {
+                    return MainBtn(
+                      text: 'Logout',
+                      isLoading: btnLogOutState is SignOutBtnLoading,
+                      onPressed: () {
+                        context.read<SignOutBtnControlller>().signOut();
+                      },
+                    );
+                  });
+                }),
               ),
             ],
           ),
