@@ -8,6 +8,7 @@ import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
+import 'package:recipe_ai/receipe/presentation/reciepe_details_view.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
@@ -63,6 +64,14 @@ GoRouter createRouter() => GoRouter(
           path: '/home',
           redirect: _guardAuth,
           builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          name: 'RecipeDetails',
+          path: '/recipe-details',
+          redirect: _guardAuth,
+          builder: (context, state) {
+            return const ReciepeDetailsView();
+          },
         ),
       ],
     );

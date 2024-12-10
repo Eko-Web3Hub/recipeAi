@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
@@ -50,6 +51,12 @@ class HomeScreen extends StatelessWidget {
                   });
                 }),
               ),
+              const Gap(10),
+              MainBtn(
+                  text: 'Go to Recipe',
+                  onPressed: () {
+                    context.go('/recipe-details');
+                  }),
             ],
           ),
         ),

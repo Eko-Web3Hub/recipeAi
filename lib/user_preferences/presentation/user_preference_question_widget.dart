@@ -62,7 +62,7 @@ class _MultipleChoiceQuestion extends StatelessWidget {
               padding: const EdgeInsets.only(
                 bottom: 15.0,
               ),
-              child: _CheckBoxOption(
+              child: CheckBoxOption(
                 option: option,
                 isSelected: question.isOptionSelected(option),
                 onChanged: (isSelected) {
@@ -76,8 +76,9 @@ class _MultipleChoiceQuestion extends StatelessWidget {
   }
 }
 
-class _CheckBoxOption extends StatelessWidget {
-  const _CheckBoxOption({
+class CheckBoxOption extends StatelessWidget {
+  const CheckBoxOption({
+    super.key,
     required this.option,
     this.isSelected = false,
     required this.onChanged,
