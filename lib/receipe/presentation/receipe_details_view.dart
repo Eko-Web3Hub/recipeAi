@@ -5,8 +5,8 @@ import 'package:recipe_ai/user_preferences/presentation/user_preference_question
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
-class ReciepeDetailsView extends StatelessWidget {
-  const ReciepeDetailsView({super.key});
+class ReceipeDetailsView extends StatelessWidget {
+  const ReceipeDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
