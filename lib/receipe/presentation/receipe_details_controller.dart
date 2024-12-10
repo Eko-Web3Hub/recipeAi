@@ -20,7 +20,7 @@ class ReceipeDetailsState {
 
 class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   ReceipeDetailsController(
-    this.reciepeId,
+    this.receipeId,
   ) : super(
           const ReceipeDetailsState.loading(),
         ) {
@@ -35,5 +35,5 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     );
   }
 
-  EntityId reciepeId;
+  EntityId receipeId;
 }
