@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
               MainBtn(
                   text: 'Go to Recipe',
                   onPressed: () {
-                    context.go('/recipe-details');
+                    context.push('/recipe-details');
                   }),
             ],
           ),

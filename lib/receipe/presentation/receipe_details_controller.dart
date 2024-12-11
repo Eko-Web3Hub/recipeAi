@@ -27,7 +27,8 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     _load();
   }
 
-  void _load() {
+  void _load() async {
+    await Future.delayed(const Duration(seconds: 3));
     emit(
       const ReceipeDetailsState.loaded(
         receipeSample,
