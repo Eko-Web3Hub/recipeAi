@@ -8,6 +8,7 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_circul
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_widget.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class ReceipeDetailsView extends StatelessWidget {
   const ReceipeDetailsView({super.key});
@@ -61,12 +62,7 @@ class ReceipeDetailsView extends StatelessWidget {
                   child: ExpansionTile(
                     title: Text(
                       AppText.ingredients,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        height: 24 / 16,
-                        color: blackVariantColor,
-                      ),
+                      style: normalTextStyle,
                     ),
                     children: [
                       const Gap(15.0),
@@ -92,6 +88,11 @@ class ReceipeDetailsView extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 38),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 38.0),
+                  child: _StepsSection(),
                 ),
               ],
             );
@@ -128,6 +129,23 @@ class _DisplayIngredients extends StatelessWidget {
             height: 21 / 14,
             color: const Color(0xff1E1E1E),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _StepsSection extends StatelessWidget {
+  const _StepsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Gap(15.0),
+        Text(
+          AppText.steps,
+          style: normalTextStyle,
         ),
       ],
     );

@@ -1,6 +1,10 @@
+import 'dart:ui';
+
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
+import 'package:recipe_ai/utils/colors.dart';
 
 const horizontalScreenPadding = 30.0;
 
@@ -44,4 +48,11 @@ const receipeSample = Receipe(
       duration: null,
     ),
   ],
+);
+
+final normalTextStyle = GoogleFonts.poppins(
+  fontWeight: FontWeight.w600,
+  fontSize: 16,
+  height: 24 / 16,
+  color: blackVariantColor,
 );
