@@ -72,7 +72,7 @@ class ReceipeDetailsView extends StatelessWidget {
                       const Gap(15.0),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 17.0,
+                          horizontal: 16.0,
                         ),
                         child: Column(
                           children: receipe.ingredients
@@ -114,11 +114,21 @@ class _DisplayIngredients extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CheckBoxOption(
           option: ingredient,
           onChanged: (isSelected) {},
-        )
+        ),
+        Text(
+          quantity,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            height: 21 / 14,
+            color: const Color(0xff1E1E1E),
+          ),
+        ),
       ],
     );
   }
