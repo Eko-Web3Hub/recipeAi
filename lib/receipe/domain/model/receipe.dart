@@ -5,7 +5,7 @@ import 'package:recipe_ai/receipe/domain/model/step.dart';
 class Receipe extends Equatable {
   final String name;
   final List<Ingredient> ingredients;
-  final List<Step> steps;
+  final List<ReceipeStep> steps;
 
   const Receipe({
     required this.name,

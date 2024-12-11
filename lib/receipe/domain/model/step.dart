@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class Step extends Equatable {
+class ReceipeStep extends Equatable {
   final String description;
   final String? duration;
 
-  const Step({
+  const ReceipeStep({
     required this.description,
     required this.duration,
   });

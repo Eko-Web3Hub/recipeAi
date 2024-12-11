@@ -31,19 +31,19 @@ const receipeSample = Receipe(
     ),
   ],
   steps: [
-    Step(
+    ReceipeStep(
       description: 'Mash black beans in a large bowl for 10min',
       duration: '10:00',
     ),
-    Step(
+    ReceipeStep(
       description: 'Mash black beans in a large bowl for 15min',
       duration: '15:00',
     ),
-    Step(
+    ReceipeStep(
       description: 'Mash black beans in a large bowl for 5min',
       duration: '5:00',
     ),
-    Step(
+    ReceipeStep(
       description: 'Mash black beans in a large bowl and mixture with water',
       duration: null,
     ),
