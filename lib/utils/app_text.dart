@@ -31,4 +31,6 @@ abstract class AppText {
   static const String letCreateMealToday = 'Let’s create delicious meals today';
   static const String somethingWentWrong =
       'Something went wrong. Please try again';
+  static const String ingredients = 'Ingredients';
+  static const String steps = 'Steps';
 }
