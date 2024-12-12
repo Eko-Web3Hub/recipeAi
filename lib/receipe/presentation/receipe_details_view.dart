@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
@@ -41,15 +42,30 @@ class ReceipeDetailsView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffEBEBEB),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
+                  Stack(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        decoration: const BoxDecoration(
+                          color: Color(0xffEBEBEB),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 40.0,
+                          left: 20.0,
+                        ),
+                        child: InkWell(
+                          onTap: () => context.pop(),
+                          child:
+                              SvgPicture.asset('assets/images/arrowLeft.svg'),
+                        ),
+                      ),
+                    ],
                   ),
                   const Gap(7.0),
                   Padding(
