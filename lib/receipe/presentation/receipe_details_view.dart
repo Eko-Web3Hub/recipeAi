@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
@@ -12,13 +13,18 @@ import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class ReceipeDetailsView extends StatelessWidget {
-  const ReceipeDetailsView({super.key});
+  const ReceipeDetailsView({
+    super.key,
+    required this.receipeId,
+  });
+
+  final EntityId receipeId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ReceipeDetailsController(
-        const EntityId('1'),
+        receipeId,
       ),
       child: Builder(builder: (context) {
         return Scaffold(
@@ -214,6 +220,41 @@ class _StepView extends StatelessWidget {
                 fontSize: 14,
                 height: 21 / 14,
                 color: Colors.black,
+              ),
+            ),
+            Visibility(
+              visible: step.duration != null,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 18.0,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 29,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: const Color(0xff1976D2),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        child: SvgPicture.asset('assets/images/timer.svg'),
+                      ),
+                    ),
+                    const Gap(8.0),
+                    Text(
+                      '${step.duration}',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        height: 21 / 14,
+                        color: const Color(0xff1E1E1E),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

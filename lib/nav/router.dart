@@ -70,7 +70,12 @@ GoRouter createRouter() => GoRouter(
           path: '/recipe-details',
           redirect: _guardAuth,
           builder: (context, state) {
-            return const ReceipeDetailsView();
+            final receipeId =
+                (state.extra as Map<String, dynamic>)['receipeId'];
+
+            return ReceipeDetailsView(
+              receipeId: receipeId,
+            );
           },
         ),
       ],

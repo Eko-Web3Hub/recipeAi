@@ -6,6 +6,7 @@ import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
+import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
@@ -55,7 +56,12 @@ class HomeScreen extends StatelessWidget {
               MainBtn(
                   text: 'Go to Recipe',
                   onPressed: () {
-                    context.push('/recipe-details');
+                    context.push(
+                      '/recipe-details',
+                      extra: {
+                        'receipeId': const EntityId('1'),
+                      },
+                    );
                   }),
             ],
           ),
