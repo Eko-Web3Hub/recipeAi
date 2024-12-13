@@ -7,9 +7,7 @@ void main() {
   const EntityId receipeId = EntityId('1');
 
   ReceipeDetailsController buildSut() {
-    return ReceipeDetailsController(
-      receipeId,
-    );
+    return ReceipeDetailsController(receipeId, 0);
   }
 
   blocTest<ReceipeDetailsController, ReceipeDetailsState>(

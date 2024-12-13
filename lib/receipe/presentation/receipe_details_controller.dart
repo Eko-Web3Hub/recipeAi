@@ -21,6 +21,7 @@ class ReceipeDetailsState {
 class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   ReceipeDetailsController(
     this.receipeId,
+    this.seconds,
   ) : super(
           const ReceipeDetailsState.loading(),
         ) {
@@ -28,7 +29,9 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   }
 
   void _load() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(
+      Duration(seconds: seconds ?? 3),
+    );
     emit(
       const ReceipeDetailsState.loaded(
         receipeSample,
@@ -36,5 +39,6 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     );
   }
 
+  int? seconds;
   EntityId receipeId;
 }

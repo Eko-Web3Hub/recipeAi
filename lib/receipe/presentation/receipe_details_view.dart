@@ -24,9 +24,7 @@ class ReceipeDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ReceipeDetailsController(
-        receipeId,
-      ),
+      create: (_) => ReceipeDetailsController(receipeId, null),
       child: Builder(builder: (context) {
         return Scaffold(
           body: BlocBuilder<ReceipeDetailsController, ReceipeDetailsState>(
