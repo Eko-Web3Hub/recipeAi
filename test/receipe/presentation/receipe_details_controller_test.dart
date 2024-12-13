@@ -7,14 +7,12 @@ void main() {
   const EntityId receipeId = EntityId('1');
 
   ReceipeDetailsController buildSut() {
-    return ReceipeDetailsController(
-      receipeId,
-    );
+    return ReceipeDetailsController(receipeId, 0);
   }
 
   blocTest<ReceipeDetailsController, ReceipeDetailsState>(
     'should load the receipe details',
-    build: buildSut,
+    build: () => buildSut(),
     expect: () => const <ReceipeDetailsState>[
       ReceipeDetailsState.loaded(
         receipeSample,
