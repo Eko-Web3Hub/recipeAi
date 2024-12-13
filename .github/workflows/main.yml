@@ -1,0 +1,15 @@
+on: push
+
+name: Continuous Integration
+
+jobs:
+  unit_test:
+    name: Unit Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - name: Install spec cli
+        run: dart pub global activate spec_cli
+      - name: Run tests
+        run: spec --coverage
