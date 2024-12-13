@@ -14,7 +14,7 @@ void main() {
 
   blocTest<ReceipeDetailsController, ReceipeDetailsState>(
     'should load the receipe details',
-    build: buildSut,
+    build: () => buildSut(),
     expect: () => const <ReceipeDetailsState>[
       ReceipeDetailsState.loaded(
         receipeSample,
