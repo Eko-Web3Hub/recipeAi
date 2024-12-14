@@ -20,6 +20,6 @@ jobs:
         run: dart pub global activate spec_cli
       - name: Run tests
         run: spec --coverage
-      - run: apt-get install lcov
+      - run: sudo apt-get install lcov
       - name: Gen html
         run: genhtml coverage/lcov.info -o coverage/html
