@@ -23,3 +23,13 @@ jobs:
       - run: sudo apt-get install lcov
       - name: Gen html
         run: genhtml coverage/lcov.info -o coverage/html
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-html
+          path: coverage/html
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: coverage/html
