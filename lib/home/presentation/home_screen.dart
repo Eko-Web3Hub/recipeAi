@@ -8,7 +8,9 @@ import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
+import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -19,54 +21,82 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: horizontalScreenPadding,
-          ),
-          child: Column(
-            children: [
-              const Gap(20.0),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocProvider(
+      create: (context) => HomeScreenController(
+        di<RetrieveReceipeFromApiOneTimePerDayUsecase>(),
+      ),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: horizontalScreenPadding,
+              ),
+              child: Column(
                 children: [
-                  _HeadLeftSection(),
-                  _HeadRightSection(),
+                  const Gap(20.0),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _HeadLeftSection(),
+                      _HeadRightSection(),
+                    ],
+                  ),
+                  BlocProvider(
+                    create: (context) => SignOutBtnControlller(
+                      di<IAuthService>(),
+                    ),
+                    child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+                        builder: (context, btnLogOutState) {
+                      return Builder(builder: (context) {
+                        return MainBtn(
+                          text: 'Logout',
+                          isLoading: btnLogOutState is SignOutBtnLoading,
+                          onPressed: () {
+                            context.read<SignOutBtnControlller>().signOut();
+                          },
+                        );
+                      });
+                    }),
+                  ),
+                  const Gap(10),
+                  MainBtn(
+                    text: 'Go to Recipe',
+                    onPressed: () {
+                      context.push(
+                        '/recipe-details',
+                        extra: {
+                          'receipeId': const EntityId('1'),
+                        },
+                      );
+                    },
+                  ),
+                  BlocBuilder<HomeScreenController, HomeScreenState>(
+                    builder: (context, homeScreenState) {
+                      if (homeScreenState is HomeScreenStateLoading) {
+                        /// A modifier. Afficher une liste de carte avec un shimmer effect
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (homeScreenState is HomeScreenStateError) {
+                        return Text(homeScreenState.message);
+                      }
+
+                      if (homeScreenState is HomeScreenStateLoaded) {
+                        return const Column(
+                          children: [],
+                        );
+                      }
+
+                      return const SizedBox();
+                    },
+                  ),
                 ],
               ),
-              BlocProvider(
-                create: (context) => SignOutBtnControlller(
-                  di<IAuthService>(),
-                ),
-                child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                    builder: (context, btnLogOutState) {
-                  return Builder(builder: (context) {
-                    return MainBtn(
-                      text: 'Logout',
-                      isLoading: btnLogOutState is SignOutBtnLoading,
-                      onPressed: () {
-                        context.read<SignOutBtnControlller>().signOut();
-                      },
-                    );
-                  });
-                }),
-              ),
-              const Gap(10),
-              MainBtn(
-                  text: 'Go to Recipe',
-                  onPressed: () {
-                    context.push(
-                      '/recipe-details',
-                      extra: {
-                        'receipeId': const EntityId('1'),
-                      },
-                    );
-                  }),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

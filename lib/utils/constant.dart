@@ -6,6 +6,8 @@ import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
+const baseApiUrl = 'https://langchain-server-819430206108.europe-west1.run.app';
+
 const horizontalScreenPadding = 30.0;
 
 enum InputType { text, password }
@@ -48,6 +50,9 @@ const receipeSample = Receipe(
       duration: null,
     ),
   ],
+  imageUrl: 'https://images.unsplash.com/photo-1612838320302-4b3b3b3b3b3b',
+  averageTime: '',
+  totalCalories: '',
 );
 
 final normalTextStyle = GoogleFonts.poppins(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
@@ -13,6 +14,9 @@ class CoreModule implements IDiModule {
     );
     di.registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
+    );
+     di.registerLazySingleton<Dio>(
+      () => Dio(),
     );
   }
 }
