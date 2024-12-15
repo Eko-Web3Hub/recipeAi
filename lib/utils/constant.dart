@@ -6,6 +6,8 @@ import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
+const baseApiUrl = 'https://langchain-server-819430206108.europe-west1.run.app';
+
 const horizontalScreenPadding = 30.0;
 
 enum InputType { text, password }
