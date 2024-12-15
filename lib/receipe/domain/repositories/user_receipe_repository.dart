@@ -3,7 +3,7 @@ import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 
 abstract class IUserReceipeRepository {
-  Future<UserReceipe> getReceipesBasedOnUserPreferencesFromFirestore(
+  Future<UserReceipe?> getReceipesBasedOnUserPreferencesFromFirestore(
     EntityId uid,
   );
   Future<List<Receipe>> getReceipesBasedOnUserPreferencesFromApi(EntityId uid);

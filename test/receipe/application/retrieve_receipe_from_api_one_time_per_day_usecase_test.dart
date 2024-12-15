@@ -39,6 +39,8 @@ void main() {
                 name: 'name',
                 ingredients: [],
                 steps: [],
+                averageTime: '',
+                totalCalories: '',
               ),
             ],
             lastUpdatedDate: DateTime(2024, 1, 1),
@@ -48,11 +50,15 @@ void main() {
               name: 'name',
               ingredients: [],
               steps: [],
+              averageTime: '',
+              totalCalories: '',
             ),
             Receipe(
               name: 'name1',
               ingredients: [],
               steps: [],
+              averageTime: '',
+              totalCalories: '',
             ),
           ];
 
@@ -118,6 +124,8 @@ void main() {
                 name: 'name',
                 ingredients: [],
                 steps: [],
+                averageTime: '',
+                totalCalories: '',
               ),
             ],
             lastUpdatedDate: DateTime(2024, 1, 1),
@@ -127,11 +135,15 @@ void main() {
               name: 'name',
               ingredients: [],
               steps: [],
+              averageTime: '',
+              totalCalories: '',
             ),
             Receipe(
               name: 'name1',
               ingredients: [],
               steps: [],
+              averageTime: '',
+              totalCalories: '',
             ),
           ];
 
@@ -199,6 +211,8 @@ void main() {
             name: 'name',
             ingredients: [],
             steps: [],
+            averageTime: '',
+            totalCalories: '',
           ),
         ],
         lastUpdatedDate: DateTime(2024, 1, 1),

@@ -50,6 +50,9 @@ const receipeSample = Receipe(
       duration: null,
     ),
   ],
+  imageUrl: 'https://images.unsplash.com/photo-1612838320302-4b3b3b3b3b3b',
+  averageTime: '',
+  totalCalories: '',
 );
 
 final normalTextStyle = GoogleFonts.poppins(

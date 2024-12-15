@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
@@ -11,7 +13,10 @@ class ReceipeModule implements IDiModule {
   @override
   void register(DiContainer di) {
     di.registerLazySingleton<IUserReceipeRepository>(
-      () => UserReceipeRepository(),
+      () => UserReceipeRepository(
+        di<FirebaseFirestore>(),
+        di<Dio>(),
+      ),
     );
 
     di.registerFactory(

@@ -25,20 +25,16 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
       final uid = EntityId(_authUserService.currentUser!.uid);
       final currentUserReceipe = await _userReceipeRepository
           .getReceipesBasedOnUserPreferencesFromFirestore(uid);
+
+      if (currentUserReceipe == null) {
+        final receipes = await _retrieveAndSave(uid, now);
+        return receipes;
+      }
+
       final lastUpdatedDate = currentUserReceipe.lastUpdatedDate;
 
       if (now.difference(lastUpdatedDate).inDays >= 1) {
-        final receipes = await _userReceipeRepository
-            .getReceipesBasedOnUserPreferencesFromApi(uid);
-
-        _userReceipeRepository.save(
-          uid,
-          UserReceipe(
-            receipes: receipes,
-            lastUpdatedDate: now,
-          ),
-        );
-
+        final receipes = await _retrieveAndSave(uid, now);
         return receipes;
       } else {
         return currentUserReceipe.receipes;
@@ -48,5 +44,20 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
         AppText.receipeRetrievalError,
       );
     }
+  }
+
+  Future<List<Receipe>> _retrieveAndSave(EntityId uid, DateTime now) async {
+    final receipes = await _userReceipeRepository
+        .getReceipesBasedOnUserPreferencesFromApi(uid);
+
+    _userReceipeRepository.save(
+      uid,
+      UserReceipe(
+        receipes: receipes,
+        lastUpdatedDate: now,
+      ),
+    );
+
+    return receipes;
   }
 }

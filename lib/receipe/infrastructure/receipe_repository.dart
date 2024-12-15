@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_api_serialization.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserReceipeRepository implements IUserReceipeRepository {
@@ -12,12 +14,20 @@ class UserReceipeRepository implements IUserReceipeRepository {
 
   final FirebaseFirestore _firestore;
 
-  const UserReceipeRepository(this._firestore);
+  const UserReceipeRepository(this._firestore, this._dio);
+  final Dio _dio;
 
   @override
-  Future<List<Receipe>> getReceipesBasedOnUserPreferencesFromApi(EntityId uid) {
+  Future<List<Receipe>> getReceipesBasedOnUserPreferencesFromApi(
+      EntityId uid) async {
     final apiRoute = "$baseUrl/${uid.value}";
-    throw UnimplementedError();
+    final response = await _dio.get(apiRoute);
+    final results = response.data["receipes"] as List;
+    return results
+        .map<Receipe>(
+          (receipe) => ReceipeApiSerialization.fromJson(receipe),
+        )
+        .toList();
   }
 
   @override
