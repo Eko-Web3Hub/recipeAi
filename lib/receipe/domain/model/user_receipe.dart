@@ -9,6 +9,7 @@ class UserReceipe extends Equatable {
 
   final List<Receipe> receipes;
   final DateTime lastUpdatedDate;
+
   @override
   List<Object?> get props => [receipes, lastUpdatedDate];
 }
