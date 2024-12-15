@@ -198,6 +198,79 @@ void main() {
           expect(receipes.length, newReceipes.length);
         },
       );
+
+      test(
+        'when the user has no receipes in the firestore',
+        () async {
+          final now = DateTime(2024, 1, 3);
+          const newReceipes = <Receipe>[
+            Receipe(
+              name: 'name',
+              ingredients: [],
+              steps: [],
+              averageTime: '',
+              totalCalories: '',
+            ),
+            Receipe(
+              name: 'name1',
+              ingredients: [],
+              steps: [],
+              averageTime: '',
+              totalCalories: '',
+            ),
+          ];
+
+          when(() => authUserService.currentUser).thenReturn(
+            authUser,
+          );
+
+          when(
+            () => userReceipeRepository
+                .getReceipesBasedOnUserPreferencesFromFirestore(
+              EntityId(authUser.uid),
+            ),
+          ).thenAnswer(
+            (_) => Future.value(null),
+          );
+
+          when(
+            () =>
+                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
+              EntityId(authUser.uid),
+            ),
+          ).thenAnswer(
+            (_) => Future.value(newReceipes),
+          );
+
+          when(
+            () => userReceipeRepository.save(
+              EntityId(authUser.uid),
+              UserReceipe(
+                receipes: newReceipes,
+                lastUpdatedDate: now,
+              ),
+            ),
+          ).thenAnswer(
+            (_) => Future.value(),
+          );
+
+          final sut = RetrieveReceipeFromApiOneTimePerDayUsecase(
+            userReceipeRepository,
+            authUserService,
+          );
+          final receipes = await sut.retrieve(
+            now,
+          );
+
+          verify(
+            () =>
+                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
+              EntityId(authUser.uid),
+            ),
+          ).called(1);
+          expect(receipes.length, newReceipes.length);
+        },
+      );
     },
   );
 

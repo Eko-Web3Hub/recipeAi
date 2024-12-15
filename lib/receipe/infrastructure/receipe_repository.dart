@@ -5,6 +5,7 @@ import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_api_serialization.dart';
+import 'package:recipe_ai/receipe/infrastructure/user_receipe_serialization.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserReceipeRepository implements IUserReceipeRepository {
@@ -41,10 +42,15 @@ class UserReceipeRepository implements IUserReceipeRepository {
       return null;
     }
     final data = snapshot.data()!;
+
+    return UserReceipeSerialization.fromJson(data);
   }
 
   @override
   Future<void> save(EntityId uid, UserReceipe userReceipe) {
-    throw UnimplementedError();
+    return _firestore.collection(userReceipeCollection).doc(uid.value).set(
+          UserReceipeSerialization.toJson(userReceipe),
+          SetOptions(merge: true),
+        );
   }
 }

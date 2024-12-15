@@ -4,7 +4,7 @@ import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/ingredient_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_step_serialization.dart';
 
-abstract class ReceipeApiSerialization {
+abstract class ReceipeSerialization {
   static Receipe fromJson(Map<String, dynamic> json) {
     return Receipe(
         name: json["name"],
@@ -18,8 +18,27 @@ abstract class ReceipeApiSerialization {
               (step) => ReceipeStepSerialization.fromJson(step),
             )
             .toList(),
-        averageTime: json["average_time"],
-        totalCalories: json["total_calories"],
-        imageUrl: json["image_url"]);
+        averageTime: json["averageTime"],
+        totalCalories: json["totalCalories"],
+        imageUrl: json["imageUrl"]);
+  }
+
+  static Map<String, dynamic> toJson(Receipe receipe) {
+    return {
+      "name": receipe.name,
+      "ingredients": receipe.ingredients
+          .map(
+            (e) => IngredientSerialization.toJson(e),
+          )
+          .toList(),
+      "steps": receipe.steps
+          .map(
+            (e) => ReceipeStepSerialization.toJson(e),
+          )
+          .toList(),
+      "averageTime": receipe.averageTime,
+      "totalCalories": receipe.totalCalories,
+      "imageUrl": receipe.imageUrl
+    };
   }
 }
