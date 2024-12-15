@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
@@ -47,6 +49,7 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       );
       emit(HomeScreenStateLoaded(receipes));
     } on RetrieveReceipeException catch (e) {
+      log(e.message);
       emit(HomeScreenStateError(e.message));
     }
   }

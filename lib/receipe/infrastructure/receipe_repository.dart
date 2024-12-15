@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:recipe_ai/ddd/entity.dart';
@@ -23,7 +26,9 @@ class UserReceipeRepository implements IUserReceipeRepository {
       EntityId uid) async {
     final apiRoute = "$baseUrl/${uid.value}";
     final response = await _dio.get(apiRoute);
-    final results = response.data["receipes"] as List;
+    log(response.toString());
+    final json = jsonDecode(response.data) as Map<String, dynamic>;
+    final results = json["receipes"] as List;
     return results
         .map<Receipe>(
           (receipe) => ReceipeApiSerialization.fromJson(receipe),
@@ -38,7 +43,7 @@ class UserReceipeRepository implements IUserReceipeRepository {
     final snapshot =
         await _firestore.collection(userReceipeCollection).doc(uid.value).get();
 
-    if (snapshot.exists) {
+    if (!snapshot.exists) {
       return null;
     }
     final data = snapshot.data()!;
