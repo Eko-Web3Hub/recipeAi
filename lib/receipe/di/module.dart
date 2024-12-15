@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
@@ -11,7 +12,7 @@ class ReceipeModule implements IDiModule {
   @override
   void register(DiContainer di) {
     di.registerLazySingleton<IUserReceipeRepository>(
-      () => UserReceipeRepository(),
+      () => UserReceipeRepository(dio: di<Dio>()),
     );
 
     di.registerFactory(
