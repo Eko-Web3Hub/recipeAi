@@ -7,7 +7,7 @@ jobs:
     name: Unit Testing
     runs-on: ubuntu-latest
     permissions:
-      pages: read | write
+      pages: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v1
