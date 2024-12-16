@@ -15,6 +15,16 @@ void main() {
       retrieveReceipeFromApiOneTimePerDayUsecase;
   DateTime now = DateTime(2024, 10, 2);
 
+  const reciepes = [
+    Receipe(
+      name: 'receipeName',
+      ingredients: [],
+      steps: [],
+      averageTime: 'averageTime',
+      totalCalories: 'totalCalories',
+    ),
+  ];
+
   setUp(() {
     retrieveReceipeFromApiOneTimePerDayUsecase =
         RetrieveReceipeFromApiOneTimePerDayUsecaseMock();
@@ -38,6 +48,37 @@ void main() {
     },
     verify: (bloc) => {
       expect(bloc.state, equals(const HomeScreenStateLoading())),
+    },
+  );
+
+  blocTest<HomeScreenController, HomeScreenState>(
+    'should loaded user receiepes based on user preferences',
+    build: () => buildSut(),
+    setUp: () {
+      when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
+          .thenAnswer(
+        (_) => Future.value(reciepes),
+      );
+    },
+    expect: () => [
+      const HomeScreenStateLoaded(reciepes),
+    ],
+  );
+
+  blocTest<HomeScreenController, HomeScreenState>(
+    'should failed when an error occurs',
+    build: () => buildSut(),
+    setUp: () {
+      when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
+          .thenThrow(const RetrieveReceipeException('error'));
+    },
+    verify: (bloc) => {
+      expect(
+        bloc.state,
+        equals(
+          const HomeScreenStateError('error'),
+        ),
+      ),
     },
   );
 }
