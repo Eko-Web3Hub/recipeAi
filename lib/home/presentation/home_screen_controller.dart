@@ -31,10 +31,12 @@ class HomeScreenStateError extends HomeScreenState {
   List<Object> get props => [message];
 }
 
+/// The controller for the home screen
 class HomeScreenController extends Cubit<HomeScreenState> {
-  HomeScreenController(
-    this._retrieveReceipeFromApiOneTimePerDayUsecase,
-  ) : super(const HomeScreenStateLoading()) {
+  HomeScreenController(this._retrieveReceipeFromApiOneTimePerDayUsecase,
+      {DateTime? now})
+      : super(const HomeScreenStateLoading()) {
+    currentNow = now;
     _load();
   }
 
@@ -45,7 +47,7 @@ class HomeScreenController extends Cubit<HomeScreenState> {
     try {
       final receipes =
           await _retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(
-        DateTime.now(),
+        currentNow ?? DateTime.now(),
       );
       emit(HomeScreenStateLoaded(receipes));
     } on RetrieveReceipeException catch (e) {
@@ -53,4 +55,7 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       emit(HomeScreenStateError(e.message));
     }
   }
+
+  /// Is used for testing purposes
+  DateTime? currentNow;
 }
