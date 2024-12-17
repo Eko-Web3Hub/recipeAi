@@ -15,8 +15,11 @@ class CoreModule implements IDiModule {
     di.registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
     );
-     di.registerLazySingleton<Dio>(
-      () => Dio(),
+    di.registerLazySingleton<Dio>(
+      () => Dio(BaseOptions(headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+      })),
     );
   }
 }

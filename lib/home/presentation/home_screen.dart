@@ -13,6 +13,7 @@ import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
+import 'package:recipe_ai/utils/styles.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -150,18 +151,22 @@ class _ReceipeItem extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Text(
                         receipe.name,
-                        style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold, fontSize: 15),
+                        style: smallTextStyle,
                       ),
                     ),
                     Text(
                       receipe.totalCalories,
                       style: GoogleFonts.inter(
-                          fontWeight: FontWeight.bold, fontSize: 12),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        height: 14.52 / 12,
+                        color: Colors.black,
+                      ),
                     )
                   ],
                 ),
@@ -169,12 +174,20 @@ class _ReceipeItem extends StatelessWidget {
                 Text(
                   "Avg Time",
                   style: GoogleFonts.poppins(
-                      color: const Color(0xFFA9A9A9), fontSize: 13),
+                    fontWeight: FontWeight.w400,
+                    color: neutralGreyColor,
+                    fontSize: 11,
+                    height: 16.5 / 11,
+                  ),
                 ),
                 Text(
                   receipe.averageTime,
                   style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.bold, fontSize: 13),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                    color: neutralBlackColor,
+                    height: 16.5 / 11,
+                  ),
                 ),
               ],
             ),
