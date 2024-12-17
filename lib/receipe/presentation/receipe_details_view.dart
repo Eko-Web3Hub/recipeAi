@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
@@ -13,18 +14,25 @@ import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
+/// ReceipeDetailsView
+/// Contains the details of a receipe
+/// The receipe is passed or loaded using the receipe id
 class ReceipeDetailsView extends StatelessWidget {
   const ReceipeDetailsView({
     super.key,
     required this.receipeId,
+    required this.receipe,
   });
 
-  final EntityId receipeId;
+  final EntityId? receipeId;
+  final Receipe? receipe;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ReceipeDetailsController(receipeId, null),
+      create: (_) => receipeId != null
+          ? ReceipeDetailsController(receipeId, null)
+          : ReceipeDetailsController.fromReceipe(receipe!),
       child: Builder(builder: (context) {
         return Scaffold(
           body: BlocBuilder<ReceipeDetailsController, ReceipeDetailsState>(
@@ -201,77 +209,80 @@ class _StepView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 15.0,
-          right: 28.0,
-          left: 26.0,
-          bottom: 20.0,
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Step $index',
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                height: 24 / 16,
-                color: Colors.black,
-              ),
-            ),
-            const Gap(2.0),
-            Text(
-              step.description,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-                height: 21 / 14,
-                color: Colors.black,
-              ),
-            ),
-            Visibility(
-              visible: step.duration != null,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 18.0,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 38,
-                      height: 29,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color(0xff1976D2),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
-                        child: SvgPicture.asset('assets/images/timer.svg'),
-                      ),
-                    ),
-                    const Gap(8.0),
-                    Text(
-                      '${step.duration}',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        height: 21 / 14,
-                        color: const Color(0xff1E1E1E),
-                      ),
-                    ),
-                  ],
+        color: Colors.white,
+        surfaceTintColor: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 15.0,
+            right: 28.0,
+            left: 26.0,
+            bottom: 20.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Step $index',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  height: 24 / 16,
+                  color: Colors.black,
                 ),
               ),
-            ),
-          ],
+              const Gap(2.0),
+              Text(
+                step.description,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  height: 21 / 14,
+                  color: Colors.black,
+                ),
+              ),
+              Visibility(
+                visible: step.duration != null,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 18.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 38,
+                        height: 29,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xff1976D2),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3),
+                          child: SvgPicture.asset('assets/images/timer.svg'),
+                        ),
+                      ),
+                      const Gap(8.0),
+                      Text(
+                        '${step.duration}',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          height: 21 / 14,
+                          color: const Color(0xff1E1E1E),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

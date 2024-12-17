@@ -6,8 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
+import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
+import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 
@@ -70,11 +72,13 @@ GoRouter createRouter() => GoRouter(
           path: '/recipe-details',
           redirect: _guardAuth,
           builder: (context, state) {
-            final receipeId =
-                (state.extra as Map<String, dynamic>)['receipeId'];
+            final extra = state.extra as Map<String, dynamic>;
+            final receipeId = extra['receipeId'] as EntityId?;
+            final receipe = extra['receipe'] as Receipe?;
 
             return ReceipeDetailsView(
               receipeId: receipeId,
+              receipe: receipe,
             );
           },
         ),

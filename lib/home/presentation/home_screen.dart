@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
@@ -127,72 +128,80 @@ class _ReceipeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color(0xFFEBEBEB),
+    return GestureDetector(
+      onTap: () => context.push(
+        '/recipe-details',
+        extra: {
+          'receipe': receipe,
+        },
       ),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            child: Image.asset(
-              "assets/images/recipe_image.png",
-              width: double.infinity,
-              height: 140,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: const Color(0xFFEBEBEB),
+        ),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              child: Image.asset(
+                "assets/images/recipe_image.png",
+                width: double.infinity,
+                height: 140,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        receipe.name,
-                        style: smallTextStyle,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          receipe.name,
+                          style: smallTextStyle,
+                        ),
                       ),
+                      Text(
+                        receipe.totalCalories,
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          height: 14.52 / 12,
+                          color: Colors.black,
+                        ),
+                      )
+                    ],
+                  ),
+                  const Gap(8),
+                  Text(
+                    "Avg Time",
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      color: neutralGreyColor,
+                      fontSize: 11,
+                      height: 16.5 / 11,
                     ),
-                    Text(
-                      receipe.totalCalories,
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        height: 14.52 / 12,
-                        color: Colors.black,
-                      ),
-                    )
-                  ],
-                ),
-                const Gap(8),
-                Text(
-                  "Avg Time",
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w400,
-                    color: neutralGreyColor,
-                    fontSize: 11,
-                    height: 16.5 / 11,
                   ),
-                ),
-                Text(
-                  receipe.averageTime,
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 11,
-                    color: neutralBlackColor,
-                    height: 16.5 / 11,
+                  Text(
+                    receipe.averageTime,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                      color: neutralBlackColor,
+                      height: 16.5 / 11,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
