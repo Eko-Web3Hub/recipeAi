@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,7 +26,7 @@ class UserReceipeRepository implements IUserReceipeRepository {
     final apiRoute = "$baseUrl/${uid.value}";
     final response = await _dio.get(apiRoute);
     log(response.toString());
-    final json = jsonDecode(response.data) as Map<String, dynamic>;
+    final json = response.data as Map<String, dynamic>;
     final results = json["receipes"] as List;
     return results
         .map<Receipe>(
