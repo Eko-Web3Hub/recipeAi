@@ -56,6 +56,7 @@ class _MyAppState extends State<MyApp> {
         },
         child: MaterialApp.router(
           title: 'Recipe AI',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             primaryColor: const Color(0xff129575),

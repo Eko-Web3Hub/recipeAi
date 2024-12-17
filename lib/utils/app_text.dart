@@ -34,4 +34,5 @@ abstract class AppText {
   static const String ingredients = 'Ingredients';
   static const String steps = 'Steps';
   static const String receipeRetrievalError = 'Error retrieving receipes';
+  static const String quickRecipes = 'Quick Recipes';
 }

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
-import 'package:recipe_ai/auth/application/auth_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
-import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
-import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
-import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
+import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -33,6 +31,7 @@ class HomeScreen extends StatelessWidget {
                 horizontal: horizontalScreenPadding,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Gap(20.0),
                   const Row(
@@ -42,50 +41,70 @@ class HomeScreen extends StatelessWidget {
                       _HeadRightSection(),
                     ],
                   ),
-                  BlocProvider(
-                    create: (context) => SignOutBtnControlller(
-                      di<IAuthService>(),
-                    ),
-                    child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                        builder: (context, btnLogOutState) {
-                      return Builder(builder: (context) {
-                        return MainBtn(
-                          text: 'Logout',
-                          isLoading: btnLogOutState is SignOutBtnLoading,
-                          onPressed: () {
-                            context.read<SignOutBtnControlller>().signOut();
-                          },
-                        );
-                      });
-                    }),
+                  const Gap(15),
+                  Text(
+                    AppText.quickRecipes,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge
+                        ?.copyWith(fontSize: 17),
                   ),
-                  const Gap(10),
-                  MainBtn(
-                    text: 'Go to Recipe',
-                    onPressed: () {
-                      context.push(
-                        '/recipe-details',
-                        extra: {
-                          'receipeId': const EntityId('1'),
-                        },
-                      );
-                    },
-                  ),
+
+                  // BlocProvider(
+                  //   create: (context) => SignOutBtnControlller(
+                  //     di<IAuthService>(),
+                  //   ),
+                  //   child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+                  //       builder: (context, btnLogOutState) {
+                  //     return Builder(builder: (context) {
+                  //       return MainBtn(
+                  //         text: 'Logout',
+                  //         isLoading: btnLogOutState is SignOutBtnLoading,
+                  //         onPressed: () {
+                  //           context.read<SignOutBtnControlller>().signOut();
+                  //         },
+                  //       );
+                  //     });
+                  //   }),
+                  // ),
+                  // const Gap(10),
+                  // MainBtn(
+                  //   text: 'Go to Recipe',
+                  //   onPressed: () {
+                  //     context.push(
+                  //       '/recipe-details',
+                  //       extra: {
+                  //         'receipeId': const EntityId('1'),
+                  //       },
+                  //     );
+                  //   },
+                  // ),
                   BlocBuilder<HomeScreenController, HomeScreenState>(
                     builder: (context, homeScreenState) {
                       if (homeScreenState is HomeScreenStateLoading) {
                         /// A modifier. Afficher une liste de carte avec un shimmer effect
-                        return const Center(child: CircularProgressIndicator());
+                        return const Expanded(
+                            child: Center(
+                                child: CustomProgress(
+                          color: Colors.black,
+                        )));
                       }
 
                       if (homeScreenState is HomeScreenStateError) {
-                        return Text(homeScreenState.message);
+                        return Expanded(child: Text(homeScreenState.message));
                       }
 
                       if (homeScreenState is HomeScreenStateLoaded) {
-                        return const Column(
-                          children: [],
-                        );
+                        return Expanded(
+                            child: ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 20, top: 15),
+                          itemBuilder: (context, index) {
+                            return _ReceipeItem(
+                              receipe: homeScreenState.receipes[index],
+                            );
+                          },
+                          itemCount: homeScreenState.receipes.length,
+                        ));
                       }
 
                       return const SizedBox();
@@ -97,6 +116,71 @@ class HomeScreen extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+}
+
+class _ReceipeItem extends StatelessWidget {
+  final Receipe receipe;
+  const _ReceipeItem({required this.receipe});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: const Color(0xFFEBEBEB),
+      ),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            child: Image.asset(
+              "assets/images/recipe_image.png",
+              width: double.infinity,
+              height: 140,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        receipe.name,
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                    ),
+                    Text(
+                      receipe.totalCalories,
+                      style: GoogleFonts.inter(
+                          fontWeight: FontWeight.bold, fontSize: 12),
+                    )
+                  ],
+                ),
+                const Gap(8),
+                Text(
+                  "Avg Time",
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xFFA9A9A9), fontSize: 13),
+                ),
+                Text(
+                  receipe.averageTime,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
