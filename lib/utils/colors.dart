@@ -8,3 +8,5 @@ const blackVariantColor = Color(0xff181818);
 const neutralBlackColor = Color(0xff484848);
 
 const neutralGreyColor = Color(0xffA9A9A9);
+
+const greenPrimaryColor = Color(0xFF129575);
