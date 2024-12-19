@@ -61,3 +61,10 @@ final normalTextStyle = GoogleFonts.poppins(
   height: 24 / 16,
   color: blackVariantColor,
 );
+
+final mediumTextStyle = GoogleFonts.poppins(
+  fontWeight: FontWeight.w600,
+  fontSize: 18,
+  height: 27 / 18,
+  color: blackVariantColor,
+);
