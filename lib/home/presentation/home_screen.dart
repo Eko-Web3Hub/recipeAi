@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
+import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
@@ -44,6 +45,12 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   const Gap(15),
+                  MainBtn(
+                    text: 'Go to Kitchen inventory',
+                    onPressed: () {
+                      context.push('/kitchen-inventory');
+                    },
+                  ),
                   Text(
                     AppText.quickRecipes,
                     style: Theme.of(context)

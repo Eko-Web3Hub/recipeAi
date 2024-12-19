@@ -10,3 +10,4 @@ const neutralBlackColor = Color(0xff484848);
 const neutralGreyColor = Color(0xffA9A9A9);
 
 const greenPrimaryColor = Color(0xFF129575);
+const greyVariantColor = Color(0xffD9D9D9);
