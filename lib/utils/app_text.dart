@@ -41,4 +41,7 @@ abstract class AppText {
   static const String clickHereToAdd = 'Click here to add';
   static const String or = 'or';
   static const takeYourReceiptPicture = 'Take your receipt picture';
+  static const String allNotifications = 'All';
+  static const String readNotification = 'Read';
+  static const String unreadNotification = 'Unread';
 }
