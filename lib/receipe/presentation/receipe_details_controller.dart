@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-class ReceipeDetailsState {
+class ReceipeDetailsState extends Equatable {
   const ReceipeDetailsState(
     this.reciepe,
   );
@@ -16,6 +17,9 @@ class ReceipeDetailsState {
         );
 
   final Receipe? reciepe;
+
+  @override
+  List<Object?> get props => [reciepe];
 }
 
 class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
