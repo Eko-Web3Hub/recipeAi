@@ -2,9 +2,18 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
+import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_controller.dart';
+import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -15,18 +24,41 @@ class KitchenInventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: KitchenInventoryAppBar(
-          arrowLeftOnPressed: () => context.go('/home'),
-        ),
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              Gap(10.0),
-              _EmptyKitchenInventoryView(),
-            ],
+    return BlocProvider(
+      create: (context) => KitchenInventoryController(
+        di<IKitchenInventoryRepository>(),
+        di<IAuthUserService>(),
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: KitchenInventoryAppBar(
+            arrowLeftOnPressed: () => context.go('/home'),
           ),
+          body: Builder(builder: (context) {
+            return BlocBuilder<KitchenInventoryController, KitchenState>(
+              builder: (context, state) {
+                if (state is KitchenStateLoading) {
+                  return const Center(
+                    child: CustomProgress(
+                      color: Colors.black,
+                    ),
+                  );
+                }
+                if (state is KitchenStateError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                }
+                if (state is KitchenStateLoaded) {
+                  return state.ingredients.isEmpty
+                      ? const _EmptyKitchenInventoryView()
+                      : _InventoryContentView(ingredients: state.ingredients);
+                }
+
+                return Container();
+              },
+            );
+          }),
         ),
       ),
     );
@@ -72,6 +104,101 @@ class KitchenInventoryAppBar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(70);
 }
 
+class _InventoryContentView extends StatelessWidget {
+  final List<Ingredient> ingredients;
+  const _InventoryContentView({required this.ingredients});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextFormField(
+                  hintText: AppText.searchForIngredients,
+                  controller: TextEditingController(),
+                  validator: (p0) {},
+                ),
+              ),
+              const Gap(20),
+              GestureDetector(
+                onTap: () {
+                  context.push("/add-kitchen-inventory");
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    color: greenPrimaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          const Gap(20),
+          Text(
+            AppText.myItems,
+            style:
+                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              itemBuilder: (context, index) {
+                return _IngredientItem(ingredient: ingredients[index]);
+              },
+              itemCount: ingredients.length,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IngredientItem extends StatelessWidget {
+  final Ingredient ingredient;
+  const _IngredientItem({required this.ingredient});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      color: Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+        child: Row(
+          children: [
+            Text(
+              ingredient.name,
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600, fontSize: 14),
+            ),
+            const Spacer(),
+            Text("${ingredient.quantity}")
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _EmptyKitchenInventoryView extends StatefulWidget {
   const _EmptyKitchenInventoryView();
 
@@ -99,67 +226,70 @@ class _EmptyKitchenInventoryViewState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: Text(
-            AppText.emptyKitchenText,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                  color: Colors.black,
-                ),
-          ),
-        ),
-        const Gap(116),
-        Container(
-          width: 243,
-          height: 371,
-          decoration: BoxDecoration(
-            color: greyVariantColor,
-            borderRadius: BorderRadius.circular(10),
-            image: _receiptPicture != null
-                ? DecorationImage(
-                    image: FileImage(
-                      _receiptPicture!,
-                    ),
-                    fit: BoxFit.cover,
-                  )
-                : null,
-          ),
-        ),
-        const Gap(21),
-        GestureDetector(
-          onTap: () {
-            context.push("/add-kitchen-inventory");
-          },
-          child: Text(
-            AppText.clickHereToAdd,
-            style: smallTextStyle.copyWith(
-              color: Theme.of(context).primaryColor,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const Gap(10.0),
+          Center(
+            child: Text(
+              AppText.emptyKitchenText,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    color: Colors.black,
+                  ),
             ),
           ),
-        ),
-        const Gap(3),
-        Text(
-          AppText.or,
-          style: smallTextStyle,
-        ),
-        const Gap(3),
-        GestureDetector(
-          onTap: _uploadReceiptPicture,
-          child: Text(
-            AppText.takeYourReceiptPicture,
-            style: smallTextStyle.copyWith(
-              color: Theme.of(context).primaryColor,
+          const Gap(116),
+          Container(
+            width: 243,
+            height: 371,
+            decoration: BoxDecoration(
+              color: greyVariantColor,
+              borderRadius: BorderRadius.circular(10),
+              image: _receiptPicture != null
+                  ? DecorationImage(
+                      image: FileImage(
+                        _receiptPicture!,
+                      ),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
           ),
-        ),
-        const Gap(50),
-        // KitchenInventoryActionWidget(
-        //   icon: 'assets/images/cameraLogo.svg',
-        //   onPressed: _uploadReceiptPicture,
-        // ),
-      ],
+          const Gap(21),
+          GestureDetector(
+            onTap: () {
+              context.push("/add-kitchen-inventory");
+            },
+            child: Text(
+              AppText.clickHereToAdd,
+              style: smallTextStyle.copyWith(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          const Gap(3),
+          Text(
+            AppText.or,
+            style: smallTextStyle,
+          ),
+          const Gap(3),
+          GestureDetector(
+            onTap: _uploadReceiptPicture,
+            child: Text(
+              AppText.takeYourReceiptPicture,
+              style: smallTextStyle.copyWith(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          const Gap(50),
+          // KitchenInventoryActionWidget(
+          //   icon: 'assets/images/cameraLogo.svg',
+          //   onPressed: _uploadReceiptPicture,
+          // ),
+        ],
+      ),
     );
   }
 }

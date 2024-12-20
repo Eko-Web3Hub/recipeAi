@@ -46,4 +46,6 @@ abstract class AppText {
   static const String enterQuantity = 'Enter quantity';
   static const String validate = 'Validate';
   static const String addIngredientSuccess = "Ingredient added successfully";
+  static const String myItems = 'My Items';
+  static const String searchForIngredients = "Search for ingredients";
 }
