@@ -41,4 +41,9 @@ abstract class AppText {
   static const String clickHereToAdd = 'Click here to add';
   static const String or = 'or';
   static const takeYourReceiptPicture = 'Take your receipt picture';
+  static const String addKitchen = 'Add Inventory Kitchen';
+  static const String quantity = 'Quantity';
+  static const String enterQuantity = 'Enter quantity';
+  static const String validate = 'Validate';
+  static const String addIngredientSuccess = "Ingredient added successfully";
 }

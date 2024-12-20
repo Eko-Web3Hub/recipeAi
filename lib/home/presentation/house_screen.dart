@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
 class HouseScreen extends StatefulWidget {
@@ -25,7 +26,8 @@ class _HouseScreenState extends State<HouseScreen> {
     Container(),
     Container(),
     Container(),
-    Container()
+    Container(),
+    const KitchenInventoryScreen()
   ];
 
   final List<String> _icons = [
@@ -33,6 +35,7 @@ class _HouseScreenState extends State<HouseScreen> {
     "union",
     "notification-bing",
     "profile",
+    "camera_add"
   ];
 
   @override
@@ -40,31 +43,30 @@ class _HouseScreenState extends State<HouseScreen> {
     return Scaffold(
       body: _pages[_selectedPageIndex],
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          selectedPageIndex = 5;
+        },
         backgroundColor: greenPrimaryColor,
         shape: const CircleBorder(),
-        child: SvgPicture.asset(
-          "assets/images/camera_add.svg",
-          width: 24,
-          height: 24,
-          fit: BoxFit.none,
+        child: const Center(
+          child: Icon(
+            Icons.camera_alt_rounded,
+            color: Colors.white,
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-        leftCornerRadius: 32,
         elevation: 200,
-        
         blurEffect: true,
         backgroundColor: Colors.white,
-        rightCornerRadius: 50,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.defaultEdge,
         activeIndex: selectedPageIndex,
         onTap: (index) {
           selectedPageIndex = index;
         },
-        itemCount: _icons.length,
+        itemCount: 4,
         tabBuilder: (int index, bool isActive) {
           return Padding(
             padding: const EdgeInsets.all(15),

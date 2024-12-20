@@ -8,7 +8,8 @@ import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/house_screen.dart';
-import 'package:recipe_ai/kitchen/inventory/kitchen_inventory_screen.dart';
+import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
@@ -88,6 +89,12 @@ GoRouter createRouter() => GoRouter(
           path: '/kitchen-inventory',
           redirect: _guardAuth,
           builder: (context, state) => const KitchenInventoryScreen(),
+        ),
+          GoRoute(
+          name: 'AddKitchenInventory',
+          path: '/add-kitchen-inventory',
+          redirect: _guardAuth,
+          builder: (context, state) => const AddKitchenInventoryScreen(),
         ),
       ],
     );

@@ -48,17 +48,17 @@ class KitchenInventoryAppBar extends StatelessWidget
     return Padding(
       padding: const EdgeInsets.only(
         top: 10.0,
-        left: 30,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: arrowLeftOnPressed,
-            child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
-          ),
-          const Gap(25),
+          // InkWell(
+          //   onTap: arrowLeftOnPressed,
+          //   child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
+          // ),
+          // const Gap(25),
           Text(
             AppText.yourKitchenInventory,
             style: mediumTextStyle,
@@ -110,7 +110,7 @@ class _EmptyKitchenInventoryViewState
                 ),
           ),
         ),
-        const Gap(112),
+        const Gap(116),
         Container(
           width: 243,
           height: 371,
@@ -128,10 +128,15 @@ class _EmptyKitchenInventoryViewState
           ),
         ),
         const Gap(21),
-        Text(
-          AppText.clickHereToAdd,
-          style: smallTextStyle.copyWith(
-            color: Theme.of(context).primaryColor,
+        GestureDetector(
+          onTap: () {
+            context.push("/add-kitchen-inventory");
+          },
+          child: Text(
+            AppText.clickHereToAdd,
+            style: smallTextStyle.copyWith(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
         const Gap(3),
@@ -140,17 +145,20 @@ class _EmptyKitchenInventoryViewState
           style: smallTextStyle,
         ),
         const Gap(3),
-        Text(
-          AppText.takeYourReceiptPicture,
-          style: smallTextStyle.copyWith(
-            color: Theme.of(context).primaryColor,
+        GestureDetector(
+          onTap: _uploadReceiptPicture,
+          child: Text(
+            AppText.takeYourReceiptPicture,
+            style: smallTextStyle.copyWith(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
-        const Gap(11),
-        KitchenInventoryActionWidget(
-          icon: 'assets/images/cameraLogo.svg',
-          onPressed: _uploadReceiptPicture,
-        ),
+        const Gap(50),
+        // KitchenInventoryActionWidget(
+        //   icon: 'assets/images/cameraLogo.svg',
+        //   onPressed: _uploadReceiptPicture,
+        // ),
       ],
     );
   }
