@@ -17,7 +17,7 @@ void main() {
   late IAuthUserService authUserService;
 
   const AuthUser authUser = AuthUser(
-    uid: 'uid',
+    uid: EntityId('uid'),
     email: 'email',
   );
 
@@ -69,7 +69,7 @@ void main() {
           when(
             () => userReceipeRepository
                 .getReceipesBasedOnUserPreferencesFromFirestore(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).thenAnswer(
             (_) => Future.value(currentUserReceipe),
@@ -78,7 +78,7 @@ void main() {
           when(
             () =>
                 userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).thenAnswer(
             (_) => Future.value(newReceipes),
@@ -86,7 +86,7 @@ void main() {
 
           when(
             () => userReceipeRepository.save(
-              EntityId(authUser.uid),
+              authUser.uid,
               UserReceipe(
                 receipes: newReceipes,
                 lastUpdatedDate: now,
@@ -107,7 +107,7 @@ void main() {
           verify(
             () =>
                 userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).called(1);
           expect(receipes.length, newReceipes.length);
@@ -154,7 +154,7 @@ void main() {
           when(
             () => userReceipeRepository
                 .getReceipesBasedOnUserPreferencesFromFirestore(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).thenAnswer(
             (_) => Future.value(currentUserReceipe),
@@ -163,7 +163,7 @@ void main() {
           when(
             () =>
                 userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).thenAnswer(
             (_) => Future.value(newReceipes),
@@ -171,7 +171,7 @@ void main() {
 
           when(
             () => userReceipeRepository.save(
-              EntityId(authUser.uid),
+              authUser.uid,
               UserReceipe(
                 receipes: newReceipes,
                 lastUpdatedDate: now,
@@ -192,7 +192,7 @@ void main() {
           verify(
             () =>
                 userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).called(1);
           expect(receipes.length, newReceipes.length);
@@ -227,7 +227,7 @@ void main() {
           when(
             () => userReceipeRepository
                 .getReceipesBasedOnUserPreferencesFromFirestore(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).thenAnswer(
             (_) => Future.value(null),
@@ -236,7 +236,7 @@ void main() {
           when(
             () =>
                 userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).thenAnswer(
             (_) => Future.value(newReceipes),
@@ -244,7 +244,7 @@ void main() {
 
           when(
             () => userReceipeRepository.save(
-              EntityId(authUser.uid),
+              authUser.uid,
               UserReceipe(
                 receipes: newReceipes,
                 lastUpdatedDate: now,
@@ -265,7 +265,7 @@ void main() {
           verify(
             () =>
                 userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              EntityId(authUser.uid),
+              authUser.uid,
             ),
           ).called(1);
           expect(receipes.length, newReceipes.length);
@@ -298,7 +298,7 @@ void main() {
       when(
         () => userReceipeRepository
             .getReceipesBasedOnUserPreferencesFromFirestore(
-          EntityId(authUser.uid),
+          authUser.uid,
         ),
       ).thenAnswer(
         (_) => Future.value(currentUserReceipe),
@@ -314,12 +314,12 @@ void main() {
 
       verifyNever(
         () => userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-          EntityId(authUser.uid),
+          authUser.uid,
         ),
       );
       verifyNever(
         () => userReceipeRepository.save(
-          EntityId(authUser.uid),
+          authUser.uid,
           UserReceipe(
             receipes: const [],
             lastUpdatedDate: now,

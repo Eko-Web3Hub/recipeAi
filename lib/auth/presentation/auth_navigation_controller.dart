@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 
@@ -37,5 +35,5 @@ class AuthNavigationController extends Cubit<AuthNavigationState> {
     return super.close();
   }
 
-  StreamSubscription<User?>? authStateChangeSubscription;
+  StreamSubscription<AuthUser?>? authStateChangeSubscription;
 }

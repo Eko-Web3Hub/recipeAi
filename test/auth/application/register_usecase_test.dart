@@ -118,7 +118,12 @@ void main() {
       when(
         () => authUserService.currentUser,
       ).thenAnswer(
-        (_) => const AuthUser(email: email, uid: 'uid'),
+        (_) => const AuthUser(
+          email: email,
+          uid: EntityId(
+            'uid',
+          ),
+        ),
       );
       when(
         () => userPersonnalInfoRepository.save(userPersonnalInfo),

@@ -25,7 +25,7 @@ jobs:
       - name: Gen html
         run: genhtml coverage/lcov.info -o coverage/html
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-html
           path: coverage/html
