@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 
@@ -31,7 +30,7 @@ class UserPreferenceSubmitBtnController
   void submit(List<UserPreferenceQuestion> questions) async {
     emit(UserPreferenceSubmitBtnLoading());
     try {
-      final uid = EntityId(_authUserService.currentUser!.uid);
+      final uid = _authUserService.currentUser!.uid;
       var prefences = <String, dynamic>{};
 
       for (final question in questions) {

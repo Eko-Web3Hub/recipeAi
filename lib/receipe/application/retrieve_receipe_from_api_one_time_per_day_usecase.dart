@@ -22,7 +22,7 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
   Future<List<Receipe>> retrieve(DateTime now) async {
     try {
-      final uid = EntityId(_authUserService.currentUser!.uid);
+      final uid = _authUserService.currentUser!.uid;
       final currentUserReceipe = await _userReceipeRepository
           .getReceipesBasedOnUserPreferencesFromFirestore(uid);
 

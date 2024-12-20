@@ -3,7 +3,6 @@ import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/domain/repositories/user_personnal_info_repository.dart';
-import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 
 class RegisterUsecase {
@@ -35,7 +34,7 @@ class RegisterUsecase {
       }
       await _userPersonnalInfoRepository.save(
         UserPersonnalInfo(
-          uid: EntityId(user.uid),
+          uid: user.uid,
           email: email,
           name: name,
         ),
