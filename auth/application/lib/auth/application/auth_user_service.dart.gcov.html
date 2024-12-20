@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">9.1&nbsp;%</td>
-            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryLo">7.1&nbsp;%</td>
+            <td class="headerCovTableEntry">14</td>
             <td class="headerCovTableEntry">1</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-20 13:27:33</td>
+            <td class="headerValue">2024-12-20 15:03:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -62,43 +62,53 @@
 <pre class="source">
 <span id="L1"><span class="lineNum">       1</span>              : import 'package:equatable/equatable.dart';</span>
 <span id="L2"><span class="lineNum">       2</span>              : import 'package:firebase_auth/firebase_auth.dart';</span>
-<span id="L3"><span class="lineNum">       3</span>              : </span>
-<span id="L4"><span class="lineNum">       4</span>              : abstract class IAuthUserService {</span>
-<span id="L5"><span class="lineNum">       5</span>              :   AuthUser? get currentUser;</span>
-<span id="L6"><span class="lineNum">       6</span>              :   Stream&lt;User?&gt; get authStateChanges;</span>
-<span id="L7"><span class="lineNum">       7</span>              : }</span>
-<span id="L8"><span class="lineNum">       8</span>              : </span>
-<span id="L9"><span class="lineNum">       9</span>              : class AuthUserService implements IAuthUserService {</span>
-<span id="L10"><span class="lineNum">      10</span>              :   final FirebaseAuth _firebaseAuth;</span>
-<span id="L11"><span class="lineNum">      11</span>              : </span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaUNC tlaBgUNC">           0 :   AuthUserService(</span></span>
-<span id="L13"><span class="lineNum">      13</span>              :     this._firebaseAuth,</span>
-<span id="L14"><span class="lineNum">      14</span>              :   );</span>
-<span id="L15"><span class="lineNum">      15</span>              : </span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaUNC">           0 :   Stream&lt;User?&gt; get authStateChanges =&gt; _firebaseAuth.authStateChanges();</span></span>
-<span id="L18"><span class="lineNum">      18</span>              : </span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaUNC">           0 :   AuthUser? get currentUser =&gt; _firebaseAuth.currentUser == null</span></span>
-<span id="L21"><span class="lineNum">      21</span>              :       ? null</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaUNC">           0 :       : AuthUser(</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaUNC">           0 :           uid: _firebaseAuth.currentUser!.uid,</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaUNC">           0 :           email: _firebaseAuth.currentUser!.email!,</span></span>
-<span id="L25"><span class="lineNum">      25</span>              :         );</span>
-<span id="L26"><span class="lineNum">      26</span>              : }</span>
-<span id="L27"><span class="lineNum">      27</span>              : </span>
-<span id="L28"><span class="lineNum">      28</span>              : class AuthUser extends Equatable {</span>
-<span id="L29"><span class="lineNum">      29</span>              :   final String uid;</span>
-<span id="L30"><span class="lineNum">      30</span>              :   final String email;</span>
-<span id="L31"><span class="lineNum">      31</span>              : </span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC tlaBgGNC">           2 :   const AuthUser({</span></span>
-<span id="L33"><span class="lineNum">      33</span>              :     required this.uid,</span>
-<span id="L34"><span class="lineNum">      34</span>              :     required this.email,</span>
-<span id="L35"><span class="lineNum">      35</span>              :   });</span>
-<span id="L36"><span class="lineNum">      36</span>              : </span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaUNC tlaBgUNC">           0 :   @override</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :   List&lt;Object?&gt; get props =&gt; [uid, email];</span></span>
-<span id="L39"><span class="lineNum">      39</span>              : }</span>
+<span id="L3"><span class="lineNum">       3</span>              : import 'package:recipe_ai/ddd/entity.dart';</span>
+<span id="L4"><span class="lineNum">       4</span>              : </span>
+<span id="L5"><span class="lineNum">       5</span>              : abstract class IAuthUserService {</span>
+<span id="L6"><span class="lineNum">       6</span>              :   AuthUser? get currentUser;</span>
+<span id="L7"><span class="lineNum">       7</span>              :   Stream&lt;AuthUser?&gt; get authStateChanges;</span>
+<span id="L8"><span class="lineNum">       8</span>              : }</span>
+<span id="L9"><span class="lineNum">       9</span>              : </span>
+<span id="L10"><span class="lineNum">      10</span>              : class AuthUserService implements IAuthUserService {</span>
+<span id="L11"><span class="lineNum">      11</span>              :   final FirebaseAuth _firebaseAuth;</span>
+<span id="L12"><span class="lineNum">      12</span>              : </span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaUNC tlaBgUNC">           0 :   AuthUserService(</span></span>
+<span id="L14"><span class="lineNum">      14</span>              :     this._firebaseAuth,</span>
+<span id="L15"><span class="lineNum">      15</span>              :   );</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L18"><span class="lineNum">      18</span>              :   Stream&lt;AuthUser?&gt; get authStateChanges =&gt;</span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaUNC">           0 :       _firebaseAuth.authStateChanges().map((currentUser) {</span></span>
+<span id="L20"><span class="lineNum">      20</span>              :         if (currentUser == null) {</span>
+<span id="L21"><span class="lineNum">      21</span>              :           return null;</span>
+<span id="L22"><span class="lineNum">      22</span>              :         }</span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaUNC">           0 :         return AuthUser(</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaUNC">           0 :           uid: EntityId(currentUser.uid),</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaUNC">           0 :           email: currentUser.email,</span></span>
+<span id="L26"><span class="lineNum">      26</span>              :         );</span>
+<span id="L27"><span class="lineNum">      27</span>              :       });</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0 :   AuthUser? get currentUser =&gt; _firebaseAuth.currentUser == null</span></span>
+<span id="L31"><span class="lineNum">      31</span>              :       ? null</span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0 :       : AuthUser(</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0 :           uid: EntityId(_firebaseAuth.currentUser!.uid),</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaUNC">           0 :           email: _firebaseAuth.currentUser!.email,</span></span>
+<span id="L35"><span class="lineNum">      35</span>              :         );</span>
+<span id="L36"><span class="lineNum">      36</span>              : }</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : class AuthUser extends Equatable {</span>
+<span id="L39"><span class="lineNum">      39</span>              :   final EntityId uid;</span>
+<span id="L40"><span class="lineNum">      40</span>              :   final String? email;</span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC tlaBgGNC">           3 :   const AuthUser({</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :     required this.uid,</span>
+<span id="L44"><span class="lineNum">      44</span>              :     required this.email,</span>
+<span id="L45"><span class="lineNum">      45</span>              :   });</span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaUNC tlaBgUNC">           0 :   @override</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaUNC">           0 :   List&lt;Object?&gt; get props =&gt; [uid, email];</span></span>
+<span id="L49"><span class="lineNum">      49</span>              : }</span>
         </pre>
               </td>
             </tr>
