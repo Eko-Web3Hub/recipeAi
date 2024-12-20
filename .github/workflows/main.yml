@@ -34,4 +34,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: coverage/html
-          keep_files: true
