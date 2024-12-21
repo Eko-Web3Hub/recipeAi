@@ -1,10 +1,14 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 
-abstract class UserPreferenceQuizzState {}
+abstract class UserPreferenceQuizzState extends Equatable {}
 
-class UserPreferenceQuizzLoading extends UserPreferenceQuizzState {}
+class UserPreferenceQuizzLoading extends UserPreferenceQuizzState {
+  @override
+  List<Object?> get props => [];
+}
 
 class UserPreferenceQuizzLoaded extends UserPreferenceQuizzState {
   UserPreferenceQuizzLoaded(
@@ -12,9 +16,15 @@ class UserPreferenceQuizzLoaded extends UserPreferenceQuizzState {
   );
 
   final List<UserPreferenceQuestion> questions;
+
+  @override
+  List<Object?> get props => [questions];
 }
 
-class UserPreferenceQuizzError extends UserPreferenceQuizzState {}
+class UserPreferenceQuizzError extends UserPreferenceQuizzState {
+  @override
+  List<Object?> get props => [];
+}
 
 class UserPreferenceQuizzController extends Cubit<UserPreferenceQuizzState> {
   UserPreferenceQuizzController(
