@@ -51,10 +51,10 @@ class KitchenInventoryScreen extends StatelessWidget {
                   );
                 }
                 if (state is KitchenStateLoaded) {
-                   
                   return state.ingredients.isEmpty
                       ? const _EmptyKitchenInventoryView()
-                      : _InventoryContentView(ingredients: state.ingredientsFiltered);
+                      : _InventoryContentView(
+                          ingredients: state.ingredientsFiltered);
                 }
 
                 return Container();
@@ -108,14 +108,14 @@ class KitchenInventoryAppBar extends StatelessWidget
 
 class _InventoryContentView extends StatefulWidget {
   final List<Ingredient> ingredients;
-   const _InventoryContentView({required this.ingredients});
+  const _InventoryContentView({required this.ingredients});
 
   @override
   State<_InventoryContentView> createState() => _InventoryContentViewState();
 }
 
 class _InventoryContentViewState extends State<_InventoryContentView> {
-    final TextEditingController searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   // Debounce duration
   final Duration _debouceDuration = const Duration(milliseconds: 500);
@@ -125,7 +125,6 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
   onSearchChanged(BuildContext context) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(_debouceDuration, () {
-       
       context
           .read<KitchenInventoryController>()
           .searchForIngredients(searchController.text);
@@ -147,6 +146,15 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                   controller: searchController,
                   onChange: (query) => onSearchChanged(context),
                   validator: (_) {},
+                  suffixIcon: searchController.text.isEmpty
+                      ? null
+                      : InkWell(
+                          onTap: () {
+                            searchController.clear();
+                            onSearchChanged(context);
+                          },
+                          child: const Icon(Icons.close),
+                        ),
                 ),
               ),
               const Gap(20),
@@ -178,20 +186,24 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                 GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           Expanded(
-            child: widget.ingredients.isEmpty?
-            
-            Center(child: Text("No ingredients",style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),),)
-            
-            : ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              itemBuilder: (context, index) {
-                return _IngredientItem(ingredient: widget.ingredients[index]);
-              },
-              itemCount: widget.ingredients.length,
-            ),
+            child: widget.ingredients.isEmpty
+                ? Center(
+                    child: Text(
+                      "No ingredients",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    itemBuilder: (context, index) {
+                      return _IngredientItem(
+                          ingredient: widget.ingredients[index]);
+                    },
+                    itemCount: widget.ingredients.length,
+                  ),
           ),
         ],
       ),
@@ -205,13 +217,20 @@ class _IngredientItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      color: Colors.white,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: 0.2),
+            spreadRadius: 1,
+            blurRadius: 8,
+            offset: const Offset(0, 4), // décalage de l'ombre
+          ),
+        ],
       ),
+      margin: const EdgeInsets.only(bottom: 10),
       child: Padding(
         padding:
             const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
