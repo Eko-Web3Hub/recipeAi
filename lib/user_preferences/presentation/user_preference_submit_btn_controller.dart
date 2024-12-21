@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
@@ -5,22 +6,35 @@ import 'package:recipe_ai/user_preferences/domain/model/user_preference_question
 
 import '../application/user_preference_service.dart';
 
-abstract class UserPreferenceSubmitBtnState {}
+abstract class UserPreferenceSubmitBtnState extends Equatable {}
 
-class UserPreferenceSubmitBtnInitial extends UserPreferenceSubmitBtnState {}
+class UserPreferenceSubmitBtnInitial extends UserPreferenceSubmitBtnState {
+  @override
+  List<Object?> get props => [];
+}
 
-class UserPreferenceSubmitBtnLoading extends UserPreferenceSubmitBtnState {}
+class UserPreferenceSubmitBtnLoading extends UserPreferenceSubmitBtnState {
+  @override
+  List<Object?> get props => [];
+}
 
-class UserPreferenceSubmitBtnSuccess extends UserPreferenceSubmitBtnState {}
+class UserPreferenceSubmitBtnSuccess extends UserPreferenceSubmitBtnState {
+  @override
+  List<Object?> get props => [];
+}
 
-class UserPreferenceSubmitBtnError extends UserPreferenceSubmitBtnState {}
+class UserPreferenceSubmitBtnError extends UserPreferenceSubmitBtnState {
+  @override
+  List<Object?> get props => [];
+}
 
 class UserPreferenceSubmitBtnController
     extends Cubit<UserPreferenceSubmitBtnState> {
   UserPreferenceSubmitBtnController(
     this._userPreferenceService,
-    this._authUserService,
-  ) : super(
+    this._authUserService, {
+    this.seconds,
+  }) : super(
           UserPreferenceSubmitBtnInitial(),
         );
 
@@ -41,7 +55,7 @@ class UserPreferenceSubmitBtnController
           ...prefences,
         };
       }
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: seconds ?? 3));
       await _userPreferenceService.saveUserPreference(
         uid,
         UserPreference(prefences),
@@ -51,4 +65,7 @@ class UserPreferenceSubmitBtnController
       emit(UserPreferenceSubmitBtnError());
     }
   }
+
+  /// Using for testing
+  final int? seconds;
 }
