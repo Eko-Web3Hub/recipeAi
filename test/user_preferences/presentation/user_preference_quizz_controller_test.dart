@@ -57,4 +57,18 @@ void main() {
       UserPreferenceQuizzLoaded(questions),
     ],
   );
+
+  blocTest<UserPreferenceQuizzController, UserPreferenceQuizzState>(
+    'should emit error state when repository throws an exception',
+    build: () => buildSut(),
+    setUp: () {
+      when(() => userPreferenceQuizzRepository.retrieve()).thenThrow(
+        Exception(),
+      );
+    },
+    verify: (bloc) => expect(
+      bloc.state,
+      UserPreferenceQuizzError(),
+    ),
+  );
 }

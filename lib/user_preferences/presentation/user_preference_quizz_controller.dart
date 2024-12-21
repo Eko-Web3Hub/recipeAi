@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
@@ -36,7 +38,12 @@ class UserPreferenceQuizzController extends Cubit<UserPreferenceQuizzState> {
   final IUserPreferenceQuizzRepository _userPreferenceQuizzRepository;
 
   Future<void> _load() async {
-    final questions = await _userPreferenceQuizzRepository.retrieve();
-    emit(UserPreferenceQuizzLoaded(questions));
+    try {
+      final questions = await _userPreferenceQuizzRepository.retrieve();
+      emit(UserPreferenceQuizzLoaded(questions));
+    } catch (e) {
+      log(e.toString());
+      emit(UserPreferenceQuizzError());
+    }
   }
 }
