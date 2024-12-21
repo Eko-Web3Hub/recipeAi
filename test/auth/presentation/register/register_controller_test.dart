@@ -50,7 +50,7 @@ void main() {
   );
 
   blocTest<RegisterController, RegisterControllerState?>(
-    'should emit RegisterControllerFailed when register is failed due to exception',
+    'should emit RegisterControllerFailed when register is failed due to AuthException exception',
     build: () => buildController(),
     setUp: () {
       when(
@@ -61,6 +61,32 @@ void main() {
         ),
       ).thenThrow(
         AuthException(errorMessage),
+      );
+    },
+    act: (bloc) => bloc.register(
+      email: email,
+      password: password,
+      name: name,
+    ),
+    expect: () => <RegisterControllerState?>[
+      RegisterControllerFailed(
+        message: errorMessage,
+      ),
+    ],
+  );
+
+  blocTest<RegisterController, RegisterControllerState?>(
+    'should emit RegisterControllerFailed when register is failed due to another exception',
+    build: () => buildController(),
+    setUp: () {
+      when(
+        () => registerUsecase.register(
+          email: email,
+          password: password,
+          name: name,
+        ),
+      ).thenThrow(
+        Exception(errorMessage),
       );
     },
     act: (bloc) => bloc.register(

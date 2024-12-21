@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
@@ -21,28 +20,24 @@ class RegisterUsecase {
     required String password,
     required String name,
   }) async {
-    try {
-      await _authService.register(
-        email: email,
-        password: password,
+    await _authService.register(
+      email: email,
+      password: password,
+    );
+    final user = _authUserService.currentUser;
+    if (user == null) {
+      throw AuthException(
+        AppText.registerFailed,
       );
-      final user = _authUserService.currentUser;
-      if (user == null) {
-        throw AuthException(
-          AppText.registerFailed,
-        );
-      }
-      await _userPersonnalInfoRepository.save(
-        UserPersonnalInfo(
-          uid: user.uid,
-          email: email,
-          name: name,
-        ),
-      );
-
-      return true;
-    } on FirebaseAuthException catch (e) {
-      throw AuthException(e.message!);
     }
+    await _userPersonnalInfoRepository.save(
+      UserPersonnalInfo(
+        uid: user.uid,
+        email: email,
+        name: name,
+      ),
+    );
+
+    return true;
   }
 }
