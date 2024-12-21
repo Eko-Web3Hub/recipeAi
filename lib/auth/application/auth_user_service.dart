@@ -8,6 +8,11 @@ abstract class IAuthUserService {
 }
 
 abstract class IFirebaseAuth {
+  Future<void> signOut();
+  Future<void> signInWithEmailAndPassword(
+      {required String email, required String password});
+  Future<void> createUserWithEmailAndPassword(
+      {required String email, required String password});
   Stream<User?> get authStateChanges;
   User? get currentUser;
 }
@@ -24,6 +29,23 @@ class FirebaseAuthProd implements IFirebaseAuth {
 
   @override
   User? get currentUser => _firebaseAuth.currentUser;
+
+  @override
+  Future<void> signInWithEmailAndPassword(
+          {required String email, required String password}) =>
+      _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+  @override
+  Future<void> createUserWithEmailAndPassword(
+          {required String email, required String password}) =>
+      _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+  @override
+  Future<void> signOut() => _firebaseAuth.signOut();
 }
 
 class AuthUserService implements IAuthUserService {

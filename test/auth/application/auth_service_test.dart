@@ -1,68 +1,63 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/ddd/entity.dart';
 
-class FirebaseAuthMock extends Mock implements IFirebaseAuth {}
-
-class FakeUser extends Mock implements User {}
+class FirebaseAuth extends Mock implements IFirebaseAuth {}
 
 void main() {
   late IFirebaseAuth firebaseAuth;
-  late User user;
-  const currentUser = AuthUser(
-    uid: EntityId('uid'),
-    email: 'email@gmail.com',
-  );
+  const email = "test@gmail.com";
+  const password = "password";
 
   setUp(() {
-    firebaseAuth = FirebaseAuthMock();
-    user = FakeUser();
+    firebaseAuth = FirebaseAuth();
   });
 
-  void whenCurrentUserIsAuthenticated() {
-    when(() => firebaseAuth.currentUser!).thenReturn(user);
-    when(() => user.uid).thenReturn(currentUser.uid.value);
-    when(() => user.email).thenReturn(currentUser.email);
-  }
-
   group(
-    'when the auth state changes',
+    'login methods',
     () {
       test(
-        'should return null if the user is not authenticated',
+        'should login the user',
         () async {
-          when(() => firebaseAuth.authStateChanges)
-              .thenAnswer((_) => Stream.value(null));
+          when(() => firebaseAuth.signInWithEmailAndPassword(
+                email: email,
+                password: password,
+              )).thenAnswer(
+            (_) => Future.value(),
+          );
+          final sut = AuthService(firebaseAuth);
 
-          final authUserService = AuthUserService(
-            firebaseAuth,
+          final result = await sut.login(
+            email: email,
+            password: password,
           );
 
-          final response = await authUserService.authStateChanges.first;
-
-          expect(response, null);
+          expect(result, true);
         },
       );
 
       test(
-        'should return the current user if the user is authenticated',
+        'should throw an exception when login fails',
         () async {
-          whenCurrentUserIsAuthenticated();
-
-          when(() => firebaseAuth.authStateChanges)
-              .thenAnswer((_) => Stream.value(user));
-
-          final authUserService = AuthUserService(
-            firebaseAuth,
+          when(() => firebaseAuth.signInWithEmailAndPassword(
+                email: email,
+                password: password,
+              )).thenThrow(
+            FirebaseAuthException(
+              code: 'code',
+              message: 'message',
+            ),
           );
-
-          final response = await authUserService.authStateChanges.first;
+          final sut = AuthService(firebaseAuth);
 
           expect(
-            response,
-            currentUser,
+            () async => await sut.login(
+              email: email,
+              password: password,
+            ),
+            throwsA(isA<AuthException>()),
           );
         },
       );
@@ -70,38 +65,68 @@ void main() {
   );
 
   group(
-    'when the current user is requested',
+    'register methods',
     () {
       test(
-        'should return null if the user is not authenticated',
-        () {
-          when(() => firebaseAuth.currentUser).thenReturn(null);
+        'should register the user',
+        () async {
+          when(() => firebaseAuth.createUserWithEmailAndPassword(
+                email: email,
+                password: password,
+              )).thenAnswer(
+            (_) => Future.value(),
+          );
+          final sut = AuthService(firebaseAuth);
 
-          final authUserService = AuthUserService(
-            firebaseAuth,
+          final result = await sut.register(
+            email: email,
+            password: password,
           );
 
-          final response = authUserService.currentUser;
-
-          expect(response, null);
+          expect(result, true);
         },
       );
 
       test(
-        'should return the current user if the user is authenticated',
-        () {
-          whenCurrentUserIsAuthenticated();
-
-          final authUserService = AuthUserService(
-            firebaseAuth,
+        'should throw an exception when register fails',
+        () async {
+          when(() => firebaseAuth.createUserWithEmailAndPassword(
+                email: email,
+                password: password,
+              )).thenThrow(
+            FirebaseAuthException(
+              code: "error",
+              message: "error",
+            ),
           );
-
-          final response = authUserService.currentUser;
+          final sut = AuthService(firebaseAuth);
 
           expect(
-            response,
-            currentUser,
+            () async => await sut.register(
+              email: email,
+              password: password,
+            ),
+            throwsA(isA<AuthException>()),
           );
+        },
+      );
+    },
+  );
+
+  group(
+    'signOut methods',
+    () {
+      test(
+        'should sign out the user',
+        () async {
+          when(() => firebaseAuth.signOut()).thenAnswer(
+            (_) => Future.value(),
+          );
+          final sut = AuthService(firebaseAuth);
+
+          await sut.signOut();
+
+          verify(() => firebaseAuth.signOut()).called(1);
         },
       );
     },

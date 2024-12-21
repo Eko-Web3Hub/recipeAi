@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 
 abstract class IAuthService {
   Future<void> signOut();
@@ -17,7 +18,7 @@ class AuthException {
 }
 
 class AuthService implements IAuthService {
-  final FirebaseAuth _firebaseAuth;
+  final IFirebaseAuth _firebaseAuth;
 
   AuthService(this._firebaseAuth);
 

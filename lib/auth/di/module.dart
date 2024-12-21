@@ -19,16 +19,17 @@ class AuthModule implements IDiModule {
         di<FirebaseFirestore>(),
       ),
     );
-    di.registerFactory<IAuthService>(
-      () => AuthService(
-        di<FirebaseAuth>(),
-      ),
-    );
     di.registerFactory<IFirebaseAuth>(
       () => FirebaseAuthProd(
         di<FirebaseAuth>(),
       ),
     );
+    di.registerFactory<IAuthService>(
+      () => AuthService(
+        di<IFirebaseAuth>(),
+      ),
+    );
+
     di.registerFactory<IAuthUserService>(
       () => AuthUserService(
         di<IFirebaseAuth>(),
