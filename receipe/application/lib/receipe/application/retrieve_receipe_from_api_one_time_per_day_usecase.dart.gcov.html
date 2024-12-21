@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-21 21:06:31</td>
+            <td class="headerValue">2024-12-21 22:01:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -84,7 +84,7 @@
 <span id="L22"><span class="lineNum">      22</span>              : </span>
 <span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           1 :   Future&lt;List&lt;Receipe&gt;&gt; retrieve(DateTime now) async {</span></span>
 <span id="L24"><span class="lineNum">      24</span>              :     try {</span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           4 :       final uid = EntityId(_authUserService.currentUser!.uid);</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           3 :       final uid = _authUserService.currentUser!.uid;</span></span>
 <span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           1 :       final currentUserReceipe = await _userReceipeRepository</span></span>
 <span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">           1 :           .getReceipesBasedOnUserPreferencesFromFirestore(uid);</span></span>
 <span id="L28"><span class="lineNum">      28</span>              : </span>
