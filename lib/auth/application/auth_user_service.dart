@@ -7,8 +7,27 @@ abstract class IAuthUserService {
   Stream<AuthUser?> get authStateChanges;
 }
 
-class AuthUserService implements IAuthUserService {
+abstract class IFirebaseAuth {
+  Stream<User?> get authStateChanges;
+  User? get currentUser;
+}
+
+class FirebaseAuthProd implements IFirebaseAuth {
   final FirebaseAuth _firebaseAuth;
+
+  FirebaseAuthProd(
+    this._firebaseAuth,
+  );
+
+  @override
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+
+  @override
+  User? get currentUser => _firebaseAuth.currentUser;
+}
+
+class AuthUserService implements IAuthUserService {
+  final IFirebaseAuth _firebaseAuth;
 
   AuthUserService(
     this._firebaseAuth,
@@ -16,7 +35,7 @@ class AuthUserService implements IAuthUserService {
 
   @override
   Stream<AuthUser?> get authStateChanges =>
-      _firebaseAuth.authStateChanges().map((currentUser) {
+      _firebaseAuth.authStateChanges.map((currentUser) {
         if (currentUser == null) {
           return null;
         }
