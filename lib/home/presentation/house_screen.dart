@@ -41,6 +41,7 @@ class _HouseScreenState extends State<HouseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       resizeToAvoidBottomInset: false,
       body: _pages[_selectedPageIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {

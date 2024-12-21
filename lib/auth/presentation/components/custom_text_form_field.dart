@@ -14,11 +14,12 @@ InputBorder _inputBorder = OutlineInputBorder(
 );
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
+   CustomTextFormField({
     super.key,
     required this.hintText,
     required this.controller,
     required this.validator,
+    this.onChange,
     this.inputType = InputType.text,
     this.keyboardType,
   });
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  Function(String)? onChange;
   final InputType inputType;
   final TextInputType? keyboardType;
 
@@ -38,6 +40,7 @@ class CustomTextFormField extends StatelessWidget {
         validator: validator,
         controller: controller,
         cursorColor: Theme.of(context).primaryColor,
+        onChanged: onChange,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: GoogleFonts.poppins(

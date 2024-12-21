@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -50,9 +51,10 @@ class KitchenInventoryScreen extends StatelessWidget {
                   );
                 }
                 if (state is KitchenStateLoaded) {
+                   
                   return state.ingredients.isEmpty
                       ? const _EmptyKitchenInventoryView()
-                      : _InventoryContentView(ingredients: state.ingredients);
+                      : _InventoryContentView(ingredients: state.ingredientsFiltered);
                 }
 
                 return Container();
@@ -104,9 +106,31 @@ class KitchenInventoryAppBar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(70);
 }
 
-class _InventoryContentView extends StatelessWidget {
+class _InventoryContentView extends StatefulWidget {
   final List<Ingredient> ingredients;
-  const _InventoryContentView({required this.ingredients});
+   const _InventoryContentView({required this.ingredients});
+
+  @override
+  State<_InventoryContentView> createState() => _InventoryContentViewState();
+}
+
+class _InventoryContentViewState extends State<_InventoryContentView> {
+    final TextEditingController searchController = TextEditingController();
+
+  // Debounce duration
+  final Duration _debouceDuration = const Duration(milliseconds: 500);
+
+  Timer? _debounce;
+
+  onSearchChanged(BuildContext context) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(_debouceDuration, () {
+       
+      context
+          .read<KitchenInventoryController>()
+          .searchForIngredients(searchController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +144,9 @@ class _InventoryContentView extends StatelessWidget {
               Expanded(
                 child: CustomTextFormField(
                   hintText: AppText.searchForIngredients,
-                  controller: TextEditingController(),
-                  validator: (p0) {},
+                  controller: searchController,
+                  onChange: (query) => onSearchChanged(context),
+                  validator: (_) {},
                 ),
               ),
               const Gap(20),
@@ -153,12 +178,19 @@ class _InventoryContentView extends StatelessWidget {
                 GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           Expanded(
-            child: ListView.builder(
+            child: widget.ingredients.isEmpty?
+            
+            Center(child: Text("No ingredients",style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),),)
+            
+            : ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 20),
               itemBuilder: (context, index) {
-                return _IngredientItem(ingredient: ingredients[index]);
+                return _IngredientItem(ingredient: widget.ingredients[index]);
               },
-              itemCount: ingredients.length,
+              itemCount: widget.ingredients.length,
             ),
           ),
         ],

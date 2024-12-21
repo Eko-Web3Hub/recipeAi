@@ -20,10 +20,13 @@ class KitchenStateLoading extends KitchenState {
 
 class KitchenStateLoaded extends KitchenState {
   final List<Ingredient> ingredients;
-  const KitchenStateLoaded(this.ingredients);
+  final List<Ingredient> ingredientsFiltered;
+
+  const KitchenStateLoaded(
+      {required this.ingredients, required this.ingredientsFiltered});
 
   @override
-  List<Object?> get props => [ingredients];
+  List<Object?> get props => [ingredients,ingredientsFiltered];
 }
 
 class KitchenStateError extends KitchenState {
@@ -38,6 +41,8 @@ class KitchenStateError extends KitchenState {
 class KitchenInventoryController extends Cubit<KitchenState> {
   final IKitchenInventoryRepository _kitchenInventoryRepository;
   final IAuthUserService _authUserService;
+  List<Ingredient> _ingredients = [];
+  List<Ingredient> _ingredientsFiltered = [];
 
   KitchenInventoryController(
       this._kitchenInventoryRepository, this._authUserService)
@@ -45,12 +50,30 @@ class KitchenInventoryController extends Cubit<KitchenState> {
     _load();
   }
 
+  Future<void> searchForIngredients(String query) async {
+    try {
+      final uid = EntityId(_authUserService.currentUser!.uid);
+      _ingredientsFiltered =
+          await _kitchenInventoryRepository.searchForIngredients(uid, query);
+
+      emit(KitchenStateLoaded(
+          ingredients: _ingredients,
+          ingredientsFiltered: _ingredientsFiltered));
+    } on Exception catch (e) {
+      log(e.toString());
+      emit(KitchenStateError(e.toString()));
+    }
+  }
+
   Future<void> _load() async {
     try {
       final uid = EntityId(_authUserService.currentUser!.uid);
-      final ingredients =
+      _ingredients =
           await _kitchenInventoryRepository.getIngredientsAddedByUser(uid);
-      emit(KitchenStateLoaded(ingredients));
+      _ingredientsFiltered = _ingredients;
+      emit(KitchenStateLoaded(
+          ingredients: _ingredients,
+          ingredientsFiltered: _ingredientsFiltered));
     } on Exception catch (e) {
       log(e.toString());
       emit(KitchenStateError(e.toString()));
