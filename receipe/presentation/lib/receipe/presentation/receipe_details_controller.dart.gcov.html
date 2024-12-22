@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">18</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-21 23:53:50</td>
+            <td class="headerValue">2024-12-22 11:08:45</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -67,12 +67,12 @@
 <span id="L5"><span class="lineNum">       5</span>              : import 'package:recipe_ai/utils/constant.dart';</span>
 <span id="L6"><span class="lineNum">       6</span>              : </span>
 <span id="L7"><span class="lineNum">       7</span>              : class ReceipeDetailsState extends Equatable {</span>
-<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC tlaBgGNC">           5 :   const ReceipeDetailsState(</span></span>
+<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC tlaBgGNC">           4 :   const ReceipeDetailsState(</span></span>
 <span id="L9"><span class="lineNum">       9</span>              :     this.reciepe,</span>
 <span id="L10"><span class="lineNum">      10</span>              :   );</span>
 <span id="L11"><span class="lineNum">      11</span>              : </span>
 <span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">           3 :   const ReceipeDetailsState.loading() : this(null);</span></span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           5 :   const ReceipeDetailsState.loaded(</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           1 :   const ReceipeDetailsState.loaded(</span></span>
 <span id="L14"><span class="lineNum">      14</span>              :     Receipe reciepe,</span>
 <span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">           1 :   ) : this(</span></span>
 <span id="L16"><span class="lineNum">      16</span>              :           reciepe,</span>
@@ -104,8 +104,8 @@
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           2 :       Duration(seconds: seconds ?? 3),</span></span>
 <span id="L43"><span class="lineNum">      43</span>              :     );</span>
 <span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           1 :     emit(</span></span>
-<span id="L45"><span class="lineNum">      45</span>              :       const ReceipeDetailsState.loaded(</span>
-<span id="L46"><span class="lineNum">      46</span>              :         receipeSample,</span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           1 :        ReceipeDetailsState.loaded(</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           1 :         receipeSample,</span></span>
 <span id="L47"><span class="lineNum">      47</span>              :       ),</span>
 <span id="L48"><span class="lineNum">      48</span>              :     );</span>
 <span id="L49"><span class="lineNum">      49</span>              :   }</span>
