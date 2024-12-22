@@ -99,13 +99,15 @@ class CheckBoxOption extends StatelessWidget {
           initialState: isSelected,
         ),
         const Gap(22),
-        Text(
-          option,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w400,
-            fontSize: 16,
-            height: 24 / 16,
-            color: const Color(0xff1E1E1E),
+        Expanded(
+          child: Text(
+            option,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              height: 24 / 16,
+              color: const Color(0xff1E1E1E),
+            ),
           ),
         ),
       ],

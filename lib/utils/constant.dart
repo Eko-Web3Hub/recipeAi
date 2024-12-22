@@ -12,27 +12,30 @@ const horizontalScreenPadding = 30.0;
 
 enum InputType { text, password }
 
-const receipeSample = Receipe(
+final receipeSample = Receipe(
   name: ' Burger Healthy',
   ingredients: [
     Ingredient(
       name: 'Tomatoes',
-      quantity: '3pcs',
+      quantity: '3pcs', date: DateTime.now(),
     ),
     Ingredient(
       name: 'Water',
       quantity: null,
+      date: DateTime.now()
     ),
     Ingredient(
       name: 'Steak',
       quantity: null,
+      date: DateTime.now()
     ),
     Ingredient(
       name: 'Egg',
       quantity: '10pcs',
+      date: DateTime.now()
     ),
   ],
-  steps: [
+  steps: const [
     ReceipeStep(
       description: 'Mash black beans in a large bowl for 10min',
       duration: '10:00',

@@ -14,7 +14,7 @@ void main() {
   blocTest<ReceipeDetailsController, ReceipeDetailsState>(
     'should load the receipe details',
     build: () => buildSut(),
-    expect: () => const <ReceipeDetailsState>[
+    expect: () =>  <ReceipeDetailsState>[
       ReceipeDetailsState.loaded(
         receipeSample,
       ),
@@ -27,7 +27,7 @@ void main() {
     verify: (bloc) {
       expect(
         bloc.state,
-        const ReceipeDetailsState.loaded(
+         ReceipeDetailsState.loaded(
           receipeSample,
         ),
       );

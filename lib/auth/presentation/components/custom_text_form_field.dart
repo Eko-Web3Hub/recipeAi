@@ -19,15 +19,19 @@ class CustomTextFormField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     required this.validator,
+    this.onChange,
     this.inputType = InputType.text,
     this.keyboardType,
+    this.suffixIcon
   });
 
   final String hintText;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final Function(String)? onChange;
   final InputType inputType;
   final TextInputType? keyboardType;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +42,10 @@ class CustomTextFormField extends StatelessWidget {
         validator: validator,
         controller: controller,
         cursorColor: Theme.of(context).primaryColor,
+        onChanged: onChange,
         decoration: InputDecoration(
           hintText: hintText,
+           suffixIcon: suffixIcon,
           hintStyle: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             fontSize: 11,

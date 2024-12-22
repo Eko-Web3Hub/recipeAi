@@ -151,9 +151,11 @@ class _DisplayIngredients extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CheckBoxOption(
-          option: ingredient,
-          onChanged: (isSelected) {},
+        Expanded(
+          child: CheckBoxOption(
+            option: ingredient,
+            onChanged: (isSelected) {},
+          ),
         ),
         Text(
           quantity,

@@ -38,7 +38,7 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       : super(const HomeScreenStateLoading()) {
     currentNow = now;
     _load();
-  }
+  } 
 
   final RetrieveReceipeFromApiOneTimePerDayUsecase
       _retrieveReceipeFromApiOneTimePerDayUsecase;

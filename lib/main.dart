@@ -47,7 +47,9 @@ class _MyAppState extends State<MyApp> {
           create: (_) => AuthNavigationController(
             di<IAuthUserService>(),
           ),
+
         ),
+        
       ],
       child: BlocListener<AuthNavigationController, AuthNavigationState>(
         listener: (context, state) {
