@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 
@@ -25,7 +24,7 @@ class KitchenStateLoaded extends KitchenState {
       {required this.ingredients, required this.ingredientsFiltered});
 
   @override
-  List<Object?> get props => [ingredients,ingredientsFiltered];
+  List<Object?> get props => [ingredients, ingredientsFiltered];
 }
 
 class KitchenStateError extends KitchenState {
@@ -51,7 +50,7 @@ class KitchenInventoryController extends Cubit<KitchenState> {
 
   Future<void> searchForIngredients(String query) async {
     try {
-      final uid = EntityId(_authUserService.currentUser!.uid);
+      final uid = _authUserService.currentUser!.uid;
       _ingredientsFiltered =
           await _kitchenInventoryRepository.searchForIngredients(uid, query);
 
@@ -66,17 +65,17 @@ class KitchenInventoryController extends Cubit<KitchenState> {
 
   Future<void> loadIngredients() async {
     try {
-      final uid = EntityId(_authUserService.currentUser!.uid);
-   
-           _kitchenInventoryRepository.watchIngredientsAddedByUser(uid).listen((ingredientsFetched) {
-                _ingredients = ingredientsFetched;
-                 _ingredientsFiltered = _ingredients;
-                   emit(KitchenStateLoaded(
-          ingredients: _ingredients,
-          ingredientsFiltered: _ingredientsFiltered));
-           },);
-     
-    
+      final uid = _authUserService.currentUser!.uid;
+
+      _kitchenInventoryRepository.watchIngredientsAddedByUser(uid).listen(
+        (ingredientsFetched) {
+          _ingredients = ingredientsFetched;
+          _ingredientsFiltered = _ingredients;
+          emit(KitchenStateLoaded(
+              ingredients: _ingredients,
+              ingredientsFiltered: _ingredientsFiltered));
+        },
+      );
     } on Exception catch (e) {
       log(e.toString());
       emit(KitchenStateError(e.toString()));

@@ -199,7 +199,6 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                     ),
                   )
                 : ListView.builder(
-                
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     itemBuilder: (context, index) {
                       return _IngredientItem(
@@ -226,7 +225,7 @@ class _IngredientItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
+            color: Colors.grey.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 8,
             offset: const Offset(0, 4), // décalage de l'ombre

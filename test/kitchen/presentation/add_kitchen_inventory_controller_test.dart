@@ -17,8 +17,10 @@ void main() {
   late IAuthUserService authUserService;
   final ingredient =
       Ingredient(name: 'name', quantity: 'quantity', date: DateTime(2024));
-  const AuthUser authUser = AuthUser(uid: "uid", email: "test@gmail.com");
-  
+  const AuthUser authUser = AuthUser(
+    uid: EntityId("uid"),
+    email: "test@gmail.com",
+  );
 
   setUp(() {
     kitchenInventoryRepository = KitchenInventoryRepositoryMock();
@@ -50,26 +52,24 @@ void main() {
         },
       ).thenReturn(authUser);
       when(() => kitchenInventoryRepository.save(
-           EntityId(authUser.uid) ,
+            authUser.uid,
             ingredient,
           )).thenAnswer(
         (_) => Future.value(),
       );
-
     },
     act: (bloc) => bloc.addKitchenInventory(
         name: ingredient.name,
         quantity: ingredient.quantity!,
         timestamp: ingredient.date!),
     verify: (bloc) => {
-     verify(() => kitchenInventoryRepository.save(
-           EntityId(authUser.uid) ,
+      verify(() => kitchenInventoryRepository.save(
+            authUser.uid,
             ingredient,
           )).called(1),
       expect(bloc.state, equals(AddKitchenSuccess())),
     },
   );
-
 
   blocTest<AddKitchenInventoryController, AddKitchenState?>(
     'Should return error when adding ingredients fails',
@@ -81,10 +81,9 @@ void main() {
         },
       ).thenReturn(authUser);
       when(() => kitchenInventoryRepository.save(
-           EntityId(authUser.uid) ,
+            authUser.uid,
             ingredient,
           )).thenThrow(Exception('Error'));
-
     },
     act: (bloc) => bloc.addKitchenInventory(
         name: ingredient.name,
@@ -92,7 +91,7 @@ void main() {
         timestamp: ingredient.date!),
     verify: (bloc) => {
       verify(() => kitchenInventoryRepository.save(
-           EntityId(authUser.uid) ,
+            authUser.uid,
             ingredient,
           )).called(1),
       expect(bloc.state, equals(AddKitchenFailed(message: 'Exception: Error'))),

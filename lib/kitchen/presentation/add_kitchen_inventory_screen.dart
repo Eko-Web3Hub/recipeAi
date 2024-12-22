@@ -10,7 +10,6 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_controller.dart';
-import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_controller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
@@ -33,10 +32,9 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
       // Add ingredient
 
       context.read<AddKitchenInventoryController>().addKitchenInventory(
-            name: _nameController.text,
-            quantity: _quantityController.text,
-            timestamp: DateTime.now()
-          );
+          name: _nameController.text,
+          quantity: _quantityController.text,
+          timestamp: DateTime.now());
     }
   }
 
