@@ -42,7 +42,7 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
       Duration(seconds: seconds ?? 3),
     );
     emit(
-      const ReceipeDetailsState.loaded(
+       ReceipeDetailsState.loaded(
         receipeSample,
       ),
     );

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
-import 'package:recipe_ai/kitchen/infrastructure/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 
 abstract class KitchenState extends Equatable {
@@ -47,7 +46,7 @@ class KitchenInventoryController extends Cubit<KitchenState> {
   KitchenInventoryController(
       this._kitchenInventoryRepository, this._authUserService)
       : super(const KitchenStateLoading()) {
-    _load();
+    loadIngredients();
   }
 
   Future<void> searchForIngredients(String query) async {
@@ -65,15 +64,19 @@ class KitchenInventoryController extends Cubit<KitchenState> {
     }
   }
 
-  Future<void> _load() async {
+  Future<void> loadIngredients() async {
     try {
       final uid = EntityId(_authUserService.currentUser!.uid);
-      _ingredients =
-          await _kitchenInventoryRepository.getIngredientsAddedByUser(uid);
-      _ingredientsFiltered = _ingredients;
-      emit(KitchenStateLoaded(
+   
+           _kitchenInventoryRepository.watchIngredientsAddedByUser(uid).listen((ingredientsFetched) {
+                _ingredients = ingredientsFetched;
+                 _ingredientsFiltered = _ingredients;
+                   emit(KitchenStateLoaded(
           ingredients: _ingredients,
           ingredientsFiltered: _ingredientsFiltered));
+           },);
+     
+    
     } on Exception catch (e) {
       log(e.toString());
       emit(KitchenStateError(e.toString()));

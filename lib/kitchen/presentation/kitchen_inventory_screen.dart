@@ -145,7 +145,9 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                   hintText: AppText.searchForIngredients,
                   controller: searchController,
                   onChange: (query) => onSearchChanged(context),
-                  validator: (_) {},
+                  validator: (_) {
+                    return;
+                  },
                   suffixIcon: searchController.text.isEmpty
                       ? null
                       : InkWell(
@@ -197,6 +199,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                     ),
                   )
                 : ListView.builder(
+                
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     itemBuilder: (context, index) {
                       return _IngredientItem(

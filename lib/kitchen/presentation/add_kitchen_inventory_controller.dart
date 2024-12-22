@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
-import 'package:recipe_ai/kitchen/infrastructure/kitchen_inventory_repository.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 
 abstract class AddKitchenState extends Equatable {}
@@ -25,27 +26,23 @@ class AddKitchenFailed extends AddKitchenState {
 
 class AddKitchenInventoryController extends Cubit<AddKitchenState?> {
   AddKitchenInventoryController(
-    this._kitchenInventoryRepository,
-    this._authUserService,
-  ) : super(null);
+      this._kitchenInventoryRepository, this._authUserService,
+     )
+      : super(null);
 
   final IKitchenInventoryRepository _kitchenInventoryRepository;
   final IAuthUserService _authUserService;
 
-
-  void testEmit() {
-    emit(AddKitchenSuccess());
-  }
-
   Future<void> addKitchenInventory({
     required String name,
     required String quantity,
+    required DateTime timestamp,
   }) async {
     try {
       final uid = EntityId(_authUserService.currentUser!.uid);
       await _kitchenInventoryRepository.save(
         uid,
-        Ingredient(name: name, quantity: quantity),
+        Ingredient(name: name, quantity: quantity, date: timestamp),
       );
 
       emit(AddKitchenSuccess());

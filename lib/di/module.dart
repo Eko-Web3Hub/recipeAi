@@ -25,7 +25,7 @@ class AppModule implements IDiModule {
       const ReceipeModule(),
     );
      di.registerModule(
-       KitchenModule(),
+       const KitchenModule(),
     );
   }
 }

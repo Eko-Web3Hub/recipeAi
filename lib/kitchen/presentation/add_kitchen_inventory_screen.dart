@@ -31,10 +31,11 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
   void _handleIngredient(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       // Add ingredient
-     
+
       context.read<AddKitchenInventoryController>().addKitchenInventory(
             name: _nameController.text,
             quantity: _quantityController.text,
+            timestamp: DateTime.now()
           );
     }
   }

@@ -6,6 +6,7 @@ import 'package:recipe_ai/receipe/infrastructure/serialization/ingredient_serial
 
 class KitchenInventoryRepository implements IKitchenInventoryRepository {
   static const String kitchenInventoryCollection = "KitchenInventory";
+  static const String ingredientsCollection = "ingredients";
 
   final FirebaseFirestore _firestore;
 
@@ -13,32 +14,31 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
       : _firestore = firestore;
 
   @override
-  Future<List<Ingredient>> getIngredientsAddedByUser(EntityId uid) async {
-    final snapshot = await _firestore
+  Stream<List<Ingredient>> watchIngredientsAddedByUser(EntityId uid) {
+    return _firestore
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
-        .get();
-
-    if (!snapshot.exists) {
-      return [];
-    }
-    final data = snapshot.data()!;
-
-    return data["ingredients"]
-        .map<Ingredient>(
-            (ingredient) => IngredientSerialization.fromJson(ingredient))
-        .toList();
+        .collection(ingredientsCollection)
+        .orderBy("date",descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map<Ingredient>(
+            (doc) => IngredientSerialization.fromJson(doc.data()),
+          )
+          .toList();
+    });
   }
 
   @override
   Future<void> save(EntityId uid, Ingredient ingredient) {
-    return _firestore.collection(kitchenInventoryCollection).doc(uid.value).set(
-      {
-        "ingredients":
-            FieldValue.arrayUnion([IngredientSerialization.toJson(ingredient)])
-      },
-      SetOptions(merge: true),
-    );
+    return _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(ingredientsCollection)
+        .add(IngredientSerialization.toJson(ingredient));
+
+      
   }
 
   @override
@@ -49,5 +49,21 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
         .where((ingredient) =>
             ingredient.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
+  }
+
+  @override
+  Future<List<Ingredient>> getIngredientsAddedByUser(EntityId uid) {
+    return _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(ingredientsCollection)
+        .get()
+        .then((snapshot) {
+      return snapshot.docs
+          .map<Ingredient>(
+            (doc) => IngredientSerialization.fromJson(doc.data()),
+          )
+          .toList();
+    });
   }
 }
