@@ -225,7 +225,7 @@ class _IngredientItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withValues(alpha: 0.2),
             spreadRadius: 1,
             blurRadius: 8,
             offset: const Offset(0, 4), // décalage de l'ombre
@@ -336,11 +336,7 @@ class _EmptyKitchenInventoryViewState
               ),
             ),
           ),
-          const Gap(50),
-          // KitchenInventoryActionWidget(
-          //   icon: 'assets/images/cameraLogo.svg',
-          //   onPressed: _uploadReceiptPicture,
-          // ),
+          const Gap(20),
         ],
       ),
     );

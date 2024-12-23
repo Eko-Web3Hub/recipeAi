@@ -107,9 +107,6 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                         isLoading: false,
                         text: AppText.validate,
                         onPressed: () {
-                          // context
-                          //     .read<AddKitchenInventoryController>()
-                          //     .testEmit();
                           _handleIngredient(context);
                         },
                       ),
