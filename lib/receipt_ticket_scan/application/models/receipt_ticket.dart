@@ -4,15 +4,19 @@ class Product extends Equatable {
   const Product({
     required this.name,
     required this.quantity,
-    required this.price,
+    required this.sellPrice,
   });
 
   final String name;
   final String quantity;
-  final String price;
+  final String sellPrice;
 
   @override
-  List<Object?> get props => [name, quantity, price];
+  List<Object?> get props => [
+        name,
+        quantity,
+        sellPrice,
+      ];
 }
 
 class ReceiptTicket extends Equatable {

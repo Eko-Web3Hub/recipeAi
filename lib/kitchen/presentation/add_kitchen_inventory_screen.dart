@@ -32,9 +32,10 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
       // Add ingredient
 
       context.read<AddKitchenInventoryController>().addKitchenInventory(
-          name: _nameController.text,
-          quantity: _quantityController.text,
-          timestamp: DateTime.now());
+            name: _nameController.text,
+            quantity: _quantityController.text,
+            timestamp: DateTime.now(),
+          );
     }
   }
 

@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:recipe_ai/receipt_ticket_scan/application/models/receipt_ticket.dart';
 
 abstract class IReceiptTicketScanRepository {
-  Future<ReceiptTicket> retrieve();
+  Future<ReceiptTicket> retrieve({
+    required File file,
+  });
 }
