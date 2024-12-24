@@ -31,10 +31,10 @@ void main() {
   }
 
   blocTest<ReceiptTicketScanController, ReceiptTicketScanState>(
-    'should initialy be loading',
+    'should initialy be in initial state',
     build: () => buildSut(),
     verify: (bloc) {
-      expect(bloc.state, ReceiptTicketScanLoading());
+      expect(bloc.state, ReceiptTicketScanInitial());
     },
   );
 
@@ -47,6 +47,7 @@ void main() {
     },
     act: (bloc) => bloc.scanReceiptTicket(file),
     expect: () => [
+      ReceiptTicketScanLoading(),
       ReceiptTicketScanLoaded(receipt),
     ],
   );
@@ -60,6 +61,7 @@ void main() {
     },
     act: (bloc) => bloc.scanReceiptTicket(file),
     expect: () => [
+      ReceiptTicketScanLoading(),
       isA<ReceiptTicketScanError>(),
     ],
   );

@@ -10,10 +10,13 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
+import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_controller.dart';
+import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -54,7 +57,8 @@ class KitchenInventoryScreen extends StatelessWidget {
                   return state.ingredients.isEmpty
                       ? const _EmptyKitchenInventoryView()
                       : _InventoryContentView(
-                          ingredients: state.ingredientsFiltered);
+                          ingredients: state.ingredientsFiltered,
+                        );
                 }
 
                 return Container();
@@ -292,51 +296,96 @@ class _EmptyKitchenInventoryViewState
                   ),
             ),
           ),
-          const Gap(116),
-          Container(
-            width: 243,
-            height: 371,
-            decoration: BoxDecoration(
-              color: greyVariantColor,
-              borderRadius: BorderRadius.circular(10),
-              image: _receiptPicture != null
-                  ? DecorationImage(
-                      image: FileImage(
-                        _receiptPicture!,
-                      ),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
+          const Gap(30),
+          BlocProvider(
+            create: (context) => ReceiptTicketScanController(
+              di<IReceiptTicketScanRepository>(),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 243,
+                  height: 371,
+                  decoration: BoxDecoration(
+                    color: greyVariantColor,
+                    borderRadius: BorderRadius.circular(10),
+                    image: _receiptPicture != null
+                        ? DecorationImage(
+                            image: FileImage(
+                              _receiptPicture!,
+                            ),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                  ),
+                ),
+                const Gap(21),
+                GestureDetector(
+                  onTap: () {
+                    context.push("/add-kitchen-inventory");
+                  },
+                  child: Text(
+                    AppText.clickHereToAdd,
+                    style: smallTextStyle.copyWith(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+                const Gap(3),
+                Text(
+                  AppText.or,
+                  style: smallTextStyle,
+                ),
+                const Gap(3),
+                GestureDetector(
+                  onTap: _uploadReceiptPicture,
+                  child: Text(
+                    AppText.takeYourReceiptPicture,
+                    style: smallTextStyle.copyWith(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+                BlocBuilder<ReceiptTicketScanController,
+                    ReceiptTicketScanState>(
+                  builder: (context, receiptTicketScanState) {
+                    if (receiptTicketScanState is ReceiptTicketScanLoading) {
+                      return const Center(
+                        child: CustomProgress(
+                          color: Colors.black,
+                        ),
+                      );
+                    }
+
+                    if (_receiptPicture != null &&
+                        (receiptTicketScanState is ReceiptTicketScanInitial ||
+                            receiptTicketScanState is ReceiptTicketScanError)) {
+                      if (receiptTicketScanState is ReceiptTicketScanError) {
+                        return Center(
+                          child: Text(receiptTicketScanState.message),
+                        );
+                      }
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 20.0,
+                          left: 40,
+                          right: 40,
+                        ),
+                        child: MainBtn(
+                          text: AppText.scanReceiptTicket,
+                          onPressed: () {},
+                        ),
+                      );
+                    }
+
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
             ),
           ),
-          const Gap(21),
-          GestureDetector(
-            onTap: () {
-              context.push("/add-kitchen-inventory");
-            },
-            child: Text(
-              AppText.clickHereToAdd,
-              style: smallTextStyle.copyWith(
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          ),
-          const Gap(3),
-          Text(
-            AppText.or,
-            style: smallTextStyle,
-          ),
-          const Gap(3),
-          GestureDetector(
-            onTap: _uploadReceiptPicture,
-            child: Text(
-              AppText.takeYourReceiptPicture,
-              style: smallTextStyle.copyWith(
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          ),
-          const Gap(20),
+          const Gap(50),
         ],
       ),
     );

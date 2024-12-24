@@ -3,6 +3,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/kitchen/%20di/module.dart';
 import 'package:recipe_ai/receipe/di/module.dart';
+import 'package:recipe_ai/receipt_ticket_scan/di/module.dart';
 import 'package:recipe_ai/user_preferences/di/module.dart';
 
 abstract class IDiModule {
@@ -21,11 +22,14 @@ class AppModule implements IDiModule {
     di.registerModule(
       const UserPreferencesModule(),
     );
-      di.registerModule(
+    di.registerModule(
       const ReceipeModule(),
     );
-     di.registerModule(
-       const KitchenModule(),
+    di.registerModule(
+      const KitchenModule(),
+    );
+    di.registerModule(
+      const ReceiptTicketScanModule(),
     );
   }
 }

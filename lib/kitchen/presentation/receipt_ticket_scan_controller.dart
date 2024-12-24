@@ -10,6 +10,11 @@ import '../../receipt_ticket_scan/application/repositories/receipt_ticket_scan_r
 
 abstract class ReceiptTicketScanState extends Equatable {}
 
+class ReceiptTicketScanInitial extends ReceiptTicketScanState {
+  @override
+  List<Object?> get props => [];
+}
+
 class ReceiptTicketScanLoading extends ReceiptTicketScanState {
   @override
   List<Object?> get props => [];
@@ -43,13 +48,16 @@ class ReceiptTicketScanController extends Cubit<ReceiptTicketScanState> {
   ReceiptTicketScanController(
     this._receiptTicketScanRepository,
   ) : super(
-          ReceiptTicketScanLoading(),
+          ReceiptTicketScanInitial(),
         );
 
   final IReceiptTicketScanRepository _receiptTicketScanRepository;
 
   Future<void> scanReceiptTicket(File file) async {
     try {
+      emit(
+        ReceiptTicketScanLoading(),
+      );
       final result = await _receiptTicketScanRepository.retrieve(
         file: file,
       );
