@@ -208,7 +208,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                 : ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     itemBuilder: (context, index) {
-                      return _IngredientItem(
+                      return IngredientItem(
                           ingredient: widget.ingredients[index]);
                     },
                     itemCount: widget.ingredients.length,
@@ -220,9 +220,12 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
   }
 }
 
-class _IngredientItem extends StatelessWidget {
+class IngredientItem extends StatelessWidget {
   final Ingredient ingredient;
-  const _IngredientItem({required this.ingredient});
+  const IngredientItem({
+    super.key,
+    required this.ingredient,
+  });
 
   @override
   Widget build(BuildContext context) {
