@@ -166,7 +166,20 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                         ),
                 ),
               ),
-              const Gap(20),
+            ],
+          ),
+          const Gap(20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppText.addItem,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               GestureDetector(
                 onTap: () {
                   context.push("/add-kitchen-inventory");
@@ -191,8 +204,10 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
           const Gap(20),
           Text(
             AppText.myItems,
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Expanded(
             child: widget.ingredients.isEmpty

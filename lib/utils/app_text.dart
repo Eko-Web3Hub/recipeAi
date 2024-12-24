@@ -47,6 +47,7 @@ abstract class AppText {
   static const String validate = 'Validate';
   static const String addIngredientSuccess = "Ingredient added successfully";
   static const String myItems = 'My Items';
+  static const String addItem = 'Add Item';
   static const String searchForIngredients = "Search for ingredients";
   static const String receiptTicketScanError = "Failed to scan receipt ticket";
   static const String scanReceiptTicket = "Scan Receipt Ticket";
