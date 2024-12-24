@@ -48,4 +48,9 @@ abstract class AppText {
   static const String addIngredientSuccess = "Ingredient added successfully";
   static const String myItems = 'My Items';
   static const String searchForIngredients = "Search for ingredients";
+  static const String receiptTicketScanError = "Failed to scan receipt ticket";
+  static const String scanReceiptTicket = "Scan Receipt Ticket";
+  static const String scanReceiptTicketAppbar = "Scan Receipt Ticket Result";
+  static const String scanAiReceiptDescription =
+      "(We use AI to scan your receipt. AI can make mistakes, please verify and correct the data)";
 }

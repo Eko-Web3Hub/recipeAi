@@ -32,9 +32,10 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
       // Add ingredient
 
       context.read<AddKitchenInventoryController>().addKitchenInventory(
-          name: _nameController.text,
-          quantity: _quantityController.text,
-          timestamp: DateTime.now());
+            name: _nameController.text,
+            quantity: _quantityController.text,
+            timestamp: DateTime.now(),
+          );
     }
   }
 
@@ -106,9 +107,6 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                         isLoading: false,
                         text: AppText.validate,
                         onPressed: () {
-                          // context
-                          //     .read<AddKitchenInventoryController>()
-                          //     .testEmit();
                           _handleIngredient(context);
                         },
                       ),
