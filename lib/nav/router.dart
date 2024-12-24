@@ -11,8 +11,10 @@ import 'package:recipe_ai/home/presentation/house_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
+import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
+import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
@@ -90,11 +92,24 @@ GoRouter createRouter() => GoRouter(
           redirect: _guardAuth,
           builder: (context, state) => const KitchenInventoryScreen(),
         ),
-          GoRoute(
+        GoRoute(
           name: 'AddKitchenInventory',
           path: '/add-kitchen-inventory',
           redirect: _guardAuth,
           builder: (context, state) => const AddKitchenInventoryScreen(),
+        ),
+        GoRoute(
+          name: 'ReceiptTicketScanResultScreen',
+          path: '/receipt-ticket-scan-result',
+          redirect: _guardAuth,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final ingredients = extra['ingredients'] as List<Ingredient>;
+
+            return ReceiptTicketScanResultScreen(
+              ingredients: ingredients,
+            );
+          },
         ),
       ],
     );

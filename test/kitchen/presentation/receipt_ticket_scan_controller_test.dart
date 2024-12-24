@@ -18,6 +18,7 @@ void main() {
     adresse: 'adresse',
     date: 'date',
     products: [],
+    totalPricePayed: "2€",
   );
 
   setUp(() {

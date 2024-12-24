@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -33,6 +34,7 @@ class FastApiReceiptTicketScanRepository
 
       return ReceiptTicketScanSerialization.fromJson(receiptTicket);
     } catch (e) {
+      log(e.toString());
       throw Exception("Failed to retrieve receipt ticket");
     }
   }

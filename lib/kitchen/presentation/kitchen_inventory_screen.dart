@@ -36,6 +36,7 @@ class KitchenInventoryScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: KitchenInventoryAppBar(
+            title: AppText.yourKitchenInventory,
             arrowLeftOnPressed: () => context.go('/home'),
           ),
           body: Builder(builder: (context) {
@@ -77,7 +78,10 @@ class KitchenInventoryAppBar extends StatelessWidget
   const KitchenInventoryAppBar({
     super.key,
     this.arrowLeftOnPressed,
+    required this.title,
   });
+
+  final String title;
 
   final VoidCallback? arrowLeftOnPressed;
 
@@ -86,19 +90,18 @@ class KitchenInventoryAppBar extends StatelessWidget
     return Padding(
       padding: const EdgeInsets.only(
         top: 10.0,
+        left: 30.0,
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // InkWell(
-          //   onTap: arrowLeftOnPressed,
-          //   child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
-          // ),
-          // const Gap(25),
+          InkWell(
+            onTap: arrowLeftOnPressed,
+            child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
+          ),
+          const Gap(25),
           Text(
-            AppText.yourKitchenInventory,
+            title,
             style: mediumTextStyle,
           ),
         ],
@@ -296,93 +299,136 @@ class _EmptyKitchenInventoryViewState
                   ),
             ),
           ),
-          const Gap(30),
+          const Gap(40),
           BlocProvider(
             create: (context) => ReceiptTicketScanController(
               di<IReceiptTicketScanRepository>(),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 243,
-                  height: 371,
-                  decoration: BoxDecoration(
-                    color: greyVariantColor,
-                    borderRadius: BorderRadius.circular(10),
-                    image: _receiptPicture != null
-                        ? DecorationImage(
-                            image: FileImage(
-                              _receiptPicture!,
+            child: BlocListener<ReceiptTicketScanController,
+                ReceiptTicketScanState>(
+              listener: (context, state) {
+                if (state is ReceiptTicketScanLoaded) {
+                  //A retravailler
+                  context.push(
+                    "/receipt-ticket-scan-result",
+                    extra: {
+                      "ingredients": (state)
+                          .receiptTicket
+                          .products
+                          .map(
+                            (product) => Ingredient(
+                              name: product.name,
+                              quantity: product.quantity,
+                              date: null,
                             ),
-                            fit: BoxFit.cover,
                           )
-                        : null,
-                  ),
-                ),
-                const Gap(21),
-                GestureDetector(
-                  onTap: () {
-                    context.push("/add-kitchen-inventory");
-                  },
-                  child: Text(
-                    AppText.clickHereToAdd,
-                    style: smallTextStyle.copyWith(
-                      color: Theme.of(context).primaryColor,
+                          .toList(),
+                    },
+                  );
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 243,
+                    height: 371,
+                    decoration: BoxDecoration(
+                      color: greyVariantColor,
+                      borderRadius: BorderRadius.circular(10),
+                      image: _receiptPicture != null
+                          ? DecorationImage(
+                              image: FileImage(
+                                _receiptPicture!,
+                              ),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
                     ),
                   ),
-                ),
-                const Gap(3),
-                Text(
-                  AppText.or,
-                  style: smallTextStyle,
-                ),
-                const Gap(3),
-                GestureDetector(
-                  onTap: _uploadReceiptPicture,
-                  child: Text(
-                    AppText.takeYourReceiptPicture,
-                    style: smallTextStyle.copyWith(
-                      color: Theme.of(context).primaryColor,
+                  const Gap(21),
+                  GestureDetector(
+                    onTap: () {
+                      context.push("/add-kitchen-inventory");
+                    },
+                    child: Text(
+                      AppText.clickHereToAdd,
+                      style: smallTextStyle.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
-                ),
-                BlocBuilder<ReceiptTicketScanController,
-                    ReceiptTicketScanState>(
-                  builder: (context, receiptTicketScanState) {
-                    if (receiptTicketScanState is ReceiptTicketScanLoading) {
-                      return const Center(
-                        child: CustomProgress(
-                          color: Colors.black,
-                        ),
-                      );
-                    }
-
-                    if (_receiptPicture != null &&
-                        (receiptTicketScanState is ReceiptTicketScanInitial ||
-                            receiptTicketScanState is ReceiptTicketScanError)) {
-                      if (receiptTicketScanState is ReceiptTicketScanError) {
-                        return Center(
-                          child: Text(receiptTicketScanState.message),
+                  const Gap(3),
+                  Text(
+                    AppText.or,
+                    style: smallTextStyle,
+                  ),
+                  const Gap(3),
+                  GestureDetector(
+                    onTap: _uploadReceiptPicture,
+                    child: Text(
+                      AppText.takeYourReceiptPicture,
+                      style: smallTextStyle.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                  BlocBuilder<ReceiptTicketScanController,
+                      ReceiptTicketScanState>(
+                    builder: (context, receiptTicketScanState) {
+                      if (receiptTicketScanState is ReceiptTicketScanLoading) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 5.0),
+                            child: CustomProgress(
+                              color: Colors.black,
+                            ),
+                          ),
                         );
                       }
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20.0,
-                          left: 40,
-                          right: 40,
-                        ),
-                        child: MainBtn(
-                          text: AppText.scanReceiptTicket,
-                          onPressed: () {},
-                        ),
-                      );
-                    }
 
-                    return const SizedBox.shrink();
-                  },
-                ),
-              ],
+                      if (_receiptPicture != null &&
+                          (receiptTicketScanState is ReceiptTicketScanInitial ||
+                              receiptTicketScanState
+                                  is ReceiptTicketScanError)) {
+                        return Column(
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                if (receiptTicketScanState
+                                    is ReceiptTicketScanError) {
+                                  return Center(
+                                    child: Text(
+                                      (receiptTicketScanState).message,
+                                    ),
+                                  );
+                                }
+
+                                return const SizedBox.shrink();
+                              },
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 20.0,
+                                left: 40,
+                                right: 40,
+                              ),
+                              child: MainBtn(
+                                text: AppText.scanReceiptTicket,
+                                onPressed: () => context
+                                    .read<ReceiptTicketScanController>()
+                                    .scanReceiptTicket(_receiptPicture!),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           const Gap(50),
