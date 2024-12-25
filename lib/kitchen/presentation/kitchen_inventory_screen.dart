@@ -259,58 +259,78 @@ class _IngredientItemState extends State<IngredientItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: const Offset(0, 4), // décalage de l'ombre
-          ),
-        ],
-      ),
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 10,
-          right: 10,
-          top: 20,
-          bottom: 20,
+    return Dismissible(
+      direction: DismissDirection.endToStart,
+      background: Container(
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
-          children: [
-            Text(
-              widget.ingredient.name,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Text(
+              AppText.delete,
+              style: normalSmallTextStyle,
             ),
-            const Spacer(),
-            SizedBox(
-              width: 30,
-              height: 30,
-              child: TextFormField(
-                controller: _quantityController,
-                onChanged: widget.getIngredientQuantity,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 2,
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xffEEEEEE),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+      key: Key(widget.ingredient.name),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withValues(alpha: 0.2),
+              spreadRadius: 1,
+              blurRadius: 8,
+              offset: const Offset(0, 4), // décalage de l'ombre
+            ),
+          ],
+        ),
+        margin: const EdgeInsets.only(bottom: 10),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 20,
+            bottom: 20,
+          ),
+          child: Row(
+            children: [
+              Text(
+                widget.ingredient.name,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              const Spacer(),
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: TextFormField(
+                  controller: _quantityController,
+                  onChanged: widget.getIngredientQuantity,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 2,
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffEEEEEE),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

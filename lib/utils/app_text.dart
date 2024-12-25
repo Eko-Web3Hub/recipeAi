@@ -54,4 +54,5 @@ abstract class AppText {
   static const String scanReceiptTicketAppbar = "Scan Receipt Ticket Result";
   static const String scanAiReceiptDescription =
       "(We use AI to scan your receipt. AI can make mistakes, please verify and correct the data)";
+  static const String delete = 'Delete';
 }
