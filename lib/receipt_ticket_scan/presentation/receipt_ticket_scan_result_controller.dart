@@ -66,9 +66,11 @@ class ReceiptTicketScanResultController
         .map(
           (ingredient) => _kitchenInventoryRepository.save(
             _authUserService.currentUser!.uid,
-            ingredient.copy(
-              date: DateTime.now(),
-            ),
+            ingredient.date != null
+                ? ingredient
+                : ingredient.copy(
+                    date: DateTime.now(),
+                  ),
           ),
         )
         .toList());
