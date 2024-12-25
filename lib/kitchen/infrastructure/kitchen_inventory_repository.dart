@@ -19,7 +19,7 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(ingredientsCollection)
-        .orderBy("date",descending: true)
+        .orderBy("date", descending: true)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
@@ -37,13 +37,13 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
         .doc(uid.value)
         .collection(ingredientsCollection)
         .add(IngredientSerialization.toJson(ingredient));
-
-      
   }
 
   @override
   Future<List<Ingredient>> searchForIngredients(
-      EntityId uid, String query) async {
+    EntityId uid,
+    String query,
+  ) async {
     final ingredients = await getIngredientsAddedByUser(uid);
     return ingredients
         .where((ingredient) =>

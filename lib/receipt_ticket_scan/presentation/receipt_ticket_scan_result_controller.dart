@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+
+import '../../kitchen/domain/repositories/kitchen_inventory_repository.dart';
 
 abstract class ReceiptTicketScanResultState extends Equatable {}
 
@@ -9,11 +12,11 @@ class ReceiptTicketScanResultInitial extends ReceiptTicketScanResultState {
   List<Object?> get props => [];
 }
 
-class ReceiptTicketUpdateIngredientSuccess
+class ReceiptTicketScanUpdateIngredientSuccess
     extends ReceiptTicketScanResultState {
   final List<Ingredient> ingredients;
 
-  ReceiptTicketUpdateIngredientSuccess({
+  ReceiptTicketScanUpdateIngredientSuccess({
     required this.ingredients,
   });
 
@@ -21,9 +24,17 @@ class ReceiptTicketUpdateIngredientSuccess
   List<Object?> get props => [ingredients];
 }
 
+class ReceiptTicketScanUpdateKitechenInventorySuccess
+    extends ReceiptTicketScanResultState {
+  @override
+  List<Object?> get props => [];
+}
+
 class ReceiptTicketScanResultController
     extends Cubit<ReceiptTicketScanResultState> {
-  ReceiptTicketScanResultController({
+  ReceiptTicketScanResultController(
+    this._kitchenInventoryRepository,
+    this._authUserService, {
     required this.ingredients,
   }) : super(
           ReceiptTicketScanResultInitial(),
@@ -44,11 +55,29 @@ class ReceiptTicketScanResultController
     ingredients = updatedIngredients;
 
     emit(
-      ReceiptTicketUpdateIngredientSuccess(
+      ReceiptTicketScanUpdateIngredientSuccess(
         ingredients: updatedIngredients,
       ),
     );
   }
 
+  void addIngredientsToKitchenInventory() async {
+    await Future.wait(ingredients
+        .map(
+          (ingredient) => _kitchenInventoryRepository.save(
+            _authUserService.currentUser!.uid,
+            ingredient.copy(
+              date: DateTime.now(),
+            ),
+          ),
+        )
+        .toList());
+    emit(
+      ReceiptTicketScanUpdateKitechenInventorySuccess(),
+    );
+  }
+
   List<Ingredient> ingredients;
+  final IKitchenInventoryRepository _kitchenInventoryRepository;
+  final IAuthUserService _authUserService;
 }
