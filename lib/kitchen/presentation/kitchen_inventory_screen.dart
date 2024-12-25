@@ -89,7 +89,7 @@ class KitchenInventoryAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 10.0,
+        top: 30.0,
         left: 30.0,
       ),
       child: Row(
@@ -235,12 +235,27 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
   }
 }
 
-class IngredientItem extends StatelessWidget {
+class IngredientItem extends StatefulWidget {
   final Ingredient ingredient;
   const IngredientItem({
     super.key,
     required this.ingredient,
+    this.getIngredientQuantity,
   });
+  final Function(String? value)? getIngredientQuantity;
+
+  @override
+  State<IngredientItem> createState() => _IngredientItemState();
+}
+
+class _IngredientItemState extends State<IngredientItem> {
+  final TextEditingController _quantityController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _quantityController.text = widget.ingredient.quantity.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -259,17 +274,42 @@ class IngredientItem extends StatelessWidget {
       ),
       margin: const EdgeInsets.only(bottom: 10),
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+        padding: const EdgeInsets.only(
+          left: 10,
+          right: 10,
+          top: 20,
+          bottom: 20,
+        ),
         child: Row(
           children: [
             Text(
-              ingredient.name,
+              widget.ingredient.name,
               style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600, fontSize: 14),
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
             ),
             const Spacer(),
-            Text("${ingredient.quantity}")
+            SizedBox(
+              width: 30,
+              height: 30,
+              child: TextFormField(
+                controller: _quantityController,
+                onChanged: widget.getIngredientQuantity,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 2,
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xffEEEEEE),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
