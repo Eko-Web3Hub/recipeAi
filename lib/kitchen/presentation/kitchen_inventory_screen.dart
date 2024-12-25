@@ -241,8 +241,10 @@ class IngredientItem extends StatefulWidget {
     super.key,
     required this.ingredient,
     this.getIngredientQuantity,
+    this.onDismissed,
   });
   final Function(String? value)? getIngredientQuantity;
+  final Function(DismissDirection)? onDismissed;
 
   @override
   State<IngredientItem> createState() => _IngredientItemState();
@@ -260,6 +262,7 @@ class _IngredientItemState extends State<IngredientItem> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
+      onDismissed: widget.onDismissed,
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(

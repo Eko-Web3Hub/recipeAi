@@ -55,4 +55,5 @@ abstract class AppText {
   static const String scanAiReceiptDescription =
       "(We use AI to scan your receipt. AI can make mistakes, please verify and correct the data)";
   static const String delete = 'Delete';
+  static const String addToKitchenInvontory = 'Add to inventory';
 }
