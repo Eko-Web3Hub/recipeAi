@@ -95,8 +95,55 @@ GoRouter createRouter() => GoRouter(
                         );
                       },
                     ),
+                    GoRoute(
+                      name: 'KitchenInventory',
+                      path: '/kitchen-inventory',
+                      redirect: _guardAuth,
+                      builder: (context, state) =>
+                          const KitchenInventoryScreen(),
+                    ),
                   ],
                   builder: (context, state) => const HouseScreen(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  name: 'SaveRecipesScreen',
+                  path: '/save-recipes',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const Center(
+                    child: Text('Save Recipes'),
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  name: 'NotificationScreen',
+                  path: '/notification-screen',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const Center(
+                    child: Text(
+                      'Notification Screen',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  name: 'ProfilScreen',
+                  path: '/profil-screen',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const Center(
+                    child: Text(
+                      'Profil Screen',
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -104,17 +151,12 @@ GoRouter createRouter() => GoRouter(
         ),
 
         GoRoute(
-          name: 'KitchenInventory',
-          path: '/kitchen-inventory',
-          redirect: _guardAuth,
-          builder: (context, state) => const KitchenInventoryScreen(),
-        ),
-        GoRoute(
           name: 'AddKitchenInventory',
           path: '/add-kitchen-inventory',
           redirect: _guardAuth,
           builder: (context, state) => const AddKitchenInventoryScreen(),
         ),
+
         GoRoute(
           name: 'ReceiptTicketScanResultScreen',
           path: '/receipt-ticket-scan-result',

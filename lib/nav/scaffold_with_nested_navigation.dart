@@ -49,6 +49,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           /// reditect to camera screen
+          context.go("/home/kitchen-inventory");
         },
         backgroundColor: greenPrimaryColor,
         shape: const CircleBorder(),
