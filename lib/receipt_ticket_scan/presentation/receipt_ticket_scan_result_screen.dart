@@ -33,56 +33,68 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
           ReceiptTicketScanResultState>(
         listener: (context, state) {
           if (state is ReceiptTicketScanUpdateKitechenInventorySuccess) {
-            // context.go(KitchenInventoryScreenRoute());
+            context.go('/home/kitchen-inventory');
           }
         },
-        child: Scaffold(
-          appBar: KitchenInventoryAppBar(
-            title: AppText.scanReceiptTicketAppbar,
-            arrowLeftOnPressed: () => context.pop(),
-          ),
-          body: Column(
-            children: [
-              const Gap(20.0),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
+        child: Builder(builder: (context) {
+          return Scaffold(
+            appBar: KitchenInventoryAppBar(
+              title: AppText.scanReceiptTicketAppbar,
+              arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
+            ),
+            body: Column(
+              children: [
+                const Gap(20.0),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                    ),
+                    child: Text(
+                      AppText.scanAiReceiptDescription,
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                            color: Colors.black,
+                          ),
+                    ),
                   ),
-                  child: Text(
-                    AppText.scanAiReceiptDescription,
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                          color: Colors.black,
-                        ),
+                ),
+                const Gap(30.0),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    itemBuilder: (context, index) {
+                      return IngredientItem(
+                        ingredient: ingredients[index],
+                        getIngredientQuantity: (quantity) {
+                          log(quantity.toString());
+                          if (quantity != null) {
+                            context
+                                .read<ReceiptTicketScanResultController>()
+                                .updateIngredient(
+                                  index,
+                                  int.parse(quantity),
+                                );
+                          }
+                        },
+                      );
+                    },
+                    itemCount: ingredients.length,
                   ),
                 ),
-              ),
-              const Gap(30.0),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemBuilder: (context, index) {
-                    return IngredientItem(
-                      ingredient: ingredients[index],
-                      getIngredientQuantity: (quantity) {
-                        log(quantity.toString());
-                      },
-                    );
-                  },
-                  itemCount: ingredients.length,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: MainBtn(
+                    text: AppText.addToKitchenInvontory,
+                    onPressed: context
+                        .read<ReceiptTicketScanResultController>()
+                        .addIngredientsToKitchenInventory,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: MainBtn(
-                  text: AppText.addToKitchenInvontory,
-                  onPressed: () {},
-                ),
-              ),
-              const Gap(30.0),
-            ],
-          ),
-        ),
+                const Gap(30.0),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

@@ -102,6 +102,27 @@ GoRouter createRouter() => GoRouter(
                       builder: (context, state) =>
                           const KitchenInventoryScreen(),
                     ),
+                    GoRoute(
+                      name: 'AddKitchenInventory',
+                      path: 'add-kitchen-inventory',
+                      redirect: _guardAuth,
+                      builder: (context, state) =>
+                          const AddKitchenInventoryScreen(),
+                    ),
+                    GoRoute(
+                      name: 'ReceiptTicketScanResultScreen',
+                      path: '/receipt-ticket-scan-result',
+                      redirect: _guardAuth,
+                      builder: (context, state) {
+                        final extra = state.extra as Map<String, dynamic>;
+                        final ingredients =
+                            extra['ingredients'] as List<Ingredient>;
+
+                        return ReceiptTicketScanResultScreen(
+                          ingredients: ingredients,
+                        );
+                      },
+                    ),
                   ],
                   builder: (context, state) => const HouseScreen(),
                 ),
@@ -148,27 +169,6 @@ GoRouter createRouter() => GoRouter(
               ],
             ),
           ],
-        ),
-
-        GoRoute(
-          name: 'AddKitchenInventory',
-          path: '/add-kitchen-inventory',
-          redirect: _guardAuth,
-          builder: (context, state) => const AddKitchenInventoryScreen(),
-        ),
-
-        GoRoute(
-          name: 'ReceiptTicketScanResultScreen',
-          path: '/receipt-ticket-scan-result',
-          redirect: _guardAuth,
-          builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>;
-            final ingredients = extra['ingredients'] as List<Ingredient>;
-
-            return ReceiptTicketScanResultScreen(
-              ingredients: ingredients,
-            );
-          },
         ),
       ],
     );

@@ -34,40 +34,38 @@ class KitchenInventoryScreen extends StatelessWidget {
         di<IKitchenInventoryRepository>(),
         di<IAuthUserService>(),
       ),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: KitchenInventoryAppBar(
-            title: AppText.yourKitchenInventory,
-            arrowLeftOnPressed: () => context.go('/home'),
-          ),
-          body: Builder(builder: (context) {
-            return BlocBuilder<KitchenInventoryController, KitchenState>(
-              builder: (context, state) {
-                if (state is KitchenStateLoading) {
-                  return const Center(
-                    child: CustomProgress(
-                      color: Colors.black,
-                    ),
-                  );
-                }
-                if (state is KitchenStateError) {
-                  return Center(
-                    child: Text(state.message),
-                  );
-                }
-                if (state is KitchenStateLoaded) {
-                  return state.ingredients.isEmpty
-                      ? const _EmptyKitchenInventoryView()
-                      : _InventoryContentView(
-                          ingredients: state.ingredientsFiltered,
-                        );
-                }
-
-                return Container();
-              },
-            );
-          }),
+      child: Scaffold(
+        appBar: KitchenInventoryAppBar(
+          title: AppText.yourKitchenInventory,
+          arrowLeftOnPressed: () => context.go('/home'),
         ),
+        body: Builder(builder: (context) {
+          return BlocBuilder<KitchenInventoryController, KitchenState>(
+            builder: (context, state) {
+              if (state is KitchenStateLoading) {
+                return const Center(
+                  child: CustomProgress(
+                    color: Colors.black,
+                  ),
+                );
+              }
+              if (state is KitchenStateError) {
+                return Center(
+                  child: Text(state.message),
+                );
+              }
+              if (state is KitchenStateLoaded) {
+                return state.ingredients.isEmpty
+                    ? const _EmptyKitchenInventoryView()
+                    : _InventoryContentView(
+                        ingredients: state.ingredientsFiltered,
+                      );
+              }
+
+              return Container();
+            },
+          );
+        }),
       ),
     );
   }
@@ -183,7 +181,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.push("/add-kitchen-inventory");
+                  context.push("/home/add-kitchen-inventory");
                 },
                 child: Container(
                   width: 40,
@@ -397,7 +395,7 @@ class _EmptyKitchenInventoryViewState
                 if (state is ReceiptTicketScanLoaded) {
                   //A retravailler
                   context.push(
-                    "/receipt-ticket-scan-result",
+                    "/home/receipt-ticket-scan-result",
                     extra: {
                       "ingredients": (state)
                           .receiptTicket
@@ -436,7 +434,7 @@ class _EmptyKitchenInventoryViewState
                   const Gap(21),
                   GestureDetector(
                     onTap: () {
-                      context.push("/add-kitchen-inventory");
+                      context.push("/home/add-kitchen-inventory");
                     },
                     child: Text(
                       AppText.clickHereToAdd,
