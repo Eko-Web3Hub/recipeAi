@@ -123,6 +123,13 @@ GoRouter createRouter() => GoRouter(
                         );
                       },
                     ),
+                    GoRoute(
+                      name: 'ReceipeTicketScanScreen',
+                      path: '/receipt-ticket-scan',
+                      redirect: _guardAuth,
+                      builder: (context, state) =>
+                          const ReceipeTicketScanScreen(),
+                    ),
                   ],
                   builder: (context, state) => const HouseScreen(),
                 ),
