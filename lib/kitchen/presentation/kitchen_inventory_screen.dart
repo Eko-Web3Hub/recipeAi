@@ -38,6 +38,15 @@ class KitchenInventoryScreen extends StatelessWidget {
         appBar: KitchenInventoryAppBar(
           title: AppText.yourKitchenInventory,
           arrowLeftOnPressed: () => context.go('/home'),
+          action: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Icon(Icons.qr_code_scanner),
+              const Gap(8),
+              SvgPicture.asset('assets/images/generateIcon.svg'),
+              const Gap(8),
+            ],
+          ),
         ),
         body: Builder(builder: (context) {
           return BlocBuilder<KitchenInventoryController, KitchenState>(
@@ -78,11 +87,14 @@ class KitchenInventoryAppBar extends StatelessWidget
     super.key,
     this.arrowLeftOnPressed,
     required this.title,
+    this.action,
   });
 
   final String title;
 
   final VoidCallback? arrowLeftOnPressed;
+
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -92,17 +104,24 @@ class KitchenInventoryAppBar extends StatelessWidget
         left: 30.0,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: arrowLeftOnPressed,
-            child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: arrowLeftOnPressed,
+                child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
+              ),
+              const Gap(25),
+              Text(
+                title,
+                style: mediumTextStyle,
+              ),
+            ],
           ),
-          const Gap(25),
-          Text(
-            title,
-            style: mediumTextStyle,
-          ),
+          if (action != null) action!,
         ],
       ),
     );
@@ -224,7 +243,9 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                         const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
                     itemBuilder: (context, index) {
                       return IngredientItem(
-                          ingredient: widget.ingredients[index]);
+                        readOnly: true,
+                        ingredient: widget.ingredients[index],
+                      );
                     },
                     itemCount: widget.ingredients.length,
                   ),
@@ -242,9 +263,11 @@ class IngredientItem extends StatefulWidget {
     required this.ingredient,
     this.getIngredientQuantity,
     this.onDismissed,
+    this.readOnly = false,
   });
   final Function(String? value)? getIngredientQuantity;
   final Function(DismissDirection)? onDismissed;
+  final bool readOnly;
 
   @override
   State<IngredientItem> createState() => _IngredientItemState();
@@ -316,6 +339,7 @@ class _IngredientItemState extends State<IngredientItem> {
                 width: 30,
                 height: 30,
                 child: TextFormField(
+                  readOnly: widget.readOnly,
                   controller: _quantityController,
                   onChanged: widget.getIngredientQuantity,
                   textAlign: TextAlign.center,
