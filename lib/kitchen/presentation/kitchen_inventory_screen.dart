@@ -220,7 +220,8 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
                     itemBuilder: (context, index) {
                       return IngredientItem(
                           ingredient: widget.ingredients[index]);
