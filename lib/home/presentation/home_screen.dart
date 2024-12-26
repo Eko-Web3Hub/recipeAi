@@ -26,100 +26,62 @@ class HomeScreen extends StatelessWidget {
         di<RetrieveReceipeFromApiOneTimePerDayUsecase>(),
       ),
       child: Builder(builder: (context) {
-        return Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizontalScreenPadding,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(20.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _HeadLeftSection(),
-                      _HeadRightSection(),
-                    ],
-                  ),
-                  const Gap(15),
-                  // MainBtn(
-                  //   text: 'Go to Kitchen inventory',
-                  //   onPressed: () {
-                  //     context.push('/kitchen-inventory');
-                  //   },
-                  // ),
-                  Text(
-                    AppText.quickRecipes,
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayLarge
-                        ?.copyWith(fontSize: 17),
-                  ),
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: horizontalScreenPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(20.0),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _HeadLeftSection(),
+                    _HeadRightSection(),
+                  ],
+                ),
+                const Gap(15),
+                Text(
+                  AppText.quickRecipes,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayLarge
+                      ?.copyWith(fontSize: 17),
+                ),
+                BlocBuilder<HomeScreenController, HomeScreenState>(
+                  builder: (context, homeScreenState) {
+                    if (homeScreenState is HomeScreenStateLoading) {
+                      /// A modifier. Afficher une liste de carte avec un shimmer effect
+                      return const Expanded(
+                          child: Center(
+                              child: CustomProgress(
+                        color: Colors.black,
+                      )));
+                    }
 
-                  // BlocProvider(
-                  //   create: (context) => SignOutBtnControlller(
-                  //     di<IAuthService>(),
-                  //   ),
-                  //   child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                  //       builder: (context, btnLogOutState) {
-                  //     return Builder(builder: (context) {
-                  //       return MainBtn(
-                  //         text: 'Logout',
-                  //         isLoading: btnLogOutState is SignOutBtnLoading,
-                  //         onPressed: () {
-                  //           context.read<SignOutBtnControlller>().signOut();
-                  //         },
-                  //       );
-                  //     });
-                  //   }),
-                  // ),
-                  // const Gap(10),
-                  // MainBtn(
-                  //   text: 'Go to Recipe',
-                  //   onPressed: () {
-                  //     context.push(
-                  //       '/recipe-details',
-                  //       extra: {
-                  //         'receipeId': const EntityId('1'),
-                  //       },
-                  //     );
-                  //   },
-                  // ),
-                  BlocBuilder<HomeScreenController, HomeScreenState>(
-                    builder: (context, homeScreenState) {
-                      if (homeScreenState is HomeScreenStateLoading) {
-                        /// A modifier. Afficher une liste de carte avec un shimmer effect
-                        return const Expanded(
-                            child: Center(
-                                child: CustomProgress(
-                          color: Colors.black,
-                        )));
-                      }
+                    if (homeScreenState is HomeScreenStateError) {
+                      return Expanded(child: Text(homeScreenState.message));
+                    }
 
-                      if (homeScreenState is HomeScreenStateError) {
-                        return Expanded(child: Text(homeScreenState.message));
-                      }
+                    if (homeScreenState is HomeScreenStateLoaded) {
+                      return Expanded(
+                          child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 20, top: 15),
+                        itemBuilder: (context, index) {
+                          return _ReceipeItem(
+                            receipe: homeScreenState.receipes[index],
+                          );
+                        },
+                        itemCount: homeScreenState.receipes.length,
+                      ));
+                    }
 
-                      if (homeScreenState is HomeScreenStateLoaded) {
-                        return Expanded(
-                            child: ListView.builder(
-                          padding: const EdgeInsets.only(bottom: 20, top: 15),
-                          itemBuilder: (context, index) {
-                            return _ReceipeItem(
-                              receipe: homeScreenState.receipes[index],
-                            );
-                          },
-                          itemCount: homeScreenState.receipes.length,
-                        ));
-                      }
-
-                      return const SizedBox();
-                    },
-                  ),
-                ],
-              ),
+                    return const SizedBox();
+                  },
+                ),
+              ],
             ),
           ),
         );
@@ -136,7 +98,7 @@ class _ReceipeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push(
-        '/recipe-details',
+        '/home/recipe-details',
         extra: {
           'receipe': receipe,
         },

@@ -10,6 +10,7 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/house_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
+import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -65,27 +66,43 @@ GoRouter createRouter() => GoRouter(
           path: '/user-preferences',
           builder: (context, state) => const UserPreferencesView(),
         ),
-        GoRoute(
-          name: 'Home',
-          path: '/home',
-          redirect: _guardAuth,
-          builder: (context, state) => const HouseScreen(),
-        ),
-        GoRoute(
-          name: 'RecipeDetails',
-          path: '/recipe-details',
-          redirect: _guardAuth,
-          builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>;
-            final receipeId = extra['receipeId'] as EntityId?;
-            final receipe = extra['receipe'] as Receipe?;
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) =>
+              ScaffoldWithNestedNavigation(
+            navigationShell: navigationShell,
+            hideNavBar: false,
+          ),
+          branches: <StatefulShellBranch>[
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  name: 'Home',
+                  path: '/home',
+                  redirect: _guardAuth,
+                  routes: <RouteBase>[
+                    GoRoute(
+                      name: 'RecipeDetails',
+                      path: 'recipe-details',
+                      redirect: _guardAuth,
+                      builder: (context, state) {
+                        final extra = state.extra as Map<String, dynamic>;
+                        final receipeId = extra['receipeId'] as EntityId?;
+                        final receipe = extra['receipe'] as Receipe?;
 
-            return ReceipeDetailsView(
-              receipeId: receipeId,
-              receipe: receipe,
-            );
-          },
+                        return ReceipeDetailsView(
+                          receipeId: receipeId,
+                          receipe: receipe,
+                        );
+                      },
+                    ),
+                  ],
+                  builder: (context, state) => const HouseScreen(),
+                ),
+              ],
+            ),
+          ],
         ),
+
         GoRoute(
           name: 'KitchenInventory',
           path: '/kitchen-inventory',
