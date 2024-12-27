@@ -58,6 +58,11 @@ class ReceipeDetailsView extends StatelessWidget {
                             bottomLeft: Radius.circular(10),
                             bottomRight: Radius.circular(10),
                           ),
+                          image: DecorationImage(
+                            image:
+                                AssetImage('assets/images/recipe_image.jpeg'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Padding(

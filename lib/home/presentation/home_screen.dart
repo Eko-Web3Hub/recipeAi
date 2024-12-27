@@ -116,10 +116,13 @@ class ReceipeItem extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
               child: Image.asset(
-                "assets/images/recipe_image.png",
+                "assets/images/recipe_image.jpeg",
                 width: double.infinity,
+                fit: BoxFit.cover,
                 height: 140,
               ),
             ),
