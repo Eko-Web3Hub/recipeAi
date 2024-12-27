@@ -29,13 +29,15 @@ class ReceipeTicketScanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: KitchenInventoryAppBar(
-        title: AppText.yourKitchenInventory,
-        arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
-      ),
-      body: const _EmptyKitchenInventoryView(
-        showDescription: false,
+    return SafeArea(
+      child: Scaffold(
+        appBar: KitchenInventoryAppBar(
+          title: AppText.yourKitchenInventory,
+          arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
+        ),
+        body: const _EmptyKitchenInventoryView(
+          showDescription: false,
+        ),
       ),
     );
   }
@@ -51,55 +53,61 @@ class KitchenInventoryScreen extends StatelessWidget {
         di<IKitchenInventoryRepository>(),
         di<IAuthUserService>(),
       ),
-      child: Scaffold(
-        appBar: KitchenInventoryAppBar(
-          title: AppText.yourKitchenInventory,
-          arrowLeftOnPressed: () => context.go('/home'),
-          action: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              InkWell(
-                onTap: () => context.go("/home/receipt-ticket-scan"),
-                child: const Icon(Icons.qr_code_scanner),
-              ),
-              const Gap(8),
-              InkWell(
-                onTap: () => context.go(
-                  "/home/display-receipes-based-on-ingredient-user-preference",
-                ),
-                child: SvgPicture.asset('assets/images/generateIcon.svg'),
-              ),
-              const Gap(8),
-            ],
-          ),
-        ),
-        body: Builder(builder: (context) {
-          return BlocBuilder<KitchenInventoryController, KitchenState>(
-            builder: (context, state) {
-              if (state is KitchenStateLoading) {
-                return const Center(
-                  child: CustomProgress(
-                    color: Colors.black,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: KitchenInventoryAppBar(
+            title: AppText.yourKitchenInventory,
+            arrowLeftOnPressed: () => context.go('/home'),
+            action: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                InkWell(
+                  onTap: () => context.go(
+                    "/home/kitchen-inventory/receipt-ticket-scan",
                   ),
-                );
-              }
-              if (state is KitchenStateError) {
-                return Center(
-                  child: Text(state.message),
-                );
-              }
-              if (state is KitchenStateLoaded) {
-                return state.ingredients.isEmpty
-                    ? const _EmptyKitchenInventoryView()
-                    : _InventoryContentView(
-                        ingredients: state.ingredientsFiltered,
-                      );
-              }
+                  child: const Icon(Icons.qr_code_scanner),
+                ),
+                const Gap(8),
+                InkWell(
+                  onTap: () => context.go(
+                    "/home/kitchen-inventory/display-receipes-based-on-ingredient-user-preference",
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/images/generateIcon.svg',
+                  ),
+                ),
+                const Gap(8),
+              ],
+            ),
+          ),
+          body: Builder(builder: (context) {
+            return BlocBuilder<KitchenInventoryController, KitchenState>(
+              builder: (context, state) {
+                if (state is KitchenStateLoading) {
+                  return const Center(
+                    child: CustomProgress(
+                      color: Colors.black,
+                    ),
+                  );
+                }
+                if (state is KitchenStateError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                }
+                if (state is KitchenStateLoaded) {
+                  return state.ingredients.isEmpty
+                      ? const _EmptyKitchenInventoryView()
+                      : _InventoryContentView(
+                          ingredients: state.ingredientsFiltered,
+                        );
+                }
 
-              return Container();
-            },
-          );
-        }),
+                return Container();
+              },
+            );
+          }),
+        ),
       ),
     );
   }
@@ -125,7 +133,7 @@ class KitchenInventoryAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 30.0,
+        top: 4.0,
         left: 30.0,
       ),
       child: Row(
@@ -225,7 +233,9 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.push("/home/add-kitchen-inventory");
+                  context.push(
+                    "/home/kitchen-inventory/add-kitchen-inventory",
+                  );
                 },
                 child: Container(
                   width: 40,
@@ -430,7 +440,7 @@ class _EmptyKitchenInventoryViewState
                   if (state is ReceiptTicketScanLoaded) {
                     //A retravailler
                     context.push(
-                      "/home/receipt-ticket-scan-result",
+                      "/home/kitchen-inventory/receipt-ticket-scan-result",
                       extra: {
                         "ingredients": (state)
                             .receiptTicket

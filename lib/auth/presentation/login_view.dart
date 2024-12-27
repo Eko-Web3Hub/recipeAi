@@ -35,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
       child: BlocListener<LoginViewController, LoginViewState>(
         listener: (context, state) {
           if (state is LoginViewSuccess) {
-            context.push('/home');
+            context.go('/home');
           } else if (state is LoginViewError) {
             showSnackBar(
               context,

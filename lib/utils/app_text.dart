@@ -60,4 +60,6 @@ abstract class AppText {
   static const String receipeIdeasDescription =
       'We are suggesting you some recipes \n based on your inventory';
   static const String ingredientRemoved = 'Ingredient removed';
+  static const String cannotGenerateReceipeIdeas =
+      'We cannot generate receipe ideas for you. Please add more ingredients to your inventory and select your preferences';
 }

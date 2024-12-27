@@ -22,7 +22,10 @@ class FastApiReceipesBasedOnIngredientUserPreferenceRepository
     EntityId uid,
   ) async {
     final response = await _dio.get('$path/${uid.value}');
-    final receipes = response.data['receipes'] as List;
+    final receipes = response.data['receipes'] as List?;
+    if (receipes == null) {
+      return [];
+    }
 
     return receipes.map((e) => ReceipeApiSerialization.fromJson(e)).toList();
   }

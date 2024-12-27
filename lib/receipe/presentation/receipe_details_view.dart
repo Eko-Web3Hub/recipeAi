@@ -67,13 +67,15 @@ class ReceipeDetailsView extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 40.0,
+                          top: 50.0,
                           left: 20.0,
                         ),
                         child: InkWell(
                           onTap: () => context.pop(),
-                          child:
-                              SvgPicture.asset('assets/images/arrowLeft.svg'),
+                          child: SvgPicture.asset(
+                            'assets/images/arrowLeft.svg',
+                            height: 40,
+                          ),
                         ),
                       ),
                     ],

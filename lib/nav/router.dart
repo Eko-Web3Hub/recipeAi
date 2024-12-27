@@ -102,43 +102,45 @@ GoRouter createRouter() => GoRouter(
                       redirect: _guardAuth,
                       builder: (context, state) =>
                           const KitchenInventoryScreen(),
-                    ),
-                    GoRoute(
-                      name: 'AddKitchenInventory',
-                      path: 'add-kitchen-inventory',
-                      redirect: _guardAuth,
-                      builder: (context, state) =>
-                          const AddKitchenInventoryScreen(),
-                    ),
-                    GoRoute(
-                      name: 'ReceiptTicketScanResultScreen',
-                      path: '/receipt-ticket-scan-result',
-                      redirect: _guardAuth,
-                      builder: (context, state) {
-                        final extra = state.extra as Map<String, dynamic>;
-                        final ingredients =
-                            extra['ingredients'] as List<Ingredient>;
+                      routes: <RouteBase>[
+                        GoRoute(
+                          name: 'AddKitchenInventory',
+                          path: 'add-kitchen-inventory',
+                          redirect: _guardAuth,
+                          builder: (context, state) =>
+                              const AddKitchenInventoryScreen(),
+                        ),
+                        GoRoute(
+                          name: 'ReceiptTicketScanResultScreen',
+                          path: 'receipt-ticket-scan-result',
+                          redirect: _guardAuth,
+                          builder: (context, state) {
+                            final extra = state.extra as Map<String, dynamic>;
+                            final ingredients =
+                                extra['ingredients'] as List<Ingredient>;
 
-                        return ReceiptTicketScanResultScreen(
-                          ingredients: ingredients,
-                        );
-                      },
-                    ),
-                    GoRoute(
-                      name: 'ReceipeTicketScanScreen',
-                      path: '/receipt-ticket-scan',
-                      redirect: _guardAuth,
-                      builder: (context, state) =>
-                          const ReceipeTicketScanScreen(),
-                    ),
-                    GoRoute(
-                      name:
-                          'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
-                      path:
-                          'display-receipes-based-on-ingredient-user-preference',
-                      redirect: _guardAuth,
-                      builder: (context, state) =>
-                          const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
+                            return ReceiptTicketScanResultScreen(
+                              ingredients: ingredients,
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          name: 'ReceipeTicketScanScreen',
+                          path: 'receipt-ticket-scan',
+                          redirect: _guardAuth,
+                          builder: (context, state) =>
+                              const ReceipeTicketScanScreen(),
+                        ),
+                        GoRoute(
+                          name:
+                              'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
+                          path:
+                              'display-receipes-based-on-ingredient-user-preference',
+                          redirect: _guardAuth,
+                          builder: (context, state) =>
+                              const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
+                        ),
+                      ],
                     ),
                   ],
                   builder: (context, state) => const HouseScreen(),
