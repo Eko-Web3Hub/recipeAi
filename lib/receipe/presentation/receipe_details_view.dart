@@ -58,17 +58,24 @@ class ReceipeDetailsView extends StatelessWidget {
                             bottomLeft: Radius.circular(10),
                             bottomRight: Radius.circular(10),
                           ),
+                          image: DecorationImage(
+                            image:
+                                AssetImage('assets/images/recipe_image.jpeg'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 40.0,
+                          top: 50.0,
                           left: 20.0,
                         ),
                         child: InkWell(
                           onTap: () => context.pop(),
-                          child:
-                              SvgPicture.asset('assets/images/arrowLeft.svg'),
+                          child: SvgPicture.asset(
+                            'assets/images/arrowLeft.svg',
+                            height: 40,
+                          ),
                         ),
                       ),
                     ],

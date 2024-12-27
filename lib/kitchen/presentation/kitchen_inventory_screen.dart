@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -23,6 +24,25 @@ import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
+class ReceipeTicketScanScreen extends StatelessWidget {
+  const ReceipeTicketScanScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: KitchenInventoryAppBar(
+          title: AppText.yourKitchenInventory,
+          arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
+        ),
+        body: const _EmptyKitchenInventoryView(
+          showDescription: false,
+        ),
+      ),
+    );
+  }
+}
+
 class KitchenInventoryScreen extends StatelessWidget {
   const KitchenInventoryScreen({super.key});
 
@@ -38,6 +58,27 @@ class KitchenInventoryScreen extends StatelessWidget {
           appBar: KitchenInventoryAppBar(
             title: AppText.yourKitchenInventory,
             arrowLeftOnPressed: () => context.go('/home'),
+            action: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                InkWell(
+                  onTap: () => context.go(
+                    "/home/kitchen-inventory/receipt-ticket-scan",
+                  ),
+                  child: const Icon(Icons.qr_code_scanner),
+                ),
+                const Gap(8),
+                InkWell(
+                  onTap: () => context.go(
+                    "/home/kitchen-inventory/display-receipes-based-on-ingredient-user-preference",
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/images/generateIcon.svg',
+                  ),
+                ),
+                const Gap(8),
+              ],
+            ),
           ),
           body: Builder(builder: (context) {
             return BlocBuilder<KitchenInventoryController, KitchenState>(
@@ -79,31 +120,41 @@ class KitchenInventoryAppBar extends StatelessWidget
     super.key,
     this.arrowLeftOnPressed,
     required this.title,
+    this.action,
   });
 
   final String title;
 
   final VoidCallback? arrowLeftOnPressed;
 
+  final Widget? action;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 10.0,
+        top: 4.0,
         left: 30.0,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: arrowLeftOnPressed,
-            child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: arrowLeftOnPressed,
+                child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
+              ),
+              const Gap(25),
+              Text(
+                title,
+                style: mediumTextStyle,
+              ),
+            ],
           ),
-          const Gap(25),
-          Text(
-            title,
-            style: mediumTextStyle,
-          ),
+          if (action != null) action!,
         ],
       ),
     );
@@ -166,10 +217,25 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                         ),
                 ),
               ),
-              const Gap(20),
+            ],
+          ),
+          const Gap(20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppText.addItem,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               GestureDetector(
                 onTap: () {
-                  context.push("/add-kitchen-inventory");
+                  context.push(
+                    "/home/kitchen-inventory/add-kitchen-inventory",
+                  );
                 },
                 child: Container(
                   width: 40,
@@ -191,8 +257,10 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
           const Gap(20),
           Text(
             AppText.myItems,
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Expanded(
             child: widget.ingredients.isEmpty
@@ -206,10 +274,13 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
                     itemBuilder: (context, index) {
                       return IngredientItem(
-                          ingredient: widget.ingredients[index]);
+                        readOnly: true,
+                        ingredient: widget.ingredients[index],
+                      );
                     },
                     itemCount: widget.ingredients.length,
                   ),
@@ -220,12 +291,31 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
   }
 }
 
-class IngredientItem extends StatelessWidget {
+class IngredientItem extends StatefulWidget {
   final Ingredient ingredient;
   const IngredientItem({
     super.key,
     required this.ingredient,
+    this.getIngredientQuantity,
+    this.onDismissed,
+    this.readOnly = false,
   });
+  final Function(String? value)? getIngredientQuantity;
+  final Function(DismissDirection)? onDismissed;
+  final bool readOnly;
+
+  @override
+  State<IngredientItem> createState() => _IngredientItemState();
+}
+
+class _IngredientItemState extends State<IngredientItem> {
+  final TextEditingController _quantityController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _quantityController.text = widget.ingredient.quantity.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -244,17 +334,48 @@ class IngredientItem extends StatelessWidget {
       ),
       margin: const EdgeInsets.only(bottom: 10),
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+        padding: const EdgeInsets.only(
+          left: 10,
+          right: 10,
+          top: 20,
+          bottom: 20,
+        ),
         child: Row(
           children: [
             Text(
-              ingredient.name,
+              widget.ingredient.name,
               style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600, fontSize: 14),
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
             ),
             const Spacer(),
-            Text("${ingredient.quantity}")
+            SizedBox(
+              width: 30,
+              height: 30,
+              child: TextFormField(
+                readOnly: widget.readOnly,
+                controller: _quantityController,
+                onChanged: widget.getIngredientQuantity,
+                textAlign: TextAlign.center,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'[1-9]'),
+                  ),
+                ],
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 2,
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xffEEEEEE),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -263,7 +384,9 @@ class IngredientItem extends StatelessWidget {
 }
 
 class _EmptyKitchenInventoryView extends StatefulWidget {
-  const _EmptyKitchenInventoryView();
+  const _EmptyKitchenInventoryView({this.showDescription = true});
+
+  final bool showDescription;
 
   @override
   State<_EmptyKitchenInventoryView> createState() =>
@@ -290,152 +413,159 @@ class _EmptyKitchenInventoryViewState
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const Gap(10.0),
-          Center(
-            child: Text(
-              AppText.emptyKitchenText,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: Colors.black,
-                  ),
-            ),
-          ),
-          const Gap(40),
-          BlocProvider(
-            create: (context) => ReceiptTicketScanController(
-              di<IReceiptTicketScanRepository>(),
-            ),
-            child: BlocListener<ReceiptTicketScanController,
-                ReceiptTicketScanState>(
-              listener: (context, state) {
-                if (state is ReceiptTicketScanLoaded) {
-                  //A retravailler
-                  context.push(
-                    "/receipt-ticket-scan-result",
-                    extra: {
-                      "ingredients": (state)
-                          .receiptTicket
-                          .products
-                          .map(
-                            (product) => Ingredient(
-                              name: product.name,
-                              quantity: product.quantity,
-                              date: null,
-                            ),
-                          )
-                          .toList(),
-                    },
-                  );
-                }
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 243,
-                    height: 371,
-                    decoration: BoxDecoration(
-                      color: greyVariantColor,
-                      borderRadius: BorderRadius.circular(10),
-                      image: _receiptPicture != null
-                          ? DecorationImage(
-                              image: FileImage(
-                                _receiptPicture!,
-                              ),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                    ),
-                  ),
-                  const Gap(21),
-                  GestureDetector(
-                    onTap: () {
-                      context.push("/add-kitchen-inventory");
-                    },
-                    child: Text(
-                      AppText.clickHereToAdd,
-                      style: smallTextStyle.copyWith(
-                        color: Theme.of(context).primaryColor,
+      child: Center(
+        child: Column(
+          children: [
+            const Gap(10.0),
+            Visibility(
+              visible: widget.showDescription,
+              child: Center(
+                child: Text(
+                  AppText.emptyKitchenText,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                        color: Colors.black,
                       ),
-                    ),
-                  ),
-                  const Gap(3),
-                  Text(
-                    AppText.or,
-                    style: smallTextStyle,
-                  ),
-                  const Gap(3),
-                  GestureDetector(
-                    onTap: _uploadReceiptPicture,
-                    child: Text(
-                      AppText.takeYourReceiptPicture,
-                      style: smallTextStyle.copyWith(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  ),
-                  BlocBuilder<ReceiptTicketScanController,
-                      ReceiptTicketScanState>(
-                    builder: (context, receiptTicketScanState) {
-                      if (receiptTicketScanState is ReceiptTicketScanLoading) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 5.0),
-                            child: CustomProgress(
-                              color: Colors.black,
-                            ),
-                          ),
-                        );
-                      }
-
-                      if (_receiptPicture != null &&
-                          (receiptTicketScanState is ReceiptTicketScanInitial ||
-                              receiptTicketScanState
-                                  is ReceiptTicketScanError)) {
-                        return Column(
-                          children: [
-                            Builder(
-                              builder: (context) {
-                                if (receiptTicketScanState
-                                    is ReceiptTicketScanError) {
-                                  return Center(
-                                    child: Text(
-                                      (receiptTicketScanState).message,
-                                    ),
-                                  );
-                                }
-
-                                return const SizedBox.shrink();
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 20.0,
-                                left: 40,
-                                right: 40,
-                              ),
-                              child: MainBtn(
-                                text: AppText.scanReceiptTicket,
-                                onPressed: () => context
-                                    .read<ReceiptTicketScanController>()
-                                    .scanReceiptTicket(_receiptPicture!),
-                              ),
-                            ),
-                          ],
-                        );
-                      }
-
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-          const Gap(50),
-        ],
+            const Gap(40),
+            BlocProvider(
+              create: (context) => ReceiptTicketScanController(
+                di<IReceiptTicketScanRepository>(),
+              ),
+              child: BlocListener<ReceiptTicketScanController,
+                  ReceiptTicketScanState>(
+                listener: (context, state) {
+                  if (state is ReceiptTicketScanLoaded) {
+                    //A retravailler
+                    context.push(
+                      "/home/kitchen-inventory/receipt-ticket-scan-result",
+                      extra: {
+                        "ingredients": (state)
+                            .receiptTicket
+                            .products
+                            .map(
+                              (product) => Ingredient(
+                                name: product.name,
+                                quantity: product.quantity,
+                                date: null,
+                              ),
+                            )
+                            .toList(),
+                      },
+                    );
+                  }
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 243,
+                      height: 371,
+                      decoration: BoxDecoration(
+                        color: greyVariantColor,
+                        borderRadius: BorderRadius.circular(10),
+                        image: _receiptPicture != null
+                            ? DecorationImage(
+                                image: FileImage(
+                                  _receiptPicture!,
+                                ),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                      ),
+                    ),
+                    const Gap(21),
+                    GestureDetector(
+                      onTap: () {
+                        context.push("/home/add-kitchen-inventory");
+                      },
+                      child: Text(
+                        AppText.clickHereToAdd,
+                        style: smallTextStyle.copyWith(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                    const Gap(3),
+                    Text(
+                      AppText.or,
+                      style: smallTextStyle,
+                    ),
+                    const Gap(3),
+                    GestureDetector(
+                      onTap: _uploadReceiptPicture,
+                      child: Text(
+                        AppText.takeYourReceiptPicture,
+                        style: smallTextStyle.copyWith(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                    BlocBuilder<ReceiptTicketScanController,
+                        ReceiptTicketScanState>(
+                      builder: (context, receiptTicketScanState) {
+                        if (receiptTicketScanState
+                            is ReceiptTicketScanLoading) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 5.0),
+                              child: CustomProgress(
+                                color: Colors.black,
+                              ),
+                            ),
+                          );
+                        }
+
+                        if (_receiptPicture != null &&
+                            (receiptTicketScanState
+                                    is ReceiptTicketScanInitial ||
+                                receiptTicketScanState
+                                    is ReceiptTicketScanError)) {
+                          return Column(
+                            children: [
+                              Builder(
+                                builder: (context) {
+                                  if (receiptTicketScanState
+                                      is ReceiptTicketScanError) {
+                                    return Center(
+                                      child: Text(
+                                        (receiptTicketScanState).message,
+                                      ),
+                                    );
+                                  }
+
+                                  return const SizedBox.shrink();
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 20.0,
+                                  left: 40,
+                                  right: 40,
+                                ),
+                                child: MainBtn(
+                                  text: AppText.scanReceiptTicket,
+                                  onPressed: () => context
+                                      .read<ReceiptTicketScanController>()
+                                      .scanReceiptTicket(_receiptPicture!),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Gap(50),
+          ],
+        ),
       ),
     );
   }

@@ -47,6 +47,7 @@ abstract class AppText {
   static const String validate = 'Validate';
   static const String addIngredientSuccess = "Ingredient added successfully";
   static const String myItems = 'My Items';
+  static const String addItem = 'Add Item';
   static const String searchForIngredients = "Search for ingredients";
   static const String receiptTicketScanError = "Failed to scan receipt ticket";
   static const String scanReceiptTicket = "Scan Receipt Ticket";
@@ -54,4 +55,12 @@ abstract class AppText {
   static const String scanAiReceiptDescription =
       "(We use AI to scan your receipt. AI can make mistakes, please verify and correct the data)";
   static const String changesPreferences = "Changes preferences";
+  static const String delete = 'Delete';
+  static const String addToKitchenInvontory = 'Add to inventory';
+  static const String receipeIdeas = 'Recipes ideas';
+  static const String receipeIdeasDescription =
+      'We are suggesting you some recipes \n based on your inventory';
+  static const String ingredientRemoved = 'Ingredient removed';
+  static const String cannotGenerateReceipeIdeas =
+      'We cannot generate receipe ideas for you. Please add more ingredients to your inventory and select your preferences';
 }
