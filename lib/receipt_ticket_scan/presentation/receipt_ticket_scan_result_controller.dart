@@ -40,6 +40,19 @@ class ReceiptTicketScanResultController
           ReceiptTicketScanResultInitial(),
         );
 
+  void removeIngredient(int index) {
+    final updatedIngredients = ingredients
+        .where((ingredient) => ingredients.indexOf(ingredient) != index)
+        .toList();
+    ingredients = updatedIngredients;
+
+    emit(
+      ReceiptTicketScanUpdateIngredientSuccess(
+        ingredients: updatedIngredients,
+      ),
+    );
+  }
+
   void updateIngredient(
     int index,
     int newQuantity,

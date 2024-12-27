@@ -59,4 +59,5 @@ abstract class AppText {
   static const String receipeIdeas = 'Recipes ideas';
   static const String receipeIdeasDescription =
       'We are suggesting you some recipes \n based on your inventory';
+  static const String ingredientRemoved = 'Ingredient removed';
 }
