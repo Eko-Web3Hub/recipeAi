@@ -8,6 +8,7 @@ import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/house_screen.dart';
+import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -179,11 +180,7 @@ GoRouter createRouter() => GoRouter(
                   name: 'ProfilScreen',
                   path: '/profil-screen',
                   redirect: _guardAuth,
-                  builder: (context, state) => const Center(
-                    child: Text(
-                      'Profil Screen',
-                    ),
-                  ),
+                  builder: (context, state) => const ProfileScreen(),
                 ),
               ],
             ),

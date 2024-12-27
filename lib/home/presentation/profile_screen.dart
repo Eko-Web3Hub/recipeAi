@@ -12,28 +12,27 @@ import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/functions.dart';
 
+// AppBar(
+//         backgroundColor: Colors.white,
+//         centerTitle: true,
+//         leading: Container(),
+//         title: Text(
+//           'Profile',
+//           style: GoogleFonts.poppins(
+//             color: Colors.black,
+//             fontSize: 20,
+//             fontWeight: FontWeight.w600,
+//           ),
+//         ),
+//       )
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        leading: Container(),
-        title: Text(
-          'Profile',
-          style: GoogleFonts.poppins(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      body: SafeArea(
-          child: Padding(
+    return SafeArea(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
@@ -123,7 +122,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }
