@@ -92,7 +92,10 @@ class HomeScreen extends StatelessWidget {
 
 class ReceipeItem extends StatelessWidget {
   final Receipe receipe;
-  const ReceipeItem({required this.receipe});
+  const ReceipeItem({
+    super.key,
+    required this.receipe,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -11,6 +11,7 @@ import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class DisplayReceipesBasedOnIngredientUserPreferenceScreen
     extends StatelessWidget {
@@ -33,28 +34,33 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
             '/home/kitchen-inventory',
           ),
         ),
-        body: Column(
-          children: [
-            BlocBuilder<
-                DisplayReceipesBasedOnIngredientUserPreferenceController,
-                DisplayReceipesBasedOnIngredientUserPreferenceState>(
-              builder: (context, state) {
-                if (state
-                    is DisplayReceipesBasedOnIngredientUserPreferenceLoading) {
-                  return const _LoadingView();
-                }
-                final receipes = (state
-                        as DisplayReceipesBasedOnIngredientUserPreferenceLoaded)
-                    .receipes;
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: horizontalScreenPadding,
+          ),
+          child: Column(
+            children: [
+              BlocBuilder<
+                  DisplayReceipesBasedOnIngredientUserPreferenceController,
+                  DisplayReceipesBasedOnIngredientUserPreferenceState>(
+                builder: (context, state) {
+                  if (state
+                      is DisplayReceipesBasedOnIngredientUserPreferenceLoading) {
+                    return const _LoadingView();
+                  }
+                  final receipes = (state
+                          as DisplayReceipesBasedOnIngredientUserPreferenceLoaded)
+                      .receipes;
 
-                return Expanded(
-                  child: _DisplayLoadedRecipe(
-                    receipes: receipes,
-                  ),
-                );
-              },
-            ),
-          ],
+                  return Expanded(
+                    child: _DisplayLoadedRecipe(
+                      receipes: receipes,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -96,6 +102,7 @@ class _DisplayLoadedRecipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 20, top: 15),
       itemBuilder: (context, index) => ReceipeItem(
         receipe: receipes[index],
       ),
