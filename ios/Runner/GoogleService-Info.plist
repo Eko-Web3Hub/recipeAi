@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyC95xJb5gqEYT5Wt4qHbEcRW-OF0PsicZs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>819430206108</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.recipeai.app</string>
+	<key>PROJECT_ID</key>
+	<string>recipe-ai-5e261</string>
+	<key>STORAGE_BUCKET</key>
+	<string>recipe-ai-5e261.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:819430206108:ios:8666c8c5d25716ad591b59</string>
+</dict>
+</plist>

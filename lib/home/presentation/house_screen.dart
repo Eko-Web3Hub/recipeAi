@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
@@ -25,8 +28,7 @@ class _HouseScreenState extends State<HouseScreen> {
     const HomeScreen(),
     Container(),
     Container(),
-    Container(),
-    Container(),
+    const ProfileScreen(),
     const KitchenInventoryScreen()
   ];
 
@@ -41,11 +43,11 @@ class _HouseScreenState extends State<HouseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       body: _pages[_selectedPageIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          selectedPageIndex = 5;
+          selectedPageIndex = 4;
         },
         backgroundColor: greenPrimaryColor,
         shape: const CircleBorder(),
@@ -65,10 +67,12 @@ class _HouseScreenState extends State<HouseScreen> {
         notchSmoothness: NotchSmoothness.defaultEdge,
         activeIndex: selectedPageIndex,
         onTap: (index) {
+          log("Index on tap: $index");
           selectedPageIndex = index;
         },
         itemCount: 4,
         tabBuilder: (int index, bool isActive) {
+             
           return Padding(
             padding: const EdgeInsets.all(15),
             child: SvgPicture.asset(
