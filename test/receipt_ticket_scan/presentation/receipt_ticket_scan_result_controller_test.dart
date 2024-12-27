@@ -141,4 +141,17 @@ void main() {
       ReceiptTicketScanUpdateKitechenInventorySuccess(),
     ],
   );
+
+  blocTest<ReceiptTicketScanResultController, ReceiptTicketScanResultState>(
+    'should remove ingredient',
+    build: () => buildSut(),
+    act: (bloc) {
+      bloc.removeIngredient(1);
+    },
+    expect: () => [
+      ReceiptTicketScanUpdateIngredientSuccess(
+        ingredients: [ingredients[0], ingredients[2]],
+      ),
+    ],
+  );
 }
