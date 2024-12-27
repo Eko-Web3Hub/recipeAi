@@ -9,6 +9,7 @@ import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/house_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
+import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
@@ -129,6 +130,15 @@ GoRouter createRouter() => GoRouter(
                       redirect: _guardAuth,
                       builder: (context, state) =>
                           const ReceipeTicketScanScreen(),
+                    ),
+                    GoRoute(
+                      name:
+                          'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
+                      path:
+                          'display-receipes-based-on-ingredient-user-preference',
+                      redirect: _guardAuth,
+                      builder: (context, state) =>
+                          const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
                     ),
                   ],
                   builder: (context, state) => const HouseScreen(),

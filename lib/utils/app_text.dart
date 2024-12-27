@@ -56,4 +56,7 @@ abstract class AppText {
       "(We use AI to scan your receipt. AI can make mistakes, please verify and correct the data)";
   static const String delete = 'Delete';
   static const String addToKitchenInvontory = 'Add to inventory';
+  static const String receipeIdeas = 'Recipes ideas';
+  static const String receipeIdeasDescription =
+      'We are suggesting you some recipes \n based on your inventory';
 }

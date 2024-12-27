@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                           child: ListView.builder(
                         padding: const EdgeInsets.only(bottom: 20, top: 15),
                         itemBuilder: (context, index) {
-                          return _ReceipeItem(
+                          return ReceipeItem(
                             receipe: homeScreenState.receipes[index],
                           );
                         },
@@ -90,9 +90,9 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _ReceipeItem extends StatelessWidget {
+class ReceipeItem extends StatelessWidget {
   final Receipe receipe;
-  const _ReceipeItem({required this.receipe});
+  const ReceipeItem({required this.receipe});
 
   @override
   Widget build(BuildContext context) {

@@ -63,7 +63,12 @@ class KitchenInventoryScreen extends StatelessWidget {
                 child: const Icon(Icons.qr_code_scanner),
               ),
               const Gap(8),
-              SvgPicture.asset('assets/images/generateIcon.svg'),
+              InkWell(
+                onTap: () => context.go(
+                  "/home/display-receipes-based-on-ingredient-user-preference",
+                ),
+                child: SvgPicture.asset('assets/images/generateIcon.svg'),
+              ),
               const Gap(8),
             ],
           ),
