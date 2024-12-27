@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -13,11 +14,12 @@ import 'package:recipe_ai/firebase_options.dart';
 import 'package:recipe_ai/nav/router.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  FlutterNativeSplash.remove();
   di.registerModule(AppModule());
   runApp(const MyApp());
 }
@@ -47,9 +49,7 @@ class _MyAppState extends State<MyApp> {
           create: (_) => AuthNavigationController(
             di<IAuthUserService>(),
           ),
-
         ),
-        
       ],
       child: BlocListener<AuthNavigationController, AuthNavigationState>(
         listener: (context, state) {

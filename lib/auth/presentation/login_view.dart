@@ -69,6 +69,7 @@ class _LoginViewState extends State<LoginView> {
                       label: AppText.password,
                       hintText: AppText.enterPassword,
                       controller: _passwordController,
+                      inputType: InputType.password,
                       validator: nonEmptyStringValidator,
                     ),
                     const Gap(50.0),
