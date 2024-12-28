@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
@@ -10,6 +9,7 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_controller.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
@@ -60,60 +60,50 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
             );
           }
         },
-        child: Scaffold(
-          appBar: AppBar(
-            leading: const BackButton(
-              color: Colors.black,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: KitchenInventoryAppBar(
+              title: AppText.addKitchen,
+              arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
             ),
-            backgroundColor: Colors.white,
-            title: Text(
-              AppText.addKitchen,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-                height: 30 / 20,
-                color: Colors.black,
-              ),
-            ),
+            body: Builder(builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: horizontalScreenPadding, vertical: 20),
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Gap(20),
+                        FormFieldWithLabel(
+                          label: AppText.name,
+                          hintText: AppText.enterName,
+                          controller: _nameController,
+                          validator: nonEmptyStringValidator,
+                          keyboardType: TextInputType.name,
+                        ),
+                        const Gap(20),
+                        FormFieldWithLabel(
+                          label: AppText.quantity,
+                          hintText: AppText.enterQuantity,
+                          controller: _quantityController,
+                          validator: nonEmptyStringValidator,
+                          keyboardType: TextInputType.number,
+                        ),
+                        const Gap(20),
+                        MainBtn(
+                          isLoading: false,
+                          text: AppText.validate,
+                          onPressed: () {
+                            _handleIngredient(context);
+                          },
+                        ),
+                      ],
+                    )),
+              );
+            }),
           ),
-          body: Builder(builder: (context) {
-            return SafeArea(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: horizontalScreenPadding, vertical: 20),
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Gap(20),
-                      FormFieldWithLabel(
-                        label: AppText.name,
-                        hintText: AppText.enterName,
-                        controller: _nameController,
-                        validator: nonEmptyStringValidator,
-                        keyboardType: TextInputType.name,
-                      ),
-                      const Gap(20),
-                      FormFieldWithLabel(
-                        label: AppText.quantity,
-                        hintText: AppText.enterQuantity,
-                        controller: _quantityController,
-                        validator: nonEmptyStringValidator,
-                        keyboardType: TextInputType.number,
-                      ),
-                      const Gap(20),
-                      MainBtn(
-                        isLoading: false,
-                        text: AppText.validate,
-                        onPressed: () {
-                          _handleIngredient(context);
-                        },
-                      ),
-                    ],
-                  )),
-            ));
-          }),
         ),
       ),
     );

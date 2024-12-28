@@ -74,7 +74,7 @@ class ReceipeDetailsView extends StatelessWidget {
                           onTap: () => context.pop(),
                           child: SvgPicture.asset(
                             'assets/images/arrowLeft.svg',
-                            height: 40,
+                            height: 30,
                           ),
                         ),
                       ),
