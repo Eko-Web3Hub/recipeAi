@@ -39,87 +39,89 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
           }
         },
         child: Builder(builder: (context) {
-          return Scaffold(
-            appBar: KitchenInventoryAppBar(
-              title: AppText.scanReceiptTicketAppbar,
-              arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
-            ),
-            body: Column(
-              children: [
-                const Gap(20.0),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                    ),
-                    child: Text(
-                      AppText.scanAiReceiptDescription,
-                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: Colors.black,
-                          ),
+          return SafeArea(
+            child: Scaffold(
+              appBar: KitchenInventoryAppBar(
+                title: AppText.scanReceiptTicketAppbar,
+                arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
+              ),
+              body: Column(
+                children: [
+                  const Gap(20.0),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                      ),
+                      child: Text(
+                        AppText.scanAiReceiptDescription,
+                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                              color: Colors.black,
+                            ),
+                      ),
                     ),
                   ),
-                ),
-                const Gap(30.0),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemBuilder: (context, index) {
-                      return Dismissible(
-                        onDismissed: (direction) {
-                          context
-                              .read<ReceiptTicketScanResultController>()
-                              .removeIngredient(index);
-                          showSnackBar(context, AppText.ingredientRemoved);
-                        },
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: Text(
-                                AppText.delete,
-                                style: normalSmallTextStyle,
+                  const Gap(30.0),
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemBuilder: (context, index) {
+                        return Dismissible(
+                          onDismissed: (direction) {
+                            context
+                                .read<ReceiptTicketScanResultController>()
+                                .removeIngredient(index);
+                            showSnackBar(context, AppText.ingredientRemoved);
+                          },
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Text(
+                                  AppText.delete,
+                                  style: normalSmallTextStyle,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        key: Key(ingredients[index].name),
-                        child: IngredientItem(
-                          ingredient: ingredients[index],
-                          getIngredientQuantity: (quantity) {
-                            log(quantity.toString());
-                            if (quantity != null) {
-                              context
-                                  .read<ReceiptTicketScanResultController>()
-                                  .updateIngredient(
-                                    index,
-                                    int.parse(quantity),
-                                  );
-                            }
-                          },
-                        ),
-                      );
-                    },
-                    itemCount: ingredients.length,
+                          key: Key(ingredients[index].name),
+                          child: IngredientItem(
+                            ingredient: ingredients[index],
+                            getIngredientQuantity: (quantity) {
+                              log(quantity.toString());
+                              if (quantity != null) {
+                                context
+                                    .read<ReceiptTicketScanResultController>()
+                                    .updateIngredient(
+                                      index,
+                                      int.parse(quantity),
+                                    );
+                              }
+                            },
+                          ),
+                        );
+                      },
+                      itemCount: ingredients.length,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: MainBtn(
-                    text: AppText.addToKitchenInvontory,
-                    onPressed: context
-                        .read<ReceiptTicketScanResultController>()
-                        .addIngredientsToKitchenInventory,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: MainBtn(
+                      text: AppText.addToKitchenInvontory,
+                      onPressed: context
+                          .read<ReceiptTicketScanResultController>()
+                          .addIngredientsToKitchenInventory,
+                    ),
                   ),
-                ),
-                const Gap(30.0),
-              ],
+                  const Gap(30.0),
+                ],
+              ),
             ),
           );
         }),

@@ -479,7 +479,8 @@ class _EmptyKitchenInventoryViewState
                     const Gap(21),
                     GestureDetector(
                       onTap: () {
-                        context.push("/home/add-kitchen-inventory");
+                        context.push(
+                            "/home/kitchen-inventory/add-kitchen-inventory");
                       },
                       child: Text(
                         AppText.clickHereToAdd,
