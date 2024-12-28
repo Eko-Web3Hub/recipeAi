@@ -63,4 +63,5 @@ abstract class AppText {
   static const String ingredientRemoved = 'Ingredient removed';
   static const String cannotGenerateReceipeIdeas =
       'We cannot generate receipe ideas for you. Please add more ingredients to your inventory and select your preferences';
+  static const deleteAccount = 'Delete your account';
 }

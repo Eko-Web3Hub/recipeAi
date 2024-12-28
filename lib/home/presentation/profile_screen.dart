@@ -78,30 +78,20 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
             const Gap(20),
-            TextButton(
-                style: ButtonStyle(
-                  surfaceTintColor: WidgetStateProperty.all(Colors.white),
-                ),
-                onPressed: () {
-                  context.push("/user-preferences");
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppText.changesPreferences,
-                      style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: Colors.black),
-                    ),
-                    const Gap(10),
-                    const Icon(
-                      Icons.chevron_right,
-                      color: Colors.black,
-                    )
-                  ],
-                )),
+            _TextButton(
+              text: AppText.changesPreferences,
+              textColor: null,
+              onPressed: () {
+                context.push("/user-preferences");
+              },
+            ),
+            _TextButton(
+              text: AppText.deleteAccount,
+              onPressed: () {
+                context.push("/user-preferences");
+              },
+              textColor: Colors.red,
+            ),
             const Gap(20),
             BlocProvider(
               create: (context) => SignOutBtnControlller(
@@ -122,6 +112,48 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TextButton extends StatelessWidget {
+  const _TextButton({
+    required this.text,
+    required this.textColor,
+    required this.onPressed,
+  });
+
+  final String text;
+  final Color? textColor;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: ButtonStyle(
+        surfaceTintColor: WidgetStateProperty.all(
+          Colors.white,
+        ),
+      ),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              color: textColor ?? Colors.black,
+            ),
+          ),
+          const Gap(10),
+          Icon(
+            Icons.chevron_right,
+            color: textColor ?? Colors.black,
+          ),
+        ],
       ),
     );
   }
