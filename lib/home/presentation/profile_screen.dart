@@ -29,6 +29,20 @@ import 'package:recipe_ai/utils/functions.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  Future<bool?> _showConfirmationDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const ConfirmationDeleteAccountWidget(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -87,8 +101,14 @@ class ProfileScreen extends StatelessWidget {
             ),
             _TextButton(
               text: AppText.deleteAccount,
-              onPressed: () {
-                context.push("/user-preferences");
+              onPressed: () async {
+                final response = await _showConfirmationDialog(context);
+
+                if (response == true) {
+                  Navigator.of(context).pop();
+
+                  /// delete account
+                }
               },
               textColor: Colors.red,
             ),
@@ -152,6 +172,57 @@ class _TextButton extends StatelessWidget {
           Icon(
             Icons.chevron_right,
             color: textColor ?? Colors.black,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ConfirmationDeleteAccountWidget extends StatelessWidget {
+  const ConfirmationDeleteAccountWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Gap(4),
+          Text(
+            AppText.confirmAccountDeletion,
+            style: GoogleFonts.poppins(
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const Gap(30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(
+                  AppText.no,
+                  style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(
+                  AppText.delete,
+                  style: GoogleFonts.poppins(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
