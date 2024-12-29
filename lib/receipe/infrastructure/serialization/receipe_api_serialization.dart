@@ -27,4 +27,23 @@ abstract class ReceipeApiSerialization {
       imageUrl: json["image_url"] ?? "",
     );
   }
+
+  static Map<String, dynamic> toJson(Receipe receipe) {
+    return {
+      "name": receipe.name,
+      "ingredients": receipe.ingredients
+          .map(
+            (e) => IngredientSerialization.toJson(e),
+          )
+          .toList(),
+      "steps": receipe.steps
+          .map(
+            (e) => ReceipeStepSerialization.toJson(e),
+          )
+          .toList(),
+      "average_time": receipe.averageTime,
+      "total_calories": receipe.totalCalories,
+      "image_url": receipe.imageUrl,
+    };
+  }
 }

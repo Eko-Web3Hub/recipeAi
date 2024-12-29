@@ -9,6 +9,7 @@ class Receipe extends Equatable {
   final String averageTime;
   final String totalCalories;
   final String? imageUrl;
+ 
 
   const Receipe(
       {required this.name,

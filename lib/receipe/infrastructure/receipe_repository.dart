@@ -12,6 +12,8 @@ import 'package:recipe_ai/utils/constant.dart';
 
 class UserReceipeRepository implements IUserReceipeRepository {
   static const String baseUrl = "$baseApiUrl/gen-receipe-with-user-preference";
+  static const String kitchenInventoryCollection = "KitchenInventory";
+  static const String receipesCollection = "receipes";
 
   static const String userReceipeCollection = "UserReceipe";
 
@@ -57,4 +59,51 @@ class UserReceipeRepository implements IUserReceipeRepository {
           SetOptions(merge: true),
         );
   }
+
+  @override
+  Stream<List<Receipe>> watchAllSavedReceipes(EntityId uid) {
+    return _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(receipesCollection)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map<Receipe>(
+            (doc) => ReceipeApiSerialization.fromJson(doc.data()),
+          )
+          .toList();
+    });
+  }
+
+  @override
+  Future<bool> isOneReceiptSaved(EntityId uid, int index) {
+    return _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(receipesCollection)
+        .doc("$uid$index")
+        .get()
+        .then((value) => value.exists);
+  }
+
+  @override
+  Future<void> saveOneReceipt(EntityId uid, int index, Receipe receipe) {
+   return  _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(receipesCollection)
+        .doc("$uid$index")
+        .set(ReceipeApiSerialization.toJson(receipe));
+  }
+  
+  @override
+  Future<void> removeSavedReceipe(String documentId) {
+    return _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(documentId)
+        .delete();
+  }
+
+  
 }

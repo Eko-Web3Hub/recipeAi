@@ -20,7 +20,9 @@ abstract class ReceipeSerialization {
             .toList(),
         averageTime: json["averageTime"],
         totalCalories: json["totalCalories"],
-        imageUrl: json["imageUrl"]);
+        imageUrl: json["imageUrl"],
+       
+        );
   }
 
   static Map<String, dynamic> toJson(Receipe receipe) {
@@ -38,7 +40,8 @@ abstract class ReceipeSerialization {
           .toList(),
       "averageTime": receipe.averageTime,
       "totalCalories": receipe.totalCalories,
-      "imageUrl": receipe.imageUrl
+      "imageUrl": receipe.imageUrl,
+     
     };
   }
 }

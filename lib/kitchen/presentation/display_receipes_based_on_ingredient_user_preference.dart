@@ -117,7 +117,9 @@ class _DisplayLoadedRecipe extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 20, top: 15),
             itemCount: receipes.length,
             itemBuilder: (context, index) => ReceipeItem(
-              receipe: receipes[index],
+              receipe: receipes[index], isSaved: false, onTap: () { 
+                
+               },
             ),
           );
   }

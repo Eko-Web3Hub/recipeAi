@@ -9,4 +9,13 @@ abstract class IUserReceipeRepository {
   Future<List<Receipe>> getReceipesBasedOnUserPreferencesFromApi(EntityId uid);
 
   Future<void> save(EntityId uid, UserReceipe userReceipe);
+
+  Stream<List<Receipe>> watchAllSavedReceipes(EntityId uid);
+
+   Future<void> saveOneReceipt(EntityId uid,int index ,Receipe receipe);
+   Future<bool> isOneReceiptSaved(EntityId uid,int index);
+
+    Future<void> removeSavedReceipe(String documentId);
+
+
 }
