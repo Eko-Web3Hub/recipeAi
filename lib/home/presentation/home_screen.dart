@@ -89,9 +89,16 @@ class HomeScreen extends StatelessWidget {
                                   receipe: homeScreenState.receipes[index],
                                   isSaved: state == ReceipeItemStatus.saved,
                                   onTap: () {
-                                    context
+                                    if(state == ReceipeItemStatus.saved) {
+                                      context
                                         .read<ReceipeItemController>()
-                                        .toggleReceipe();
+                                        .removeReceipe();
+                                    } else {
+                                      context
+                                        .read<ReceipeItemController>()
+                                        .saveReceipe();
+                                    }
+                                   
                                   },
                                 );
                               },

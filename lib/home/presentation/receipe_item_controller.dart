@@ -37,13 +37,7 @@ class ReceipeItemController extends Cubit<ReceipeItemStatus> {
     }
   }
 
-  Future<void> toggleReceipe() async {
-    if (state == ReceipeItemStatus.saved) {
-      removeReceipe();
-    } else {
-      saveReceipe();
-    }
-  }
+
 
   Future<void> checkReceipeStatus() async {
     try {
