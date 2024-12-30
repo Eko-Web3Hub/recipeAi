@@ -15,3 +15,8 @@ TextStyle normalSmallTextStyle = GoogleFonts.poppins(
   height: 21 / 14,
   color: Colors.white,
 );
+
+TextStyle titleDialogStyle = GoogleFonts.poppins(
+  fontSize: 17,
+  fontWeight: FontWeight.w500,
+);

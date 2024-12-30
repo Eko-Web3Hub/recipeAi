@@ -69,4 +69,8 @@ abstract class AppText {
   static const String logout = 'Logout';
   static const String deleteAccountError =
       'Failed to delete your account. An error occured';
+  static const String deleteAccountSuccess =
+      'We are sorry to see you go. Your account has been deleted';
+  static const String deleteAccountRequiredRecentLogin =
+      'You need to login again to delete your account';
 }

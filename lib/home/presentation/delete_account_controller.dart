@@ -34,9 +34,11 @@ class DeleteAccountErrorOcuured extends DeleteAccountState {
 
 class DeleteAccountController extends Cubit<DeleteAccountState> {
   DeleteAccountController(
+    this._authUserService,
     this._firebaseAuth,
   ) : super(DeleteAccountInitial());
 
+  final IAuthUserService _authUserService;
   final IFirebaseAuth _firebaseAuth;
 
   Future<void> deleteAccount() async {
@@ -53,6 +55,25 @@ class DeleteAccountController extends Cubit<DeleteAccountState> {
 
       emit(
         DeleteAccountErrorOcuured(AppText.deleteAccountError),
+      );
+    }
+  }
+
+  Future<void> deleteAccountAfterAReLogin(String password) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: _authUserService.currentUser!.email!,
+        password: password,
+      );
+      await _firebaseAuth.deleteAccount();
+
+      emit(DeleteAccountSuccess());
+    } on FirebaseAuthException catch (e) {
+      log(e.toString());
+      emit(
+        DeleteAccountErrorOcuured(
+          AppText.deleteAccountError,
+        ),
       );
     }
   }
