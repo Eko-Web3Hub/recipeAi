@@ -79,7 +79,15 @@ void main() {
             0,
           )).thenAnswer((_) => Future.value(true));
     },
-    verify: (bloc) => expect(bloc.state, ReceipeItemStatus.saved),
+    verify: (bloc) => {
+      
+      verify(() => receipeRepository.saveOneReceipt(
+            authUser.uid,
+            0,
+            receipe,
+          )).called(1),
+      
+      expect(bloc.state, ReceipeItemStatus.saved)},
   );
 
   blocTest<ReceipeItemController, ReceipeItemStatus>(
@@ -100,6 +108,13 @@ void main() {
           )).thenAnswer((_) => Future.value(false));
 
     },
-    verify: (bloc) => expect(bloc.state, ReceipeItemStatus.unsaved),
+    verify: (bloc) => {
+      
+      verify(() => receipeRepository.removeSavedReceipe(
+            authUser.uid,
+            "${authUser.uid.value}0",
+          )).called(1),
+      expect(bloc.state, ReceipeItemStatus.unsaved)
+      },
   );
 }
