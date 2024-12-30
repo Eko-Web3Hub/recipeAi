@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - lcov.info - receipe/domain/model/lib/receipe/domain/model/step.dart</title>
+  <title>LCOV - lcov.info - receipe/domain/model/lib/receipe/domain/model/saved_receipe.dart</title>
   <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
 </head>
 
@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">receipe/domain/model/lib/receipe/domain/model</a> - step.dart<span style="font-size: 80%;"> (source / <a href="step.dart.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">receipe/domain/model/lib/receipe/domain/model</a> - saved_receipe.dart<span style="font-size: 80%;"> (source / <a href="saved_receipe.dart.func-c.html">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -31,9 +31,9 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">0</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
@@ -60,20 +60,22 @@
               <td>
 <pre class="sourceHeading">            Line data    Source code</pre>
 <pre class="source">
-<span id="L1"><span class="lineNum">       1</span>              : import 'package:equatable/equatable.dart';</span>
-<span id="L2"><span class="lineNum">       2</span>              : </span>
-<span id="L3"><span class="lineNum">       3</span>              : class ReceipeStep extends Equatable {</span>
-<span id="L4"><span class="lineNum">       4</span>              :   final String description;</span>
-<span id="L5"><span class="lineNum">       5</span>              :   final String? duration;</span>
-<span id="L6"><span class="lineNum">       6</span>              : </span>
-<span id="L7"><span class="lineNum">       7</span> <span class="tlaGNC tlaBgGNC">           1 :   const ReceipeStep({</span></span>
-<span id="L8"><span class="lineNum">       8</span>              :     required this.description,</span>
-<span id="L9"><span class="lineNum">       9</span>              :     required this.duration,</span>
-<span id="L10"><span class="lineNum">      10</span>              :   });</span>
-<span id="L11"><span class="lineNum">      11</span>              : </span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">           1 :   @override</span></span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           3 :   List&lt;Object?&gt; get props =&gt; [description, duration];</span></span>
-<span id="L14"><span class="lineNum">      14</span>              : }</span>
+<span id="L1"><span class="lineNum">       1</span>              : </span>
+<span id="L2"><span class="lineNum">       2</span>              : import 'package:equatable/equatable.dart';</span>
+<span id="L3"><span class="lineNum">       3</span>              : import 'package:recipe_ai/receipe/domain/model/receipe.dart';</span>
+<span id="L4"><span class="lineNum">       4</span>              : </span>
+<span id="L5"><span class="lineNum">       5</span>              : class SavedReceipe extends Equatable {</span>
+<span id="L6"><span class="lineNum">       6</span> <span class="tlaUNC tlaBgUNC">           0 :   const SavedReceipe({</span></span>
+<span id="L7"><span class="lineNum">       7</span>              :     required this.receipe,</span>
+<span id="L8"><span class="lineNum">       8</span>              :     required this.documentId,</span>
+<span id="L9"><span class="lineNum">       9</span>              :   });</span>
+<span id="L10"><span class="lineNum">      10</span>              : </span>
+<span id="L11"><span class="lineNum">      11</span>              :   final Receipe receipe;</span>
+<span id="L12"><span class="lineNum">      12</span>              :   final String documentId;</span>
+<span id="L13"><span class="lineNum">      13</span>              : </span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaUNC">           0 :   List&lt;Object?&gt; get props =&gt; [receipe, documentId];</span></span>
+<span id="L16"><span class="lineNum">      16</span>              : }</span>
         </pre>
               </td>
             </tr>
