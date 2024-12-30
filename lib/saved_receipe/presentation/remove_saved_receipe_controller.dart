@@ -1,0 +1,23 @@
+import 'dart:developer';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+
+class RemoveSavedReceipeController extends Cubit<ReceipeItemStatus> {
+  final String _documentId;
+  final IUserReceipeRepository _userReceipeRepository;
+  final IAuthUserService _authUserService;
+
+  RemoveSavedReceipeController(this._documentId, this._userReceipeRepository, this._authUserService): super(ReceipeItemStatus.saved);
+
+     Future<void> removeReceipe() async {
+    try {
+      final uid = _authUserService.currentUser!.uid;
+      await _userReceipeRepository.removeSavedReceipe(uid,_documentId);
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+  }
+}

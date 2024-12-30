@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -90,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                                   onTap: () {
                                     context
                                         .read<ReceipeItemController>()
-                                        .saveReceipe();
+                                        .toggleReceipe();
                                   },
                                 );
                               },
@@ -113,7 +114,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class ReceipeItem extends StatefulWidget {
+class ReceipeItem extends StatelessWidget {
   final Receipe receipe;
   final bool isSaved;
   final void Function() onTap;
@@ -125,25 +126,12 @@ class ReceipeItem extends StatefulWidget {
   });
 
   @override
-  State<ReceipeItem> createState() => _ReceipeItemState();
-}
-
-class _ReceipeItemState extends State<ReceipeItem> {
-  bool _saved = false;
-
-  @override
-  void initState() {
-    _saved = widget.isSaved;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push(
         '/home/recipe-details',
         extra: {
-          'receipe': widget.receipe,
+          'receipe': receipe,
         },
       ),
       child: Container(
@@ -177,12 +165,12 @@ class _ReceipeItemState extends State<ReceipeItem> {
                     children: [
                       Expanded(
                         child: Text(
-                          widget.receipe.name,
+                          receipe.name,
                           style: smallTextStyle,
                         ),
                       ),
                       Text(
-                        widget.receipe.totalCalories,
+                        receipe.totalCalories,
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
@@ -209,7 +197,7 @@ class _ReceipeItemState extends State<ReceipeItem> {
                             ),
                           ),
                           Text(
-                            widget.receipe.averageTime,
+                            receipe.averageTime,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
                               fontSize: 11,
@@ -220,13 +208,8 @@ class _ReceipeItemState extends State<ReceipeItem> {
                         ],
                       ),
                       GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _saved = !_saved;
-                            });
-                            widget.onTap();
-                          },
-                          child: SvgPicture.asset(_saved
+                          onTap: onTap,
+                          child: SvgPicture.asset(isSaved
                               ? "assets/images/favorite.svg"
                               : "assets/images/favorite_outlined.svg"))
                     ],

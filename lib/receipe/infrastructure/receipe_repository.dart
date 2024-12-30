@@ -4,9 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/saved_receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_api_serialization.dart';
+import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_serialization.dart';
+import 'package:recipe_ai/receipe/infrastructure/serialization/saved_receipe_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/user_receipe_serialization.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -61,18 +64,18 @@ class UserReceipeRepository implements IUserReceipeRepository {
   }
 
   @override
-  Stream<List<Receipe>> watchAllSavedReceipes(EntityId uid) {
+  Stream<List<SavedReceipe>> watchAllSavedReceipes(EntityId uid) {
     return _firestore
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(receipesCollection)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map<Receipe>(
-            (doc) => ReceipeApiSerialization.fromJson(doc.data()),
-          )
-          .toList();
+      return snapshot.docs.map<SavedReceipe>(
+        (doc) {
+          return SavedReceipeSerialization.fromQueryDocumentSnapshot(doc);
+        },
+      ).toList();
     });
   }
 
@@ -82,28 +85,28 @@ class UserReceipeRepository implements IUserReceipeRepository {
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(receipesCollection)
-        .doc("$uid$index")
+        .doc("${uid.value}$index")
         .get()
         .then((value) => value.exists);
   }
 
   @override
   Future<void> saveOneReceipt(EntityId uid, int index, Receipe receipe) {
-   return  _firestore
+    return _firestore
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(receipesCollection)
-        .doc("$uid$index")
-        .set(ReceipeApiSerialization.toJson(receipe));
+        .doc("${uid.value}$index")
+        .set(ReceipeSerialization.toJson(receipe), SetOptions(merge: true));
   }
-  
+
   @override
-  Future<void> removeSavedReceipe(String documentId) {
+  Future<void> removeSavedReceipe(EntityId uid, String documentId) {
     return _firestore
         .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(receipesCollection)
         .doc(documentId)
         .delete();
   }
-
-  
 }

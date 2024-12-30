@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/saved_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 
 abstract class SavedReceipeState extends Equatable {
@@ -18,7 +18,7 @@ class SavedReceipeStateLoading extends SavedReceipeState {
 
 class SavedReceipeStateLoaded extends SavedReceipeState {
   const SavedReceipeStateLoaded(this.savedReceipes);
-  final List<Receipe> savedReceipes;
+  final List<SavedReceipe> savedReceipes;
 
   @override
   List<Object> get props => [savedReceipes];

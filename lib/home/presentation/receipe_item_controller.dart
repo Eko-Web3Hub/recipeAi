@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -22,16 +20,36 @@ class ReceipeItemController extends Cubit<ReceipeItemStatus> {
   Future<void> saveReceipe() async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      await _userReceipeRepository.saveOneReceipt(uid,_index ,_receipe);
+      await _userReceipeRepository.saveOneReceipt(uid, _index, _receipe);
+      checkReceipeStatus();
     } on Exception catch (e) {
       log(e.toString());
+    }
+  }
+
+   Future<void> removeReceipe() async {
+    try {
+      final uid = _authUserService.currentUser!.uid;
+      await _userReceipeRepository.removeSavedReceipe(uid,"${uid.value}$_index");
+      checkReceipeStatus();
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> toggleReceipe() async {
+    if (state == ReceipeItemStatus.saved) {
+      removeReceipe();
+    } else {
+      saveReceipe();
     }
   }
 
   Future<void> checkReceipeStatus() async {
     try {
       final uid = _authUserService.currentUser!.uid;
-     final isSaved = await _userReceipeRepository.isOneReceiptSaved(uid, _index);
+      final isSaved =
+          await _userReceipeRepository.isOneReceiptSaved(uid, _index);
       emit(isSaved ? ReceipeItemStatus.saved : ReceipeItemStatus.unsaved);
     } on Exception catch (e) {
       log(e.toString());

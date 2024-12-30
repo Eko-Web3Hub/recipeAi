@@ -18,6 +18,7 @@ import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
+import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
@@ -154,9 +155,7 @@ GoRouter createRouter() => GoRouter(
                   name: 'SaveRecipesScreen',
                   path: '/save-recipes',
                   redirect: _guardAuth,
-                  builder: (context, state) => const Center(
-                    child: Text('Save Recipes'),
-                  ),
+                  builder: (context, state) => const SavedReceipeScreen(),
                 ),
               ],
             ),
