@@ -20,7 +20,9 @@ class AuthException {
 class AuthService implements IAuthService {
   final IFirebaseAuth _firebaseAuth;
 
-  AuthService(this._firebaseAuth);
+  AuthService(
+    this._firebaseAuth,
+  );
 
   @override
   Future<void> signOut() async {

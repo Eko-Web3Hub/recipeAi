@@ -68,4 +68,12 @@ abstract class AppText {
       'Do you really want to delete your account?';
   static const String logout = 'Logout';
   static const String noSavedReceipes = "No saved receipes";
+  static const String deleteAccountError =
+      'Failed to delete your account. An error occured';
+  static const String deleteAccountSuccess =
+      'We are sorry to see you go. Your account has been deleted';
+  static const String deleteAccountRequiredRecentLogin =
+      'You need to login again to delete your account';
+  static const String deleteAccountIncorrectPassword =
+      'The password is incorrect. Try again or reset your password on settings page';
 }
