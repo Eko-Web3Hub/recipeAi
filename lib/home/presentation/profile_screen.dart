@@ -11,6 +11,7 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/delete_account_after_an_login.dart';
 import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
@@ -23,10 +24,18 @@ TextStyle _noTextStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.w600,
 );
 
-TextStyle _deleteTextStyle(context) => GoogleFonts.poppins(
-      color: Theme.of(context).primaryColor,
-      fontWeight: FontWeight.w600,
-    );
+TextStyle _deleteTextStyle = GoogleFonts.poppins(
+  color: Colors.red,
+  fontWeight: FontWeight.w600,
+);
+
+void _delectionSuccess(BuildContext context) {
+  context.go('/login');
+  showSnackBar(
+    context,
+    AppText.deleteAccountSuccess,
+  );
+}
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -35,7 +44,10 @@ class ProfileScreen extends StatelessWidget {
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return const ConfirmationDeleteAccountWidget();
+        return ConfirmationDeleteAccountWidget(
+          noPressed: () => Navigator.of(context).pop(false),
+          yesPressed: () => Navigator.of(context).pop(true),
+        );
       },
     );
   }
@@ -51,18 +63,13 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DeleteAccountController(
-        di<IAuthUserService>(),
         di<IFirebaseAuth>(),
       ),
       child: Builder(builder: (context) {
         return BlocListener<DeleteAccountController, DeleteAccountState>(
           listener: (context, state) {
             if (state is DeleteAccountSuccess) {
-              context.go('/login');
-              showSnackBar(
-                context,
-                AppText.deleteAccountSuccess,
-              );
+              _delectionSuccess(context);
             } else if (state is DeleteAccountRequiredRecentLogin) {
               _showLoginAgainDialog(context);
             } else if (state is DeleteAccountErrorOcuured) {
@@ -137,7 +144,6 @@ class ProfileScreen extends StatelessWidget {
                       if (response == true) {
                         context.read<DeleteAccountController>().deleteAccount();
                       }
-                      Navigator.of(context).pop();
                     },
                     textColor: Colors.red,
                   ),
@@ -212,7 +218,14 @@ class _TextButton extends StatelessWidget {
 }
 
 class ConfirmationDeleteAccountWidget extends StatelessWidget {
-  const ConfirmationDeleteAccountWidget({super.key});
+  const ConfirmationDeleteAccountWidget({
+    super.key,
+    required this.noPressed,
+    required this.yesPressed,
+  });
+
+  final VoidCallback noPressed;
+  final VoidCallback yesPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -233,17 +246,17 @@ class ConfirmationDeleteAccountWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
+                onPressed: noPressed,
                 child: Text(
                   AppText.no,
                   style: _noTextStyle,
                 ),
               ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: yesPressed,
                 child: Text(
                   AppText.delete,
-                  style: _deleteTextStyle(context),
+                  style: _deleteTextStyle,
                 ),
               ),
             ],
@@ -290,61 +303,105 @@ class _LoginAgainDialog extends StatefulWidget {
 }
 
 class _LoginAgainDialogState extends State<_LoginAgainDialog> {
-  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return DialogLayout(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppText.deleteAccountRequiredRecentLogin,
-              style: titleDialogStyle,
-              textAlign: TextAlign.center,
-            ),
-            const Gap(30),
-            FormFieldWithLabel(
-              label: AppText.password,
-              hintText: AppText.enterPassword,
-              controller: _passwordController,
-              validator: passwordValidator,
-              inputType: InputType.password,
-              keyboardType: TextInputType.visiblePassword,
-            ),
-            const Gap(20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(
-                    AppText.no,
-                    style: _noTextStyle,
+      child: BlocProvider(
+        create: (context) => DeleteAccountAfterAnLoginController(
+          di<IFirebaseAuth>(),
+          di<IAuthUserService>(),
+        ),
+        child: BlocListener<DeleteAccountAfterAnLoginController,
+            DeleteAccountAfterAnLoginState>(
+          listener: (context, state) {
+            if (state is DeleteAccountAfterAnLoginSuccess) {
+              Navigator.of(context).pop();
+              _delectionSuccess(context);
+            } else if (state is DeleteAccountAfterAnErrorOcured) {
+              showSnackBar(
+                context,
+                state.message,
+                isError: true,
+              );
+            }
+          },
+          child: Builder(builder: (context) {
+            return Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    AppText.deleteAccountRequiredRecentLogin,
+                    style: titleDialogStyle,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context
-                          .read<DeleteAccountController>()
-                          .deleteAccountAfterAReLogin(
-                            _passwordController.text,
-                          );
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Text(
-                    AppText.delete,
-                    style: _deleteTextStyle(context),
+                  const Gap(30),
+                  FormFieldWithLabel(
+                    label: AppText.password,
+                    hintText: AppText.enterPassword,
+                    controller: _passwordController,
+                    validator: nonEmptyStringValidator,
+                    inputType: InputType.password,
+                    keyboardType: TextInputType.visiblePassword,
                   ),
-                ),
-              ],
-            ),
-          ],
+                  BlocBuilder<DeleteAccountAfterAnLoginController,
+                      DeleteAccountAfterAnLoginState>(
+                    builder: (context, state) {
+                      if (state is DeleteAccountAfterAnLoginIncorrectPassword) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            left: 6,
+                          ),
+                          child: Text(
+                            AppText.deleteAccountIncorrectPassword,
+                            style: GoogleFonts.poppins(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        );
+                      }
+
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                  const Gap(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          AppText.no,
+                          style: _noTextStyle,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context
+                                .read<DeleteAccountAfterAnLoginController>()
+                                .deleteAccountAfterAReLogin(
+                                  _passwordController.text,
+                                );
+                          }
+                        },
+                        child: Text(
+                          AppText.delete,
+                          style: _deleteTextStyle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );

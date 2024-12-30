@@ -73,4 +73,6 @@ abstract class AppText {
       'We are sorry to see you go. Your account has been deleted';
   static const String deleteAccountRequiredRecentLogin =
       'You need to login again to delete your account';
+  static const String deleteAccountIncorrectPassword =
+      'The password is incorrect. Try again or reset your password on settings page';
 }
