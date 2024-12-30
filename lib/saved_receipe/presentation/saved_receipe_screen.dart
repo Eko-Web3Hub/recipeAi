@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
@@ -70,12 +71,16 @@ class SavedReceipeScreen extends StatelessWidget {
                                 di<IUserReceipeRepository>(),
                                 di<IAuthUserService>(),
                               ),
-                              child: BlocBuilder<RemoveSavedReceipeController,
-                                  ReceipeItemStatus>(
+                              child: BlocListener<RemoveSavedReceipeController,ReceipeItemState>(listener: (context, state) {
+                                  if (state is ReceipeItemStateError) {
+                                    showSnackBar(context, state.message,isError: true);
+                                  }
+                              },child: BlocBuilder<RemoveSavedReceipeController,
+                                  ReceipeItemState>(
                                 builder: (context, state) {
                                   return ReceipeItem(
                                     receipe: data.receipe,
-                                    isSaved: state == ReceipeItemStatus.saved,
+                                    isSaved: state is ReceipeItemStateSaved,
                                     onTap: () {
                                       context
                                           .read<RemoveSavedReceipeController>()
@@ -83,7 +88,7 @@ class SavedReceipeScreen extends StatelessWidget {
                                     },
                                   );
                                 },
-                              ),
+                              ),),
                             );
                           },
                           itemCount: state.savedReceipes.length,

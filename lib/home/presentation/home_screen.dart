@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
@@ -76,34 +76,42 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 20, top: 15),
                         itemBuilder: (context, index) {
                           return BlocProvider(
-                            create: (context) => ReceipeItemController(
-                              homeScreenState.receipes[index],
-                              di<IUserReceipeRepository>(),
-                              di<IAuthUserService>(),
-                              index,
-                            ),
-                            child: BlocBuilder<ReceipeItemController,
-                                ReceipeItemStatus>(
-                              builder: (context, state) {
-                                return ReceipeItem(
-                                  receipe: homeScreenState.receipes[index],
-                                  isSaved: state == ReceipeItemStatus.saved,
-                                  onTap: () {
-                                    if(state == ReceipeItemStatus.saved) {
-                                      context
-                                        .read<ReceipeItemController>()
-                                        .removeReceipe();
-                                    } else {
-                                      context
-                                        .read<ReceipeItemController>()
-                                        .saveReceipe();
-                                    }
-                                   
+                              create: (context) => ReceipeItemController(
+                                    homeScreenState.receipes[index],
+                                    di<IUserReceipeRepository>(),
+                                    di<IAuthUserService>(),
+                                    index,
+                                  ),
+                              child: BlocListener<ReceipeItemController,
+                                  ReceipeItemState>(
+                                listener: (context, state) {
+                                  if (state is ReceipeItemStateError) {
+                                    showSnackBar(context, state.message,isError: true);
+                                  }
+                                },
+                                child: BlocBuilder<ReceipeItemController,
+                                    ReceipeItemState>(
+                                  builder: (context, state) {
+                                    return ReceipeItem(
+                                      receipe: homeScreenState.receipes[index],
+                                      isSaved: state is
+                                          ReceipeItemStateSaved,
+                                      onTap: () {
+                                        if (state is
+                                             ReceipeItemStateSaved) {
+                                          context
+                                              .read<ReceipeItemController>()
+                                              .removeReceipe();
+                                        } else {
+                                          context
+                                              .read<ReceipeItemController>()
+                                              .saveReceipe();
+                                        }
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                            ),
-                          );
+                                ),
+                              ));
                         },
                         itemCount: homeScreenState.receipes.length,
                       ));

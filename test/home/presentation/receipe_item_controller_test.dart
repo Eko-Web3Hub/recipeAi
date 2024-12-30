@@ -37,7 +37,7 @@ void main() {
         receipe, receipeRepository, authUserService, 0);
   }
 
-  blocTest<ReceipeItemController, ReceipeItemStatus>(
+  blocTest<ReceipeItemController, ReceipeItemState>(
     "Should be in unsaved state when not saved",
     build: () => buildSut(),
     setUp: () {
@@ -47,10 +47,11 @@ void main() {
             0,
           )).thenAnswer((_) => Future.value(false));
     },
-    verify: (bloc) => expect(bloc.state, ReceipeItemStatus.unsaved),
+    verify: (bloc) =>
+        expect(bloc.state, equals(const ReceipeItemStateUnsaved())),
   );
 
-  blocTest<ReceipeItemController, ReceipeItemStatus>(
+  blocTest<ReceipeItemController, ReceipeItemState>(
     "Should be in saved state when already saved",
     build: () => buildSut(),
     setUp: () {
@@ -60,10 +61,10 @@ void main() {
             0,
           )).thenAnswer((_) => Future.value(true));
     },
-    verify: (bloc) => expect(bloc.state, ReceipeItemStatus.saved),
+    verify: (bloc) => expect(bloc.state, equals(const ReceipeItemStateSaved())),
   );
 
-  blocTest<ReceipeItemController, ReceipeItemStatus>(
+  blocTest<ReceipeItemController, ReceipeItemState>(
     "Should save receipe",
     build: () => buildSut(),
     act: (bloc) => bloc.saveReceipe(),
@@ -80,41 +81,87 @@ void main() {
           )).thenAnswer((_) => Future.value(true));
     },
     verify: (bloc) => {
-      
       verify(() => receipeRepository.saveOneReceipt(
             authUser.uid,
             0,
             receipe,
           )).called(1),
-      
-      expect(bloc.state, ReceipeItemStatus.saved)},
+      expect(bloc.state, equals(const ReceipeItemStateSaved()))
+    },
   );
 
-  blocTest<ReceipeItemController, ReceipeItemStatus>(
+  //should emit exception when saving fails
+  blocTest<ReceipeItemController, ReceipeItemState>(
+    "Should emit error when saving fails",
+    build: () => buildSut(),
+    act: (bloc) => bloc.saveReceipe(),
+    setUp: () {
+      when(() => authUserService.currentUser).thenReturn(authUser);
+
+      when(() => receipeRepository.saveOneReceipt(
+            authUser.uid,
+            0,
+            receipe,
+          )).thenThrow(Exception());
+
+      when(() => receipeRepository.isOneReceiptSaved(
+            authUser.uid,
+            0,
+          )).thenThrow(Exception());
+    },
+    verify: (bloc) => {
+      expect(bloc.state,
+          equals(const ReceipeItemStateError("Error saving receipe")))
+    },
+  );
+
+  //should emit error when remove receipe failed
+    blocTest<ReceipeItemController, ReceipeItemState>(
+    "Should emit error when removing fails",
+    build: () => buildSut(),
+    act: (bloc) => bloc.removeReceipe(),
+    setUp: () {
+      when(() => authUserService.currentUser).thenReturn(authUser);
+
+      when(() => receipeRepository.removeSavedReceipe(
+            authUser.uid,
+            "${authUser.uid.value}0",
+          )).thenThrow(Exception());
+
+      when(() => receipeRepository.isOneReceiptSaved(
+            authUser.uid,
+            0,
+          )).thenThrow(Exception());
+    },
+    verify: (bloc) => {
+      expect(bloc.state,
+          equals(const ReceipeItemStateError("Error removing saved receipe")))
+    },
+  );
+
+
+  blocTest<ReceipeItemController, ReceipeItemState>(
     "Should remove saved receipe",
     build: () => buildSut(),
     act: (bloc) => bloc.removeReceipe(),
     setUp: () {
-     
       when(() => authUserService.currentUser).thenReturn(authUser);
       when(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
             "${authUser.uid.value}0",
           )).thenAnswer((_) => Future.value());
 
-            when(() => receipeRepository.isOneReceiptSaved(
+      when(() => receipeRepository.isOneReceiptSaved(
             authUser.uid,
             0,
           )).thenAnswer((_) => Future.value(false));
-
     },
     verify: (bloc) => {
-      
       verify(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
             "${authUser.uid.value}0",
           )).called(1),
-      expect(bloc.state, ReceipeItemStatus.unsaved)
-      },
+      expect(bloc.state, equals(const ReceipeItemStateUnsaved()))
+    },
   );
 }

@@ -1,10 +1,10 @@
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/saved_receipe/presentation/remove_saved_receipe_controller.dart';
 
@@ -20,12 +20,6 @@ void main() {
     uid: EntityId("uid"),
     email: "test@gmail.com",
   );
-  const receipe = Receipe(
-      name: "name",
-      ingredients: [],
-      steps: [],
-      averageTime: "",
-      totalCalories: "");
 
     setUp(
     () {
@@ -40,15 +34,17 @@ void main() {
   }
 
 
-   blocTest<RemoveSavedReceipeController, ReceipeItemStatus>(
+   blocTest<RemoveSavedReceipeController, ReceipeItemState>(
     'should initialy be in saved state',
     build: () => buildSut(),
     verify: (bloc) => {
-      expect(bloc.state, ReceipeItemStatus.saved),
+      expect(bloc.state, equals(const ReceipeItemStateSaved())),
     },
   );
 
-  blocTest<RemoveSavedReceipeController, ReceipeItemStatus>(
+
+
+  blocTest<RemoveSavedReceipeController, ReceipeItemState>(
     'Should remove saved receipe',
     build: () => buildSut(),
     setUp: () {
@@ -70,6 +66,26 @@ void main() {
             "uid0",
           )).called(1),
       },
+  );
+
+   blocTest<RemoveSavedReceipeController, ReceipeItemState>(
+    "Should emit error when removing fails",
+    build: () => buildSut(),
+    act: (bloc) => bloc.removeReceipe(),
+    setUp: () {
+      when(() => authUserService.currentUser).thenReturn(authUser);
+
+      when(() => receipeRepository.removeSavedReceipe(
+            authUser.uid,
+           "${authUser.uid.value}0",
+          )).thenThrow(Exception());
+
+     
+    },
+    verify: (bloc) => {
+      expect(bloc.state,
+          equals(const ReceipeItemStateError("Error removing receipe")))
+    },
   );
 
 
