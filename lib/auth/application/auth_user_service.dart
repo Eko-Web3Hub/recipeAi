@@ -7,7 +7,16 @@ abstract class IAuthUserService {
   Stream<AuthUser?> get authStateChanges;
 }
 
+class RequiresRecentLoginException implements Exception {}
+
+class DeleteAccountExeption implements Exception {
+  final String message;
+
+  DeleteAccountExeption(this.message);
+}
+
 abstract class IFirebaseAuth {
+  Future<void> deleteAccount();
   Future<void> signOut();
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password});
@@ -31,14 +40,18 @@ class FirebaseAuthProd implements IFirebaseAuth {
   User? get currentUser => _firebaseAuth.currentUser;
 
   @override
-  Future<void> signInWithEmailAndPassword(
-          {required String email, required String password}) =>
+  Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) =>
       _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 
   @override
-  Future<void> createUserWithEmailAndPassword(
-          {required String email, required String password}) =>
+  Future<void> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) =>
       _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -46,6 +59,11 @@ class FirebaseAuthProd implements IFirebaseAuth {
 
   @override
   Future<void> signOut() => _firebaseAuth.signOut();
+
+  @override
+  Future<void> deleteAccount() {
+    return _firebaseAuth.currentUser!.delete();
+  }
 }
 
 class AuthUserService implements IAuthUserService {
