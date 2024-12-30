@@ -63,11 +63,14 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
   Future<void> checkReceipeStatus() async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      final isSaved =
-          await _userReceipeRepository.isOneReceiptSaved(uid, _index);
-      emit(isSaved
+      _userReceipeRepository.isReceiptSaved(uid, _index).listen(
+            (isSaved) {
+               emit(isSaved
           ? const ReceipeItemStateSaved()
           : const ReceipeItemStateUnsaved());
+            },
+          );
+     
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error checking receipe status"));
     }

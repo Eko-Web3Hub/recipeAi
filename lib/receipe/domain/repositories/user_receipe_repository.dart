@@ -15,6 +15,7 @@ abstract class IUserReceipeRepository {
 
    Future<void> saveOneReceipt(EntityId uid,int index ,Receipe receipe);
    Future<bool> isOneReceiptSaved(EntityId uid,int index);
+   Stream<bool> isReceiptSaved(EntityId uid,int index);
 
     Future<void> removeSavedReceipe(EntityId uid,String documentId);
 

@@ -42,10 +42,10 @@ void main() {
     build: () => buildSut(),
     setUp: () {
       when(() => authUserService.currentUser).thenReturn(authUser);
-      when(() => receipeRepository.isOneReceiptSaved(
+      when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
             0,
-          )).thenAnswer((_) => Future.value(false));
+          )).thenAnswer((_) => Stream.value(false));
     },
     verify: (bloc) =>
         expect(bloc.state, equals(const ReceipeItemStateUnsaved())),
@@ -56,10 +56,10 @@ void main() {
     build: () => buildSut(),
     setUp: () {
       when(() => authUserService.currentUser).thenReturn(authUser);
-      when(() => receipeRepository.isOneReceiptSaved(
+      when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
             0,
-          )).thenAnswer((_) => Future.value(true));
+          )).thenAnswer((_) => Stream.value(true));
     },
     verify: (bloc) => expect(bloc.state, equals(const ReceipeItemStateSaved())),
   );
@@ -75,10 +75,10 @@ void main() {
             0,
             receipe,
           )).thenAnswer((_) => Future.value());
-      when(() => receipeRepository.isOneReceiptSaved(
+      when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
             0,
-          )).thenAnswer((_) => Future.value(true));
+          )).thenAnswer((_) => Stream.value(true));
     },
     verify: (bloc) => {
       verify(() => receipeRepository.saveOneReceipt(
@@ -104,7 +104,7 @@ void main() {
             receipe,
           )).thenThrow(Exception());
 
-      when(() => receipeRepository.isOneReceiptSaved(
+      when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
             0,
           )).thenThrow(Exception());
@@ -128,7 +128,7 @@ void main() {
             "${authUser.uid.value}0",
           )).thenThrow(Exception());
 
-      when(() => receipeRepository.isOneReceiptSaved(
+      when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
             0,
           )).thenThrow(Exception());
@@ -151,10 +151,10 @@ void main() {
             "${authUser.uid.value}0",
           )).thenAnswer((_) => Future.value());
 
-      when(() => receipeRepository.isOneReceiptSaved(
+      when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
             0,
-          )).thenAnswer((_) => Future.value(false));
+          )).thenAnswer((_) => Stream.value(false));
     },
     verify: (bloc) => {
       verify(() => receipeRepository.removeSavedReceipe(

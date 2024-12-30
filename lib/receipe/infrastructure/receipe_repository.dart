@@ -91,6 +91,17 @@ class UserReceipeRepository implements IUserReceipeRepository {
   }
 
   @override
+  Stream<bool> isReceiptSaved(EntityId uid, int index) {
+    return _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(receipesCollection)
+        .doc("${uid.value}$index")
+        .snapshots()
+        .map((snapshot) => snapshot.exists);
+  }
+
+  @override
   Future<void> saveOneReceipt(EntityId uid, int index, Receipe receipe) {
     return _firestore
         .collection(kitchenInventoryCollection)
