@@ -65,7 +65,7 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
   bool isOptionSelected(String option) => selectedOptions.contains(option);
 
   @override
-  List<Object?> get props => [...super.props, options, type];
+  List<Object?> get props => [...super.props, options];
 
   final List<String> selectedOptions = [];
 
