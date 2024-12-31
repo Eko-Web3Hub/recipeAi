@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
+import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -70,9 +75,43 @@ class HomeScreen extends StatelessWidget {
                           child: ListView.builder(
                         padding: const EdgeInsets.only(bottom: 20, top: 15),
                         itemBuilder: (context, index) {
-                          return ReceipeItem(
-                            receipe: homeScreenState.receipes[index],
-                          );
+                          return BlocProvider(
+                              create: (context) => ReceipeItemController(
+                                    homeScreenState.receipes[index],
+                                    di<IUserReceipeRepository>(),
+                                    di<IAuthUserService>(),
+                                    
+                                  ),
+                              child: BlocListener<ReceipeItemController,
+                                  ReceipeItemState>(
+                                listener: (context, state) {
+                                  if (state is ReceipeItemStateError) {
+                                    showSnackBar(context, state.message,isError: true);
+                                  }
+                                },
+                                child: BlocBuilder<ReceipeItemController,
+                                    ReceipeItemState>(
+                                  builder: (context, state) {
+                                    return ReceipeItem(
+                                      receipe: homeScreenState.receipes[index],
+                                      isSaved: state is
+                                          ReceipeItemStateSaved,
+                                      onTap: () {
+                                        if (state is
+                                             ReceipeItemStateSaved) {
+                                          context
+                                              .read<ReceipeItemController>()
+                                              .removeReceipe();
+                                        } else {
+                                          context
+                                              .read<ReceipeItemController>()
+                                              .saveReceipe();
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ));
                         },
                         itemCount: homeScreenState.receipes.length,
                       ));
@@ -92,9 +131,13 @@ class HomeScreen extends StatelessWidget {
 
 class ReceipeItem extends StatelessWidget {
   final Receipe receipe;
+  final bool isSaved;
+  final void Function() onTap;
   const ReceipeItem({
     super.key,
     required this.receipe,
+    required this.isSaved,
+    required this.onTap,
   });
 
   @override
@@ -153,23 +196,38 @@ class ReceipeItem extends StatelessWidget {
                     ],
                   ),
                   const Gap(8),
-                  Text(
-                    "Avg Time",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400,
-                      color: neutralGreyColor,
-                      fontSize: 11,
-                      height: 16.5 / 11,
-                    ),
-                  ),
-                  Text(
-                    receipe.averageTime,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                      color: neutralBlackColor,
-                      height: 16.5 / 11,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Avg Time",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w400,
+                              color: neutralGreyColor,
+                              fontSize: 11,
+                              height: 16.5 / 11,
+                            ),
+                          ),
+                          Text(
+                            receipe.averageTime,
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11,
+                              color: neutralBlackColor,
+                              height: 16.5 / 11,
+                            ),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                          onTap: onTap,
+                          child: SvgPicture.asset(isSaved
+                              ? "assets/images/favorite.svg"
+                              : "assets/images/favorite_outlined.svg"))
+                    ],
                   ),
                 ],
               ),
