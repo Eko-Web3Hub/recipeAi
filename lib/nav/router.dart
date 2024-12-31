@@ -14,6 +14,7 @@ import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredi
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
+import 'package:recipe_ai/notification/presentation/notification_screen.dart';
 import 'package:recipe_ai/onboarding/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -172,11 +173,7 @@ GoRouter createRouter() => GoRouter(
                   name: 'NotificationScreen',
                   path: '/notification-screen',
                   redirect: _guardAuth,
-                  builder: (context, state) => const Center(
-                    child: Text(
-                      'Notification Screen',
-                    ),
-                  ),
+                  builder: (context, state) => const NotificationScreen(),
                 ),
               ],
             ),
