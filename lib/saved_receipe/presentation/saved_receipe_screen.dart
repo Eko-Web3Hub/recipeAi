@@ -12,6 +12,20 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_progre
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
+import '../../utils/styles.dart';
+
+// AppBar(
+//             surfaceTintColor: Colors.white,
+//             backgroundColor: Colors.white,
+//             title: Text(
+//               'Saved Receipes',
+//               style: Theme.of(context)
+//                   .textTheme
+//                   .displayLarge
+//                   ?.copyWith(fontSize: 17),
+//             ),
+//           ),
+
 class SavedReceipeScreen extends StatelessWidget {
   const SavedReceipeScreen({super.key});
 
@@ -22,21 +36,9 @@ class SavedReceipeScreen extends StatelessWidget {
         di<IUserReceipeRepository>(),
         di<IAuthUserService>(),
       ),
-      child: Builder(builder: (context) {
-        return SafeArea(
-            child: Scaffold(
-          appBar: AppBar(
-            surfaceTintColor: Colors.white,
-            backgroundColor: Colors.white,
-            title: Text(
-              'Saved Receipes',
-              style: Theme.of(context)
-                  .textTheme
-                  .displayLarge
-                  ?.copyWith(fontSize: 17),
-            ),
-          ),
-          body: Padding(
+      child: Builder(
+        builder: (context) {
+          return Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: horizontalScreenPadding,
             ),
@@ -52,14 +54,22 @@ class SavedReceipeScreen extends StatelessWidget {
 
                 if (state is SavedReceipeStateError) {
                   return Center(
-                    child: Text(state.message),
+                    child: Text(
+                      state.message,
+                      style: descriptionPlaceHolderStyle,
+                      textAlign: TextAlign.center,
+                    ),
                   );
                 }
 
                 if (state is SavedReceipeStateLoaded) {
                   return state.savedReceipes.isEmpty
-                      ? const Center(
-                          child: Text(AppText.noSavedReceipes),
+                      ? Center(
+                          child: Text(
+                            AppText.noSavedReceipes,
+                            style: descriptionPlaceHolderStyle,
+                            textAlign: TextAlign.center,
+                          ),
                         )
                       : ListView.builder(
                           padding: const EdgeInsets.only(bottom: 20, top: 15),
@@ -67,7 +77,6 @@ class SavedReceipeScreen extends StatelessWidget {
                             final data = state.savedReceipes[index];
                             return BlocProvider(
                               create: (context) => RemoveSavedReceipeController(
-                               
                                 di<IUserReceipeRepository>(),
                                 di<IAuthUserService>(),
                               ),
@@ -106,9 +115,9 @@ class SavedReceipeScreen extends StatelessWidget {
                 return const SizedBox();
               },
             ),
-          ),
-        ));
-      }),
+          );
+        },
+      ),
     );
   }
 }

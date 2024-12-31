@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/utils/styles.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -32,10 +32,7 @@ class _EmptyNotificationScreen extends StatelessWidget {
         const Gap(20),
         Text(
           AppText.notificationEmptyTitle,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: descriptionPlaceHolderStyle,
           textAlign: TextAlign.center,
         ),
       ],

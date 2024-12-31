@@ -20,3 +20,8 @@ TextStyle titleDialogStyle = GoogleFonts.poppins(
   fontSize: 17,
   fontWeight: FontWeight.w500,
 );
+
+TextStyle descriptionPlaceHolderStyle = GoogleFonts.poppins(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+);
