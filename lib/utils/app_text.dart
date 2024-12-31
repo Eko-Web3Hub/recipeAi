@@ -38,7 +38,7 @@ abstract class AppText {
   static const String yourKitchenInventory = 'Your Kitchen Inventory';
   static const emptyKitchenText =
       'It looks like your kitchen inventory is empty!';
-  static const String clickHereToAdd = 'Click here to add';
+  static const String clickHereToAdd = 'Click here to add manually';
   static const String or = 'or';
   static const takeYourReceiptPicture = 'Take your receipt picture';
   static const String addKitchen = 'Add Inventory Kitchen';
