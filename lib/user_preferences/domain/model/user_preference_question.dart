@@ -60,8 +60,6 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
     selectedOptions.add(option);
   }
 
-  List<String> get retrieveSelectedOptions => selectedOptions;
-
   bool isOptionSelected(String option) => selectedOptions.contains(option);
 
   @override
