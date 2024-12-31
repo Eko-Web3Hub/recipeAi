@@ -68,7 +68,7 @@ abstract class AppText {
       'Do you really want to delete your account?';
   static const String logout = 'Logout';
   static const String noSavedReceipes =
-      "No saved receipes 😉. \nGo select between your available receipes";
+      "No saved receipes 😉. \nGo select between your available receipes !";
   static const String deleteAccountError =
       'Failed to delete your account. An error occured';
   static const String deleteAccountSuccess =

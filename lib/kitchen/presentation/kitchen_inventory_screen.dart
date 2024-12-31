@@ -351,7 +351,7 @@ class _IngredientItemState extends State<IngredientItem> {
             ),
             const Spacer(),
             SizedBox(
-              width: 30,
+              width: 50,
               height: 30,
               child: TextFormField(
                 readOnly: widget.readOnly,
