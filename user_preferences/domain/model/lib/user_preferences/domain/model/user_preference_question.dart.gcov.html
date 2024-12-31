@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">52.0&nbsp;%</td>
-            <td class="headerCovTableEntry">25</td>
-            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryMed">75.0&nbsp;%</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntry">18</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-31 21:44:12</td>
+            <td class="headerValue">2024-12-31 22:08:25</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -66,12 +66,12 @@
 <span id="L4"><span class="lineNum">       4</span>              :   multipleChoice,</span>
 <span id="L5"><span class="lineNum">       5</span>              : }</span>
 <span id="L6"><span class="lineNum">       6</span>              : </span>
-<span id="L7"><span class="lineNum">       7</span> <span class="tlaUNC tlaBgUNC">           0 : UserPreferenceQuestionType userPreferenceQuestionTypeFromString(String type) {</span></span>
+<span id="L7"><span class="lineNum">       7</span> <span class="tlaGNC tlaBgGNC">           1 : UserPreferenceQuestionType userPreferenceQuestionTypeFromString(String type) {</span></span>
 <span id="L8"><span class="lineNum">       8</span>              :   switch (type) {</span>
-<span id="L9"><span class="lineNum">       9</span> <span class="tlaUNC">           0 :     case 'multipleChoice':</span></span>
+<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">           1 :     case 'multipleChoice':</span></span>
 <span id="L10"><span class="lineNum">      10</span>              :       return UserPreferenceQuestionType.multipleChoice;</span>
 <span id="L11"><span class="lineNum">      11</span>              :     default:</span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaUNC">           0 :       throw UnimplementedError();</span></span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">           1 :       throw UnimplementedError();</span></span>
 <span id="L13"><span class="lineNum">      13</span>              :   }</span>
 <span id="L14"><span class="lineNum">      14</span>              : }</span>
 <span id="L15"><span class="lineNum">      15</span>              : </span>
@@ -80,7 +80,7 @@
 <span id="L18"><span class="lineNum">      18</span>              :   final String description;</span>
 <span id="L19"><span class="lineNum">      19</span>              :   final UserPreferenceQuestionType type;</span>
 <span id="L20"><span class="lineNum">      20</span>              : </span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC tlaBgGNC">           2 :   const UserPreferenceQuestion({</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">           3 :   const UserPreferenceQuestion({</span></span>
 <span id="L22"><span class="lineNum">      22</span>              :     required this.title,</span>
 <span id="L23"><span class="lineNum">      23</span>              :     required this.description,</span>
 <span id="L24"><span class="lineNum">      24</span>              :     required this.type,</span>
@@ -95,7 +95,7 @@
 <span id="L33"><span class="lineNum">      33</span>              : class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {</span>
 <span id="L34"><span class="lineNum">      34</span>              :   final List&lt;String&gt; options;</span>
 <span id="L35"><span class="lineNum">      35</span>              : </span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           2 :   UserPreferenceQuestionMultipleChoice({</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           3 :   UserPreferenceQuestionMultipleChoice({</span></span>
 <span id="L37"><span class="lineNum">      37</span>              :     required super.title,</span>
 <span id="L38"><span class="lineNum">      38</span>              :     required super.description,</span>
 <span id="L39"><span class="lineNum">      39</span>              :     required super.type,</span>
@@ -113,35 +113,33 @@
 <span id="L51"><span class="lineNum">      51</span>              :     );</span>
 <span id="L52"><span class="lineNum">      52</span>              :   }</span>
 <span id="L53"><span class="lineNum">      53</span>              : </span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC tlaBgGNC">           1 :   void answer(String option) {</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">           2 :     if (selectedOptions.contains(option)) {</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaUNC tlaBgUNC">           0 :       selectedOptions.remove(option);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC tlaBgGNC">           2 :   void answer(String option) {</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">           4 :     if (selectedOptions.contains(option)) {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">           2 :       selectedOptions.remove(option);</span></span>
 <span id="L57"><span class="lineNum">      57</span>              :       return;</span>
 <span id="L58"><span class="lineNum">      58</span>              :     }</span>
 <span id="L59"><span class="lineNum">      59</span>              : </span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC tlaBgGNC">           2 :     selectedOptions.add(option);</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           4 :     selectedOptions.add(option);</span></span>
 <span id="L61"><span class="lineNum">      61</span>              :   }</span>
 <span id="L62"><span class="lineNum">      62</span>              : </span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaUNC tlaBgUNC">           0 :   List&lt;String&gt; get retrieveSelectedOptions =&gt; selectedOptions;</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">           3 :   bool isOptionSelected(String option) =&gt; selectedOptions.contains(option);</span></span>
 <span id="L64"><span class="lineNum">      64</span>              : </span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :   bool isOptionSelected(String option) =&gt; selectedOptions.contains(option);</span></span>
-<span id="L66"><span class="lineNum">      66</span>              : </span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC tlaBgGNC">           1 :   @override</span></span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">           4 :   List&lt;Object?&gt; get props =&gt; [...super.props, options, type];</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">           1 :   @override</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">           3 :   List&lt;Object?&gt; get props =&gt; [...super.props, options];</span></span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span>              :   final List&lt;String&gt; selectedOptions = [];</span>
 <span id="L69"><span class="lineNum">      69</span>              : </span>
-<span id="L70"><span class="lineNum">      70</span>              :   final List&lt;String&gt; selectedOptions = [];</span>
-<span id="L71"><span class="lineNum">      71</span>              : </span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">           1 :   @override</span></span>
-<span id="L73"><span class="lineNum">      73</span>              :   Map&lt;String, dynamic&gt; toJson() {</span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">           1 :     final json = &lt;String, dynamic&gt;{};</span></span>
-<span id="L75"><span class="lineNum">      75</span>              : </span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">           2 :     for (final option in options) {</span></span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">           3 :       json[option] = selectedOptions.contains(option);</span></span>
-<span id="L78"><span class="lineNum">      78</span>              :     }</span>
-<span id="L79"><span class="lineNum">      79</span>              : </span>
-<span id="L80"><span class="lineNum">      80</span>              :     return json;</span>
-<span id="L81"><span class="lineNum">      81</span>              :   }</span>
-<span id="L82"><span class="lineNum">      82</span>              : }</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           2 :   @override</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :   Map&lt;String, dynamic&gt; toJson() {</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">           2 :     final json = &lt;String, dynamic&gt;{};</span></span>
+<span id="L73"><span class="lineNum">      73</span>              : </span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">           4 :     for (final option in options) {</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">           6 :       json[option] = selectedOptions.contains(option);</span></span>
+<span id="L76"><span class="lineNum">      76</span>              :     }</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              :     return json;</span>
+<span id="L79"><span class="lineNum">      79</span>              :   }</span>
+<span id="L80"><span class="lineNum">      80</span>              : }</span>
         </pre>
               </td>
             </tr>
