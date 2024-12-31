@@ -75,4 +75,7 @@ abstract class AppText {
       'You need to login again to delete your account';
   static const String deleteAccountIncorrectPassword =
       'The password is incorrect. Try again or reset your password on settings page';
+  static const String startScreenDescription =
+      'Turn your ingredients into culinary \nmasterpieces';
+  static const String startCooking = 'Start Cooking';
 }

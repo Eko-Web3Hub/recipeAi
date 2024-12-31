@@ -14,6 +14,7 @@ import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredi
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
+import 'package:recipe_ai/onboarding/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
@@ -50,8 +51,13 @@ GoRouter createRouter() => GoRouter(
 
             return authState == AuthNavigationState.loggedIn
                 ? '/home'
-                : '/login';
+                : '/onboarding';
           },
+        ),
+        GoRoute(
+          name: 'OnBoarding',
+          path: '/onboarding',
+          builder: (context, state) => const StartScreen(),
         ),
         GoRoute(
           name: 'Login',

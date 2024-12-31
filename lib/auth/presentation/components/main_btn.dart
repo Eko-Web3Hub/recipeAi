@@ -13,6 +13,7 @@ class MainBtn extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.isLoading = false,
+    this.leftArrowPadding = 30,
   });
 
   final String text;
@@ -22,6 +23,7 @@ class MainBtn extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final bool isLoading;
+  final double leftArrowPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +55,9 @@ class MainBtn extends StatelessWidget {
                 ),
                 Visibility(
                   visible: showRightIcon,
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 30.0),
-                    child: _ArrowIconWidget(),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: leftArrowPadding),
+                    child: const _ArrowIconWidget(),
                   ),
                 ),
               ],
