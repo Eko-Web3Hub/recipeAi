@@ -14,18 +14,6 @@ import 'package:recipe_ai/utils/constant.dart';
 
 import '../../utils/styles.dart';
 
-// AppBar(
-//             surfaceTintColor: Colors.white,
-//             backgroundColor: Colors.white,
-//             title: Text(
-//               'Saved Receipes',
-//               style: Theme.of(context)
-//                   .textTheme
-//                   .displayLarge
-//                   ?.copyWith(fontSize: 17),
-//             ),
-//           ),
-
 class SavedReceipeScreen extends StatelessWidget {
   const SavedReceipeScreen({super.key});
 

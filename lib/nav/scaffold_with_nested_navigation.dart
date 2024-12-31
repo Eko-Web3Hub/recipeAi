@@ -28,11 +28,13 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
     Key? key,
     required this.navigationShell,
     required this.hideNavBar,
+    this.appBarTitle,
   }) : super(
           key: key ?? const ValueKey<String>("ScaffoldWithNestedNavigation"),
         );
   final StatefulNavigationShell navigationShell;
   final bool hideNavBar;
+  final String? appBarTitle;
 
   void _goBranch(int index) {
     navigationShell.goBranch(
@@ -44,6 +46,19 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarTitle != null
+          ? AppBar(
+              surfaceTintColor: Colors.white,
+              backgroundColor: Colors.white,
+              title: Text(
+                appBarTitle!,
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge
+                    ?.copyWith(fontSize: 17),
+              ),
+            )
+          : null,
       resizeToAvoidBottomInset: false,
       body: navigationShell,
       floatingActionButton: FloatingActionButton(

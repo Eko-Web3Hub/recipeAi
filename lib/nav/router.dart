@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,6 +80,7 @@ GoRouter createRouter() => GoRouter(
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) =>
               ScaffoldWithNestedNavigation(
+            appBarTitle: genAppBarTitle(state.fullPath),
             navigationShell: navigationShell,
             hideNavBar: false,
           ),
@@ -190,3 +192,17 @@ GoRouter createRouter() => GoRouter(
         ),
       ],
     );
+
+String? genAppBarTitle(String? path) {
+  log('genAppBarTitle: $path');
+  switch (path) {
+    case '/save-recipes':
+      return 'Saved Recipes';
+    case '/notification-screen':
+      return 'Notifications';
+    case '/profil-screen':
+      return 'Profile';
+    default:
+      return null;
+  }
+}
