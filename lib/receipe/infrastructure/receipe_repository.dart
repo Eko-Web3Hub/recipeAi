@@ -4,12 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/model/saved_receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_api_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_serialization.dart';
-import 'package:recipe_ai/receipe/infrastructure/serialization/saved_receipe_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/user_receipe_serialization.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -64,50 +62,52 @@ class UserReceipeRepository implements IUserReceipeRepository {
   }
 
   @override
-  Stream<List<SavedReceipe>> watchAllSavedReceipes(EntityId uid) {
+  Stream<List<Receipe>> watchAllSavedReceipes(EntityId uid) {
     return _firestore
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(receipesCollection)
         .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map<SavedReceipe>(
-        (doc) {
-          return SavedReceipeSerialization.fromQueryDocumentSnapshot(doc);
-        },
-      ).toList();
+         .map((snapshot) {
+      return snapshot.docs
+          .map<Receipe>(
+            (doc) => ReceipeSerialization.fromJson(doc.data()),
+          )
+          .toList();
     });
+        
+       
   }
 
   @override
-  Future<bool> isOneReceiptSaved(EntityId uid, int index) {
+  Future<bool> isOneReceiptSaved(EntityId uid, String receipeName) {
     return _firestore
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(receipesCollection)
-        .doc("${uid.value}$index")
+        .doc(receipeName)
         .get()
         .then((value) => value.exists);
   }
 
   @override
-  Stream<bool> isReceiptSaved(EntityId uid, int index) {
+  Stream<bool> isReceiptSaved(EntityId uid, String receipeName) {
     return _firestore
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(receipesCollection)
-        .doc("${uid.value}$index")
+        .doc(receipeName)
         .snapshots()
         .map((snapshot) => snapshot.exists);
   }
 
   @override
-  Future<void> saveOneReceipt(EntityId uid, int index, Receipe receipe) {
+  Future<void> saveOneReceipt(EntityId uid, Receipe receipe) {
     return _firestore
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(receipesCollection)
-        .doc("${uid.value}$index")
+        .doc(receipe.name.toLowerCase().replaceAll(' ', ''))
         .set(ReceipeSerialization.toJson(receipe), SetOptions(merge: true));
   }
 

@@ -5,16 +5,15 @@ import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 
 class RemoveSavedReceipeController extends Cubit<ReceipeItemState> {
-  final String _documentId;
   final IUserReceipeRepository _userReceipeRepository;
   final IAuthUserService _authUserService;
 
-  RemoveSavedReceipeController(this._documentId, this._userReceipeRepository, this._authUserService): super(const ReceipeItemStateSaved());
+  RemoveSavedReceipeController( this._userReceipeRepository, this._authUserService): super(const ReceipeItemStateSaved());
 
-     Future<void> removeReceipe() async {
+     Future<void> removeReceipe(String name) async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      await _userReceipeRepository.removeSavedReceipe(uid,_documentId);
+      await _userReceipeRepository.removeSavedReceipe(uid,name);
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error removing receipe"));
     }

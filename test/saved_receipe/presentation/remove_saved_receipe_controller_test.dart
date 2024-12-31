@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
+import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/saved_receipe/presentation/remove_saved_receipe_controller.dart';
 
@@ -20,6 +21,18 @@ void main() {
     uid: EntityId("uid"),
     email: "test@gmail.com",
   );
+    const receipe = Receipe(
+      name: "name",
+      ingredients: [],
+      steps: [],
+      averageTime: "",
+      totalCalories: "");
+
+      String receipeName() {
+    return receipe.name.toLowerCase().replaceAll(' ', '');
+  }
+
+
 
     setUp(
     () {
@@ -30,7 +43,7 @@ void main() {
 
   RemoveSavedReceipeController buildSut() {
     return RemoveSavedReceipeController(
-        "uid0", receipeRepository, authUserService);
+        receipeRepository, authUserService);
   }
 
 
@@ -53,17 +66,17 @@ void main() {
       ).thenReturn(authUser);
       when(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
-            "uid0",
+            receipeName(),
           )).thenAnswer(
         (_) => Future.value(),
       );
 
     },
-    act: (bloc) => bloc.removeReceipe(),
+    act: (bloc) => bloc.removeReceipe(receipeName()),
     verify: (bloc) => {
       verify(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
-            "uid0",
+           receipeName(),
           )).called(1),
       },
   );
@@ -71,13 +84,13 @@ void main() {
    blocTest<RemoveSavedReceipeController, ReceipeItemState>(
     "Should emit error when removing fails",
     build: () => buildSut(),
-    act: (bloc) => bloc.removeReceipe(),
+    act: (bloc) => bloc.removeReceipe(receipeName()),
     setUp: () {
       when(() => authUserService.currentUser).thenReturn(authUser);
 
       when(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
-           "${authUser.uid.value}0",
+           receipeName(),
           )).thenThrow(Exception());
 
      

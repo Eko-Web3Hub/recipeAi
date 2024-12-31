@@ -25,6 +25,10 @@ void main() {
       averageTime: "",
       totalCalories: "");
 
+  String receipeName() {
+    return receipe.name.toLowerCase().replaceAll(' ', '');
+  }
+
   setUp(
     () {
       receipeRepository = ReceipeRepositoryMock();
@@ -34,7 +38,10 @@ void main() {
 
   ReceipeItemController buildSut() {
     return ReceipeItemController(
-        receipe, receipeRepository, authUserService, 0);
+      receipe,
+      receipeRepository,
+      authUserService,
+    );
   }
 
   blocTest<ReceipeItemController, ReceipeItemState>(
@@ -44,7 +51,7 @@ void main() {
       when(() => authUserService.currentUser).thenReturn(authUser);
       when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
-            0,
+            receipeName(),
           )).thenAnswer((_) => Stream.value(false));
     },
     verify: (bloc) =>
@@ -58,7 +65,7 @@ void main() {
       when(() => authUserService.currentUser).thenReturn(authUser);
       when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
-            0,
+            receipeName(),
           )).thenAnswer((_) => Stream.value(true));
     },
     verify: (bloc) => expect(bloc.state, equals(const ReceipeItemStateSaved())),
@@ -72,18 +79,16 @@ void main() {
       when(() => authUserService.currentUser).thenReturn(authUser);
       when(() => receipeRepository.saveOneReceipt(
             authUser.uid,
-            0,
             receipe,
           )).thenAnswer((_) => Future.value());
       when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
-            0,
+            receipeName(),
           )).thenAnswer((_) => Stream.value(true));
     },
     verify: (bloc) => {
       verify(() => receipeRepository.saveOneReceipt(
             authUser.uid,
-            0,
             receipe,
           )).called(1),
       expect(bloc.state, equals(const ReceipeItemStateSaved()))
@@ -100,13 +105,13 @@ void main() {
 
       when(() => receipeRepository.saveOneReceipt(
             authUser.uid,
-            0,
+            
             receipe,
           )).thenThrow(Exception());
 
       when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
-            0,
+            receipeName(),
           )).thenThrow(Exception());
     },
     verify: (bloc) => {
@@ -116,7 +121,7 @@ void main() {
   );
 
   //should emit error when remove receipe failed
-    blocTest<ReceipeItemController, ReceipeItemState>(
+  blocTest<ReceipeItemController, ReceipeItemState>(
     "Should emit error when removing fails",
     build: () => buildSut(),
     act: (bloc) => bloc.removeReceipe(),
@@ -125,12 +130,12 @@ void main() {
 
       when(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
-            "${authUser.uid.value}0",
+            receipeName(),
           )).thenThrow(Exception());
 
       when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
-            0,
+            receipeName(),
           )).thenThrow(Exception());
     },
     verify: (bloc) => {
@@ -138,7 +143,6 @@ void main() {
           equals(const ReceipeItemStateError("Error removing saved receipe")))
     },
   );
-
 
   blocTest<ReceipeItemController, ReceipeItemState>(
     "Should remove saved receipe",
@@ -148,18 +152,18 @@ void main() {
       when(() => authUserService.currentUser).thenReturn(authUser);
       when(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
-            "${authUser.uid.value}0",
+            receipeName(),
           )).thenAnswer((_) => Future.value());
 
       when(() => receipeRepository.isReceiptSaved(
             authUser.uid,
-            0,
+            receipeName(),
           )).thenAnswer((_) => Stream.value(false));
     },
     verify: (bloc) => {
       verify(() => receipeRepository.removeSavedReceipe(
             authUser.uid,
-            "${authUser.uid.value}0",
+            receipeName(),
           )).called(1),
       expect(bloc.state, equals(const ReceipeItemStateUnsaved()))
     },

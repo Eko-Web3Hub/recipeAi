@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                                     homeScreenState.receipes[index],
                                     di<IUserReceipeRepository>(),
                                     di<IAuthUserService>(),
-                                    index,
+                                    
                                   ),
                               child: BlocListener<ReceipeItemController,
                                   ReceipeItemState>(

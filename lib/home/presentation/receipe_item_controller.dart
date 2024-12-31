@@ -28,19 +28,18 @@ class ReceipeItemStateError extends ReceipeItemState {
 
 class ReceipeItemController extends Cubit<ReceipeItemState> {
   ReceipeItemController(this._receipe, this._userReceipeRepository,
-      this._authUserService, this._index)
+      this._authUserService)
       : super(const ReceipeItemStateSaved()) {
     checkReceipeStatus();
   }
   final Receipe _receipe;
-  final int _index;
   final IUserReceipeRepository _userReceipeRepository;
   final IAuthUserService _authUserService;
 
   Future<void> saveReceipe() async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      await _userReceipeRepository.saveOneReceipt(uid, _index, _receipe);
+      await _userReceipeRepository.saveOneReceipt(uid, _receipe);
       checkReceipeStatus();
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error saving receipe"));
@@ -52,7 +51,7 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
     try {
       final uid = _authUserService.currentUser!.uid;
       await _userReceipeRepository.removeSavedReceipe(
-          uid, "${uid.value}$_index");
+          uid, _receipe.name.toLowerCase().replaceAll(' ', ''));
       checkReceipeStatus();
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error removing saved receipe"));
@@ -63,7 +62,7 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
   Future<void> checkReceipeStatus() async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      _userReceipeRepository.isReceiptSaved(uid, _index).listen(
+      _userReceipeRepository.isReceiptSaved(uid, _receipe.name.toLowerCase().replaceAll(' ', '')).listen(
             (isSaved) {
                emit(isSaved
           ? const ReceipeItemStateSaved()

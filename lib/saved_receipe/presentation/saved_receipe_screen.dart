@@ -67,28 +67,36 @@ class SavedReceipeScreen extends StatelessWidget {
                             final data = state.savedReceipes[index];
                             return BlocProvider(
                               create: (context) => RemoveSavedReceipeController(
-                                data.documentId,
+                               
                                 di<IUserReceipeRepository>(),
                                 di<IAuthUserService>(),
                               ),
-                              child: BlocListener<RemoveSavedReceipeController,ReceipeItemState>(listener: (context, state) {
-                                  if (state is ReceipeItemStateError) {
-                                    showSnackBar(context, state.message,isError: true);
-                                  }
-                              },child: BlocBuilder<RemoveSavedReceipeController,
+                              child: BlocListener<RemoveSavedReceipeController,
                                   ReceipeItemState>(
-                                builder: (context, state) {
-                                  return ReceipeItem(
-                                    receipe: data.receipe,
-                                    isSaved: state is ReceipeItemStateSaved,
-                                    onTap: () {
-                                      context
-                                          .read<RemoveSavedReceipeController>()
-                                          .removeReceipe();
-                                    },
-                                  );
+                                listener: (context, state) {
+                                  if (state is ReceipeItemStateError) {
+                                    showSnackBar(context, state.message,
+                                        isError: true);
+                                  }
                                 },
-                              ),),
+                                child: BlocBuilder<RemoveSavedReceipeController,
+                                    ReceipeItemState>(
+                                  builder: (context, state) {
+                                    return ReceipeItem(
+                                      receipe: data,
+                                      isSaved: state is ReceipeItemStateSaved,
+                                      onTap: () {
+                                        context
+                                            .read<
+                                                RemoveSavedReceipeController>()
+                                            .removeReceipe(data.name
+                                                .toLowerCase()
+                                                .replaceAll(' ', ''));
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
                             );
                           },
                           itemCount: state.savedReceipes.length,
