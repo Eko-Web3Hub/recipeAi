@@ -80,13 +80,13 @@ class HomeScreen extends StatelessWidget {
                                     homeScreenState.receipes[index],
                                     di<IUserReceipeRepository>(),
                                     di<IAuthUserService>(),
-                                    
                                   ),
                               child: BlocListener<ReceipeItemController,
                                   ReceipeItemState>(
                                 listener: (context, state) {
                                   if (state is ReceipeItemStateError) {
-                                    showSnackBar(context, state.message,isError: true);
+                                    showSnackBar(context, state.message,
+                                        isError: true);
                                   }
                                 },
                                 child: BlocBuilder<ReceipeItemController,
@@ -94,11 +94,9 @@ class HomeScreen extends StatelessWidget {
                                   builder: (context, state) {
                                     return ReceipeItem(
                                       receipe: homeScreenState.receipes[index],
-                                      isSaved: state is
-                                          ReceipeItemStateSaved,
+                                      isSaved: state is ReceipeItemStateSaved,
                                       onTap: () {
-                                        if (state is
-                                             ReceipeItemStateSaved) {
+                                        if (state is ReceipeItemStateSaved) {
                                           context
                                               .read<ReceipeItemController>()
                                               .removeReceipe();
@@ -283,6 +281,27 @@ class _UserTitleWidget extends StatelessWidget {
   }
 }
 
+class UserFirstNameCharOnCapitalCase extends StatelessWidget {
+  const UserFirstNameCharOnCapitalCase({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<UserPersonnalInfo?>(
+      stream: di<IUserPersonnalInfoService>().watch(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data != null) {
+          return Text(
+            snapshot.data!.name[0].toUpperCase(),
+            style: Theme.of(context).textTheme.displayLarge,
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
+    );
+  }
+}
+
 class _HeadRightSection extends StatelessWidget {
   const _HeadRightSection();
 
@@ -296,6 +315,9 @@ class _HeadRightSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           12.0,
         ),
+      ),
+      child: const Center(
+        child: UserFirstNameCharOnCapitalCase(),
       ),
     );
   }

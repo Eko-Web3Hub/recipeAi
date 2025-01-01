@@ -13,6 +13,7 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/delete_account_after_an_login.dart';
 import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
+import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -92,11 +93,7 @@ class ProfileScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.grey.withValues(alpha: 0.4),
-                        child: const Icon(
-                          Icons.person_rounded,
-                          size: 55,
-                          color: Colors.black,
-                        ),
+                        child: const UserFirstNameCharOnCapitalCase(),
                       ),
                       const Gap(20),
                       StreamBuilder<UserPersonnalInfo?>(
