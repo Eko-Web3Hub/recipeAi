@@ -90,7 +90,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          key: Key(ingredients[index].name),
+                          key: UniqueKey(),
                           child: IngredientItem(
                             ingredient: ingredients[index],
                             getIngredientQuantity: (quantity) {
