@@ -9,6 +9,8 @@ abstract class UserReceipeSerialization {
           .map(
             (e) => ReceipeSerialization.fromJson(e),
           )
+          .where((receipe) =>
+              receipe.steps.isNotEmpty && receipe.ingredients.isNotEmpty)
           .toList(),
       lastUpdatedDate: (json["lastUpdatedDate"] as Timestamp).toDate(),
     );

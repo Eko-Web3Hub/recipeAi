@@ -27,6 +27,10 @@ class FastApiReceipesBasedOnIngredientUserPreferenceRepository
       return [];
     }
 
-    return receipes.map((e) => ReceipeApiSerialization.fromJson(e)).toList();
+    return receipes
+        .map((e) => ReceipeApiSerialization.fromJson(e))
+        .where((receipe) =>
+            receipe.steps.isNotEmpty && receipe.ingredients.isNotEmpty)
+        .toList();
   }
 }

@@ -158,19 +158,21 @@ class _DisplayIngredients extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
+        Flexible(
           child: CheckBoxOption(
             option: ingredient,
             onChanged: (isSelected) {},
           ),
         ),
-        Text(
-          quantity,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
-            height: 21 / 14,
-            color: const Color(0xff1E1E1E),
+        Flexible(
+          child: Text(
+            quantity,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+              height: 21 / 14,
+              color: const Color(0xff1E1E1E),
+            ),
           ),
         ),
       ],

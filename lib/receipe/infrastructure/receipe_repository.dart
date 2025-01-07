@@ -35,6 +35,8 @@ class UserReceipeRepository implements IUserReceipeRepository {
         .map<Receipe>(
           (receipe) => ReceipeApiSerialization.fromJson(receipe),
         )
+        .where((receipe) =>
+            receipe.steps.isNotEmpty && receipe.ingredients.isNotEmpty)
         .toList();
   }
 
@@ -68,15 +70,13 @@ class UserReceipeRepository implements IUserReceipeRepository {
         .doc(uid.value)
         .collection(receipesCollection)
         .snapshots()
-         .map((snapshot) {
+        .map((snapshot) {
       return snapshot.docs
           .map<Receipe>(
             (doc) => ReceipeSerialization.fromJson(doc.data()),
           )
           .toList();
     });
-        
-       
   }
 
   @override
