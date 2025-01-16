@@ -44,7 +44,6 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _HeadLeftSection(),
-                    _HeadRightSection(),
                   ],
                 ),
                 const Gap(15),
@@ -60,10 +59,12 @@ class HomeScreen extends StatelessWidget {
                     if (homeScreenState is HomeScreenStateLoading) {
                       /// A modifier. Afficher une liste de carte avec un shimmer effect
                       return const Expanded(
-                          child: Center(
-                              child: CustomProgress(
-                        color: Colors.black,
-                      )));
+                        child: Center(
+                          child: CustomProgress(
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
                     }
 
                     if (homeScreenState is HomeScreenStateError) {
@@ -298,27 +299,6 @@ class UserFirstNameCharOnCapitalCase extends StatelessWidget {
 
         return const SizedBox.shrink();
       },
-    );
-  }
-}
-
-class _HeadRightSection extends StatelessWidget {
-  const _HeadRightSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 40.0,
-      height: 40.0,
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: BorderRadius.circular(
-          12.0,
-        ),
-      ),
-      child: const Center(
-        child: UserFirstNameCharOnCapitalCase(),
-      ),
     );
   }
 }
