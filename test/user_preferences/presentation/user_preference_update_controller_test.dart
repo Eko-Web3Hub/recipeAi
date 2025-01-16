@@ -21,6 +21,11 @@ void main() {
     uid: EntityId('uid'),
     email: 'test@gmail.com',
   );
+  const userPreference = UserPreference({
+    'French': true,
+    'Italian': false,
+    'Lactose-Free': true,
+  });
 
   setUp(() {
     authUserService = AuthUserServiceMock();
@@ -50,5 +55,18 @@ void main() {
         UserPreferenceUpdateLoading(),
       ),
     },
+  );
+
+  blocTest<UserPreferenceUpdateController, UserPreferenceUpdateState>(
+    'should load default user preference',
+    build: () => buildSut(),
+    setUp: () {
+      when(() => userPreferenceRepository.retrieve(authUser.uid)).thenAnswer(
+        (_) => Future.value(userPreference),
+      );
+    },
+    expect: () => [
+      UserPreferenceUpdateLoaded(userPreference),
+    ],
   );
 }
