@@ -9,6 +9,7 @@ import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/house_screen.dart';
+import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
@@ -185,6 +186,15 @@ GoRouter createRouter() => GoRouter(
                   path: '/profil-screen',
                   redirect: _guardAuth,
                   builder: (context, state) => const ProfileScreen(),
+                  routes: <RouteBase>[
+                    GoRoute(
+                      name: 'UpdateUserPreference',
+                      path: 'update-user-preference',
+                      redirect: _guardAuth,
+                      builder: (context, state) =>
+                          const UpdateUserPreferenceScreen(),
+                    ),
+                  ],
                 ),
               ],
             ),

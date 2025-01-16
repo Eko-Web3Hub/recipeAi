@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
 
 class CoreModule implements IDiModule {
@@ -11,20 +12,17 @@ class CoreModule implements IDiModule {
 
   @override
   void register(DiContainer di) {
-    di.registerLazySingleton<FirebaseAuth>(
-      () => FirebaseAuth.instance,
+    di.registerSingleton<FirebaseAuth>(
+      FirebaseAuth.instance,
     );
-    di.registerLazySingleton<FirebaseFirestore>(
-      () => FirebaseFirestore.instance,
+    di.registerSingleton<FirebaseFirestore>(
+      FirebaseFirestore.instance,
     );
-    di.registerLazySingleton<FirebaseRemoteConfig>(
-      () => FirebaseRemoteConfig.instance,
+    di.registerSingleton<FirebaseRemoteConfig>(
+      FirebaseRemoteConfig.instance,
     );
     di.registerLazySingleton<Dio>(
-      () => Dio(BaseOptions(headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-      })),
+      () => Dio(dioOption),
     );
 
     di.registerLazySingleton<RemoteConfigDataSource>(
