@@ -27,6 +27,8 @@ abstract class UserPreferenceQuestion extends Equatable {
 
   Map<String, dynamic> toJson();
 
+  UserPreferenceQuestion initWithUserPreference(UserPreference userPreference);
+
   @override
   List<Object?> get props => [title, description, type];
 }
@@ -63,6 +65,7 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
 
   bool isOptionSelected(String option) => selectedOptions.contains(option);
 
+  @override
   UserPreferenceQuestionMultipleChoice initWithUserPreference(
     UserPreference userPreference,
   ) {
