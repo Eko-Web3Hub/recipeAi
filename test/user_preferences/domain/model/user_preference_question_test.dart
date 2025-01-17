@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 
 void main() {
@@ -91,6 +92,38 @@ void main() {
           final result = question.isOptionSelected('option1');
 
           expect(result, true);
+        },
+      );
+    },
+  );
+
+  group(
+    'initWithUserPreference method',
+    () {
+      test(
+        'should initialise the qestion with user preference',
+        () {
+          final question = UserPreferenceQuestionMultipleChoice(
+            title: 'title',
+            description: 'description',
+            type: UserPreferenceQuestionType.multipleChoice,
+            options: const ['African', 'Halal', 'French'],
+          );
+          const userPreference = UserPreference(
+            {
+              'African': true,
+              'Halal': false,
+              'French': true,
+            },
+          );
+
+          final result = question.initWithUserPreference(userPreference);
+
+          expect(result.title, question.title);
+          expect(result.description, question.description);
+          expect(result.type, question.type);
+          expect(result.options, question.options);
+          expect(result.selectedOptions, ['African', 'French']);
         },
       );
     },
