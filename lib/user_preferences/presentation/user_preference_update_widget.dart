@@ -11,6 +11,7 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_progre
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_controller.dart';
 import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserPreferenceUpdateWidget extends StatelessWidget {
@@ -36,15 +37,10 @@ class UserPreferenceUpdateWidget extends StatelessWidget {
               );
             }
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizontalScreenPadding,
-              ),
-              child: _DisplayUserPreferenceQuiz(
-                questions:
-                    (userPreferenceUpdateState as UserPreferenceUpdateLoaded)
-                        .userPreferenceQuestion,
-              ),
+            return _DisplayUserPreferenceQuiz(
+              questions:
+                  (userPreferenceUpdateState as UserPreferenceUpdateLoaded)
+                      .userPreferenceQuestion,
             );
           },
         );
@@ -76,45 +72,52 @@ class _DisplayUserPreferenceQuizState
       children: [
         const Gap(20),
         Expanded(
-          child: UserPreferenceQuestionList(
-            questions: widget.questions,
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPageIndex = index;
-              });
-            },
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: horizontalScreenPadding),
+            child: UserPreferenceQuestionList(
+              questions: widget.questions,
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPageIndex = index;
+                });
+              },
+            ),
           ),
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Visibility(
-              visible: _currentPageIndex != 0,
-              child: Expanded(
-                child: MainBtn(
-                  text: AppText.previous,
-                  onPressed: () {
-                    _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                ),
-              ),
+            _UpdatePreferenceQuizButton(
+              text: AppText.previous,
+              onPressed: _currentPageIndex != 0
+                  ? () {
+                      _pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                      );
+                    }
+                  : null,
             ),
             const Gap(10.0),
             Expanded(
+              flex: 2,
               child: MainBtn(
-                onPressed: _currentPageIndex == widget.questions.length - 1
-                    ? null
-                    : () {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn,
-                        );
-                      },
-                text: AppText.next,
+                text: AppText.update,
               ),
+            ),
+            const Gap(10.0),
+            _UpdatePreferenceQuizButton(
+              onPressed: _currentPageIndex == widget.questions.length - 1
+                  ? null
+                  : () {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                      );
+                    },
+              text: AppText.next,
             ),
           ],
         ),
@@ -127,5 +130,34 @@ class _DisplayUserPreferenceQuizState
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+}
+
+class _UpdatePreferenceQuizButton extends StatelessWidget {
+  const _UpdatePreferenceQuizButton({
+    required this.text,
+    required this.onPressed,
+  });
+
+  final String text;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: onPressed == null
+                ? greyVariantColor
+                : Theme.of(context).primaryColor,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
+    );
   }
 }
