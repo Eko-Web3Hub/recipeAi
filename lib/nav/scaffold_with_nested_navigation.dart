@@ -61,20 +61,22 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           : null,
       resizeToAvoidBottomInset: false,
       body: navigationShell,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          /// reditect to camera screen
-          context.go("/home/kitchen-inventory");
-        },
-        backgroundColor: greenPrimaryColor,
-        shape: const CircleBorder(),
-        child: const Center(
-          child: Icon(
-            Icons.camera_alt_rounded,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      floatingActionButton: hideNavBar
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                /// reditect to camera screen
+                context.go("/home/kitchen-inventory");
+              },
+              backgroundColor: greenPrimaryColor,
+              shape: const CircleBorder(),
+              child: const Center(
+                child: Icon(
+                  Icons.camera_alt_rounded,
+                  color: Colors.white,
+                ),
+              ),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: hideNavBar
           ? null

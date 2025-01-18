@@ -83,7 +83,7 @@ GoRouter createRouter() => GoRouter(
               ScaffoldWithNestedNavigation(
             appBarTitle: genAppBarTitle(state.fullPath),
             navigationShell: navigationShell,
-            hideNavBar: false,
+            hideNavBar: hideNavBar(state.fullPath),
           ),
           branches: <StatefulShellBranch>[
             StatefulShellBranch(
@@ -214,5 +214,14 @@ String? genAppBarTitle(String? path) {
       return 'Profile';
     default:
       return null;
+  }
+}
+
+bool hideNavBar(String? path) {
+  switch (path) {
+    case '/profil-screen/update-user-preference':
+      return true;
+    default:
+      return false;
   }
 }

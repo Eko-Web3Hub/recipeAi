@@ -14,13 +14,13 @@ class UserPreferenceUpdateLoading extends UserPreferenceUpdateState {
 
 class UserPreferenceUpdateLoaded extends UserPreferenceUpdateState {
   UserPreferenceUpdateLoaded(
-    this.userPreference,
+    this.userPreferenceQuestion,
   );
 
-  final List<UserPreferenceQuestion> userPreference;
+  final List<UserPreferenceQuestion> userPreferenceQuestion;
 
   @override
-  List<Object?> get props => [userPreference];
+  List<Object?> get props => [userPreferenceQuestion];
 }
 
 class UserPreferenceUpdateController extends Cubit<UserPreferenceUpdateState> {
