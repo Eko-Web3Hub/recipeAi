@@ -120,4 +120,26 @@ class UserReceipeRepository implements IUserReceipeRepository {
         .doc(documentId)
         .delete();
   }
+
+  @override
+  Stream<UserReceipe?> watchUserReceipe(EntityId uid) {
+    return _firestore
+        .collection(userReceipeCollection)
+        .doc(uid.value)
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists) {
+        return null;
+      }
+      final data = snapshot.data()!;
+      final userReceipe = UserReceipeSerialization.fromJson(data);
+
+      return userReceipe;
+    });
+  }
+
+  @override
+  Future<void> deleteUserReceipe(EntityId uid) {
+    return _firestore.collection(userReceipeCollection).doc(uid.value).delete();
+  }
 }

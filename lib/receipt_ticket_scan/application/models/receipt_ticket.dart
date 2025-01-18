@@ -35,5 +35,11 @@ class ReceiptTicket extends Equatable {
   final String totalPricePayed;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        superMarketName,
+        adresse,
+        date,
+        products,
+        totalPricePayed,
+      ];
 }

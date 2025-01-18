@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/receipe/application/update_user_receipe_usecase.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 
@@ -32,7 +32,7 @@ class UserPreferenceUpdateBtnController
   UserPreferenceUpdateBtnController(
     this._authUserService,
     this._userPreferenceRepository,
-    this._updateUserReceipeUsecase,
+    this._userReceipeRepository,
   ) : super(
           UserPreferenceUpdateBtnInitial(),
         );
@@ -54,11 +54,14 @@ class UserPreferenceUpdateBtnController
       uid,
       newUserPreference,
     );
-    await _updateUserReceipeUsecase.update(now);
+
+    await _userReceipeRepository.deleteUserReceipe(
+      uid,
+    );
     emit(UserPreferenceUpdateBtnSuccess());
   }
 
   final IAuthUserService _authUserService;
   final IUserPreferenceRepository _userPreferenceRepository;
-  final UpdateUserReceipeUsecase _updateUserReceipeUsecase;
+  final IUserReceipeRepository _userReceipeRepository;
 }

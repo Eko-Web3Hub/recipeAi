@@ -20,25 +20,30 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
     this._authUserService,
   );
 
-  Future<List<Receipe>> retrieve(DateTime now) async {
+  Stream<List<Receipe>> retrieve(DateTime now) {
     try {
       final uid = _authUserService.currentUser!.uid;
-      final currentUserReceipe = await _userReceipeRepository
-          .getReceipesBasedOnUserPreferencesFromFirestore(uid);
+      // final currentUserReceipe = await _userReceipeRepository
+      //     .getReceipesBasedOnUserPreferencesFromFirestore(uid);
 
-      if (currentUserReceipe == null) {
-        final receipes = await _retrieveAndSave(uid, now);
-        return receipes;
-      }
+      return _userReceipeRepository
+          .watchUserReceipe(uid)
+          .asyncMap((currentUserReceipe) async {
+        if (currentUserReceipe == null) {
+          final receipes = await _retrieveAndSave(uid, now);
 
-      final lastUpdatedDate = currentUserReceipe.lastUpdatedDate;
+          return receipes;
+        }
 
-      if (now.difference(lastUpdatedDate).inDays >= 1) {
-        final receipes = await _retrieveAndSave(uid, now);
-        return receipes;
-      } else {
-        return currentUserReceipe.receipes;
-      }
+        final lastUpdatedDate = currentUserReceipe.lastUpdatedDate;
+
+        if (now.difference(lastUpdatedDate).inDays >= 1) {
+          final receipes = await _retrieveAndSave(uid, now);
+          return receipes;
+        } else {
+          return currentUserReceipe.receipes;
+        }
+      });
     } catch (e) {
       throw const RetrieveReceipeException(
         AppText.receipeRetrievalError,

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
-import 'package:recipe_ai/receipe/application/update_user_receipe_usecase.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_btn_controller.dart';
@@ -15,13 +15,12 @@ class AuthUserService extends Mock implements IAuthUserService {}
 class UserPreferenceRepository extends Mock
     implements IUserPreferenceRepository {}
 
-class UpdateUserReceipeUsecaseMock extends Mock
-    implements UpdateUserReceipeUsecase {}
+class UserReceipeRepository extends Mock implements IUserReceipeRepository {}
 
 void main() {
   late IAuthUserService authUserService;
   late IUserPreferenceRepository userPreferenceRepository;
-  late UpdateUserReceipeUsecaseMock updateUserReceipeUsecase;
+  late IUserReceipeRepository userReceipeRepository;
   const newUserPreference = UserPreference(
     {
       'Halal': true,
@@ -36,7 +35,7 @@ void main() {
   setUp(() {
     authUserService = AuthUserService();
     userPreferenceRepository = UserPreferenceRepository();
-    updateUserReceipeUsecase = UpdateUserReceipeUsecaseMock();
+    userReceipeRepository = UserReceipeRepository();
 
     when(() => authUserService.currentUser).thenReturn(authUser);
   });
@@ -45,7 +44,7 @@ void main() {
       UserPreferenceUpdateBtnController(
         authUserService,
         userPreferenceRepository,
-        updateUserReceipeUsecase,
+        userReceipeRepository,
       );
 
   blocTest<UserPreferenceUpdateBtnController, UserPreferenceUpdateBtnState>(
@@ -127,7 +126,7 @@ void main() {
         (_) => Future.value(),
       );
       when(
-        () => updateUserReceipeUsecase.update(now),
+        () => userReceipeRepository.deleteUserReceipe(authUser.uid),
       ).thenAnswer(
         (_) => Future.value(),
       );
@@ -146,7 +145,7 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => updateUserReceipeUsecase.update(now),
+        () => userReceipeRepository.deleteUserReceipe(authUser.uid),
       ).called(1);
     },
     expect: () => [

@@ -43,7 +43,7 @@ void main() {
     setUp: () {
       when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
           .thenAnswer(
-        (_) => Completer<List<Receipe>>().future,
+        (_) => Completer<Stream<List<Receipe>>>().future,
       );
     },
     verify: (bloc) => {
@@ -57,7 +57,7 @@ void main() {
     setUp: () {
       when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
           .thenAnswer(
-        (_) => Future.value(reciepes),
+        (_) => Stream.value(reciepes),
       );
     },
     expect: () => [
