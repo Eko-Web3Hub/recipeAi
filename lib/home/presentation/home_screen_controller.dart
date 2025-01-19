@@ -37,13 +37,12 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       {DateTime? now})
       : super(const HomeScreenStateLoading()) {
     currentNow = now;
-    load();
-  } 
+  }
 
   final RetrieveReceipeFromApiOneTimePerDayUsecase
       _retrieveReceipeFromApiOneTimePerDayUsecase;
 
-  Future<void> load() async {
+  Future<void> _load() async {
     try {
       final receipes =
           await _retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(
@@ -54,6 +53,11 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       log(e.message);
       emit(HomeScreenStateError(e.message));
     }
+  }
+
+  Future<void> reload() async {
+    emit(const HomeScreenStateLoading());
+    await _load();
   }
 
   /// Is used for testing purposes

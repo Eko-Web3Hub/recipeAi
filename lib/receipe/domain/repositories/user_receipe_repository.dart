@@ -10,13 +10,15 @@ abstract class IUserReceipeRepository {
 
   Future<void> save(EntityId uid, UserReceipe userReceipe);
 
+  Future<void> deleteUserReceipe(EntityId uid);
+
   Stream<List<Receipe>> watchAllSavedReceipes(EntityId uid);
 
-   Future<void> saveOneReceipt(EntityId uid,Receipe receipe);
-   Future<bool> isOneReceiptSaved(EntityId uid,String receipeName);
-   Stream<bool> isReceiptSaved(EntityId uid,String receipeName);
+  Stream<UserReceipe?> watchUserReceipe(EntityId uid);
 
-    Future<void> removeSavedReceipe(EntityId uid,String documentId);
+  Future<void> saveOneReceipt(EntityId uid, Receipe receipe);
+  Future<bool> isOneReceiptSaved(EntityId uid, String receipeName);
+  Stream<bool> isReceiptSaved(EntityId uid, String receipeName);
 
-
+  Future<void> removeSavedReceipe(EntityId uid, String documentId);
 }
