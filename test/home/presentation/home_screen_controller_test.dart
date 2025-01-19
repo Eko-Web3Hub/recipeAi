@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -38,29 +36,20 @@ void main() {
   }
 
   blocTest<HomeScreenController, HomeScreenState>(
-    'should initialy be in loading state',
+    'should reload user receiepes based on user preferences',
     build: () => buildSut(),
     setUp: () {
       when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
           .thenAnswer(
-        (_) => Completer<Stream<List<Receipe>>>().future,
+        (_) => Future.value(reciepes),
       );
     },
-    verify: (bloc) => {
-      expect(bloc.state, equals(const HomeScreenStateLoading())),
-    },
-  );
-
-  blocTest<HomeScreenController, HomeScreenState>(
-    'should loaded user receiepes based on user preferences',
-    build: () => buildSut(),
-    setUp: () {
-      when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
-          .thenAnswer(
-        (_) => Stream.value(reciepes),
-      );
+    act: (bloc) async {
+      await pumpEventQueue();
+      await bloc.reload();
     },
     expect: () => [
+      const HomeScreenStateLoading(),
       const HomeScreenStateLoaded(reciepes),
     ],
   );
@@ -71,6 +60,10 @@ void main() {
     setUp: () {
       when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
           .thenThrow(const RetrieveReceipeException('error'));
+    },
+    act: (bloc) async {
+      await pumpEventQueue();
+      await bloc.reload();
     },
     verify: (bloc) => {
       expect(

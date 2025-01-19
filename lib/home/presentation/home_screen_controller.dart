@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
@@ -38,37 +37,29 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       {DateTime? now})
       : super(const HomeScreenStateLoading()) {
     currentNow = now;
-    load();
   }
 
   final RetrieveReceipeFromApiOneTimePerDayUsecase
       _retrieveReceipeFromApiOneTimePerDayUsecase;
 
-  Future<void> load() async {
+  Future<void> _load() async {
     try {
-      _subscription = _retrieveReceipeFromApiOneTimePerDayUsecase
-          .retrieve(
+      final receipes =
+          await _retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(
         currentNow ?? DateTime.now(),
-      )
-          .listen(
-        (receipes) {
-          emit(HomeScreenStateLoaded(receipes));
-          return;
-        },
       );
+      emit(HomeScreenStateLoaded(receipes));
     } on RetrieveReceipeException catch (e) {
       log(e.message);
       emit(HomeScreenStateError(e.message));
     }
   }
 
-  @override
-  Future<void> close() {
-    _subscription.cancel();
-    return super.close();
+  Future<void> reload() async {
+    emit(const HomeScreenStateLoading());
+    await _load();
   }
 
   /// Is used for testing purposes
   DateTime? currentNow;
-  late StreamSubscription<List<Receipe>> _subscription;
 }

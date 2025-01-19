@@ -6,6 +6,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
@@ -85,6 +86,7 @@ class _DisplayUserPreferenceQuizState
           listener: (context, state) {
             if (state is UserPreferenceUpdateBtnSuccess) {
               showSnackBar(context, AppText.updateUserPreferenceSuccess);
+              context.read<HomeScreenController>().reload();
             } else if (state is HasNotChangedUserPreference) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

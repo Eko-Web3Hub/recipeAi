@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -11,7 +12,6 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
-import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
@@ -21,110 +21,119 @@ import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeScreenController>().reload();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeScreenController(
-        di<RetrieveReceipeFromApiOneTimePerDayUsecase>(),
-      ),
-      child: Builder(builder: (context) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalScreenPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Gap(20.0),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _HeadLeftSection(),
-                  ],
-                ),
-                const Gap(15),
-                Text(
-                  AppText.quickRecipes,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayLarge
-                      ?.copyWith(fontSize: 17),
-                ),
-                BlocBuilder<HomeScreenController, HomeScreenState>(
-                  builder: (context, homeScreenState) {
-                    if (homeScreenState is HomeScreenStateLoading) {
-                      /// A modifier. Afficher une liste de carte avec un shimmer effect
-                      return const Expanded(
-                        child: Center(
-                          child: CustomProgress(
-                            color: Colors.black,
-                          ),
-                        ),
-                      );
-                    }
-
-                    if (homeScreenState is HomeScreenStateError) {
-                      return Expanded(child: Text(homeScreenState.message));
-                    }
-
-                    if (homeScreenState is HomeScreenStateLoaded) {
-                      return Expanded(
-                          child: ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 20, top: 15),
-                        itemBuilder: (context, index) {
-                          return BlocProvider(
-                              create: (context) => ReceipeItemController(
-                                    homeScreenState.receipes[index],
-                                    di<IUserReceipeRepository>(),
-                                    di<IAuthUserService>(),
-                                  ),
-                              child: BlocListener<ReceipeItemController,
-                                  ReceipeItemState>(
-                                listener: (context, state) {
-                                  if (state is ReceipeItemStateError) {
-                                    showSnackBar(context, state.message,
-                                        isError: true);
-                                  }
-                                },
-                                child: BlocBuilder<ReceipeItemController,
-                                    ReceipeItemState>(
-                                  builder: (context, state) {
-                                    return ReceipeItem(
-                                      receipe: homeScreenState.receipes[index],
-                                      isSaved: state is ReceipeItemStateSaved,
-                                      onTap: () {
-                                        if (state is ReceipeItemStateSaved) {
-                                          context
-                                              .read<ReceipeItemController>()
-                                              .removeReceipe();
-                                        } else {
-                                          context
-                                              .read<ReceipeItemController>()
-                                              .saveReceipe();
-                                        }
-                                      },
-                                    );
-                                  },
-                                ),
-                              ));
-                        },
-                        itemCount: homeScreenState.receipes.length,
-                      ));
-                    }
-
-                    return const SizedBox();
-                  },
-                ),
-              ],
-            ),
+    return Builder(builder: (context) {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: horizontalScreenPadding,
           ),
-        );
-      }),
-    );
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(20.0),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _HeadLeftSection(),
+                ],
+              ),
+              const Gap(15),
+              Text(
+                AppText.quickRecipes,
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge
+                    ?.copyWith(fontSize: 17),
+              ),
+              BlocBuilder<HomeScreenController, HomeScreenState>(
+                builder: (context, homeScreenState) {
+                  if (homeScreenState is HomeScreenStateLoading) {
+                    /// A modifier. Afficher une liste de carte avec un shimmer effect
+                    return const Expanded(
+                      child: Center(
+                        child: CustomProgress(
+                          color: Colors.black,
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (homeScreenState is HomeScreenStateError) {
+                    return Expanded(child: Text(homeScreenState.message));
+                  }
+
+                  if (homeScreenState is HomeScreenStateLoaded) {
+                    return Expanded(
+                        child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 20, top: 15),
+                      itemBuilder: (context, index) {
+                        return BlocProvider(
+                            create: (context) => ReceipeItemController(
+                                  homeScreenState.receipes[index],
+                                  di<IUserReceipeRepository>(),
+                                  di<IAuthUserService>(),
+                                ),
+                            child: BlocListener<ReceipeItemController,
+                                ReceipeItemState>(
+                              listener: (context, state) {
+                                if (state is ReceipeItemStateError) {
+                                  showSnackBar(context, state.message,
+                                      isError: true);
+                                }
+                              },
+                              child: BlocBuilder<ReceipeItemController,
+                                  ReceipeItemState>(
+                                builder: (context, state) {
+                                  return ReceipeItem(
+                                    receipe: homeScreenState.receipes[index],
+                                    isSaved: state is ReceipeItemStateSaved,
+                                    onTap: () {
+                                      if (state is ReceipeItemStateSaved) {
+                                        context
+                                            .read<ReceipeItemController>()
+                                            .removeReceipe();
+                                      } else {
+                                        context
+                                            .read<ReceipeItemController>()
+                                            .saveReceipe();
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                            ));
+                      },
+                      itemCount: homeScreenState.receipes.length,
+                    ));
+                  }
+
+                  return const SizedBox();
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
 
