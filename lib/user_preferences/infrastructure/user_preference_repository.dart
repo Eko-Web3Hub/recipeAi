@@ -18,23 +18,35 @@ class FirestoreUserPreferenceRepository implements IUserPreferenceRepository {
 
   @override
   Future<UserPreference> retrieve(EntityId uid) async {
+    if (_userPreference != null) {
+      return _userPreference!;
+    }
+
     try {
       final snapshot =
           await _firestore.collection(_collection).doc(uid.value).get();
       if (!snapshot.exists) {
+        _userPreference = null;
         return const UserPreference({});
       }
 
       final data = snapshot.data();
-      return UserPreferenceSerialization.fromJson(data!);
+      final serilizedData = UserPreferenceSerialization.fromJson(data!);
+      _userPreference = serilizedData;
+
+      return serilizedData;
     } catch (e) {
       log(e.toString());
       return Future.value(const UserPreference({}));
     }
   }
 
+  static UserPreference? _userPreference;
+
   @override
   Future<void> save(EntityId uid, UserPreference userPreference) async {
+    _userPreference = userPreference;
+
     try {
       await _firestore.collection(_collection).doc(uid.value).set(
             UserPreferenceSerialization.toJson(userPreference),

@@ -28,6 +28,7 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
       if (currentUserReceipe == null) {
         final receipes = await _retrieveAndSave(uid, now);
+
         return receipes;
       }
 

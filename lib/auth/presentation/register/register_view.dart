@@ -14,6 +14,7 @@ import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
+import 'package:recipe_ai/utils/remote_config_data_source.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -209,6 +210,9 @@ class _CheckBoxReglement extends StatefulWidget {
 
 class _CheckBoxReglementState extends State<_CheckBoxReglement> {
   bool value = false;
+  final termsAndConditionsUrl = di<RemoteConfigDataSource>().getString(
+    'termsAndConditionsUrl',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -232,13 +236,16 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
             });
           },
         ),
-        Text(
-          AppText.acceptTermsAndConditions,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w400,
-            fontSize: 11,
-            height: 16.5 / 11,
-            color: orangeVariantColor,
+        InkWell(
+          onTap: () => launchUrlFunc(termsAndConditionsUrl),
+          child: Text(
+            AppText.acceptTermsAndConditions,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              fontSize: 11,
+              height: 16.5 / 11,
+              color: orangeVariantColor,
+            ),
           ),
         ),
       ],

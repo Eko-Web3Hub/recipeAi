@@ -4,6 +4,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
+import 'package:recipe_ai/receipe/application/update_user_receipe_usecase.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/receipe_repository.dart';
 
@@ -19,8 +20,14 @@ class ReceipeModule implements IDiModule {
       ),
     );
 
-    di.registerFactory(
+    di.registerFactory<RetrieveReceipeFromApiOneTimePerDayUsecase>(
       () => RetrieveReceipeFromApiOneTimePerDayUsecase(
+        di<IUserReceipeRepository>(),
+        di<IAuthUserService>(),
+      ),
+    );
+    di.registerFactory<UpdateUserReceipeUsecase>(
+      () => UpdateUserReceipeUsecase(
         di<IUserReceipeRepository>(),
         di<IAuthUserService>(),
       ),

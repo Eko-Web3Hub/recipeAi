@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -11,7 +12,6 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
-import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
@@ -21,21 +21,41 @@ import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeScreenController>().reload();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeScreenController(
-        di<RetrieveReceipeFromApiOneTimePerDayUsecase>(),
-      ),
-      child: Builder(builder: (context) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalScreenPadding,
-            ),
+    return Builder(builder: (context) {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: horizontalScreenPadding,
+          ),
+          child: RefreshIndicator(
+            color: Theme.of(context).primaryColor,
+            backgroundColor: Colors.white,
+            onRefresh: () async {
+              context.read<HomeScreenController>().regenerateUserReceipe();
+
+              return Future.delayed(
+                const Duration(seconds: 1),
+              );
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,7 +64,6 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _HeadLeftSection(),
-                    _HeadRightSection(),
                   ],
                 ),
                 const Gap(15),
@@ -60,10 +79,12 @@ class HomeScreen extends StatelessWidget {
                     if (homeScreenState is HomeScreenStateLoading) {
                       /// A modifier. Afficher une liste de carte avec un shimmer effect
                       return const Expanded(
-                          child: Center(
-                              child: CustomProgress(
-                        color: Colors.black,
-                      )));
+                        child: Center(
+                          child: CustomProgress(
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
                     }
 
                     if (homeScreenState is HomeScreenStateError) {
@@ -121,9 +142,9 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }
 
@@ -298,27 +319,6 @@ class UserFirstNameCharOnCapitalCase extends StatelessWidget {
 
         return const SizedBox.shrink();
       },
-    );
-  }
-}
-
-class _HeadRightSection extends StatelessWidget {
-  const _HeadRightSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 40.0,
-      height: 40.0,
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: BorderRadius.circular(
-          12.0,
-        ),
-      ),
-      child: const Center(
-        child: UserFirstNameCharOnCapitalCase(),
-      ),
     );
   }
 }

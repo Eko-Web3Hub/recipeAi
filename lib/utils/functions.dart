@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:recipe_ai/utils/app_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
 
 String? nonEmptyStringValidator(String? value) {
@@ -49,4 +52,14 @@ String? confirmPasswordValidator(String? value, String password) {
 
 String capitalizeFirtLetter(String s) {
   return s[0].toUpperCase() + s.substring(1);
+}
+
+Future<void> launchUrlFunc(String url) async {
+  final uri = Uri.parse(url);
+
+  try {
+    await launchUrl(uri);
+  } catch (e) {
+    log(e.toString());
+  }
 }

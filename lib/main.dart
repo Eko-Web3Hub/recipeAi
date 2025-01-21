@@ -11,7 +11,10 @@ import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/firebase_options.dart';
+import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/nav/router.dart';
+import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +50,13 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(
           create: (_) => AuthNavigationController(
+            di<IAuthUserService>(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => HomeScreenController(
+            di<RetrieveReceipeFromApiOneTimePerDayUsecase>(),
+            di<IUserReceipeRepository>(),
             di<IAuthUserService>(),
           ),
         ),

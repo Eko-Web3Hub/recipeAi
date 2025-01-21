@@ -82,4 +82,10 @@ abstract class AppText {
   static const String startCooking = 'Start Cooking';
   static const String notificationEmptyTitle =
       'No notifications for \nyou yet 😉 !';
+  static const String updateUserPreference = 'Change your preferences';
+  static const String update = "Update";
+  static const String updateUserPreferenceSuccess =
+      'Your preferences have been updated';
+  static const String noChangeInUserPreference =
+      'No change in your preferences';
 }
