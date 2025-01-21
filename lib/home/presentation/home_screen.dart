@@ -47,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
             horizontal: horizontalScreenPadding,
           ),
           child: RefreshIndicator(
+            color: Theme.of(context).primaryColor,
+            backgroundColor: Colors.white,
             onRefresh: () async {
               context.read<HomeScreenController>().regenerateUserReceipe();
 
