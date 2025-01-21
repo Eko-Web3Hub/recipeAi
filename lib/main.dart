@@ -66,30 +66,36 @@ class _MyAppState extends State<MyApp> {
           log('AuthNavigationState: $state');
           _router.refresh();
         },
-        child: MaterialApp.router(
-          title: 'Recipe AI',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
-            primaryColor: const Color(0xff129575),
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            textTheme: TextTheme(
-              displayLarge: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 20.0,
-                height: 30 / 20,
-                color: Colors.black,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: MaterialApp.router(
+            title: 'Recipe AI',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              primaryColor: const Color(0xff129575),
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              textTheme: TextTheme(
+                displayLarge: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20.0,
+                  height: 30 / 20,
+                  color: Colors.black,
+                ),
+                labelSmall: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 11.0,
+                  height: 16.5 / 11,
+                  color: const Color(0xffA9A9A9),
+                ),
               ),
-              labelSmall: GoogleFonts.poppins(
-                fontWeight: FontWeight.w400,
-                fontSize: 11.0,
-                height: 16.5 / 11,
-                color: const Color(0xffA9A9A9),
-              ),
+              useMaterial3: true,
             ),
-            useMaterial3: true,
+            routerConfig: _router,
           ),
-          routerConfig: _router,
         ),
       ),
     );
