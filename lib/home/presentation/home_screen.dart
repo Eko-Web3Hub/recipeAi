@@ -46,90 +46,101 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(
             horizontal: horizontalScreenPadding,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(20.0),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _HeadLeftSection(),
-                ],
-              ),
-              const Gap(15),
-              Text(
-                AppText.quickRecipes,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayLarge
-                    ?.copyWith(fontSize: 17),
-              ),
-              BlocBuilder<HomeScreenController, HomeScreenState>(
-                builder: (context, homeScreenState) {
-                  if (homeScreenState is HomeScreenStateLoading) {
-                    /// A modifier. Afficher une liste de carte avec un shimmer effect
-                    return const Expanded(
-                      child: Center(
-                        child: CustomProgress(
-                          color: Colors.black,
+          child: RefreshIndicator(
+            color: Theme.of(context).primaryColor,
+            backgroundColor: Colors.white,
+            onRefresh: () async {
+              context.read<HomeScreenController>().regenerateUserReceipe();
+
+              return Future.delayed(
+                const Duration(seconds: 1),
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(20.0),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _HeadLeftSection(),
+                  ],
+                ),
+                const Gap(15),
+                Text(
+                  AppText.quickRecipes,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayLarge
+                      ?.copyWith(fontSize: 17),
+                ),
+                BlocBuilder<HomeScreenController, HomeScreenState>(
+                  builder: (context, homeScreenState) {
+                    if (homeScreenState is HomeScreenStateLoading) {
+                      /// A modifier. Afficher une liste de carte avec un shimmer effect
+                      return const Expanded(
+                        child: Center(
+                          child: CustomProgress(
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }
 
-                  if (homeScreenState is HomeScreenStateError) {
-                    return Expanded(child: Text(homeScreenState.message));
-                  }
+                    if (homeScreenState is HomeScreenStateError) {
+                      return Expanded(child: Text(homeScreenState.message));
+                    }
 
-                  if (homeScreenState is HomeScreenStateLoaded) {
-                    return Expanded(
-                        child: ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 20, top: 15),
-                      itemBuilder: (context, index) {
-                        return BlocProvider(
-                            create: (context) => ReceipeItemController(
-                                  homeScreenState.receipes[index],
-                                  di<IUserReceipeRepository>(),
-                                  di<IAuthUserService>(),
-                                ),
-                            child: BlocListener<ReceipeItemController,
-                                ReceipeItemState>(
-                              listener: (context, state) {
-                                if (state is ReceipeItemStateError) {
-                                  showSnackBar(context, state.message,
-                                      isError: true);
-                                }
-                              },
-                              child: BlocBuilder<ReceipeItemController,
+                    if (homeScreenState is HomeScreenStateLoaded) {
+                      return Expanded(
+                          child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 20, top: 15),
+                        itemBuilder: (context, index) {
+                          return BlocProvider(
+                              create: (context) => ReceipeItemController(
+                                    homeScreenState.receipes[index],
+                                    di<IUserReceipeRepository>(),
+                                    di<IAuthUserService>(),
+                                  ),
+                              child: BlocListener<ReceipeItemController,
                                   ReceipeItemState>(
-                                builder: (context, state) {
-                                  return ReceipeItem(
-                                    receipe: homeScreenState.receipes[index],
-                                    isSaved: state is ReceipeItemStateSaved,
-                                    onTap: () {
-                                      if (state is ReceipeItemStateSaved) {
-                                        context
-                                            .read<ReceipeItemController>()
-                                            .removeReceipe();
-                                      } else {
-                                        context
-                                            .read<ReceipeItemController>()
-                                            .saveReceipe();
-                                      }
-                                    },
-                                  );
+                                listener: (context, state) {
+                                  if (state is ReceipeItemStateError) {
+                                    showSnackBar(context, state.message,
+                                        isError: true);
+                                  }
                                 },
-                              ),
-                            ));
-                      },
-                      itemCount: homeScreenState.receipes.length,
-                    ));
-                  }
+                                child: BlocBuilder<ReceipeItemController,
+                                    ReceipeItemState>(
+                                  builder: (context, state) {
+                                    return ReceipeItem(
+                                      receipe: homeScreenState.receipes[index],
+                                      isSaved: state is ReceipeItemStateSaved,
+                                      onTap: () {
+                                        if (state is ReceipeItemStateSaved) {
+                                          context
+                                              .read<ReceipeItemController>()
+                                              .removeReceipe();
+                                        } else {
+                                          context
+                                              .read<ReceipeItemController>()
+                                              .saveReceipe();
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ));
+                        },
+                        itemCount: homeScreenState.receipes.length,
+                      ));
+                    }
 
-                  return const SizedBox();
-                },
-              ),
-            ],
+                    return const SizedBox();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       );
