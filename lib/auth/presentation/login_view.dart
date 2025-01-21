@@ -46,64 +46,81 @@ class _LoginViewState extends State<LoginView> {
         },
         child: Scaffold(
           body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizontalScreenPadding,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Gap(50),
-                    const _HeadTitle(),
-                    const Gap(57),
-                    FormFieldWithLabel(
-                      label: AppText.email,
-                      hintText: AppText.enterEmail,
-                      controller: _emailController,
-                      validator: nonEmptyStringValidator,
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: horizontalScreenPadding,
                     ),
-                    const Gap(30.0),
-                    FormFieldWithLabel(
-                      label: AppText.password,
-                      hintText: AppText.enterPassword,
-                      controller: _passwordController,
-                      inputType: InputType.password,
-                      validator: nonEmptyStringValidator,
-                    ),
-                    const Gap(50.0),
-                    BlocBuilder<LoginViewController, LoginViewState>(
-                        builder: (context, loginControllerState) {
-                      return MainBtn(
-                        text: AppText.signIn,
-                        showRightIcon: true,
-                        isLoading: loginControllerState is LoginViewLoading,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<LoginViewController>().login(
-                                  email: _emailController.text,
-                                  password: _passwordController.text,
-                                );
-                          }
-                        },
-                      );
-                    }),
-                    const Gap(30.0),
-                    const Spacer(),
-                    Center(
-                      child: AuthBottomAction(
-                        firstText: AppText.dontHaveAnAccount,
-                        secondText: ' ${AppText.signUp}',
-                        onPressed: () {
-                          context.push('/register');
-                        },
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Gap(50),
+                          const _HeadTitle(),
+                          const Gap(57),
+                          FormFieldWithLabel(
+                            label: AppText.email,
+                            hintText: AppText.enterEmail,
+                            controller: _emailController,
+                            validator: nonEmptyStringValidator,
+                          ),
+                          const Gap(30.0),
+                          FormFieldWithLabel(
+                            label: AppText.password,
+                            hintText: AppText.enterPassword,
+                            controller: _passwordController,
+                            inputType: InputType.password,
+                            validator: nonEmptyStringValidator,
+                          ),
+                          const Gap(50.0),
+                          BlocBuilder<LoginViewController, LoginViewState>(
+                              builder: (context, loginControllerState) {
+                            return MainBtn(
+                              text: AppText.signIn,
+                              showRightIcon: true,
+                              isLoading:
+                                  loginControllerState is LoginViewLoading,
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<LoginViewController>().login(
+                                        email: _emailController.text,
+                                        password: _passwordController.text,
+                                      );
+                                }
+                              },
+                            );
+                          }),
+                          const Gap(30.0),
+                        ],
                       ),
                     ),
-                    const Gap(65.0),
-                  ],
+                  ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Visibility(
+                    visible: MediaQuery.of(context).viewInsets.bottom == 0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Center(
+                          child: AuthBottomAction(
+                            firstText: AppText.dontHaveAnAccount,
+                            secondText: ' ${AppText.signUp}',
+                            onPressed: () {
+                              context.push('/register');
+                            },
+                          ),
+                        ),
+                        const Gap(65.0),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ),

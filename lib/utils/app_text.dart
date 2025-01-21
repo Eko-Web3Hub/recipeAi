@@ -88,4 +88,6 @@ abstract class AppText {
       'Your preferences have been updated';
   static const String noChangeInUserPreference =
       'No change in your preferences';
+  static const String emptyReceipes =
+      "No receipes 😉. \nGo update your preferences";
 }

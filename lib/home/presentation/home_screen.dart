@@ -32,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     SchedulerBinding.instance.addPostFrameCallback((_) {
       context.read<HomeScreenController>().reload();
     });
@@ -93,47 +92,65 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     if (homeScreenState is HomeScreenStateLoaded) {
                       return Expanded(
-                          child: ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 20, top: 15),
-                        itemBuilder: (context, index) {
-                          return BlocProvider(
-                              create: (context) => ReceipeItemController(
-                                    homeScreenState.receipes[index],
-                                    di<IUserReceipeRepository>(),
-                                    di<IAuthUserService>(),
+                          child: homeScreenState.receipes.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    AppText.emptyReceipes,
+                                    style: smallTextStyle,
                                   ),
-                              child: BlocListener<ReceipeItemController,
-                                  ReceipeItemState>(
-                                listener: (context, state) {
-                                  if (state is ReceipeItemStateError) {
-                                    showSnackBar(context, state.message,
-                                        isError: true);
-                                  }
-                                },
-                                child: BlocBuilder<ReceipeItemController,
-                                    ReceipeItemState>(
-                                  builder: (context, state) {
-                                    return ReceipeItem(
-                                      receipe: homeScreenState.receipes[index],
-                                      isSaved: state is ReceipeItemStateSaved,
-                                      onTap: () {
-                                        if (state is ReceipeItemStateSaved) {
-                                          context
-                                              .read<ReceipeItemController>()
-                                              .removeReceipe();
-                                        } else {
-                                          context
-                                              .read<ReceipeItemController>()
-                                              .saveReceipe();
-                                        }
-                                      },
-                                    );
+                                )
+                              : ListView.builder(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 20, top: 15),
+                                  itemBuilder: (context, index) {
+                                    return BlocProvider(
+                                        create: (context) =>
+                                            ReceipeItemController(
+                                              homeScreenState.receipes[index],
+                                              di<IUserReceipeRepository>(),
+                                              di<IAuthUserService>(),
+                                            ),
+                                        child: BlocListener<
+                                            ReceipeItemController,
+                                            ReceipeItemState>(
+                                          listener: (context, state) {
+                                            if (state
+                                                is ReceipeItemStateError) {
+                                              showSnackBar(
+                                                  context, state.message,
+                                                  isError: true);
+                                            }
+                                          },
+                                          child: BlocBuilder<
+                                              ReceipeItemController,
+                                              ReceipeItemState>(
+                                            builder: (context, state) {
+                                              return ReceipeItem(
+                                                receipe: homeScreenState
+                                                    .receipes[index],
+                                                isSaved: state
+                                                    is ReceipeItemStateSaved,
+                                                onTap: () {
+                                                  if (state
+                                                      is ReceipeItemStateSaved) {
+                                                    context
+                                                        .read<
+                                                            ReceipeItemController>()
+                                                        .removeReceipe();
+                                                  } else {
+                                                    context
+                                                        .read<
+                                                            ReceipeItemController>()
+                                                        .saveReceipe();
+                                                  }
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ));
                                   },
-                                ),
-                              ));
-                        },
-                        itemCount: homeScreenState.receipes.length,
-                      ));
+                                  itemCount: homeScreenState.receipes.length,
+                                ));
                     }
 
                     return const SizedBox();
