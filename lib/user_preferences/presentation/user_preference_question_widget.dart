@@ -76,7 +76,7 @@ class _MultipleChoiceQuestion extends StatelessWidget {
   }
 }
 
-class CheckBoxOption extends StatelessWidget {
+class CheckBoxOption extends StatefulWidget {
   const CheckBoxOption({
     super.key,
     required this.option,
@@ -89,49 +89,16 @@ class CheckBoxOption extends StatelessWidget {
   final Function(bool) onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _CustomCheckBox(
-          (isSelected) {
-            onChanged(isSelected);
-          },
-          initialState: isSelected,
-        ),
-        const Gap(22),
-        Expanded(
-          child: Text(
-            option,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              height: 24 / 16,
-              color: const Color(0xff1E1E1E),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  State<CheckBoxOption> createState() => _CheckBoxOptionState();
 }
 
-class _CustomCheckBox extends StatefulWidget {
-  const _CustomCheckBox(this.onChanged, {this.initialState = false});
-
-  final Function(bool) onChanged;
-  final bool initialState;
-
-  @override
-  State<_CustomCheckBox> createState() => _CustomCheckBoxState();
-}
-
-class _CustomCheckBoxState extends State<_CustomCheckBox> {
+class _CheckBoxOptionState extends State<CheckBoxOption> {
   bool isSelected = false;
 
   @override
   void initState() {
     super.initState();
-    isSelected = widget.initialState;
+    isSelected = widget.isSelected;
   }
 
   @override
@@ -143,23 +110,53 @@ class _CustomCheckBoxState extends State<_CustomCheckBox> {
         });
         widget.onChanged(isSelected);
       },
-      child: Container(
-        width: 20.0,
-        height: 20.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: isSelected ? Colors.transparent : Colors.black,
-            width: 2.0,
+      child: Row(
+        children: [
+          _CustomCheckBox(
+            isSelected: isSelected,
           ),
-          color:
-              isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+          const Gap(22),
+          Expanded(
+            child: Text(
+              widget.option,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                height: 24 / 16,
+                color: const Color(0xff1E1E1E),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CustomCheckBox extends StatelessWidget {
+  const _CustomCheckBox({
+    this.isSelected = false,
+  });
+
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 20.0,
+      height: 20.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: isSelected ? Colors.transparent : Colors.black,
+          width: 2.0,
         ),
-        child: Icon(
-          Icons.check,
-          color: isSelected ? Colors.white : Colors.black,
-          size: 15,
-        ),
+        color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+      ),
+      child: Icon(
+        Icons.check,
+        color: isSelected ? Colors.white : Colors.black,
+        size: 15,
       ),
     );
   }
