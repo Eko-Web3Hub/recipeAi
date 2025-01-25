@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/onboarding/domain/model/onboarding_model.dart';
 import 'package:recipe_ai/onboarding/onboarding_first_section_widget.dart';
 import 'package:recipe_ai/utils/app_text.dart';
@@ -12,7 +14,7 @@ const _onBoardingFr = [
     child: OnboardingFirstSectionWidget(),
     description: AppText.onboardingDesc1,
     horizontalPadding: 30,
-    paddingBetweenTitleAndChild: 63,
+    paddingBetweenTitleAndChild: 40,
   ),
   OnboardingModel(
     title: AppText.onboardingTitle2,
@@ -55,7 +57,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       content.title,
                       content.textColor,
                     ),
-                    const Gap(44),
+                    const Gap(10),
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: content.horizontalPadding,
@@ -90,6 +92,30 @@ class _OnboardingViewState extends State<OnboardingView> {
               count: _onBoardingFr.length,
             ),
           ),
+          const Gap(20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 80),
+            child: MainBtn(
+              text: AppText.next,
+              onPressed: () {},
+            ),
+          ),
+          const Gap(13),
+          InkWell(
+            onTap: () => context.go(
+              '/login',
+            ),
+            child: Text(
+              AppText.skip,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                height: 24 / 16,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          const Gap(13),
         ],
       ),
     );

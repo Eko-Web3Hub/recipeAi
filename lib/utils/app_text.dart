@@ -97,4 +97,5 @@ abstract class AppText {
       "Upload your kitchen inventory or invoices, and we'll generate recipes just for you";
   static const String onboardingDesc2 =
       "From ingredients to quick \nrecipe you can save";
+  static const String skip = 'Skip';
 }
