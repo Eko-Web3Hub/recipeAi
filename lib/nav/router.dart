@@ -17,6 +17,7 @@ import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/notification/presentation/notification_screen.dart';
+import 'package:recipe_ai/onboarding/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -62,6 +63,13 @@ GoRouter createRouter() => GoRouter(
           name: 'OnBoarding',
           path: '/onboarding',
           builder: (context, state) => const StartScreen(),
+          routes: <RouteBase>[
+            GoRoute(
+              name: 'OnBoardingSlider',
+              path: 'slider',
+              builder: (context, state) => const OnboardingView(),
+            ),
+          ],
         ),
         GoRoute(
           name: 'Login',
