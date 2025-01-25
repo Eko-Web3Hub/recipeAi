@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
@@ -18,7 +19,7 @@ class OnboardingFirstSectionWidget extends StatelessWidget {
                 top: 28.0,
               ),
               child: _IconWidget(
-                '',
+                'assets/images/camera_add.svg',
                 Theme.of(context).primaryColor,
               ),
             ),
@@ -30,6 +31,12 @@ class OnboardingFirstSectionWidget extends StatelessWidget {
                 color: greyVariantColor,
                 borderRadius: BorderRadius.circular(
                   20,
+                ),
+                image: const DecorationImage(
+                  image: AssetImage(
+                    'assets/images/onboardingFirstImage.png',
+                  ),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -46,12 +53,18 @@ class OnboardingFirstSectionWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   20,
                 ),
+                image: const DecorationImage(
+                  image: AssetImage(
+                    'assets/images/onboardingSecondImage.jpeg',
+                  ),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const Gap(37),
             const Center(
               child: _IconWidget(
-                '',
+                'assets/images/mingcute-ai-fill.svg',
                 orangeVariantColor,
               ),
             ),
@@ -80,6 +93,14 @@ class _IconWidget extends StatelessWidget {
         color: bgColor,
         borderRadius: BorderRadius.circular(
           20,
+        ),
+      ),
+      child: Center(
+        child: SvgPicture.asset(
+          icon,
+          fit: BoxFit.contain,
+          width: 24,
+          height: 24,
         ),
       ),
     );

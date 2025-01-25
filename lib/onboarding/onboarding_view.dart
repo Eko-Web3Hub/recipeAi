@@ -40,7 +40,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     return Scaffold(
       body: Column(
         children: [
-          const Gap(80),
+          const Gap(70),
           Expanded(
             child: PageView.builder(
               controller: controller,
