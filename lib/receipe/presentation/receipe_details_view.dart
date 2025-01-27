@@ -65,16 +65,23 @@ class ReceipeDetailsView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
+                      Container(
+                        margin: const EdgeInsets.only(
                           top: 50.0,
                           left: 20.0,
                         ),
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
+                            color: Colors.white, shape: BoxShape.circle),
                         child: InkWell(
                           onTap: () => context.pop(),
                           child: SvgPicture.asset(
                             'assets/images/arrowLeft.svg',
                             height: 30,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF858585),
+                              BlendMode.srcATop,
+                            ),
                           ),
                         ),
                       ),

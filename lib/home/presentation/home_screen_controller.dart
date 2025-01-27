@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+
+import '../../receipe/domain/repositories/user_receipe_repository.dart';
 
 abstract class HomeScreenState extends Equatable {
   const HomeScreenState();
@@ -33,17 +36,20 @@ class HomeScreenStateError extends HomeScreenState {
 
 /// The controller for the home screen
 class HomeScreenController extends Cubit<HomeScreenState> {
-  HomeScreenController(this._retrieveReceipeFromApiOneTimePerDayUsecase,
-      {DateTime? now})
-      : super(const HomeScreenStateLoading()) {
+  HomeScreenController(
+    this._retrieveReceipeFromApiOneTimePerDayUsecase,
+    this._userReceipeRepository,
+    this._authUserService, {
+    DateTime? now,
+  }) : super(const HomeScreenStateLoading()) {
     currentNow = now;
-    load();
-  } 
-
+  }
+  final IUserReceipeRepository _userReceipeRepository;
   final RetrieveReceipeFromApiOneTimePerDayUsecase
       _retrieveReceipeFromApiOneTimePerDayUsecase;
+  final IAuthUserService _authUserService;
 
-  Future<void> load() async {
+  Future<void> _load() async {
     try {
       final receipes =
           await _retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(
@@ -54,6 +60,19 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       log(e.message);
       emit(HomeScreenStateError(e.message));
     }
+  }
+
+  Future<void> reload() async {
+    emit(const HomeScreenStateLoading());
+    await _load();
+  }
+
+  Future<void> regenerateUserReceipe() async {
+    emit(const HomeScreenStateLoading());
+    await _userReceipeRepository.deleteUserReceipe(
+      _authUserService.currentUser!.uid,
+    );
+    await _load();
   }
 
   /// Is used for testing purposes

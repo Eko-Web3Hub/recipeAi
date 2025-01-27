@@ -8,7 +8,8 @@ import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
-import 'package:recipe_ai/home/presentation/house_screen.dart';
+import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
@@ -16,6 +17,7 @@ import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/notification/presentation/notification_screen.dart';
+import 'package:recipe_ai/onboarding/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -61,6 +63,13 @@ GoRouter createRouter() => GoRouter(
           name: 'OnBoarding',
           path: '/onboarding',
           builder: (context, state) => const StartScreen(),
+          routes: <RouteBase>[
+            GoRoute(
+              name: 'OnBoardingSlider',
+              path: 'slider',
+              builder: (context, state) => const OnboardingView(),
+            ),
+          ],
         ),
         GoRoute(
           name: 'Login',
@@ -82,7 +91,7 @@ GoRouter createRouter() => GoRouter(
               ScaffoldWithNestedNavigation(
             appBarTitle: genAppBarTitle(state.fullPath),
             navigationShell: navigationShell,
-            hideNavBar: false,
+            hideNavBar: hideNavBar(state.fullPath),
           ),
           branches: <StatefulShellBranch>[
             StatefulShellBranch(
@@ -154,7 +163,7 @@ GoRouter createRouter() => GoRouter(
                       ],
                     ),
                   ],
-                  builder: (context, state) => const HouseScreen(),
+                  builder: (context, state) => const HomeScreen(),
                 ),
               ],
             ),
@@ -185,6 +194,15 @@ GoRouter createRouter() => GoRouter(
                   path: '/profil-screen',
                   redirect: _guardAuth,
                   builder: (context, state) => const ProfileScreen(),
+                  routes: <RouteBase>[
+                    GoRoute(
+                      name: 'UpdateUserPreference',
+                      path: 'update-user-preference',
+                      redirect: _guardAuth,
+                      builder: (context, state) =>
+                          const UpdateUserPreferenceScreen(),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -204,5 +222,14 @@ String? genAppBarTitle(String? path) {
       return 'Profile';
     default:
       return null;
+  }
+}
+
+bool hideNavBar(String? path) {
+  switch (path) {
+    case '/profil-screen/update-user-preference':
+      return true;
+    default:
+      return false;
   }
 }

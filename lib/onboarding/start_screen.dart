@@ -49,7 +49,7 @@ class StartScreen extends StatelessWidget {
                         child: MainBtn(
                           leftArrowPadding: 10,
                           text: AppText.startCooking,
-                          onPressed: () => context.go('/login'),
+                          onPressed: () => context.go('/onboarding/slider'),
                           showRightIcon: true,
                         ),
                       ),

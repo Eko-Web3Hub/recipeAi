@@ -130,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                     text: AppText.changesPreferences,
                     textColor: null,
                     onPressed: () {
-                      context.push("/user-preferences");
+                      context.push("/profil-screen/update-user-preference");
                     },
                   ),
                   _TextButton(

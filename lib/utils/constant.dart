@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -17,23 +18,12 @@ final receipeSample = Receipe(
   ingredients: [
     Ingredient(
       name: 'Tomatoes',
-      quantity: '3pcs', date: DateTime.now(),
+      quantity: '3pcs',
+      date: DateTime.now(),
     ),
-    Ingredient(
-      name: 'Water',
-      quantity: null,
-      date: DateTime.now()
-    ),
-    Ingredient(
-      name: 'Steak',
-      quantity: null,
-      date: DateTime.now()
-    ),
-    Ingredient(
-      name: 'Egg',
-      quantity: '10pcs',
-      date: DateTime.now()
-    ),
+    Ingredient(name: 'Water', quantity: null, date: DateTime.now()),
+    Ingredient(name: 'Steak', quantity: null, date: DateTime.now()),
+    Ingredient(name: 'Egg', quantity: '10pcs', date: DateTime.now()),
   ],
   steps: const [
     ReceipeStep(
@@ -70,4 +60,11 @@ final mediumTextStyle = GoogleFonts.poppins(
   fontSize: 18,
   height: 27 / 18,
   color: blackVariantColor,
+);
+
+final dioOption = BaseOptions(
+  headers: {
+    'Content-Type': 'application/json',
+    'accept': 'application/json',
+  },
 );
