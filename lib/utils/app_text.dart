@@ -98,4 +98,5 @@ abstract class AppText {
   static const String onboardingDesc2 =
       "From ingredients to quick \nrecipe you can save";
   static const String skip = 'Skip';
+  static const String frenchFood = 'French Food';
 }

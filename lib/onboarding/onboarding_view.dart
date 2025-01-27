@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/onboarding/domain/model/onboarding_model.dart';
 import 'package:recipe_ai/onboarding/onboarding_first_section_widget.dart';
+import 'package:recipe_ai/onboarding/personalized_preference_widget.dart';
 import 'package:recipe_ai/onboarding/smart_receipe_generation_widget.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -26,7 +27,7 @@ const _onBoardingFr = [
   OnboardingModel(
     title: AppText.onboardingTitle3,
     textColor: Colors.white,
-    child: SizedBox.shrink(),
+    child: PersonalizedPreferenceWidget(),
   ),
 ];
 
