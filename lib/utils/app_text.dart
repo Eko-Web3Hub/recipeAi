@@ -90,4 +90,13 @@ abstract class AppText {
       'No change in your preferences';
   static const String emptyReceipes =
       "No receipes 😉. \nGo update your preferences";
+  static const String onboardingTitle1 = 'Fill your kitchen inventory easily';
+  static const String onboardingTitle2 = 'Smart Recipe Generation';
+  static const String onboardingTitle3 = 'Personalized Preferences';
+  static const String onboardingDesc1 =
+      "Upload your kitchen inventory or invoices, and we'll generate recipes just for you";
+  static const String onboardingDesc2 =
+      "From ingredients to quick \nrecipe you can save";
+  static const String skip = 'Skip';
+  static const String frenchFood = 'French Food';
 }

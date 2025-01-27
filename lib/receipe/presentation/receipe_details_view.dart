@@ -79,7 +79,9 @@ class ReceipeDetailsView extends StatelessWidget {
                             'assets/images/arrowLeft.svg',
                             height: 30,
                             colorFilter: const ColorFilter.mode(
-                                const Color(0xFF858585), BlendMode.srcATop),
+                              Color(0xFF858585),
+                              BlendMode.srcATop,
+                            ),
                           ),
                         ),
                       ),
