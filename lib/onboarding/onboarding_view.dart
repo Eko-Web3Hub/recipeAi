@@ -52,37 +52,59 @@ class _OnboardingViewState extends State<OnboardingView> {
               clipBehavior: Clip.none,
               itemBuilder: (context, index) {
                 final content = _onBoardingFr[index];
+                final widthScreen = MediaQuery.of(context).size.width;
 
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
+                return Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    _OnboardingTitle(
-                      content.title,
-                      content.textColor,
-                    ),
-                    const Gap(10),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: content.horizontalPadding,
-                      ),
-                      child: content.child,
-                    ),
-                    Gap(content.paddingBetweenTitleAndChild),
-                    if (content.description != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 52,
-                        ),
-                        child: Text(
-                          content.description!,
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            height: 24 / 16,
+                    Visibility(
+                      visible: index == 1,
+                      child: Positioned(
+                        left: (widthScreen / 2) + 34,
+                        bottom: -30,
+                        child: SizedBox(
+                          width: 200,
+                          height: 200,
+                          child: Image.asset(
+                            'assets/images/receiptImage.png',
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Center(
+                          child: _OnboardingTitle(
+                            content.title,
+                            content.textColor,
+                          ),
+                        ),
+                        const Gap(10),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: content.horizontalPadding,
+                          ),
+                          child: content.child,
+                        ),
+                        Gap(content.paddingBetweenTitleAndChild),
+                        if (content.description != null)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 52,
+                            ),
+                            child: Text(
+                              content.description!,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                                height: 24 / 16,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
                 );
               },
