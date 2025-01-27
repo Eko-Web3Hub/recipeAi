@@ -21,6 +21,7 @@ const _onBoardingFr = [
     title: AppText.onboardingTitle2,
     child: SmartReceipeGenerationWidget(),
     description: AppText.onboardingDesc2,
+    paddingBetweenTitleAndChild: 93,
   ),
   OnboardingModel(
     title: AppText.onboardingTitle3,
@@ -48,7 +49,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             child: PageView.builder(
               controller: controller,
               itemCount: _onBoardingFr.length,
-              clipBehavior: Clip.hardEdge,
+              clipBehavior: Clip.none,
               itemBuilder: (context, index) {
                 final content = _onBoardingFr[index];
 
@@ -99,7 +100,18 @@ class _OnboardingViewState extends State<OnboardingView> {
             padding: const EdgeInsets.symmetric(horizontal: 80),
             child: MainBtn(
               text: AppText.next,
-              onPressed: () {},
+              onPressed: () {
+                if (controller.page == _onBoardingFr.length - 1) {
+                  context.go(
+                    '/login',
+                  );
+                } else {
+                  controller.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease,
+                  );
+                }
+              },
             ),
           ),
           const Gap(13),

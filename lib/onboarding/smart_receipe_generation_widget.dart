@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
 const _ingredientsOne = [
@@ -13,15 +15,7 @@ const _ingredientsOne = [
   ),
   _Ingredient(
     icon: '',
-    ingredient: 'Rice',
-  ),
-  _Ingredient(
-    icon: '',
     ingredient: 'Chicken',
-  ),
-  _Ingredient(
-    icon: '',
-    ingredient: 'Salt',
   ),
   _Ingredient(
     icon: '',
@@ -35,9 +29,59 @@ const _ingredientsOne = [
     icon: '',
     ingredient: 'Garlic',
   ),
+];
+
+const _ingredientsTwo = [
+  _Ingredient(
+    icon: '',
+    ingredient: 'Potatoes',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Pasta',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Olive oil',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Cheese',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Basil',
+  ),
   _Ingredient(
     icon: '',
     ingredient: 'Parsley',
+  ),
+];
+
+const _ingredientsThree = [
+  _Ingredient(
+    icon: '',
+    ingredient: 'Salt',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Pepper',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Sugar',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Flour',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Milk',
+  ),
+  _Ingredient(
+    icon: '',
+    ingredient: 'Eggs',
   ),
 ];
 
@@ -50,64 +94,69 @@ class SmartReceipeGenerationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _IngredientList(),
+        _IngredientList(
+          _ingredientsOne,
+          (index) => index % 2 == 0,
+          70,
+        ),
+        const Gap(14),
+        _IngredientList(_ingredientsTwo, (index) => false, 30),
+        const Gap(14),
+        _IngredientList(_ingredientsThree, (index) => index % 2 == 0, 5),
       ],
     );
   }
 }
 
 class _IngredientList extends StatefulWidget {
-  const _IngredientList({super.key});
+  const _IngredientList(
+    this.ingredients,
+    this.buildCondition,
+    this.initialJumpValue,
+  );
+
+  final List<_Ingredient> ingredients;
+  final bool Function(int index) buildCondition;
+  final double initialJumpValue;
 
   @override
   State<_IngredientList> createState() => __IngredientListState();
 }
 
-class __IngredientListState extends State<_IngredientList>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class __IngredientListState extends State<_IngredientList> {
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 5),
-      vsync: this,
-    )..repeat(); // Repeats infinitely
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    // Inside the post-frame callback
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(widget.initialJumpValue);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    return SizedBox(
+      height: 60,
+      child: ListView.builder(
+        controller: _scrollController,
+        itemBuilder: (context, index) {
+          final ingredient =
+              widget.ingredients[index % widget.ingredients.length];
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(-_controller.value * screenWidth, 0),
-          child: Row(
-            children: _ingredientsOne
-                .map<Widget>(
-                  (ingredient) => Padding(
-                    padding: const EdgeInsets.only(
-                      right: 12,
-                    ),
-                    child: _IngredientDisplay(
-                      icon: ingredient.icon,
-                      ingredient: ingredient.ingredient,
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        );
-      },
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: _IngredientDisplay(
+              icon: ingredient.icon,
+              ingredient: ingredient.ingredient,
+              isActive: widget.buildCondition(index),
+            ),
+          );
+        },
+        itemCount: widget.ingredients.length * 6,
+        scrollDirection: Axis.horizontal,
+      ),
     );
   }
 }
@@ -127,26 +176,21 @@ class _IngredientDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
       decoration: BoxDecoration(
         color: !isActive ? const Color(0xffD9D9D9) : orangeVariantColor,
-        borderRadius: BorderRadius.circular(
-          50,
-        ),
+        borderRadius: BorderRadius.circular(30),
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 45,
-            height: 45,
-            decoration: const BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
+      child: Center(
+        child: Text(
+          ingredient,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            height: 24 / 16,
+            color: isActive ? Colors.white : Colors.black,
           ),
-          Text(
-            ingredient,
-          ),
-        ],
+        ),
       ),
     );
   }
