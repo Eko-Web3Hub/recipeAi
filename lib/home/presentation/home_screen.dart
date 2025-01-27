@@ -97,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text(
                                     AppText.emptyReceipes,
                                     style: smallTextStyle,
+                                    textAlign: TextAlign.center,
                                   ),
                                 )
                               : ListView.builder(
