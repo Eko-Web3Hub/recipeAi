@@ -21,7 +21,7 @@ const _onBoardingFr = [
     title: AppText.onboardingTitle2,
     child: SmartReceipeGenerationWidget(),
     description: AppText.onboardingDesc2,
-    paddingBetweenTitleAndChild: 93,
+    paddingBetweenTitleAndChild: 70,
   ),
   OnboardingModel(
     title: AppText.onboardingTitle3,

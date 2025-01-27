@@ -94,6 +94,7 @@ class SmartReceipeGenerationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const Gap(41),
         _IngredientList(
           _ingredientsOne,
           (index) => index % 2 == 0,
