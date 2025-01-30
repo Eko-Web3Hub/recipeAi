@@ -19,6 +19,8 @@ abstract class AppText {
   static const String alreadyAMember = "Already a member?";
   static const String fieldCannotBeEmpty = 'This field is required';
   static const String invalidEmail = 'Invalid email';
+  static const String userNotFound =
+      'There is no user record linked to this email';
   static const String registerFailed = 'Register failed';
   static const String registerSuccess = 'You have successfully registered';
   static const String next = 'Next';
