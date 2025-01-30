@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-01-30 14:13:27</td>
+            <td class="headerValue">2025-01-30 15:01:21</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -71,13 +71,13 @@
 <span id="L9"><span class="lineNum">       9</span>              : </span>
 <span id="L10"><span class="lineNum">      10</span>              :   Future&lt;bool&gt; register({required String email, required String password});</span>
 <span id="L11"><span class="lineNum">      11</span>              : </span>
-<span id="L12"><span class="lineNum">      12</span>              :   Future&lt;bool&gt; resetPassword({required String email});</span>
+<span id="L12"><span class="lineNum">      12</span>              :   Future&lt;bool&gt; sendPasswordResetEmail({required String email});</span>
 <span id="L13"><span class="lineNum">      13</span>              : }</span>
 <span id="L14"><span class="lineNum">      14</span>              : </span>
 <span id="L15"><span class="lineNum">      15</span>              : class AuthException {</span>
 <span id="L16"><span class="lineNum">      16</span>              :   final String message;</span>
 <span id="L17"><span class="lineNum">      17</span>              : </span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC tlaBgGNC">           3 :   AuthException(</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC tlaBgGNC">           4 :   AuthException(</span></span>
 <span id="L19"><span class="lineNum">      19</span>              :     this.message,</span>
 <span id="L20"><span class="lineNum">      20</span>              :   );</span>
 <span id="L21"><span class="lineNum">      21</span>              : }</span>
@@ -128,7 +128,7 @@
 <span id="L66"><span class="lineNum">      66</span>              :   }</span>
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC tlaBgUNC">           0 :   @override</span></span>
-<span id="L69"><span class="lineNum">      69</span>              :   Future&lt;bool&gt; resetPassword({required String email}) async {</span>
+<span id="L69"><span class="lineNum">      69</span>              :   Future&lt;bool&gt; sendPasswordResetEmail({required String email}) async {</span>
 <span id="L70"><span class="lineNum">      70</span>              :     try {</span>
 <span id="L71"><span class="lineNum">      71</span> <span class="tlaUNC">           0 :       await _firebaseAuth.sendPasswordResetEmail(email);</span></span>
 <span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :     } on FirebaseAuthException catch (e) {</span></span>
