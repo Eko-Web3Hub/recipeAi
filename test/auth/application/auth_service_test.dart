@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/utils/app_text.dart';
 
 class FirebaseAuth extends Mock implements IFirebaseAuth {}
 
@@ -127,6 +128,97 @@ void main() {
           await sut.signOut();
 
           verify(() => firebaseAuth.signOut()).called(1);
+        },
+      );
+    },
+  );
+
+  group(
+    'sendPasswordResetEmail methods',
+    () {
+      test(
+        'should send password reset email',
+        () async {
+          when(() => firebaseAuth.sendPasswordResetEmail(email)).thenAnswer(
+            (_) => Future.value(),
+          );
+          final sut = AuthService(firebaseAuth);
+
+          await sut.sendPasswordResetEmail(email: email);
+
+          verify(() => firebaseAuth.sendPasswordResetEmail(email)).called(1);
+        },
+      );
+
+      test(
+        'should throw an exception when sending password reset email fails with an invalid email',
+        () async {
+          when(() => firebaseAuth.sendPasswordResetEmail(email)).thenThrow(
+            FirebaseAuthException(
+              code: 'auth/invalid-email',
+              message: 'message',
+            ),
+          );
+          final sut = AuthService(firebaseAuth);
+
+          try {
+            await sut.sendPasswordResetEmail(email: email);
+          } catch (e) {
+            expect(
+              e,
+              const AuthException(
+                AppText.userNotFound,
+              ),
+            );
+          }
+        },
+      );
+
+      test(
+        'should throw an exception when sending password reset email fails with an user not found',
+        () async {
+          when(() => firebaseAuth.sendPasswordResetEmail(email)).thenThrow(
+            FirebaseAuthException(
+              code: 'auth/user-not-found',
+              message: 'message',
+            ),
+          );
+          final sut = AuthService(firebaseAuth);
+
+          try {
+            await sut.sendPasswordResetEmail(email: email);
+          } catch (e) {
+            expect(
+              e,
+              const AuthException(
+                AppText.userNotFound,
+              ),
+            );
+          }
+        },
+      );
+
+      test(
+        'should throw an exception when sending password reset email fails',
+        () async {
+          when(() => firebaseAuth.sendPasswordResetEmail(email)).thenThrow(
+            FirebaseAuthException(
+              code: 'code',
+              message: 'message',
+            ),
+          );
+          final sut = AuthService(firebaseAuth);
+
+          try {
+            await sut.sendPasswordResetEmail(email: email);
+          } catch (e) {
+            expect(
+              e,
+              const AuthException(
+                AppText.somethingWentWrong,
+              ),
+            );
+          }
         },
       );
     },
