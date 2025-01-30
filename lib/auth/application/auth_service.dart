@@ -9,7 +9,7 @@ abstract class IAuthService {
 
   Future<bool> register({required String email, required String password});
 
-  Future<bool> resetPassword({required String email});
+  Future<bool> sendPasswordResetEmail({required String email});
 }
 
 class AuthException {
@@ -66,7 +66,7 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<bool> resetPassword({required String email}) async {
+  Future<bool> sendPasswordResetEmail({required String email}) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email);
     } on FirebaseAuthException catch (e) {
