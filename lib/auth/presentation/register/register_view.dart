@@ -175,6 +175,13 @@ class _RegisterViewState extends State<RegisterView> {
   }
 }
 
+final headTitleStyle = GoogleFonts.poppins(
+  fontWeight: FontWeight.w600,
+  fontSize: 20,
+  height: 30 / 20,
+  color: Colors.black,
+);
+
 class HeadTitle extends StatelessWidget {
   const HeadTitle({
     super.key,
@@ -193,12 +200,7 @@ class HeadTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-            height: 30 / 20,
-            color: Colors.black,
-          ),
+          style: headTitleStyle,
         ),
         const Gap(5),
         Text(

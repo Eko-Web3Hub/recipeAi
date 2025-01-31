@@ -60,7 +60,7 @@ void main() {
           name: name,
         ),
       ).thenThrow(
-        AuthException(errorMessage),
+        const AuthException(errorMessage),
       );
     },
     act: (bloc) => bloc.register(

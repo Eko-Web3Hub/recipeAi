@@ -16,6 +16,7 @@ class DeleteAccountExeption implements Exception {
 }
 
 abstract class IFirebaseAuth {
+  Future<void> sendPasswordResetEmail(String email);
   Future<void> deleteAccount();
   Future<void> signOut();
   Future<void> signInWithEmailAndPassword(
@@ -64,6 +65,12 @@ class FirebaseAuthProd implements IFirebaseAuth {
   Future<void> deleteAccount() {
     return _firebaseAuth.currentUser!.delete();
   }
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) =>
+      _firebaseAuth.sendPasswordResetEmail(
+        email: email,
+      );
 }
 
 class AuthUserService implements IAuthUserService {

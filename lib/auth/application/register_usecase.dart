@@ -26,7 +26,7 @@ class RegisterUsecase {
     );
     final user = _authUserService.currentUser;
     if (user == null) {
-      throw AuthException(
+      throw const AuthException(
         AppText.registerFailed,
       );
     }
