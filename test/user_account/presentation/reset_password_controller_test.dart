@@ -69,7 +69,7 @@ void main() {
     ),
     setUp: () {
       when(() => authService.sendPasswordResetEmail(email: email))
-          .thenThrow(AuthException('Error'));
+          .thenThrow(const AuthException('Error'));
     },
     act: (bloc) => bloc.resetPassword(email),
     expect: () => [

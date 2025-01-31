@@ -101,4 +101,6 @@ abstract class AppText {
       "From ingredients to quick \nrecipe you can save";
   static const String skip = 'Skip';
   static const String frenchFood = 'French Food';
+  static const String forgotternPassword = 'Forgotten Password';
+  static const String forgotPassword = 'Forgot Password?';
 }

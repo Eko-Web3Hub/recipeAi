@@ -11,6 +11,7 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/login_view_controller.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 
@@ -75,7 +76,20 @@ class _LoginViewState extends State<LoginView> {
                             inputType: InputType.password,
                             validator: nonEmptyStringValidator,
                           ),
-                          const Gap(50.0),
+                          const Gap(20),
+                          InkWell(
+                            onTap: () => context.go('/login/reset-password'),
+                            child: Text(
+                              AppText.forgotPassword,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 11,
+                                height: 16.5 / 11,
+                                color: orangeVariantColor,
+                              ),
+                            ),
+                          ),
+                          const Gap(25.0),
                           BlocBuilder<LoginViewController, LoginViewState>(
                               builder: (context, loginControllerState) {
                             return MainBtn(
