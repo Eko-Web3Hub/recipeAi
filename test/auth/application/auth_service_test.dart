@@ -155,7 +155,7 @@ void main() {
         () async {
           when(() => firebaseAuth.sendPasswordResetEmail(email)).thenThrow(
             FirebaseAuthException(
-              code: 'auth/invalid-email',
+              code: 'invalid-email',
               message: 'message',
             ),
           );
@@ -179,7 +179,7 @@ void main() {
         () async {
           when(() => firebaseAuth.sendPasswordResetEmail(email)).thenThrow(
             FirebaseAuthException(
-              code: 'auth/user-not-found',
+              code: 'user-not-found',
               message: 'message',
             ),
           );

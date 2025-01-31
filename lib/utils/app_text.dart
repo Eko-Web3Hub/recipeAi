@@ -103,4 +103,6 @@ abstract class AppText {
   static const String frenchFood = 'French Food';
   static const String forgotternPassword = 'Forgotten Password';
   static const String forgotPassword = 'Forgot Password?';
+  static const String resetPasswordSuccess =
+      'We have sent you an email to reset your password';
 }
