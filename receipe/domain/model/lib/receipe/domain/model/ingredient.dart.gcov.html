@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryMed">87.5&nbsp;%</td>
+            <td class="headerCovTableEntryMed">88.9&nbsp;%</td>
+            <td class="headerCovTableEntry">9</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntry">7</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-02-03 05:16:38</td>
+            <td class="headerValue">2025-02-05 11:12:12</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -61,30 +61,38 @@
 <pre class="sourceHeading">            Line data    Source code</pre>
 <pre class="source">
 <span id="L1"><span class="lineNum">       1</span>              : import 'package:equatable/equatable.dart';</span>
-<span id="L2"><span class="lineNum">       2</span>              : </span>
-<span id="L3"><span class="lineNum">       3</span>              : class Ingredient extends Equatable {</span>
-<span id="L4"><span class="lineNum">       4</span>              :   final String name;</span>
-<span id="L5"><span class="lineNum">       5</span>              :   final String? quantity;</span>
-<span id="L6"><span class="lineNum">       6</span>              :   final DateTime? date;</span>
-<span id="L7"><span class="lineNum">       7</span>              : </span>
-<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC tlaBgGNC">           3 :   const Ingredient(</span></span>
-<span id="L9"><span class="lineNum">       9</span>              :       {required this.name, required this.quantity, required this.date});</span>
-<span id="L10"><span class="lineNum">      10</span>              : </span>
-<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">           1 :   Ingredient copy({</span></span>
-<span id="L12"><span class="lineNum">      12</span>              :     String? name,</span>
-<span id="L13"><span class="lineNum">      13</span>              :     String? quantity,</span>
-<span id="L14"><span class="lineNum">      14</span>              :     DateTime? date,</span>
-<span id="L15"><span class="lineNum">      15</span>              :   }) {</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">           1 :     return Ingredient(</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">           1 :       name: name ?? this.name,</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaUNC tlaBgUNC">           0 :       quantity: quantity ?? this.quantity,</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC tlaBgGNC">           1 :       date: date ?? this.date,</span></span>
-<span id="L20"><span class="lineNum">      20</span>              :     );</span>
-<span id="L21"><span class="lineNum">      21</span>              :   }</span>
-<span id="L22"><span class="lineNum">      22</span>              : </span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           3 :   @override</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           9 :   List&lt;Object?&gt; get props =&gt; [name, quantity];</span></span>
-<span id="L25"><span class="lineNum">      25</span>              : }</span>
+<span id="L2"><span class="lineNum">       2</span>              : import 'package:recipe_ai/ddd/entity.dart';</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : class Ingredient extends Equatable {</span>
+<span id="L5"><span class="lineNum">       5</span>              :   final String name;</span>
+<span id="L6"><span class="lineNum">       6</span>              :   final String? quantity;</span>
+<span id="L7"><span class="lineNum">       7</span>              :   final DateTime? date;</span>
+<span id="L8"><span class="lineNum">       8</span>              :   final EntityId? id;</span>
+<span id="L9"><span class="lineNum">       9</span>              : </span>
+<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC tlaBgGNC">           3 :   const Ingredient({</span></span>
+<span id="L11"><span class="lineNum">      11</span>              :     required this.name,</span>
+<span id="L12"><span class="lineNum">      12</span>              :     required this.quantity,</span>
+<span id="L13"><span class="lineNum">      13</span>              :     required this.date,</span>
+<span id="L14"><span class="lineNum">      14</span>              :     required this.id,</span>
+<span id="L15"><span class="lineNum">      15</span>              :   });</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">           1 :   Ingredient copy({</span></span>
+<span id="L18"><span class="lineNum">      18</span>              :     String? name,</span>
+<span id="L19"><span class="lineNum">      19</span>              :     String? quantity,</span>
+<span id="L20"><span class="lineNum">      20</span>              :     DateTime? date,</span>
+<span id="L21"><span class="lineNum">      21</span>              :     EntityId? id,</span>
+<span id="L22"><span class="lineNum">      22</span>              :   }) {</span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           1 :     return Ingredient(</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           1 :       name: name ?? this.name,</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaUNC tlaBgUNC">           0 :       quantity: quantity ?? this.quantity,</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC tlaBgGNC">           1 :       date: date ?? this.date,</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">           1 :       id: id ?? this.id,</span></span>
+<span id="L28"><span class="lineNum">      28</span>              :     );</span>
+<span id="L29"><span class="lineNum">      29</span>              :   }</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           3 :   @override</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           9 :   List&lt;Object?&gt; get props =&gt; [name, quantity];</span></span>
+<span id="L33"><span class="lineNum">      33</span>              : }</span>
         </pre>
               </td>
             </tr>
