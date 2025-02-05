@@ -84,18 +84,16 @@ class KitchenInventoryController extends Cubit<KitchenState> {
   }
 
   Future<void> removeIngredient(EntityId id) async {
-    final ingredient = _ingredients
+    _ingredients = _ingredients
         .where(
           (ingredient) => ingredient.id != id,
         )
         .toList();
 
-    _ingredients = ingredient;
-
     emit(
       KitchenStateLoaded(
         ingredients: _ingredients,
-        ingredientsFiltered: _ingredientsFiltered,
+        ingredientsFiltered: _ingredients,
       ),
     );
 
