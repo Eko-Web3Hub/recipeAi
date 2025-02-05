@@ -63,6 +63,120 @@ void main() {
   }
 
   group(
+    'searchForIngredients method',
+    () {
+      blocTest<KitchenInventoryController, KitchenState>(
+        'should search for ingredients in the kitchen inventory',
+        build: () => sut(),
+        setUp: () {
+          givenFullIngredients();
+          when(
+            () => kitchenInventoryRepository.searchForIngredients(
+              authUser.uid,
+              'Tomatoes',
+            ),
+          ).thenAnswer(
+            (_) => Future.value(
+              [
+                Ingredient(
+                  id: const EntityId('1'),
+                  name: 'Tomatoes',
+                  quantity: '3pcs',
+                  date: DateTime.now(),
+                ),
+              ],
+            ),
+          );
+        },
+        act: (bloc) async {
+          await pumpEventQueue();
+          bloc.searchForIngredients('Tomatoes');
+        },
+        verify: (bloc) {
+          verify(
+            () => kitchenInventoryRepository.searchForIngredients(
+              authUser.uid,
+              'Tomatoes',
+            ),
+          ).called(1);
+        },
+        expect: () => [
+          KitchenStateLoaded(
+            ingredients: ingredients,
+            ingredientsFiltered: ingredients,
+          ),
+          KitchenStateLoaded(
+            ingredients: ingredients,
+            ingredientsFiltered: [
+              Ingredient(
+                id: const EntityId('1'),
+                name: 'Tomatoes',
+                quantity: '3pcs',
+                date: DateTime.now(),
+              ),
+            ],
+          ),
+        ],
+      );
+
+      blocTest<KitchenInventoryController, KitchenState>(
+        'should emit error state when search for ingredients fails',
+        build: () => sut(),
+        setUp: () {
+          givenFullIngredients();
+          when(
+            () => kitchenInventoryRepository.searchForIngredients(
+              authUser.uid,
+              'Tomatoes',
+            ),
+          ).thenThrow(
+            Exception('An error occurred'),
+          );
+        },
+        act: (bloc) async {
+          await pumpEventQueue();
+          bloc.searchForIngredients('Tomatoes');
+        },
+        expect: () => [
+          KitchenStateLoaded(
+            ingredients: ingredients,
+            ingredientsFiltered: ingredients,
+          ),
+          isA<KitchenStateError>(),
+        ],
+      );
+    },
+  );
+
+  group(
+    'loadIngredients method',
+    () {
+      blocTest<KitchenInventoryController, KitchenState>(
+        'should load ingredients from the kitchen inventory',
+        build: () => sut(),
+        setUp: () {
+          when(
+            () => kitchenInventoryRepository.watchIngredientsAddedByUser(
+              authUser.uid,
+            ),
+          ).thenAnswer(
+            (_) => Stream.value(ingredients),
+          );
+        },
+        act: (bloc) async {
+          await pumpEventQueue();
+        },
+        expect: () => [
+          KitchenStateLoaded(
+            ingredients: ingredients,
+            ingredientsFiltered: ingredients,
+          ),
+        ],
+      );
+    },
+  );
+
+  group(
     'removeIngredient method',
     () {
       const ingredientTwoId = EntityId('2');

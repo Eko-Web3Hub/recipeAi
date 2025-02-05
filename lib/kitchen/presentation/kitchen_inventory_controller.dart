@@ -65,22 +65,17 @@ class KitchenInventoryController extends Cubit<KitchenState> {
   }
 
   Future<void> loadIngredients() async {
-    try {
-      final uid = _authUserService.currentUser!.uid;
+    final uid = _authUserService.currentUser!.uid;
 
-      _kitchenInventoryRepository.watchIngredientsAddedByUser(uid).listen(
-        (ingredientsFetched) {
-          _ingredients = ingredientsFetched;
-          _ingredientsFiltered = _ingredients;
-          emit(KitchenStateLoaded(
-              ingredients: _ingredients,
-              ingredientsFiltered: _ingredientsFiltered));
-        },
-      );
-    } on Exception catch (e) {
-      log(e.toString());
-      emit(KitchenStateError(e.toString()));
-    }
+    _kitchenInventoryRepository.watchIngredientsAddedByUser(uid).listen(
+      (ingredientsFetched) {
+        _ingredients = ingredientsFetched;
+        _ingredientsFiltered = _ingredients;
+        emit(KitchenStateLoaded(
+            ingredients: _ingredients,
+            ingredientsFiltered: _ingredientsFiltered));
+      },
+    );
   }
 
   Future<void> removeIngredient(EntityId id) async {
