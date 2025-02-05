@@ -87,4 +87,14 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
               ),
         );
   }
+
+  @override
+  Future<void> removeIngredient(
+          {required EntityId uid, required EntityId ingredientId}) =>
+      _firestore
+          .collection(kitchenInventoryCollection)
+          .doc(uid.value)
+          .collection(ingredientsCollection)
+          .doc(ingredientId.value)
+          .delete();
 }

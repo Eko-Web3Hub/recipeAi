@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 
@@ -80,5 +81,28 @@ class KitchenInventoryController extends Cubit<KitchenState> {
       log(e.toString());
       emit(KitchenStateError(e.toString()));
     }
+  }
+
+  Future<void> removeIngredient(EntityId id) async {
+    final ingredient = _ingredients
+        .where(
+          (ingredient) => ingredient.id != id,
+        )
+        .toList();
+
+    _ingredients = ingredient;
+
+    emit(
+      KitchenStateLoaded(
+        ingredients: _ingredients,
+        ingredientsFiltered: _ingredientsFiltered,
+      ),
+    );
+
+    // remove ingredient from the database
+    await _kitchenInventoryRepository.removeIngredient(
+      uid: _authUserService.currentUser!.uid,
+      ingredientId: id,
+    );
   }
 }

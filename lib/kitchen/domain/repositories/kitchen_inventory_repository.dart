@@ -6,5 +6,9 @@ abstract class IKitchenInventoryRepository {
   Future<List<Ingredient>> getIngredientsAddedByUser(EntityId uid);
   Future<void> save(EntityId uid, Ingredient ingredient);
   Future<void> addIngredient(EntityId uid, Ingredient ingredient);
+  Future<void> removeIngredient({
+    required EntityId uid,
+    required EntityId ingredientId,
+  });
   Future<List<Ingredient>> searchForIngredients(EntityId uid, String query);
 }
