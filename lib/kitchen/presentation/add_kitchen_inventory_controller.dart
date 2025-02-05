@@ -37,9 +37,14 @@ class AddKitchenInventoryController extends Cubit<AddKitchenState?> {
   }) async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      await _kitchenInventoryRepository.save(
+      await _kitchenInventoryRepository.addIngredient(
         uid,
-        Ingredient(name: name, quantity: quantity, date: timestamp),
+        Ingredient(
+          name: name,
+          quantity: quantity,
+          date: timestamp,
+          id: null,
+        ),
       );
 
       emit(AddKitchenSuccess());

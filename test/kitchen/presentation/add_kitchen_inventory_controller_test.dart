@@ -15,8 +15,12 @@ class AuthUserServiceMock extends Mock implements IAuthUserService {}
 void main() {
   late IKitchenInventoryRepository kitchenInventoryRepository;
   late IAuthUserService authUserService;
-  final ingredient =
-      Ingredient(name: 'name', quantity: 'quantity', date: DateTime(2024));
+  final ingredient = Ingredient(
+    name: 'name',
+    quantity: 'quantity',
+    date: DateTime(2024),
+    id: const EntityId('id'),
+  );
   const AuthUser authUser = AuthUser(
     uid: EntityId("uid"),
     email: "test@gmail.com",
@@ -51,7 +55,7 @@ void main() {
           return authUserService.currentUser;
         },
       ).thenReturn(authUser);
-      when(() => kitchenInventoryRepository.save(
+      when(() => kitchenInventoryRepository.addIngredient(
             authUser.uid,
             ingredient,
           )).thenAnswer(
@@ -63,7 +67,7 @@ void main() {
         quantity: ingredient.quantity!,
         timestamp: ingredient.date!),
     verify: (bloc) => {
-      verify(() => kitchenInventoryRepository.save(
+      verify(() => kitchenInventoryRepository.addIngredient(
             authUser.uid,
             ingredient,
           )).called(1),
@@ -80,7 +84,7 @@ void main() {
           return authUserService.currentUser;
         },
       ).thenReturn(authUser);
-      when(() => kitchenInventoryRepository.save(
+      when(() => kitchenInventoryRepository.addIngredient(
             authUser.uid,
             ingredient,
           )).thenThrow(Exception('Error'));
@@ -90,7 +94,7 @@ void main() {
         quantity: ingredient.quantity!,
         timestamp: ingredient.date!),
     verify: (bloc) => {
-      verify(() => kitchenInventoryRepository.save(
+      verify(() => kitchenInventoryRepository.addIngredient(
             authUser.uid,
             ingredient,
           )).called(1),

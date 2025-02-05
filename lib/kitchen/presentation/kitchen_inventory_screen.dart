@@ -450,6 +450,7 @@ class _EmptyKitchenInventoryViewState
                                 name: product.name,
                                 quantity: product.quantity,
                                 date: null,
+                                id: null,
                               ),
                             )
                             .toList(),
