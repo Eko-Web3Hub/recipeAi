@@ -77,7 +77,7 @@ class ReceiptTicketScanResultController
   void addIngredientsToKitchenInventory() async {
     await Future.wait(ingredients
         .map(
-          (ingredient) => _kitchenInventoryRepository.save(
+          (ingredient) => _kitchenInventoryRepository.addIngredient(
             _authUserService.currentUser!.uid,
             ingredient.date != null
                 ? ingredient
