@@ -127,7 +127,7 @@ void main() {
         (_) => authUser,
       );
       for (var ingredient in ingredients) {
-        when(() => kitchenInventoryRepository.save(
+        when(() => kitchenInventoryRepository.addIngredient(
               authUser.uid,
               ingredient,
             )).thenAnswer(
@@ -140,7 +140,7 @@ void main() {
     },
     verify: (bloc) {
       for (var ingredient in ingredients) {
-        verify(() => kitchenInventoryRepository.save(
+        verify(() => kitchenInventoryRepository.addIngredient(
               authUser.uid,
               ingredient,
             )).called(1);
