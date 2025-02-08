@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">33.3&nbsp;%</td>
-            <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryMed">84.6&nbsp;%</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">11</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-02-08 06:29:35</td>
+            <td class="headerValue">2025-02-08 06:48:28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -60,21 +60,53 @@
               <td>
 <pre class="sourceHeading">            Line data    Source code</pre>
 <pre class="source">
-<span id="L1"><span class="lineNum">       1</span>              : import 'package:flutter_bloc/flutter_bloc.dart';</span>
-<span id="L2"><span class="lineNum">       2</span>              : </span>
-<span id="L3"><span class="lineNum">       3</span>              : abstract class IngredientState {}</span>
-<span id="L4"><span class="lineNum">       4</span>              : </span>
-<span id="L5"><span class="lineNum">       5</span>              : class IngredientInitialState extends IngredientState {}</span>
-<span id="L6"><span class="lineNum">       6</span>              : </span>
-<span id="L7"><span class="lineNum">       7</span>              : class IngredientUpdatedState extends IngredientState {}</span>
-<span id="L8"><span class="lineNum">       8</span>              : </span>
-<span id="L9"><span class="lineNum">       9</span>              : class IngredientController extends Cubit&lt;IngredientState&gt; {</span>
-<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC tlaBgGNC">           3 :   IngredientController() : super(IngredientInitialState());</span></span>
-<span id="L11"><span class="lineNum">      11</span>              : </span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaUNC tlaBgUNC">           0 :   Future&lt;void&gt; updateIngredient(int quantity) async {</span></span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaUNC">           0 :     emit(IngredientInitialState());</span></span>
-<span id="L14"><span class="lineNum">      14</span>              :   }</span>
-<span id="L15"><span class="lineNum">      15</span>              : }</span>
+<span id="L1"><span class="lineNum">       1</span>              : import 'package:equatable/equatable.dart';</span>
+<span id="L2"><span class="lineNum">       2</span>              : import 'package:flutter_bloc/flutter_bloc.dart';</span>
+<span id="L3"><span class="lineNum">       3</span>              : import 'package:recipe_ai/auth/application/auth_user_service.dart';</span>
+<span id="L4"><span class="lineNum">       4</span>              : import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';</span>
+<span id="L5"><span class="lineNum">       5</span>              : </span>
+<span id="L6"><span class="lineNum">       6</span>              : import '../../receipe/domain/model/ingredient.dart';</span>
+<span id="L7"><span class="lineNum">       7</span>              : </span>
+<span id="L8"><span class="lineNum">       8</span>              : abstract class IngredientState extends Equatable {}</span>
+<span id="L9"><span class="lineNum">       9</span>              : </span>
+<span id="L10"><span class="lineNum">      10</span>              : class IngredientInitialState extends IngredientState {</span>
+<span id="L11"><span class="lineNum">      11</span> <span class="tlaUNC tlaBgUNC">           0 :   @override</span></span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaUNC">           0 :   List&lt;Object?&gt; get props =&gt; [];</span></span>
+<span id="L13"><span class="lineNum">      13</span>              : }</span>
+<span id="L14"><span class="lineNum">      14</span>              : </span>
+<span id="L15"><span class="lineNum">      15</span>              : class IngredientUpdatedState extends IngredientState {</span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">           1 :   IngredientUpdatedState(this.ingredient);</span></span>
+<span id="L17"><span class="lineNum">      17</span>              : </span>
+<span id="L18"><span class="lineNum">      18</span>              :   final Ingredient ingredient;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">           1 :   @override</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">           2 :   List&lt;Object?&gt; get props =&gt; [ingredient];</span></span>
+<span id="L22"><span class="lineNum">      22</span>              : }</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : class IngredientController extends Cubit&lt;IngredientState&gt; {</span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           1 :   IngredientController(</span></span>
+<span id="L26"><span class="lineNum">      26</span>              :     this.ingredient,</span>
+<span id="L27"><span class="lineNum">      27</span>              :     this._kitchenInventoryRepository,</span>
+<span id="L28"><span class="lineNum">      28</span>              :     this._authUserService,</span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           1 :   ) : super(</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           1 :           IngredientInitialState(),</span></span>
+<span id="L31"><span class="lineNum">      31</span>              :         );</span>
+<span id="L32"><span class="lineNum">      32</span>              : </span>
+<span id="L33"><span class="lineNum">      33</span>              :   final Ingredient ingredient;</span>
+<span id="L34"><span class="lineNum">      34</span>              :   final IKitchenInventoryRepository _kitchenInventoryRepository;</span>
+<span id="L35"><span class="lineNum">      35</span>              :   final IAuthUserService _authUserService;</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           1 :   Future&lt;void&gt; updateIngredient(String quantity) async {</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           3 :     final uid = _authUserService.currentUser!.uid;</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           2 :     final updatedIngredient = ingredient.copy(</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :       quantity: quantity,</span>
+<span id="L41"><span class="lineNum">      41</span>              :     );</span>
+<span id="L42"><span class="lineNum">      42</span>              : </span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           2 :     await _kitchenInventoryRepository.save(uid, updatedIngredient);</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           2 :     emit(IngredientUpdatedState(updatedIngredient));</span></span>
+<span id="L46"><span class="lineNum">      46</span>              :   }</span>
+<span id="L47"><span class="lineNum">      47</span>              : }</span>
         </pre>
               </td>
             </tr>
