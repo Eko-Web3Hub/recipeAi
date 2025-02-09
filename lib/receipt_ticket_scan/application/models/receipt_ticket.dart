@@ -28,11 +28,11 @@ class ReceiptTicket extends Equatable {
     required this.totalPricePayed,
   });
 
-  final String superMarketName;
-  final String adresse;
-  final String date;
+  final String? superMarketName;
+  final String? adresse;
+  final String? date;
   final List<Product> products;
-  final String totalPricePayed;
+  final String? totalPricePayed;
 
   @override
   List<Object?> get props => [

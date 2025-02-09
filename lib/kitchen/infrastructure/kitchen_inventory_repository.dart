@@ -36,7 +36,10 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
         .collection(kitchenInventoryCollection)
         .doc(uid.value)
         .collection(ingredientsCollection)
-        .add(IngredientSerialization.toJson(ingredient));
+        .doc(ingredient.id!.value)
+        .update(
+          IngredientSerialization.toJson(ingredient),
+        );
   }
 
   @override
@@ -66,4 +69,32 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
           .toList();
     });
   }
+
+  @override
+  Future<void> addIngredient(EntityId uid, Ingredient ingredient) {
+    final ref = _firestore
+        .collection(kitchenInventoryCollection)
+        .doc(uid.value)
+        .collection(ingredientsCollection);
+
+    return ref.add(IngredientSerialization.toJson(ingredient)).then(
+          (value) => ref.doc(value.id).update(
+                IngredientSerialization.toJson(
+                  ingredient.copy(
+                    id: EntityId(value.id),
+                  ),
+                ),
+              ),
+        );
+  }
+
+  @override
+  Future<void> removeIngredient(
+          {required EntityId uid, required EntityId ingredientId}) =>
+      _firestore
+          .collection(kitchenInventoryCollection)
+          .doc(uid.value)
+          .collection(ingredientsCollection)
+          .doc(ingredientId.value)
+          .delete();
 }

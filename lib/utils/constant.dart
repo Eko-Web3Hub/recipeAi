@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
@@ -17,13 +18,29 @@ final receipeSample = Receipe(
   name: ' Burger Healthy',
   ingredients: [
     Ingredient(
+      id: const EntityId('1'),
       name: 'Tomatoes',
       quantity: '3pcs',
       date: DateTime.now(),
     ),
-    Ingredient(name: 'Water', quantity: null, date: DateTime.now()),
-    Ingredient(name: 'Steak', quantity: null, date: DateTime.now()),
-    Ingredient(name: 'Egg', quantity: '10pcs', date: DateTime.now()),
+    Ingredient(
+      name: 'Water',
+      quantity: null,
+      date: DateTime.now(),
+      id: const EntityId('2'),
+    ),
+    Ingredient(
+      name: 'Steak',
+      quantity: null,
+      date: DateTime.now(),
+      id: const EntityId('3'),
+    ),
+    Ingredient(
+      name: 'Egg',
+      quantity: '10pcs',
+      date: DateTime.now(),
+      id: const EntityId('4'),
+    ),
   ],
   steps: const [
     ReceipeStep(

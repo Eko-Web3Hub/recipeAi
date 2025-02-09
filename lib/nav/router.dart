@@ -24,6 +24,7 @@ import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
+import 'package:recipe_ai/user_account/presentation/reset_password_screen.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
@@ -75,6 +76,13 @@ GoRouter createRouter() => GoRouter(
           name: 'Login',
           path: '/login',
           builder: (BuildContext context, _) => const LoginView(),
+          routes: <RouteBase>[
+            GoRoute(
+              name: 'ResetPasswordScreen',
+              path: 'reset-password',
+              builder: (context, state) => const ResetPasswordScreen(),
+            ),
+          ],
         ),
         GoRoute(
           name: 'Register',

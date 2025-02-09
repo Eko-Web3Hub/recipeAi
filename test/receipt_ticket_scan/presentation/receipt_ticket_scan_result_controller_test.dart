@@ -25,16 +25,19 @@ void main() {
       name: "Tomato",
       quantity: "4",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("1"),
     ),
     Ingredient(
       name: "Oignon",
       quantity: "5",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("2"),
     ),
     Ingredient(
       name: "Salt",
       quantity: "3",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("3"),
     ),
   ];
   final firstUpdatedIngredients = <Ingredient>[
@@ -42,16 +45,19 @@ void main() {
       name: "Tomato",
       quantity: "4",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("1"),
     ),
     Ingredient(
       name: "Oignon",
       quantity: "6",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("2"),
     ),
     Ingredient(
       name: "Salt",
       quantity: "3",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("3"),
     ),
   ];
   final secondUpdatedIngredients = <Ingredient>[
@@ -59,16 +65,19 @@ void main() {
       name: "Tomato",
       quantity: "4",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("1"),
     ),
     Ingredient(
       name: "Oignon",
       quantity: "6",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("2"),
     ),
     Ingredient(
       name: "Salt",
       quantity: "2",
       date: DateTime(2022, 12, 12),
+      id: const EntityId("3"),
     ),
   ];
 
@@ -118,7 +127,7 @@ void main() {
         (_) => authUser,
       );
       for (var ingredient in ingredients) {
-        when(() => kitchenInventoryRepository.save(
+        when(() => kitchenInventoryRepository.addIngredient(
               authUser.uid,
               ingredient,
             )).thenAnswer(
@@ -131,7 +140,7 @@ void main() {
     },
     verify: (bloc) {
       for (var ingredient in ingredients) {
-        verify(() => kitchenInventoryRepository.save(
+        verify(() => kitchenInventoryRepository.addIngredient(
               authUser.uid,
               ingredient,
             )).called(1);

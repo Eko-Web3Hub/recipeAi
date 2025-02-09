@@ -15,6 +15,42 @@ import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_r
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
+class IngredientDismissedWidget extends StatelessWidget {
+  const IngredientDismissedWidget({
+    super.key,
+    required this.child,
+    required this.onDismissed,
+  });
+  final void Function(DismissDirection)? onDismissed;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      onDismissed: onDismissed,
+      direction: DismissDirection.endToStart,
+      background: Container(
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Text(
+              AppText.delete,
+              style: normalSmallTextStyle,
+            ),
+          ),
+        ),
+      ),
+      key: UniqueKey(),
+      child: child,
+    );
+  }
+}
+
 class ReceiptTicketScanResultScreen extends StatelessWidget {
   const ReceiptTicketScanResultScreen({
     super.key,
@@ -66,45 +102,25 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                     child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemBuilder: (context, index) {
-                        return Dismissible(
+                        return IngredientItem(
                           onDismissed: (direction) {
                             context
                                 .read<ReceiptTicketScanResultController>()
                                 .removeIngredient(index);
                             showSnackBar(context, AppText.ingredientRemoved);
                           },
-                          direction: DismissDirection.endToStart,
-                          background: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Text(
-                                  AppText.delete,
-                                  style: normalSmallTextStyle,
-                                ),
-                              ),
-                            ),
-                          ),
-                          key: UniqueKey(),
-                          child: IngredientItem(
-                            ingredient: ingredients[index],
-                            getIngredientQuantity: (quantity) {
-                              log(quantity.toString());
-                              if (quantity != null) {
-                                context
-                                    .read<ReceiptTicketScanResultController>()
-                                    .updateIngredient(
-                                      index,
-                                      int.parse(quantity),
-                                    );
-                              }
-                            },
-                          ),
+                          ingredient: ingredients[index],
+                          getIngredientQuantity: (quantity) {
+                            log(quantity.toString());
+                            if (quantity != null) {
+                              context
+                                  .read<ReceiptTicketScanResultController>()
+                                  .updateIngredient(
+                                    index,
+                                    int.parse(quantity),
+                                  );
+                            }
+                          },
                         );
                       },
                       itemCount: ingredients.length,

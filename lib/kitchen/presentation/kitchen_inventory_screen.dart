@@ -10,14 +10,17 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
+import 'package:recipe_ai/kitchen/presentation/ingredient_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
+import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -278,9 +281,18 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                         const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
                     itemBuilder: (context, index) {
                       return IngredientItem(
-                        readOnly: true,
-                        ingredient: widget.ingredients[index],
-                      );
+                          readOnly: false,
+                          ingredient: widget.ingredients[index],
+                          onDismissed: (_) {
+                            context
+                                .read<KitchenInventoryController>()
+                                .removeIngredient(
+                                  widget.ingredients[index].id!,
+                                );
+                            // Hide the current snackbar
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            showSnackBar(context, AppText.ingredientRemoved);
+                          });
                     },
                     itemCount: widget.ingredients.length,
                   ),
@@ -297,7 +309,7 @@ class IngredientItem extends StatefulWidget {
     super.key,
     required this.ingredient,
     this.getIngredientQuantity,
-    this.onDismissed,
+    required this.onDismissed,
     this.readOnly = false,
   });
   final Function(String? value)? getIngredientQuantity;
@@ -319,66 +331,87 @@ class _IngredientItemState extends State<IngredientItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: const Offset(0, 4), // décalage de l'ombre
-          ),
-        ],
+    return BlocProvider(
+      create: (_) => IngredientController(
+        widget.ingredient,
+        di<IKitchenInventoryRepository>(),
+        di<IAuthUserService>(),
       ),
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 10,
-          right: 10,
-          top: 20,
-          bottom: 20,
-        ),
-        child: Row(
-          children: [
-            Text(
-              widget.ingredient.name,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
+      child: Builder(builder: (context) {
+        return IngredientDismissedWidget(
+          onDismissed: widget.onDismissed,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.2),
+                  spreadRadius: 1,
+                  blurRadius: 8,
+                  offset: const Offset(0, 4), // décalage de l'ombre
+                ),
+              ],
             ),
-            const Spacer(),
-            SizedBox(
-              width: 50,
-              height: 30,
-              child: TextFormField(
-                readOnly: widget.readOnly,
-                controller: _quantityController,
-                onChanged: widget.getIngredientQuantity,
-                textAlign: TextAlign.center,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(
-                    RegExp(r'[1-9]'),
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 20,
+                bottom: 20,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    widget.ingredient.name,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 50,
+                    height: 30,
+                    child: TextFormField(
+                      readOnly: widget.readOnly,
+                      controller: _quantityController,
+                      onChanged: (String quantity) {
+                        if (widget.getIngredientQuantity != null) {
+                          widget.getIngredientQuantity!(quantity);
+                        }
+                        if (widget.ingredient.id != null) {
+                          context
+                              .read<IngredientController>()
+                              .updateIngredient(quantity);
+                        }
+                      },
+                      textAlign: TextAlign.center,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9]'),
+                        ),
+                      ],
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 2,
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xffEEEEEE),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 2,
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xffEEEEEE),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -450,6 +483,7 @@ class _EmptyKitchenInventoryViewState
                                 name: product.name,
                                 quantity: product.quantity,
                                 date: null,
+                                id: null,
                               ),
                             )
                             .toList(),

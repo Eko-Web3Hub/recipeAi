@@ -19,6 +19,8 @@ abstract class AppText {
   static const String alreadyAMember = "Already a member?";
   static const String fieldCannotBeEmpty = 'This field is required';
   static const String invalidEmail = 'Invalid email';
+  static const String userNotFound =
+      'There is no user record linked to this email';
   static const String registerFailed = 'Register failed';
   static const String registerSuccess = 'You have successfully registered';
   static const String next = 'Next';
@@ -99,4 +101,8 @@ abstract class AppText {
       "From ingredients to quick \nrecipe you can save";
   static const String skip = 'Skip';
   static const String frenchFood = 'French Food';
+  static const String forgotternPassword = 'Forgotten Password';
+  static const String forgotPassword = 'Forgot Password?';
+  static const String resetPasswordSuccess =
+      'We have sent you an email to reset your password';
 }

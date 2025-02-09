@@ -46,7 +46,7 @@ void main() {
               email: email,
               password: password,
             ),
-          ).thenThrow(AuthException(message));
+          ).thenThrow(const AuthException(message));
 
           try {
             await registerUsecase.register(
