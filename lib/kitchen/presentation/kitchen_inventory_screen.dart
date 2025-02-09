@@ -281,7 +281,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                         const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
                     itemBuilder: (context, index) {
                       return IngredientItem(
-                          readOnly: true,
+                          readOnly: false,
                           ingredient: widget.ingredients[index],
                           onDismissed: (_) {
                             context
@@ -390,7 +390,7 @@ class _IngredientItemState extends State<IngredientItem> {
                       textAlign: TextAlign.center,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                          RegExp(r'[1-9]'),
+                          RegExp(r'[0-9]'),
                         ),
                       ],
                       decoration: InputDecoration(
