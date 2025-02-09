@@ -15,6 +15,7 @@ import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.da
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
+import 'package:recipe_ai/kitchen/presentation/ingredient_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
@@ -280,7 +281,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                         const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
                     itemBuilder: (context, index) {
                       return IngredientItem(
-                          readOnly: true,
+                          readOnly: false,
                           ingredient: widget.ingredients[index],
                           onDismissed: (_) {
                             context
@@ -330,69 +331,87 @@ class _IngredientItemState extends State<IngredientItem> {
 
   @override
   Widget build(BuildContext context) {
-    return IngredientDismissedWidget(
-      onDismissed: widget.onDismissed,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.2),
-              spreadRadius: 1,
-              blurRadius: 8,
-              offset: const Offset(0, 4), // décalage de l'ombre
-            ),
-          ],
-        ),
-        margin: const EdgeInsets.only(bottom: 10),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 10,
-            right: 10,
-            top: 20,
-            bottom: 20,
-          ),
-          child: Row(
-            children: [
-              Text(
-                widget.ingredient.name,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
+    return BlocProvider(
+      create: (_) => IngredientController(
+        widget.ingredient,
+        di<IKitchenInventoryRepository>(),
+        di<IAuthUserService>(),
+      ),
+      child: Builder(builder: (context) {
+        return IngredientDismissedWidget(
+          onDismissed: widget.onDismissed,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.2),
+                  spreadRadius: 1,
+                  blurRadius: 8,
+                  offset: const Offset(0, 4), // décalage de l'ombre
                 ),
+              ],
+            ),
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 20,
+                bottom: 20,
               ),
-              const Spacer(),
-              SizedBox(
-                width: 50,
-                height: 30,
-                child: TextFormField(
-                  readOnly: widget.readOnly,
-                  controller: _quantityController,
-                  onChanged: widget.getIngredientQuantity,
-                  textAlign: TextAlign.center,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'[1-9]'),
-                    ),
-                  ],
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 2,
-                    ),
-                    filled: true,
-                    fillColor: const Color(0xffEEEEEE),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide.none,
+              child: Row(
+                children: [
+                  Text(
+                    widget.ingredient.name,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
                     ),
                   ),
-                ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 50,
+                    height: 30,
+                    child: TextFormField(
+                      readOnly: widget.readOnly,
+                      controller: _quantityController,
+                      onChanged: (String quantity) {
+                        if (widget.getIngredientQuantity != null) {
+                          widget.getIngredientQuantity!(quantity);
+                        }
+                        if (widget.ingredient.id != null) {
+                          context
+                              .read<IngredientController>()
+                              .updateIngredient(quantity);
+                        }
+                      },
+                      textAlign: TextAlign.center,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9]'),
+                        ),
+                      ],
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 2,
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xffEEEEEE),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
