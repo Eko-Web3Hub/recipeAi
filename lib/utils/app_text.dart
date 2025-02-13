@@ -105,4 +105,7 @@ abstract class AppText {
   static const String forgotPassword = 'Forgot Password?';
   static const String resetPasswordSuccess =
       'We have sent you an email to reset your password';
+
+  static const String selectPicture = 'Select picture';
+  static const String takePhoto = 'Take photo';
 }

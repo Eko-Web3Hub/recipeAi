@@ -467,7 +467,7 @@ class _EmptyKitchenInventoryViewState
               ListTile(
                 leading: const Icon(Icons.photo_library),
                 title: Text(
-                  'Select a picture',
+                  AppText.selectPicture,
                   style: smallTextStyle.copyWith(
                     color: Colors.black,
                   ),
@@ -480,7 +480,7 @@ class _EmptyKitchenInventoryViewState
               ListTile(
                 leading: const Icon(Icons.camera_alt),
                 title: Text(
-                  'Take a photo',
+                  AppText.takePhoto,
                   style: smallTextStyle.copyWith(
                     color: Colors.black,
                   ),
