@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
@@ -430,6 +431,16 @@ class _EmptyKitchenInventoryViewState
     extends State<_EmptyKitchenInventoryView> {
   File? _receiptPicture;
 
+  void _takeCameraPicture() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      setState(() {
+        _receiptPicture = File(photo.path);
+      });
+    }
+  }
+
   void _uploadReceiptPicture() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -441,6 +452,49 @@ class _EmptyKitchenInventoryViewState
         _receiptPicture = File(result.files.single.path!);
       });
     }
+  }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: Text(
+                  'Select a picture',
+                  style: smallTextStyle.copyWith(
+                    color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  _uploadReceiptPicture();
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: Text(
+                  'Take a photo',
+                  style: smallTextStyle.copyWith(
+                    color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  _takeCameraPicture();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -530,7 +584,7 @@ class _EmptyKitchenInventoryViewState
                     ),
                     const Gap(3),
                     GestureDetector(
-                      onTap: _uploadReceiptPicture,
+                      onTap: _showBottomSheet,
                       child: Text(
                         AppText.takeYourReceiptPicture,
                         style: smallTextStyle.copyWith(
