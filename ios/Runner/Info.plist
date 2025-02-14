@@ -26,6 +26,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow the user to take photo of his course receipt</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow the user to pick image like his course receipt</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
