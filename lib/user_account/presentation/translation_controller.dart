@@ -13,7 +13,9 @@ abstract class TranslationState extends Equatable {
   List<Object> get props => [];
 }
 
-class TranslationInitial extends TranslationState {}
+class TranslationInitial extends TranslationState {
+  const TranslationInitial();
+}
 
 class TranslationLoaded extends TranslationState {
   const TranslationLoaded(
