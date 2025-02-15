@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
@@ -85,3 +85,14 @@ final dioOption = BaseOptions(
     'accept': 'application/json',
   },
 );
+
+const localizationsDelegate = [
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+];
+
+const supportedLocales = [
+  Locale('en'),
+  Locale('fr'),
+];
