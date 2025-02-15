@@ -98,3 +98,5 @@ const supportedLocales = [
   Locale('en'),
   Locale('fr'),
 ];
+
+enum AppLanguage { en, fr, auto }
