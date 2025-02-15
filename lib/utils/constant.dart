@@ -7,6 +7,7 @@ import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const baseApiUrl = 'https://langchain-server-819430206108.europe-west1.run.app';
 
@@ -87,6 +88,7 @@ final dioOption = BaseOptions(
 );
 
 const localizationsDelegate = [
+  AppLocalizations.delegate,
   GlobalMaterialLocalizations.delegate,
   GlobalWidgetsLocalizations.delegate,
   GlobalCupertinoLocalizations.delegate,

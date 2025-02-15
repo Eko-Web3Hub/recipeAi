@@ -1,0 +1,179 @@
+{
+    "@@locale": "en",
+    "@hello": {
+        "description": "A welcome message"
+    },
+    "hello": "Hello",
+    "@welcomeBack": {
+        "description": "Welcome back message"
+    },
+    "welcomeBack": "Welcome Back!",
+    "@email": {
+        "description": "Email field label"
+    },
+    "email": "Email",
+    "@enterEmail": {
+        "description": "Placeholder for email input"
+    },
+    "enterEmail": "Enter Email",
+    "@password": {
+        "description": "Password field label"
+    },
+    "password": "Password",
+    "@enterPassword": {
+        "description": "Placeholder for password input"
+    },
+    "enterPassword": "Enter Password",
+    "@signIn": {
+        "description": "Login button text"
+    },
+    "signIn": "Sign In",
+    "@signUp": {
+        "description": "Sign-up button text"
+    },
+    "signUp": "Sign Up",
+    "@dontHaveAnAccount": {
+        "description": "Prompt for new users"
+    },
+    "dontHaveAnAccount": "Don't have an account?",
+    "@createAnAccount": {
+        "description": "Button text for account creation"
+    },
+    "createAnAccount": "Create an account",
+    "@registerDetails": {
+        "description": "Sign-up instructions"
+    },
+    "registerDetails": "Let’s help you set up your account, \nit won’t take long.",
+    "@enterName": {
+        "description": "Placeholder for name input"
+    },
+    "enterName": "Enter Name",
+    "@name": {
+        "description": "Name field label"
+    },
+    "name": "Name",
+    "@confirmPassword": {
+        "description": "Confirm password field label"
+    },
+    "confirmPassword": "Confirm Password",
+    "@enterConfirmPassword": {
+        "description": "Placeholder for confirm password input"
+    },
+    "enterConfirmPassword": "Retype Password",
+    "@acceptTermsAndConditions": {
+        "description": "Checkbox label for accepting terms"
+    },
+    "acceptTermsAndConditions": "Accept terms & Condition",
+    "@alreadyAMember": {
+        "description": "Prompt for returning users"
+    },
+    "alreadyAMember": "Already a member?",
+    "@fieldCannotBeEmpty": {
+        "description": "Validation message for required fields"
+    },
+    "fieldCannotBeEmpty": "This field is required",
+    "@invalidEmail": {
+        "description": "Validation message for invalid email"
+    },
+    "invalidEmail": "Invalid email",
+    "@userNotFound": {
+        "description": "Error message for user not found"
+    },
+    "userNotFound": "There is no user record linked to this email",
+    "@registerFailed": {
+        "description": "Error message for sign-up failure"
+    },
+    "registerFailed": "Register failed",
+    "@registerSuccess": {
+        "description": "Success message for registration"
+    },
+    "registerSuccess": "You have successfully registered",
+    "@next": {
+        "description": "Next button text"
+    },
+    "next": "Next",
+    "@previous": {
+        "description": "Previous button text"
+    },
+    "previous": "Previous",
+    "@finish": {
+        "description": "Finish button text"
+    },
+    "finish": "Finish",
+    "@wantToReceiveNotification": {
+        "description": "Notification prompt"
+    },
+    "wantToReceiveNotification": "Do you want to receive notifications?",
+    "@yes": {
+        "description": "Yes option"
+    },
+    "yes": "Yes",
+    "@no": {
+        "description": "No option"
+    },
+    "no": "No",
+    "@letCreateMealToday": {
+        "description": "Encouraging message for meal preparation"
+    },
+    "letCreateMealToday": "Let’s create delicious meals today",
+    "@somethingWentWrong": {
+        "description": "Generic error message"
+    },
+    "somethingWentWrong": "Something went wrong. Please try again",
+    "@ingredients": {
+        "description": "Ingredients section title"
+    },
+    "ingredients": "Ingredients",
+    "@steps": {
+        "description": "Steps section title"
+    },
+    "steps": "Steps",
+    "@receipeRetrievalError": {
+        "description": "Error message for retrieving recipes"
+    },
+    "receipeRetrievalError": "Error retrieving recipes",
+    "@quickRecipes": {
+        "description": "Quick recipes section title"
+    },
+    "quickRecipes": "Quick Recipes",
+    "@yourKitchenInventory": {
+        "description": "Kitchen inventory section title"
+    },
+    "yourKitchenInventory": "Your Kitchen Inventory",
+    "@emptyKitchenText": {
+        "description": "Message when kitchen inventory is empty"
+    },
+    "emptyKitchenText": "It looks like your kitchen inventory is empty!",
+    "@clickHereToAdd": {
+        "description": "Prompt to manually add inventory"
+    },
+    "clickHereToAdd": "Click here to add manually",
+    "@or": {
+        "description": "Alternative choice separator"
+    },
+    "or": "or",
+    "@takeYourReceiptPicture": {
+        "description": "Prompt to scan a receipt"
+    },
+    "takeYourReceiptPicture": "Take your receipt picture",
+    "@addKitchen": {
+        "description": "Button text for adding kitchen inventory"
+    },
+    "addKitchen": "Add Inventory Kitchen",
+    "@quantity": {
+        "description": "Label for quantity input"
+    },
+    "quantity": "Quantity",
+    "@enterQuantity": {
+        "description": "Placeholder for quantity input"
+    },
+    "enterQuantity": "Enter quantity",
+    "@validate": {
+        "description": "Button text for validation"
+    },
+    "validate": "Validate",
+    "@addIngredientSuccess": {
+        "description": "Success message for adding an ingredient"
+    },
+    "addIngredientSuccess": "Ingredient added successfully"
+}
