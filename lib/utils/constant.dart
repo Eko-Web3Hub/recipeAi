@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
@@ -7,6 +7,7 @@ import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const baseApiUrl = 'https://langchain-server-819430206108.europe-west1.run.app';
 
@@ -85,3 +86,17 @@ final dioOption = BaseOptions(
     'accept': 'application/json',
   },
 );
+
+const localizationsDelegate = [
+  AppLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+];
+
+const supportedLocales = [
+  Locale('en'),
+  Locale('fr'),
+];
+
+enum AppLanguage { en, fr, auto }

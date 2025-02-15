@@ -1,0 +1,179 @@
+{
+    "@@locale": "fr",
+    "@hello": {
+        "description": "Message de bienvenue"
+    },
+    "hello": "Bonjour",
+    "@welcomeBack": {
+        "description": "Message de retour"
+    },
+    "welcomeBack": "Bon retour !",
+    "@email": {
+        "description": "Étiquette du champ email"
+    },
+    "email": "Email",
+    "@enterEmail": {
+        "description": "Placeholder pour l'entrée email"
+    },
+    "enterEmail": "Entrez votre email",
+    "@password": {
+        "description": "Étiquette du champ mot de passe"
+    },
+    "password": "Mot de passe",
+    "@enterPassword": {
+        "description": "Placeholder pour l'entrée du mot de passe"
+    },
+    "enterPassword": "Entrez votre mot de passe",
+    "@signIn": {
+        "description": "Texte du bouton de connexion"
+    },
+    "signIn": "Se connecter",
+    "@signUp": {
+        "description": "Texte du bouton d'inscription"
+    },
+    "signUp": "S'inscrire",
+    "@dontHaveAnAccount": {
+        "description": "Message pour les nouveaux utilisateurs"
+    },
+    "dontHaveAnAccount": "Vous n'avez pas de compte ?",
+    "@createAnAccount": {
+        "description": "Texte du bouton de création de compte"
+    },
+    "createAnAccount": "Créer un compte",
+    "@registerDetails": {
+        "description": "Instructions d'inscription"
+    },
+    "registerDetails": "Aidons-vous à configurer votre compte, \nça ne prendra pas longtemps.",
+    "@enterName": {
+        "description": "Placeholder pour le champ nom"
+    },
+    "enterName": "Entrez votre nom",
+    "@name": {
+        "description": "Étiquette du champ nom"
+    },
+    "name": "Nom",
+    "@confirmPassword": {
+        "description": "Étiquette du champ de confirmation du mot de passe"
+    },
+    "confirmPassword": "Confirmez le mot de passe",
+    "@enterConfirmPassword": {
+        "description": "Placeholder pour le champ de confirmation du mot de passe"
+    },
+    "enterConfirmPassword": "Retapez le mot de passe",
+    "@acceptTermsAndConditions": {
+        "description": "Texte de l'acceptation des termes et conditions"
+    },
+    "acceptTermsAndConditions": "Accepter les termes et conditions",
+    "@alreadyAMember": {
+        "description": "Message pour les utilisateurs existants"
+    },
+    "alreadyAMember": "Déjà membre ?",
+    "@fieldCannotBeEmpty": {
+        "description": "Message de validation pour les champs requis"
+    },
+    "fieldCannotBeEmpty": "Ce champ est requis",
+    "@invalidEmail": {
+        "description": "Message de validation pour email invalide"
+    },
+    "invalidEmail": "Email invalide",
+    "@userNotFound": {
+        "description": "Message d'erreur pour utilisateur non trouvé"
+    },
+    "userNotFound": "Aucun utilisateur trouvé avec cet email",
+    "@registerFailed": {
+        "description": "Message d'erreur pour échec d'inscription"
+    },
+    "registerFailed": "Échec de l'inscription",
+    "@registerSuccess": {
+        "description": "Message de succès pour inscription réussie"
+    },
+    "registerSuccess": "Inscription réussie",
+    "@next": {
+        "description": "Texte du bouton suivant"
+    },
+    "next": "Suivant",
+    "@previous": {
+        "description": "Texte du bouton précédent"
+    },
+    "previous": "Précédent",
+    "@finish": {
+        "description": "Texte du bouton terminer"
+    },
+    "finish": "Terminer",
+    "@wantToReceiveNotification": {
+        "description": "Message pour activer les notifications"
+    },
+    "wantToReceiveNotification": "Souhaitez-vous recevoir des notifications ?",
+    "@yes": {
+        "description": "Option oui"
+    },
+    "yes": "Oui",
+    "@no": {
+        "description": "Option non"
+    },
+    "no": "Non",
+    "@letCreateMealToday": {
+        "description": "Message motivant pour cuisiner"
+    },
+    "letCreateMealToday": "Créons de délicieux plats aujourd'hui",
+    "@somethingWentWrong": {
+        "description": "Message d'erreur générique"
+    },
+    "somethingWentWrong": "Une erreur est survenue. Veuillez réessayer",
+    "@ingredients": {
+        "description": "Titre de la section des ingrédients"
+    },
+    "ingredients": "Ingrédients",
+    "@steps": {
+        "description": "Titre de la section des étapes"
+    },
+    "steps": "Étapes",
+    "@receipeRetrievalError": {
+        "description": "Message d'erreur pour la récupération des recettes"
+    },
+    "receipeRetrievalError": "Erreur lors de la récupération des recettes",
+    "@quickRecipes": {
+        "description": "Titre de la section recettes rapides"
+    },
+    "quickRecipes": "Recettes rapides",
+    "@yourKitchenInventory": {
+        "description": "Titre de la section inventaire de cuisine"
+    },
+    "yourKitchenInventory": "Votre inventaire de cuisine",
+    "@emptyKitchenText": {
+        "description": "Message lorsque l'inventaire est vide"
+    },
+    "emptyKitchenText": "Il semble que votre inventaire de cuisine soit vide !",
+    "@clickHereToAdd": {
+        "description": "Invite à ajouter manuellement des éléments"
+    },
+    "clickHereToAdd": "Cliquez ici pour ajouter manuellement",
+    "@or": {
+        "description": "Séparateur de choix alternatif"
+    },
+    "or": "ou",
+    "@takeYourReceiptPicture": {
+        "description": "Message pour scanner un reçu"
+    },
+    "takeYourReceiptPicture": "Prenez une photo de votre reçu",
+    "@addKitchen": {
+        "description": "Texte du bouton d'ajout à l'inventaire"
+    },
+    "addKitchen": "Ajouter à l'inventaire",
+    "@quantity": {
+        "description": "Étiquette pour la quantité"
+    },
+    "quantity": "Quantité",
+    "@enterQuantity": {
+        "description": "Placeholder pour la quantité"
+    },
+    "enterQuantity": "Entrez la quantité",
+    "@validate": {
+        "description": "Texte du bouton de validation"
+    },
+    "validate": "Valider",
+    "@addIngredientSuccess": {
+        "description": "Message de succès pour l'ajout d'un ingrédient"
+    },
+    "addIngredientSuccess": "Ingrédient ajouté avec succès"
+}
