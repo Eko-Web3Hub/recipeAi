@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-02-16 17:50:08</td>
+            <td class="headerValue">2025-02-16 19:37:00</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -137,9 +137,9 @@
 <span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">           2 :       await _firebaseAuth.sendPasswordResetEmail(email);</span></span>
 <span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">           1 :     } on FirebaseAuthException catch (e) {</span></span>
 <span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">           4 :       if (e.code == 'invalid-email' || e.code == 'user-not-found') {</span></span>
-<span id="L78"><span class="lineNum">      78</span>              :         throw const AuthException(AppText.userNotFound);</span>
+<span id="L78"><span class="lineNum">      78</span>              :         throw const AuthException(appTexts.userNotFound);</span>
 <span id="L79"><span class="lineNum">      79</span>              :       } else {</span>
-<span id="L80"><span class="lineNum">      80</span>              :         throw const AuthException(AppText.somethingWentWrong);</span>
+<span id="L80"><span class="lineNum">      80</span>              :         throw const AuthException(appTexts.somethingWentWrong);</span>
 <span id="L81"><span class="lineNum">      81</span>              :       }</span>
 <span id="L82"><span class="lineNum">      82</span>              :     }</span>
 <span id="L83"><span class="lineNum">      83</span>              :     return true;</span>

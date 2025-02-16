@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryMed">85.0&nbsp;%</td>
+            <td class="headerCovTableEntryHi">90.9&nbsp;%</td>
+            <td class="headerCovTableEntry">22</td>
             <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntry">17</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-02-16 17:50:08</td>
+            <td class="headerValue">2025-02-16 19:37:00</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -87,7 +87,7 @@
 <span id="L25"><span class="lineNum">      25</span>              :   final AppLanguage appLanguage;</span>
 <span id="L26"><span class="lineNum">      26</span>              : </span>
 <span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">           1 :   @override</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           1 :   List&lt;Object&gt; get props =&gt; [];</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           2 :   List&lt;Object&gt; get props =&gt; [appLanguage];</span></span>
 <span id="L29"><span class="lineNum">      29</span>              : }</span>
 <span id="L30"><span class="lineNum">      30</span>              : </span>
 <span id="L31"><span class="lineNum">      31</span>              : class TranslationController extends Cubit&lt;TranslationState&gt; {</span>
@@ -102,27 +102,32 @@
 <span id="L40"><span class="lineNum">      40</span>              : </span>
 <span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           1 :   void _init() async {</span></span>
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           2 :     _currentLanguage = defaultLanguage;</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           3 :     final uid = _authUserService.currentUser!.uid;</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           1 :     _userAccountMetaData =</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           2 :         await _userAccountMetaDataRepository.getUserAccount(uid);</span></span>
-<span id="L46"><span class="lineNum">      46</span>              : </span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">           1 :     if (_userAccountMetaData != null &amp;&amp;</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">           2 :         _userAccountMetaData!.appLanguage != null) {</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           3 :       _currentLanguage = _userAccountMetaData!.appLanguage!;</span></span>
-<span id="L50"><span class="lineNum">      50</span>              :     }</span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           2 :     if (_authUserService.currentUser == null) {</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           3 :       emit(TranslationLoaded(_currentLanguage));</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :       return;</span>
+<span id="L46"><span class="lineNum">      46</span>              :     }</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">           3 :     final uid = _authUserService.currentUser!.uid;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           1 :     _userAccountMetaData =</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">           2 :         await _userAccountMetaDataRepository.getUserAccount(uid);</span></span>
 <span id="L51"><span class="lineNum">      51</span>              : </span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">           3 :     emit(TranslationLoaded(_currentLanguage));</span></span>
-<span id="L53"><span class="lineNum">      53</span>              :   }</span>
-<span id="L54"><span class="lineNum">      54</span>              : </span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaUNC tlaBgUNC">           0 :   AppLocalizations get currentLanguage =&gt; _languages[_currentLanguage]!;</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">           1 :     if (_userAccountMetaData != null &amp;&amp;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">           2 :         _userAccountMetaData!.appLanguage != null) {</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           3 :       _currentLanguage = _userAccountMetaData!.appLanguage!;</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :     }</span>
 <span id="L56"><span class="lineNum">      56</span>              : </span>
-<span id="L57"><span class="lineNum">      57</span>              :   UserAccountMetaData? _userAccountMetaData;</span>
-<span id="L58"><span class="lineNum">      58</span>              :   late AppLanguage _currentLanguage;</span>
-<span id="L59"><span class="lineNum">      59</span>              :   final Map&lt;AppLanguage, AppLocalizations&gt; _languages;</span>
-<span id="L60"><span class="lineNum">      60</span>              :   final AppLanguage defaultLanguage;</span>
-<span id="L61"><span class="lineNum">      61</span>              :   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;</span>
-<span id="L62"><span class="lineNum">      62</span>              :   final IAuthUserService _authUserService;</span>
-<span id="L63"><span class="lineNum">      63</span>              : }</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">           3 :     emit(TranslationLoaded(_currentLanguage));</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :   }</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           4 :   AppLocalizations get currentLanguage =&gt; _languages[_currentLanguage]!;</span></span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              :   UserAccountMetaData? _userAccountMetaData;</span>
+<span id="L63"><span class="lineNum">      63</span>              :   late AppLanguage _currentLanguage;</span>
+<span id="L64"><span class="lineNum">      64</span>              :   final Map&lt;AppLanguage, AppLocalizations&gt; _languages;</span>
+<span id="L65"><span class="lineNum">      65</span>              :   final AppLanguage defaultLanguage;</span>
+<span id="L66"><span class="lineNum">      66</span>              :   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;</span>
+<span id="L67"><span class="lineNum">      67</span>              :   final IAuthUserService _authUserService;</span>
+<span id="L68"><span class="lineNum">      68</span>              : }</span>
         </pre>
               </td>
             </tr>
