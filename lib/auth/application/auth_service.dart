@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 abstract class IAuthService {
   Future<void> signOut();
@@ -75,9 +75,11 @@ class AuthService implements IAuthService {
       await _firebaseAuth.sendPasswordResetEmail(email);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
-        throw const AuthException(appTexts.userNotFound);
+        throw AuthException(AuthError.userNotFound.name);
       } else {
-        throw const AuthException(appTexts.somethingWentWrong);
+        throw AuthException(
+          AuthError.somethingWentWrong.name,
+        );
       }
     }
     return true;

@@ -179,5 +179,65 @@
     "@forgotPassword": {
         "description": "Text for forgot password"
     },
-    "forgotPassword": "Forgot Password?"
+    "forgotPassword": "Forgot Password?",
+    "@forgotternPassword": {
+        "description": "Text for forgotten password (full version)"
+    },
+    "forgotternPassword": "Forgotten Password",
+    "@resetPasswordSuccess": {
+        "description": "Message displayed when password reset email is sent"
+    },
+    "resetPasswordSuccess": "We have sent you an email to reset your password",
+    "@updateUserPreference": {
+        "description": "Text for changing user preferences"
+    },
+    "updateUserPreference": "Change your preferences",
+    "@deleteAccountError": {
+        "description": "Error message displayed when account deletion fails"
+    },
+    "deleteAccountError": "Failed to delete your account. An error occurred",
+    "@deleteAccountSuccess": {
+        "description": "Message displayed when the account deletion is successful"
+    },
+    "deleteAccountSuccess": "We’re sorry to see you go. Your account has been successfully deleted.",
+    "@changesPreferences": {
+        "description": "Label for changing user preferences"
+    },
+    "changesPreferences": "Change Preferences",
+    "@deleteAccount": {
+        "description": "Label for deleting the user account"
+    },
+    "deleteAccount": "Delete your account",
+    "@confirmAccountDeletion": {
+        "description": "Message asking the user to confirm account deletion"
+    },
+    "confirmAccountDeletion": "Do you really want to delete your account?",
+    "@delete": {
+        "description": "Label for the action of deleting"
+    },
+    "delete": "Delete",
+    "@deleteAccountRequiredRecentLogin": {
+        "description": "Message informing the user they need to log in again to delete their account"
+    },
+    "deleteAccountRequiredRecentLogin": "You need to login again to delete your account",
+    "@deleteAccountIncorrectPassword": {
+        "description": "Message displayed when the password entered is incorrect"
+    },
+    "deleteAccountIncorrectPassword": "The password is incorrect. Try again or reset your password on the settings page.",
+    "@emptyReceipes": {
+        "description": "Message displayed when no recipes are available"
+    },
+    "emptyReceipes": "No recipes 😉. \nGo update your preferences",
+    "@receipeIdeas": {
+        "description": "Label for recipe ideas section"
+    },
+    "receipeIdeas": "Recipe ideas",
+    "@receipeIdeasDescription": {
+        "description": "Description explaining the recipe suggestions based on user inventory"
+    },
+    "receipeIdeasDescription": "We are suggesting some recipes \nbased on your inventory.",
+    "@cannotGenerateReceipeIdeas": {
+        "description": "Message displayed when recipe ideas cannot be generated due to insufficient ingredients or preferences"
+    },
+    "cannotGenerateReceipeIdeas": "We cannot generate recipe ideas for you. Please add more ingredients to your inventory and select your preferences."
 }

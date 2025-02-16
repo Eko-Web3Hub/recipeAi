@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/register_usecase.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 
 abstract class RegisterControllerState extends Equatable {}
 
@@ -55,9 +54,11 @@ class RegisterController extends Cubit<RegisterControllerState?> {
     } catch (e) {
       emit(
         RegisterControllerFailed(
-          message: appTexts.registerFailed,
+          message: registerFailedCodeError,
         ),
       );
     }
   }
 }
+
+const registerFailedCodeError = 'registerFailed';

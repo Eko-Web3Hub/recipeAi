@@ -14,8 +14,8 @@ import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
@@ -39,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Builder(builder: (context) {
       return SafeArea(
         child: Padding(
@@ -260,10 +262,13 @@ class ReceipeItem extends StatelessWidget {
                         ],
                       ),
                       GestureDetector(
-                          onTap: onTap,
-                          child: SvgPicture.asset(isSaved
+                        onTap: onTap,
+                        child: SvgPicture.asset(
+                          isSaved
                               ? "assets/images/favorite.svg"
-                              : "assets/images/favorite_outlined.svg"))
+                              : "assets/images/favorite_outlined.svg",
+                        ),
+                      )
                     ],
                   ),
                 ],
@@ -281,6 +286,8 @@ class _HeadLeftSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -301,6 +308,8 @@ class _UserTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return StreamBuilder<UserPersonnalInfo?>(
       stream: di<IUserPersonnalInfoService>().watch(),
       builder: (context, snapshot) {

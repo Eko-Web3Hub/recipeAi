@@ -10,11 +10,12 @@ import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dar
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/register/register_controller.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
+
+import '../../../user_account/presentation/translation_controller.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -45,6 +46,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (_) => RegisterController(
         di<RegisterUsecase>(),
@@ -58,9 +61,17 @@ class _RegisterViewState extends State<RegisterView> {
               appTexts.registerSuccess,
             );
           } else if (state is RegisterControllerFailed) {
+            var msg = '';
+
+            if (state.message == registerFailedCodeError) {
+              msg = appTexts.registerFailed;
+            } else {
+              msg = state.message ?? appTexts.somethingWentWrong;
+            }
+
             showSnackBar(
               context,
-              state.message!,
+              msg,
               isError: true,
             );
           }
@@ -82,7 +93,7 @@ class _RegisterViewState extends State<RegisterView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Gap(10),
-                            const HeadTitle(
+                            HeadTitle(
                               title: appTexts.createAnAccount,
                               subTitle: appTexts.registerDetails,
                             ),
@@ -236,6 +247,8 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

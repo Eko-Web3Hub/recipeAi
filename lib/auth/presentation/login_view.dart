@@ -10,7 +10,6 @@ import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dar
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/login_view_controller.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
@@ -31,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = context.read<TranslationController>().currentLanguage;
+    final appTexts = di<TranslationController>().currentLanguage;
 
     return BlocProvider(
       create: (context) => LoginViewController(
@@ -152,6 +151,7 @@ class _HeadTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

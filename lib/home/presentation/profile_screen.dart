@@ -15,7 +15,7 @@ import 'package:recipe_ai/home/presentation/delete_account_after_an_login.dart';
 import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
@@ -31,6 +31,8 @@ TextStyle _deleteTextStyle = GoogleFonts.poppins(
 );
 
 void _delectionSuccess(BuildContext context) {
+  final appTexts = di<TranslationController>().currentLanguage;
+
   context.go('/login');
   showSnackBar(
     context,
@@ -62,6 +64,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => DeleteAccountController(
         di<IFirebaseAuth>(),
@@ -74,11 +78,9 @@ class ProfileScreen extends StatelessWidget {
             } else if (state is DeleteAccountRequiredRecentLogin) {
               _showLoginAgainDialog(context);
             } else if (state is DeleteAccountErrorOcuured) {
-              final message = state.message;
-
               showSnackBar(
                 context,
-                message,
+                appTexts.deleteAccountError,
                 isError: true,
               );
             }
@@ -226,6 +228,8 @@ class ConfirmationDeleteAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return DialogLayout(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -305,6 +309,8 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return DialogLayout(
       child: BlocProvider(
         create: (context) => DeleteAccountAfterAnLoginController(
@@ -320,7 +326,7 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
             } else if (state is DeleteAccountAfterAnErrorOcured) {
               showSnackBar(
                 context,
-                state.message,
+                appTexts.deleteAccountError,
                 isError: true,
               );
             }

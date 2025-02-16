@@ -12,8 +12,8 @@ import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredi
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class DisplayReceipesBasedOnIngredientUserPreferenceScreen
@@ -24,6 +24,8 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) =>
           DisplayReceipesBasedOnIngredientUserPreferenceController(
@@ -77,6 +79,8 @@ class _LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Center(
         child: Column(
       children: [
@@ -106,6 +110,8 @@ class _DisplayLoadedRecipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return receipes.isEmpty
         ? Center(
             child: Text(

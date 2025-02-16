@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 
 abstract class DeleteAccountAfterAnLoginState extends Equatable {}
 
@@ -25,12 +23,10 @@ class DeleteAccountAfterAnLoginIncorrectPassword
 }
 
 class DeleteAccountAfterAnErrorOcured extends DeleteAccountAfterAnLoginState {
-  final String message;
-
-  DeleteAccountAfterAnErrorOcured(this.message);
+  DeleteAccountAfterAnErrorOcured();
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [];
 }
 
 class DeleteAccountAfterAnLoginController
@@ -63,9 +59,7 @@ class DeleteAccountAfterAnLoginController
       }
 
       emit(
-        DeleteAccountAfterAnErrorOcured(
-          appTexts.deleteAccountError,
-        ),
+        DeleteAccountAfterAnErrorOcured(),
       );
     }
   }

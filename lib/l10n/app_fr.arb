@@ -179,5 +179,65 @@
     "@forgotPassword": {
         "description": "Texte pour mot de passe oublié"
     },
-    "forgotPassword": "Mot de passe oublié ?"
+    "forgotPassword": "Mot de passe oublié ?",
+    "@forgotternPassword": {
+        "description": "Texte pour mot de passe oublié (version complète)"
+    },
+    "forgotternPassword": "Mot de passe oublié",
+    "@resetPasswordSuccess": {
+        "description": "Message affiché lorsqu'un e-mail de réinitialisation du mot de passe est envoyé"
+    },
+    "resetPasswordSuccess": "Nous vous avons envoyé un e-mail pour réinitialiser votre mot de passe",
+    "@updateUserPreference": {
+        "description": "Texte pour changer les préférences de l'utilisateur"
+    },
+    "updateUserPreference": "Modifier vos préférences",
+    "@deleteAccountError": {
+        "description": "Message d'erreur affiché lorsque la suppression du compte échoue"
+    },
+    "deleteAccountError": "Échec de la suppression de votre compte. Une erreur s'est produite",
+    "@deleteAccountSuccess": {
+        "description": "Message affiché lorsque la suppression du compte réussit"
+    },
+    "deleteAccountSuccess": "Nous sommes désolés de vous voir partir. Votre compte a été supprimé",
+    "@changesPreferences": {
+        "description": "Libellé pour modifier les préférences de l'utilisateur"
+    },
+    "changesPreferences": "Modifier les préférences",
+    "@deleteAccount": {
+        "description": "Label for deleting the user account"
+    },
+    "deleteAccount": "Supprimer votre compte",
+    "@confirmAccountDeletion": {
+        "description": "Message demandant à l'utilisateur de confirmer la suppression de son compte"
+    },
+    "confirmAccountDeletion": "Voulez-vous vraiment supprimer votre compte ?",
+    "@delete": {
+        "description": "Libellé pour l'action de suppression"
+    },
+    "delete": "Supprimer",
+    "@deleteAccountRequiredRecentLogin": {
+        "description": "Message informant l'utilisateur qu'il doit se reconnecter pour supprimer son compte"
+    },
+    "deleteAccountRequiredRecentLogin": "Vous devez vous reconnecter pour supprimer votre compte",
+    "@deleteAccountIncorrectPassword": {
+        "description": "Message affiché lorsque le mot de passe saisi est incorrect"
+    },
+    "deleteAccountIncorrectPassword": "Le mot de passe est incorrect. Essayez à nouveau ou réinitialisez votre mot de passe dans la page des paramètres.",
+    "@emptyReceipes": {
+        "description": "Message affiché lorsqu'il n'y a pas de recettes disponibles"
+    },
+    "emptyReceipes": "Aucune recette 😉. \nMettez à jour vos préférences",
+    "@receipeIdeas": {
+        "description": "Libellé pour la section des idées de recettes"
+    },
+    "receipeIdeas": "Idées de recettes",
+    "@receipeIdeasDescription": {
+        "description": "Description expliquant les suggestions de recettes basées sur l'inventaire de l'utilisateur"
+    },
+    "receipeIdeasDescription": "Nous vous suggérons quelques recettes \nbasées sur votre inventaire.",
+    "@cannotGenerateReceipeIdeas": {
+        "description": "Message affiché lorsque les idées de recettes ne peuvent pas être générées en raison d'ingrédients insuffisants ou de préférences non sélectionnées"
+    },
+    "cannotGenerateReceipeIdeas": "Nous ne pouvons pas générer d'idées de recettes pour vous. Veuillez ajouter plus d'ingrédients à votre inventaire et sélectionner vos préférences."
 }

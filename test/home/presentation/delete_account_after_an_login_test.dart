@@ -6,7 +6,6 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/delete_account_after_an_login.dart';
 
 import 'package:mocktail/mocktail.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 
 class AuthUserServiceMock extends Mock implements IAuthUserService {}
 
@@ -104,9 +103,7 @@ void main() {
     },
     expect: () => [
       DeleteAccountAfterAnLoginInitial(),
-      DeleteAccountAfterAnErrorOcured(
-        appTexts.deleteAccountError,
-      ),
+      DeleteAccountAfterAnErrorOcured(),
     ],
   );
 }

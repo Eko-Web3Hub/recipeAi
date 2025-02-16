@@ -119,3 +119,5 @@ AppLanguage appLanguageFromString(String language) {
       throw Exception('Language not supported yet');
   }
 }
+
+enum AuthError { userNotFound, somethingWentWrong }

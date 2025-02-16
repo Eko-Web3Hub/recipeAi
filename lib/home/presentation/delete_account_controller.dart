@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 
 abstract class DeleteAccountState extends Equatable {}
 
@@ -24,12 +23,10 @@ class DeleteAccountRequiredRecentLogin extends DeleteAccountState {
 }
 
 class DeleteAccountErrorOcuured extends DeleteAccountState {
-  final String message;
-
-  DeleteAccountErrorOcuured(this.message);
+  DeleteAccountErrorOcuured();
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [];
 }
 
 class DeleteAccountController extends Cubit<DeleteAccountState> {
@@ -53,7 +50,7 @@ class DeleteAccountController extends Cubit<DeleteAccountState> {
       }
 
       emit(
-        DeleteAccountErrorOcuured(appTexts.deleteAccountError),
+        DeleteAccountErrorOcuured(),
       );
     }
   }

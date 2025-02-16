@@ -10,7 +10,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 
@@ -41,6 +41,8 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (_) => AddKitchenInventoryController(
           di<IKitchenInventoryRepository>(), di<IAuthUserService>()),
