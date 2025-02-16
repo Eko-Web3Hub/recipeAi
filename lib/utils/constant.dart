@@ -99,4 +99,15 @@ const supportedLocales = [
   Locale('fr'),
 ];
 
-enum AppLanguage { en, fr, auto }
+enum AppLanguage { en, fr }
+
+AppLanguage appLanguageFromString(String language) {
+  switch (language) {
+    case 'en':
+      return AppLanguage.en;
+    case 'fr':
+      return AppLanguage.fr;
+    default:
+      throw Exception('Language not supported yet');
+  }
+}

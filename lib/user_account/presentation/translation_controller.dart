@@ -31,14 +31,15 @@ class TranslationLoaded extends TranslationState {
 class TranslationController extends Cubit<TranslationState> {
   TranslationController(
     this._languages,
+    this.defaultLanguage,
     this._userAccountMetaDataRepository,
     this._authUserService,
-  ) : super(TranslationInitial()) {
+  ) : super(const TranslationInitial()) {
     _init();
   }
 
   void _init() async {
-    _currentLanguage = AppLanguage.auto;
+    _currentLanguage = defaultLanguage;
     final uid = _authUserService.currentUser!.uid;
     _userAccountMetaData =
         await _userAccountMetaDataRepository.getUserAccount(uid);
@@ -56,6 +57,7 @@ class TranslationController extends Cubit<TranslationState> {
   UserAccountMetaData? _userAccountMetaData;
   late AppLanguage _currentLanguage;
   final Map<AppLanguage, AppLocalizations> _languages;
+  final AppLanguage defaultLanguage;
   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
   final IAuthUserService _authUserService;
 }

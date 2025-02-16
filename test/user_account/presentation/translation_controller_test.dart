@@ -24,7 +24,6 @@ void main() {
   final languages = <AppLanguage, AppLocalizations>{
     AppLanguage.fr: AppLocalizationsFr(),
     AppLanguage.en: AppLocalizationsEn(),
-    AppLanguage.auto: AppLocalizationsEn(),
   };
   const AuthUser authUser = AuthUser(
     uid: EntityId('uid'),
@@ -42,11 +41,12 @@ void main() {
 
   TranslationController sut() => TranslationController(
         languages,
+        appLanguageFromString('en'),
         userAccountMetaDataRepository,
         authUserService,
       );
 
-  blocTest(
+  blocTest<TranslationController, TranslationState>(
     'should be in initial state',
     build: () => sut(),
     setUp: () {
@@ -63,5 +63,43 @@ void main() {
         ),
       );
     },
+  );
+
+  blocTest<TranslationController, TranslationState>(
+    'should initialize the app language to the default language',
+    build: () => sut(),
+    setUp: () {
+      when(
+        () => userAccountMetaDataRepository.getUserAccount(authUser.uid),
+      ).thenAnswer(
+        (_) => Future.value(),
+      );
+    },
+    expect: () => [
+      const TranslationLoaded(
+        AppLanguage.en,
+      ),
+    ],
+  );
+
+  blocTest<TranslationController, TranslationState>(
+    'should initialize the app language to the user account language',
+    build: () => sut(),
+    setUp: () {
+      when(
+        () => userAccountMetaDataRepository.getUserAccount(authUser.uid),
+      ).thenAnswer(
+        (_) => Future.value(
+          const UserAccountMetaData(
+            appLanguage: AppLanguage.fr,
+          ),
+        ),
+      );
+    },
+    expect: () => [
+      const TranslationLoaded(
+        AppLanguage.fr,
+      ),
+    ],
   );
 }
