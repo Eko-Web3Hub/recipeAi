@@ -239,5 +239,37 @@
     "@cannotGenerateReceipeIdeas": {
         "description": "Message displayed when recipe ideas cannot be generated due to insufficient ingredients or preferences"
     },
-    "cannotGenerateReceipeIdeas": "We cannot generate recipe ideas for you. Please add more ingredients to your inventory and select your preferences."
+    "cannotGenerateReceipeIdeas": "We cannot generate recipe ideas for you. Please add more ingredients to your inventory and select your preferences.",
+    "@searchForIngredients": {
+        "description": "Label for the action of searching for ingredients"
+    },
+    "searchForIngredients": "Search for ingredients",
+    "@addItem": {
+        "description": "Label for the action of adding an item"
+    },
+    "addItem": "Add Item",
+    "@myItems": {
+        "description": "Label for the section displaying the user's items"
+    },
+    "myItems": "My Items",
+    "@ingredientRemoved": {
+        "description": "Message displayed when an ingredient is successfully removed"
+    },
+    "ingredientRemoved": "Ingredient removed",
+    "@selectPicture": {
+        "description": "Label for the action of selecting a picture"
+    },
+    "selectPicture": "Select picture",
+    "@takePhoto": {
+        "description": "Label for the action of taking a photo"
+    },
+    "takePhoto": "Take photo",
+    "@scanReceiptTicket": {
+        "description": "Label for the action of scanning a receipt or ticket"
+    },
+    "scanReceiptTicket": "Scan Receipt Ticket",
+    "@receiptTicketScanError": {
+        "description": "Message displayed when the receipt or ticket scan fails"
+    },
+    "receiptTicketScanError": "Failed to scan receipt ticket"
 }

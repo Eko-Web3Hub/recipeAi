@@ -22,8 +22,8 @@ import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.da
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/styles.dart';
@@ -33,6 +33,8 @@ class ReceipeTicketScanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return SafeArea(
       child: Scaffold(
         appBar: KitchenInventoryAppBar(
@@ -52,6 +54,8 @@ class KitchenInventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => KitchenInventoryController(
         di<IKitchenInventoryRepository>(),
@@ -195,6 +199,8 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
@@ -455,6 +461,7 @@ class _EmptyKitchenInventoryViewState
   }
 
   void _showBottomSheet() {
+    final appTexts = di<TranslationController>().currentLanguage;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -499,6 +506,8 @@ class _EmptyKitchenInventoryViewState
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -620,7 +629,7 @@ class _EmptyKitchenInventoryViewState
                                       is ReceiptTicketScanError) {
                                     return Center(
                                       child: Text(
-                                        (receiptTicketScanState).message,
+                                        appTexts.receiptTicketScanError,
                                       ),
                                     );
                                   }

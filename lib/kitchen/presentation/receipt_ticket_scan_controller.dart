@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/models/receipt_ticket.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 
 import '../../receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
 
@@ -32,16 +31,10 @@ class ReceiptTicketScanLoaded extends ReceiptTicketScanState {
 }
 
 class ReceiptTicketScanError extends ReceiptTicketScanState {
-  final String message;
-
-  ReceiptTicketScanError(
-    this.message,
-  );
+  ReceiptTicketScanError();
 
   @override
-  List<Object?> get props => [
-        message,
-      ];
+  List<Object?> get props => [];
 }
 
 class ReceiptTicketScanController extends Cubit<ReceiptTicketScanState> {
@@ -67,9 +60,7 @@ class ReceiptTicketScanController extends Cubit<ReceiptTicketScanState> {
     } catch (e) {
       log(e.toString());
       emit(
-        ReceiptTicketScanError(
-          appTexts.receiptTicketScanError,
-        ),
+        ReceiptTicketScanError(),
       );
     }
   }

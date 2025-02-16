@@ -239,5 +239,37 @@
     "@cannotGenerateReceipeIdeas": {
         "description": "Message affiché lorsque les idées de recettes ne peuvent pas être générées en raison d'ingrédients insuffisants ou de préférences non sélectionnées"
     },
-    "cannotGenerateReceipeIdeas": "Nous ne pouvons pas générer d'idées de recettes pour vous. Veuillez ajouter plus d'ingrédients à votre inventaire et sélectionner vos préférences."
+    "cannotGenerateReceipeIdeas": "Nous ne pouvons pas générer d'idées de recettes pour vous. Veuillez ajouter plus d'ingrédients à votre inventaire et sélectionner vos préférences.",
+    "@searchForIngredients": {
+        "description": "Libellé pour l'action de rechercher des ingrédients"
+    },
+    "searchForIngredients": "Rechercher des ingrédients",
+    "@addItem": {
+        "description": "Libellé pour l'action d'ajouter un élément"
+    },
+    "addItem": "Ajouter un élément",
+    "@myItems": {
+        "description": "Libellé pour la section affichant les éléments de l'utilisateur"
+    },
+    "myItems": "Mes éléments",
+    "@ingredientRemoved": {
+        "description": "Message affiché lorsqu'un ingrédient est supprimé avec succès"
+    },
+    "ingredientRemoved": "Ingrédient supprimé",
+    "@selectPicture": {
+        "description": "Libellé pour l'action de sélectionner une image"
+    },
+    "selectPicture": "Sélectionner une image",
+    "@takePhoto": {
+        "description": "Libellé pour l'action de prendre une photo"
+    },
+    "takePhoto": "Prendre une photo",
+    "@scanReceiptTicket": {
+        "description": "Libellé pour l'action de scanner un reçu ou un ticket"
+    },
+    "scanReceiptTicket": "Scanner le reçu ou ticket",
+    "@receiptTicketScanError": {
+        "description": "Message affiché lorsque l'analyse du reçu ou ticket échoue"
+    },
+    "receiptTicketScanError": "Échec de l'analyse du reçu ou ticket"
 }
