@@ -6,24 +6,24 @@ import 'package:validators/validators.dart';
 
 String? nonEmptyStringValidator(String? value) {
   if (value == null || value.isEmpty) {
-    return AppText.fieldCannotBeEmpty;
+    return appTexts.fieldCannotBeEmpty;
   }
   return null;
 }
 
 String? emailValidator(String? value) {
   if (value == null || value.isEmpty) {
-    return AppText.fieldCannotBeEmpty;
+    return appTexts.fieldCannotBeEmpty;
   }
   if (!isEmail(value)) {
-    return AppText.invalidEmail;
+    return appTexts.invalidEmail;
   }
   return null;
 }
 
 String? passwordValidator(String? value) {
   if (value == null || value.isEmpty) {
-    return AppText.fieldCannotBeEmpty;
+    return appTexts.fieldCannotBeEmpty;
   }
   if (value.length < 6) {
     return 'Password must be at least 6 characters';
@@ -42,7 +42,7 @@ String? passwordValidator(String? value) {
 
 String? confirmPasswordValidator(String? value, String password) {
   if (value == null || value.isEmpty) {
-    return AppText.fieldCannotBeEmpty;
+    return appTexts.fieldCannotBeEmpty;
   }
   if (value != password) {
     return 'Password does not match';

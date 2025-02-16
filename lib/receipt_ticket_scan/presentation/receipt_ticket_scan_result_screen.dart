@@ -39,7 +39,7 @@ class IngredientDismissedWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 20),
             child: Text(
-              AppText.delete,
+              appTexts.delete,
               style: normalSmallTextStyle,
             ),
           ),
@@ -78,7 +78,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
           return SafeArea(
             child: Scaffold(
               appBar: KitchenInventoryAppBar(
-                title: AppText.scanReceiptTicketAppbar,
+                title: appTexts.scanReceiptTicketAppbar,
                 arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
               ),
               body: Column(
@@ -90,7 +90,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                         horizontal: 40,
                       ),
                       child: Text(
-                        AppText.scanAiReceiptDescription,
+                        appTexts.scanAiReceiptDescription,
                         style: Theme.of(context).textTheme.labelSmall!.copyWith(
                               color: Colors.black,
                             ),
@@ -107,7 +107,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                             context
                                 .read<ReceiptTicketScanResultController>()
                                 .removeIngredient(index);
-                            showSnackBar(context, AppText.ingredientRemoved);
+                            showSnackBar(context, appTexts.ingredientRemoved);
                           },
                           ingredient: ingredients[index],
                           getIngredientQuantity: (quantity) {
@@ -129,7 +129,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: MainBtn(
-                      text: AppText.addToKitchenInvontory,
+                      text: appTexts.addToKitchenInvontory,
                       onPressed: context
                           .read<ReceiptTicketScanResultController>()
                           .addIngredientsToKitchenInventory,

@@ -54,7 +54,7 @@ class SavedReceipeScreen extends StatelessWidget {
                   return state.savedReceipes.isEmpty
                       ? Center(
                           child: Text(
-                            AppText.noSavedReceipes,
+                            appTexts.noSavedReceipes,
                             style: descriptionPlaceHolderStyle,
                             textAlign: TextAlign.center,
                           ),

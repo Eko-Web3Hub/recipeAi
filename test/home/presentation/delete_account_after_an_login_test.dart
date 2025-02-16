@@ -105,7 +105,7 @@ void main() {
     expect: () => [
       DeleteAccountAfterAnLoginInitial(),
       DeleteAccountAfterAnErrorOcured(
-        AppText.deleteAccountError,
+        appTexts.deleteAccountError,
       ),
     ],
   );

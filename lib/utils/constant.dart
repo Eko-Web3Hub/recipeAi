@@ -9,7 +9,15 @@ import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations_fr.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
+
 const baseApiUrl = 'https://langchain-server-819430206108.europe-west1.run.app';
+
+final appLanguages = <AppLanguage, AppLocalizations>{
+  AppLanguage.fr: AppLocalizationsFr(),
+  AppLanguage.en: AppLocalizationsEn(),
+};
 
 const horizontalScreenPadding = 30.0;
 

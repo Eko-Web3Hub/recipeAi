@@ -85,13 +85,13 @@ class _DisplayUserPreferenceQuizState
             UserPreferenceUpdateBtnState>(
           listener: (context, state) {
             if (state is UserPreferenceUpdateBtnSuccess) {
-              showSnackBar(context, AppText.updateUserPreferenceSuccess);
+              showSnackBar(context, appTexts.updateUserPreferenceSuccess);
               context.read<HomeScreenController>().reload();
             } else if (state is HasNotChangedUserPreference) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    AppText.noChangeInUserPreference,
+                    appTexts.noChangeInUserPreference,
                     style: GoogleFonts.poppins(),
                   ),
                 ),
@@ -120,7 +120,7 @@ class _DisplayUserPreferenceQuizState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _UpdatePreferenceQuizButton(
-                    text: AppText.previous,
+                    text: appTexts.previous,
                     onPressed: _currentPageIndex != 0
                         ? () {
                             _pageController.previousPage(
@@ -137,7 +137,7 @@ class _DisplayUserPreferenceQuizState
                             UserPreferenceUpdateBtnState>(
                         builder: (context, state) {
                       return MainBtn(
-                        text: AppText.update,
+                        text: appTexts.update,
                         isLoading: state is UserPreferenceUpdateBtnLoading,
                         onPressed: () {
                           var userPreference = <String, dynamic>{};
@@ -167,7 +167,7 @@ class _DisplayUserPreferenceQuizState
                               curve: Curves.easeIn,
                             );
                           },
-                    text: AppText.next,
+                    text: appTexts.next,
                   ),
                 ],
               ),

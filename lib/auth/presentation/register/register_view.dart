@@ -55,7 +55,7 @@ class _RegisterViewState extends State<RegisterView> {
             context.go('/user-preferences');
             showSnackBar(
               context,
-              AppText.registerSuccess,
+              appTexts.registerSuccess,
             );
           } else if (state is RegisterControllerFailed) {
             showSnackBar(
@@ -83,29 +83,29 @@ class _RegisterViewState extends State<RegisterView> {
                           children: [
                             const Gap(10),
                             const HeadTitle(
-                              title: AppText.createAnAccount,
-                              subTitle: AppText.registerDetails,
+                              title: appTexts.createAnAccount,
+                              subTitle: appTexts.registerDetails,
                             ),
                             const Gap(20),
                             FormFieldWithLabel(
-                              label: AppText.name,
-                              hintText: AppText.enterName,
+                              label: appTexts.name,
+                              hintText: appTexts.enterName,
                               controller: _nameController,
                               validator: nonEmptyStringValidator,
                               keyboardType: TextInputType.name,
                             ),
                             const Gap(10),
                             FormFieldWithLabel(
-                              label: AppText.email,
-                              hintText: AppText.enterEmail,
+                              label: appTexts.email,
+                              hintText: appTexts.enterEmail,
                               controller: _emailController,
                               validator: emailValidator,
                               keyboardType: TextInputType.emailAddress,
                             ),
                             const Gap(10),
                             FormFieldWithLabel(
-                              label: AppText.password,
-                              hintText: AppText.enterPassword,
+                              label: appTexts.password,
+                              hintText: appTexts.enterPassword,
                               controller: _passwordController,
                               validator: passwordValidator,
                               inputType: InputType.password,
@@ -113,8 +113,8 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             const Gap(10),
                             FormFieldWithLabel(
-                              label: AppText.confirmPassword,
-                              hintText: AppText.enterConfirmPassword,
+                              label: appTexts.confirmPassword,
+                              hintText: appTexts.enterConfirmPassword,
                               controller: _passwordConfirmController,
                               validator: (value) => confirmPasswordValidator(
                                 value,
@@ -132,7 +132,7 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             const Gap(20),
                             MainBtn(
-                              text: AppText.signUp,
+                              text: appTexts.signUp,
                               showRightIcon: true,
                               onPressed: _acceptTerms
                                   ? () => _handleRegister(contextBuilder)
@@ -153,8 +153,8 @@ class _RegisterViewState extends State<RegisterView> {
                         children: [
                           Center(
                             child: AuthBottomAction(
-                              firstText: '${AppText.alreadyAMember} ',
-                              secondText: AppText.signIn,
+                              firstText: '${appTexts.alreadyAMember} ',
+                              secondText: appTexts.signIn,
                               onPressed: () {
                                 context.go('/login');
                               },
@@ -259,7 +259,7 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
         InkWell(
           onTap: () => launchUrlFunc(termsAndConditionsUrl),
           child: Text(
-            AppText.acceptTermsAndConditions,
+            appTexts.acceptTermsAndConditions,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
               fontSize: 11,

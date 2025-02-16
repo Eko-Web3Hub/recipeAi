@@ -18,7 +18,7 @@ class StartScreen extends StatelessWidget {
             Image.asset('assets/images/logo.png'),
             const Gap(11),
             Text(
-              AppText.startScreenDescription,
+              appTexts.startScreenDescription,
               style: normalSmallTextStyle.copyWith(
                 color: Theme.of(context).primaryColor,
               ),
@@ -48,7 +48,7 @@ class StartScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 50),
                         child: MainBtn(
                           leftArrowPadding: 10,
-                          text: AppText.startCooking,
+                          text: appTexts.startCooking,
                           onPressed: () => context.go('/onboarding/slider'),
                           showRightIcon: true,
                         ),

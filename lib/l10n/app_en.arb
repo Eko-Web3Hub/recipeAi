@@ -175,5 +175,9 @@
     "@addIngredientSuccess": {
         "description": "Success message for adding an ingredient"
     },
-    "addIngredientSuccess": "Ingredient added successfully"
+    "addIngredientSuccess": "Ingredient added successfully",
+    "@forgotPassword": {
+        "description": "Text for forgot password"
+    },
+    "forgotPassword": "Forgot Password?"
 }

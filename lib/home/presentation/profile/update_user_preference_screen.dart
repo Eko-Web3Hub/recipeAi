@@ -13,7 +13,7 @@ class UpdateUserPreferenceScreen extends StatelessWidget {
       child: Scaffold(
         appBar: KitchenInventoryAppBar(
           arrowLeftOnPressed: () => context.go('/profil-screen'),
-          title: AppText.updateUserPreference,
+          title: appTexts.updateUserPreference,
         ),
         body: const UserPreferenceUpdateWidget(),
       ),

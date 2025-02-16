@@ -53,7 +53,7 @@ class DeleteAccountController extends Cubit<DeleteAccountState> {
       }
 
       emit(
-        DeleteAccountErrorOcuured(AppText.deleteAccountError),
+        DeleteAccountErrorOcuured(appTexts.deleteAccountError),
       );
     }
   }

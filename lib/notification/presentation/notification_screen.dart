@@ -31,7 +31,7 @@ class _EmptyNotificationScreen extends StatelessWidget {
         ),
         const Gap(20),
         Text(
-          AppText.notificationEmptyTitle,
+          appTexts.notificationEmptyTitle,
           style: descriptionPlaceHolderStyle,
           textAlign: TextAlign.center,
         ),

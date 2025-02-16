@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller_provider.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,10 +19,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Image.asset(
-          'assets/images/logo.png',
+    return TranslationControllerProvider(
+      child: Scaffold(
+        body: Center(
+          child: Image.asset(
+            'assets/images/logo.png',
+          ),
         ),
       ),
     );

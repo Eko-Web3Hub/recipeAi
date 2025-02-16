@@ -75,9 +75,9 @@ class AuthService implements IAuthService {
       await _firebaseAuth.sendPasswordResetEmail(email);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
-        throw const AuthException(AppText.userNotFound);
+        throw const AuthException(appTexts.userNotFound);
       } else {
-        throw const AuthException(AppText.somethingWentWrong);
+        throw const AuthException(appTexts.somethingWentWrong);
       }
     }
     return true;

@@ -33,7 +33,7 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
       child: SafeArea(
         child: Scaffold(
           appBar: KitchenInventoryAppBar(
-            title: AppText.receipeIdeas,
+            title: appTexts.receipeIdeas,
             arrowLeftOnPressed: () => context.go(
               '/home/kitchen-inventory',
             ),
@@ -82,7 +82,7 @@ class _LoadingView extends StatelessWidget {
       children: [
         const Gap(120),
         Text(
-          AppText.receipeIdeasDescription,
+          appTexts.receipeIdeasDescription,
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
                 color: Colors.black,
               ),
@@ -109,7 +109,7 @@ class _DisplayLoadedRecipe extends StatelessWidget {
     return receipes.isEmpty
         ? Center(
             child: Text(
-              AppText.cannotGenerateReceipeIdeas,
+              appTexts.cannotGenerateReceipeIdeas,
               style: Theme.of(context).textTheme.labelSmall!.copyWith(
                     color: Colors.black,
                   ),

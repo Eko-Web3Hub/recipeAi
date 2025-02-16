@@ -68,7 +68,7 @@ class ReceiptTicketScanController extends Cubit<ReceiptTicketScanState> {
       log(e.toString());
       emit(
         ReceiptTicketScanError(
-          AppText.receiptTicketScanError,
+          appTexts.receiptTicketScanError,
         ),
       );
     }

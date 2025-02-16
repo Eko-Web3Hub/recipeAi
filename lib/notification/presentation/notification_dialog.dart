@@ -35,7 +35,7 @@ class NotificationDialog extends StatelessWidget {
             ),
           ),
           Text(
-            AppText.wantToReceiveNotification,
+            appTexts.wantToReceiveNotification,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
               fontSize: 20,
@@ -48,7 +48,7 @@ class NotificationDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: MainBtn(
-                  text: AppText.no,
+                  text: appTexts.no,
                   height: 37,
                   onPressed: () {
                     log('No');
@@ -61,7 +61,7 @@ class NotificationDialog extends StatelessWidget {
               const Gap(26),
               Expanded(
                 child: MainBtn(
-                  text: AppText.yes,
+                  text: appTexts.yes,
                   height: 37,
                   onPressed: () {
                     log('Yes');

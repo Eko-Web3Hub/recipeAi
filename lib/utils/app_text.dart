@@ -1,4 +1,4 @@
-abstract class AppText {
+abstract class appTexts {
   static const String hello = "Hello";
   static const String welcomeBack = "Welcome Back!";
   static const String email = "Email";

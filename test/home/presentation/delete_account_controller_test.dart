@@ -73,7 +73,7 @@ void main() {
     },
     expect: () => [
       DeleteAccountErrorOcuured(
-        AppText.deleteAccountError,
+        appTexts.deleteAccountError,
       ),
     ],
   );

@@ -27,7 +27,7 @@ class RegisterUsecase {
     final user = _authUserService.currentUser;
     if (user == null) {
       throw const AuthException(
-        AppText.registerFailed,
+        appTexts.registerFailed,
       );
     }
     await _userPersonnalInfoRepository.save(

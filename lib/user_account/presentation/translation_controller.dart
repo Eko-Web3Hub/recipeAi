@@ -25,7 +25,7 @@ class TranslationLoaded extends TranslationState {
   final AppLanguage appLanguage;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [appLanguage];
 }
 
 class TranslationController extends Cubit<TranslationState> {
@@ -40,6 +40,11 @@ class TranslationController extends Cubit<TranslationState> {
 
   void _init() async {
     _currentLanguage = defaultLanguage;
+    if (_authUserService.currentUser == null) {
+      emit(TranslationLoaded(_currentLanguage));
+      return;
+    }
+
     final uid = _authUserService.currentUser!.uid;
     _userAccountMetaData =
         await _userAccountMetaDataRepository.getUserAccount(uid);

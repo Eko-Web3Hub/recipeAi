@@ -107,7 +107,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                               visible: _currentPageIndex != 0,
                               child: Expanded(
                                 child: MainBtn(
-                                  text: AppText.previous,
+                                  text: appTexts.previous,
                                   onPressed: () {
                                     _pageController.previousPage(
                                       duration:
@@ -146,8 +146,8 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                                             is UserPreferenceSubmitBtnLoading,
                                         text: _currentPageIndex ==
                                                 questions.length - 1
-                                            ? AppText.finish
-                                            : AppText.next,
+                                            ? appTexts.finish
+                                            : appTexts.next,
                                         showRightIcon: _currentPageIndex == 0,
                                         onPressed: () async {
                                           final userPreferenceSubmitBtnController =

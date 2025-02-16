@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const Gap(15),
                 Text(
-                  AppText.quickRecipes,
+                  appTexts.quickRecipes,
                   style: Theme.of(context)
                       .textTheme
                       .displayLarge
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: homeScreenState.receipes.isEmpty
                               ? Center(
                                   child: Text(
-                                    AppText.emptyReceipes,
+                                    appTexts.emptyReceipes,
                                     style: smallTextStyle,
                                     textAlign: TextAlign.center,
                                   ),
@@ -288,7 +288,7 @@ class _HeadLeftSection extends StatelessWidget {
         const _UserTitleWidget(),
         const Gap(5.0),
         Text(
-          AppText.letCreateMealToday,
+          appTexts.letCreateMealToday,
           style: Theme.of(context).textTheme.labelSmall,
         ),
       ],
@@ -306,13 +306,13 @@ class _UserTitleWidget extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
           return Text(
-            '${AppText.hello} ${capitalizeFirtLetter(snapshot.data!.name)}',
+            '${appTexts.hello} ${capitalizeFirtLetter(snapshot.data!.name)}',
             style: Theme.of(context).textTheme.displayLarge,
           );
         }
 
         return Text(
-          '${AppText.hello} !',
+          '${appTexts.hello} !',
           style: Theme.of(context).textTheme.displayLarge,
         );
       },

@@ -64,7 +64,7 @@ class DeleteAccountAfterAnLoginController
 
       emit(
         DeleteAccountAfterAnErrorOcured(
-          AppText.deleteAccountError,
+          appTexts.deleteAccountError,
         ),
       );
     }

@@ -12,20 +12,20 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 const _onBoardingFr = [
   OnboardingModel(
-    title: AppText.onboardingTitle1,
+    title: appTexts.onboardingTitle1,
     child: OnboardingFirstSectionWidget(),
-    description: AppText.onboardingDesc1,
+    description: appTexts.onboardingDesc1,
     horizontalPadding: 30,
     paddingBetweenTitleAndChild: 40,
   ),
   OnboardingModel(
-    title: AppText.onboardingTitle2,
+    title: appTexts.onboardingTitle2,
     child: SmartReceipeGenerationWidget(),
-    description: AppText.onboardingDesc2,
+    description: appTexts.onboardingDesc2,
     paddingBetweenTitleAndChild: 70,
   ),
   OnboardingModel(
-    title: AppText.onboardingTitle3,
+    title: appTexts.onboardingTitle3,
     textColor: Colors.white,
     child: PersonalizedPreferenceWidget(),
   ),
@@ -153,7 +153,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 80),
                 child: MainBtn(
-                  text: AppText.next,
+                  text: appTexts.next,
                   onPressed: () {
                     if (controller.page == _onBoardingFr.length - 1) {
                       context.go(
@@ -174,7 +174,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   '/login',
                 ),
                 child: Text(
-                  AppText.skip,
+                  appTexts.skip,
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,

@@ -105,7 +105,7 @@ class ReceipeDetailsView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: ExpansionTile(
                       title: Text(
-                        AppText.ingredients,
+                        appTexts.ingredients,
                         style: normalTextStyle,
                       ),
                       children: [
@@ -199,7 +199,7 @@ class _StepsSection extends StatelessWidget {
       children: [
         const Gap(15.0),
         Text(
-          AppText.steps,
+          appTexts.steps,
           style: normalTextStyle,
         ),
         const Gap(15.0),

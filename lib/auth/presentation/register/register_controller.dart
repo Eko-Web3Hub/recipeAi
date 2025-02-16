@@ -55,7 +55,7 @@ class RegisterController extends Cubit<RegisterControllerState?> {
     } catch (e) {
       emit(
         RegisterControllerFailed(
-          message: AppText.registerFailed,
+          message: appTexts.registerFailed,
         ),
       );
     }

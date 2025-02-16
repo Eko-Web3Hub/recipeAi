@@ -40,7 +40,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 showSnackBar(
                   context,
-                  AppText.resetPasswordSuccess,
+                  appTexts.resetPasswordSuccess,
                 );
                 context.go('/login');
               } else if (resetPasswordState is ResetPasswordFailure) {
@@ -70,13 +70,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     const Gap(10),
                     Text(
-                      AppText.forgotternPassword,
+                      appTexts.forgotternPassword,
                       style: headTitleStyle,
                     ),
                     const Gap(70),
                     FormFieldWithLabel(
-                      label: AppText.email,
-                      hintText: AppText.enterEmail,
+                      label: appTexts.email,
+                      hintText: appTexts.enterEmail,
                       controller: _emailController,
                       validator: emailValidator,
                       keyboardType: TextInputType.emailAddress,
@@ -85,7 +85,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     BlocBuilder<ResetPasswordController, ResetPasswordState>(
                       builder: (context, resetPasswordState) => MainBtn(
                         isLoading: resetPasswordState is ResetPasswordLoading,
-                        text: AppText.validate,
+                        text: appTexts.validate,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context

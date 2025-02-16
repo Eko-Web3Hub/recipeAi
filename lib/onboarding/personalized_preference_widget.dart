@@ -20,7 +20,7 @@ class PersonalizedPreferenceWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(right: 7),
             child: _InstructionWidget(
-              AppText.frenchFood,
+              appTexts.frenchFood,
               27,
               BorderRadius.only(
                 topLeft: Radius.circular(50),

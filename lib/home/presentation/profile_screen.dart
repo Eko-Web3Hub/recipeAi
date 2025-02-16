@@ -34,7 +34,7 @@ void _delectionSuccess(BuildContext context) {
   context.go('/login');
   showSnackBar(
     context,
-    AppText.deleteAccountSuccess,
+    appTexts.deleteAccountSuccess,
   );
 }
 
@@ -127,14 +127,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const Gap(20),
                   _TextButton(
-                    text: AppText.changesPreferences,
+                    text: appTexts.changesPreferences,
                     textColor: null,
                     onPressed: () {
                       context.push("/profil-screen/update-user-preference");
                     },
                   ),
                   _TextButton(
-                    text: AppText.deleteAccount,
+                    text: appTexts.deleteAccount,
                     onPressed: () async {
                       final response = await _showConfirmationDialog(context);
 
@@ -231,7 +231,7 @@ class ConfirmationDeleteAccountWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppText.confirmAccountDeletion,
+            appTexts.confirmAccountDeletion,
             style: GoogleFonts.poppins(
               fontSize: 17,
               fontWeight: FontWeight.w500,
@@ -245,14 +245,14 @@ class ConfirmationDeleteAccountWidget extends StatelessWidget {
               TextButton(
                 onPressed: noPressed,
                 child: Text(
-                  AppText.no,
+                  appTexts.no,
                   style: _noTextStyle,
                 ),
               ),
               TextButton(
                 onPressed: yesPressed,
                 child: Text(
-                  AppText.delete,
+                  appTexts.delete,
                   style: _deleteTextStyle,
                 ),
               ),
@@ -332,14 +332,14 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    AppText.deleteAccountRequiredRecentLogin,
+                    appTexts.deleteAccountRequiredRecentLogin,
                     style: titleDialogStyle,
                     textAlign: TextAlign.center,
                   ),
                   const Gap(30),
                   FormFieldWithLabel(
-                    label: AppText.password,
-                    hintText: AppText.enterPassword,
+                    label: appTexts.password,
+                    hintText: appTexts.enterPassword,
                     controller: _passwordController,
                     validator: nonEmptyStringValidator,
                     inputType: InputType.password,
@@ -355,7 +355,7 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
                             left: 6,
                           ),
                           child: Text(
-                            AppText.deleteAccountIncorrectPassword,
+                            appTexts.deleteAccountIncorrectPassword,
                             style: GoogleFonts.poppins(
                               color: Colors.red,
                               fontSize: 12,
@@ -374,7 +374,7 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text(
-                          AppText.no,
+                          appTexts.no,
                           style: _noTextStyle,
                         ),
                       ),
@@ -389,7 +389,7 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
                           }
                         },
                         child: Text(
-                          AppText.delete,
+                          appTexts.delete,
                           style: _deleteTextStyle,
                         ),
                       ),

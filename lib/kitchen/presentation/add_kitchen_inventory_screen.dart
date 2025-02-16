@@ -50,7 +50,7 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
             context.pop();
             showSnackBar(
               context,
-              AppText.addIngredientSuccess,
+              appTexts.addIngredientSuccess,
             );
           } else if (state is AddKitchenFailed) {
             showSnackBar(
@@ -63,7 +63,7 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
         child: SafeArea(
           child: Scaffold(
             appBar: KitchenInventoryAppBar(
-              title: AppText.addKitchen,
+              title: appTexts.addKitchen,
               arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
             ),
             body: Builder(builder: (context) {
@@ -77,16 +77,16 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                       children: [
                         const Gap(20),
                         FormFieldWithLabel(
-                          label: AppText.name,
-                          hintText: AppText.enterName,
+                          label: appTexts.name,
+                          hintText: appTexts.enterName,
                           controller: _nameController,
                           validator: nonEmptyStringValidator,
                           keyboardType: TextInputType.name,
                         ),
                         const Gap(20),
                         FormFieldWithLabel(
-                          label: AppText.quantity,
-                          hintText: AppText.enterQuantity,
+                          label: appTexts.quantity,
+                          hintText: appTexts.enterQuantity,
                           controller: _quantityController,
                           validator: nonEmptyStringValidator,
                           keyboardType: TextInputType.number,
@@ -94,7 +94,7 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                         const Gap(20),
                         MainBtn(
                           isLoading: false,
-                          text: AppText.validate,
+                          text: appTexts.validate,
                           onPressed: () {
                             _handleIngredient(context);
                           },
