@@ -311,7 +311,7 @@
     "@startCooking": {
         "description": "Libellé pour l'action de commencer à cuisiner"
     },
-    "startCooking": "Commencer à cuisiner",
+    "startCooking": "C'est parti !",
     "@updateUserPreferenceSuccess": {
         "description": "Message affiché lorsque les préférences de l'utilisateur sont mises à jour avec succès"
     },
