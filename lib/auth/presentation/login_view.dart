@@ -10,10 +10,11 @@ import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dar
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/login_view_controller.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
+
+import '../../user_account/presentation/translation_controller.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -29,6 +30,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => LoginViewController(
         di<IAuthService>(),
@@ -40,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
           } else if (state is LoginViewError) {
             showSnackBar(
               context,
-              state.message ?? AppText.somethingWentWrong,
+              state.message ?? appTexts.somethingWentWrong,
               isError: true,
             );
           }
@@ -63,24 +66,26 @@ class _LoginViewState extends State<LoginView> {
                           const _HeadTitle(),
                           const Gap(57),
                           FormFieldWithLabel(
-                            label: AppText.email,
-                            hintText: AppText.enterEmail,
+                            label: appTexts.email,
+                            hintText: appTexts.enterEmail,
                             controller: _emailController,
-                            validator: nonEmptyStringValidator,
+                            validator: (value) =>
+                                nonEmptyStringValidator(value, appTexts),
                           ),
                           const Gap(30.0),
                           FormFieldWithLabel(
-                            label: AppText.password,
-                            hintText: AppText.enterPassword,
+                            label: appTexts.password,
+                            hintText: appTexts.enterPassword,
                             controller: _passwordController,
                             inputType: InputType.password,
-                            validator: nonEmptyStringValidator,
+                            validator: (value) =>
+                                nonEmptyStringValidator(value, appTexts),
                           ),
                           const Gap(20),
                           InkWell(
                             onTap: () => context.go('/login/reset-password'),
                             child: Text(
-                              AppText.forgotPassword,
+                              appTexts.forgotPassword,
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 11,
@@ -93,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
                           BlocBuilder<LoginViewController, LoginViewState>(
                               builder: (context, loginControllerState) {
                             return MainBtn(
-                              text: AppText.signIn,
+                              text: appTexts.signIn,
                               showRightIcon: true,
                               isLoading:
                                   loginControllerState is LoginViewLoading,
@@ -122,8 +127,8 @@ class _LoginViewState extends State<LoginView> {
                       children: [
                         Center(
                           child: AuthBottomAction(
-                            firstText: AppText.dontHaveAnAccount,
-                            secondText: ' ${AppText.signUp}',
+                            firstText: appTexts.dontHaveAnAccount,
+                            secondText: ' ${appTexts.signUp}',
                             onPressed: () {
                               context.push('/register');
                             },
@@ -148,12 +153,13 @@ class _HeadTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          '${AppText.hello},',
+          '${appTexts.hello},',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             fontSize: 30,
@@ -161,7 +167,7 @@ class _HeadTitle extends StatelessWidget {
           ),
         ),
         Text(
-          AppText.welcomeBack,
+          appTexts.welcomeBack,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             fontSize: 20,

@@ -4,6 +4,7 @@ import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/kitchen/%20di/module.dart';
 import 'package:recipe_ai/receipe/di/module.dart';
 import 'package:recipe_ai/receipt_ticket_scan/di/module.dart';
+import 'package:recipe_ai/user_account/di/module.dart';
 import 'package:recipe_ai/user_preferences/di/module.dart';
 
 abstract class IDiModule {
@@ -30,6 +31,9 @@ class AppModule implements IDiModule {
     );
     di.registerModule(
       const ReceiptTicketScanModule(),
+    );
+    di.registerModule(
+      const UserAccountModule(),
     );
   }
 }

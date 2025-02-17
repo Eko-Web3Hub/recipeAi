@@ -2,7 +2,7 @@ import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/domain/repositories/user_personnal_info_repository.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/auth/presentation/register/register_controller.dart';
 
 class RegisterUsecase {
   final IAuthService _authService;
@@ -27,7 +27,7 @@ class RegisterUsecase {
     final user = _authUserService.currentUser;
     if (user == null) {
       throw const AuthException(
-        AppText.registerFailed,
+        registerFailedCodeError,
       );
     }
     await _userPersonnalInfoRepository.save(

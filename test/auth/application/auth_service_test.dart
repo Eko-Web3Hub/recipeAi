@@ -167,7 +167,7 @@ void main() {
             expect(
               e,
               const AuthException(
-                AppText.userNotFound,
+                appTexts.userNotFound,
               ),
             );
           }
@@ -191,7 +191,7 @@ void main() {
             expect(
               e,
               const AuthException(
-                AppText.userNotFound,
+                appTexts.userNotFound,
               ),
             );
           }
@@ -215,7 +215,7 @@ void main() {
             expect(
               e,
               const AuthException(
-                AppText.somethingWentWrong,
+                appTexts.somethingWentWrong,
               ),
             );
           }

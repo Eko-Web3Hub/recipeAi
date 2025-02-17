@@ -3,12 +3,9 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 
 class RetrieveReceipeException implements Exception {
-  final String message;
-
-  const RetrieveReceipeException(this.message);
+  const RetrieveReceipeException();
 }
 
 class RetrieveReceipeFromApiOneTimePerDayUsecase {
@@ -41,9 +38,7 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
         return currentUserReceipe.receipes;
       }
     } catch (e) {
-      throw const RetrieveReceipeException(
-        AppText.receipeRetrievalError,
-      );
+      throw const RetrieveReceipeException();
     }
   }
 
