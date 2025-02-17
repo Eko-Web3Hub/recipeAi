@@ -12,7 +12,8 @@ import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_reposito
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_controller.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+
 import 'package:recipe_ai/utils/styles.dart';
 
 class IngredientDismissedWidget extends StatelessWidget {
@@ -26,6 +27,8 @@ class IngredientDismissedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Dismissible(
       onDismissed: onDismissed,
       direction: DismissDirection.endToStart,
@@ -61,6 +64,8 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => ReceiptTicketScanResultController(
         di<IKitchenInventoryRepository>(),

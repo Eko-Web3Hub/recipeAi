@@ -347,7 +347,8 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
                     label: appTexts.password,
                     hintText: appTexts.enterPassword,
                     controller: _passwordController,
-                    validator: nonEmptyStringValidator,
+                    validator: (value) =>
+                        nonEmptyStringValidator(value, appTexts),
                     inputType: InputType.password,
                     keyboardType: TextInputType.visiblePassword,
                   ),

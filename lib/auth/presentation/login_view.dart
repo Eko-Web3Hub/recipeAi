@@ -69,7 +69,8 @@ class _LoginViewState extends State<LoginView> {
                             label: appTexts.email,
                             hintText: appTexts.enterEmail,
                             controller: _emailController,
-                            validator: nonEmptyStringValidator,
+                            validator: (value) =>
+                                nonEmptyStringValidator(value, appTexts),
                           ),
                           const Gap(30.0),
                           FormFieldWithLabel(
@@ -77,7 +78,8 @@ class _LoginViewState extends State<LoginView> {
                             hintText: appTexts.enterPassword,
                             controller: _passwordController,
                             inputType: InputType.password,
-                            validator: nonEmptyStringValidator,
+                            validator: (value) =>
+                                nonEmptyStringValidator(value, appTexts),
                           ),
                           const Gap(20),
                           InkWell(

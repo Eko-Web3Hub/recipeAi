@@ -323,5 +323,17 @@
     "@update": {
         "description": "Libellé pour l'action de mettre à jour quelque chose"
     },
-    "update": "Mettre à jour"
+    "update": "Mettre à jour",
+    "@scanReceiptTicketAppbar": {
+        "description": "Titre pour la barre d'applications lors de l'affichage des résultats de l'analyse du ticket"
+    },
+    "scanReceiptTicketAppbar": "Résultat de l'analyse du ticket",
+    "@scanAiReceiptDescription": {
+        "description": "Description du processus de numérisation du reçu par IA avec une note sur les erreurs possibles"
+    },
+    "scanAiReceiptDescription": "(Nous utilisons l'IA pour scanner votre reçu. L'IA peut faire des erreurs, veuillez vérifier et corriger les données)",
+    "@addToKitchenInvontory": {
+        "description": "Libellé pour l'action d'ajouter un élément à l'inventaire de la cuisine"
+    },
+    "addToKitchenInvontory": "Ajouter à l'inventaire"
 }

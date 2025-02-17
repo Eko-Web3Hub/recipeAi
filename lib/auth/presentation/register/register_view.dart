@@ -102,7 +102,8 @@ class _RegisterViewState extends State<RegisterView> {
                               label: appTexts.name,
                               hintText: appTexts.enterName,
                               controller: _nameController,
-                              validator: nonEmptyStringValidator,
+                              validator: (value) =>
+                                  nonEmptyStringValidator(value, appTexts),
                               keyboardType: TextInputType.name,
                             ),
                             const Gap(10),
@@ -110,7 +111,8 @@ class _RegisterViewState extends State<RegisterView> {
                               label: appTexts.email,
                               hintText: appTexts.enterEmail,
                               controller: _emailController,
-                              validator: emailValidator,
+                              validator: (value) =>
+                                  emailValidator(value, appTexts),
                               keyboardType: TextInputType.emailAddress,
                             ),
                             const Gap(10),
@@ -118,7 +120,8 @@ class _RegisterViewState extends State<RegisterView> {
                               label: appTexts.password,
                               hintText: appTexts.enterPassword,
                               controller: _passwordController,
-                              validator: passwordValidator,
+                              validator: (value) =>
+                                  passwordValidator(value, appTexts),
                               inputType: InputType.password,
                               keyboardType: TextInputType.visiblePassword,
                             ),
@@ -130,6 +133,7 @@ class _RegisterViewState extends State<RegisterView> {
                               validator: (value) => confirmPasswordValidator(
                                 value,
                                 _passwordController.text,
+                                appTexts,
                               ),
                               inputType: InputType.password,
                               keyboardType: TextInputType.visiblePassword,

@@ -82,7 +82,8 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                           label: appTexts.name,
                           hintText: appTexts.enterName,
                           controller: _nameController,
-                          validator: nonEmptyStringValidator,
+                          validator: (value) =>
+                              nonEmptyStringValidator(value, appTexts),
                           keyboardType: TextInputType.name,
                         ),
                         const Gap(20),
@@ -90,7 +91,8 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                           label: appTexts.quantity,
                           hintText: appTexts.enterQuantity,
                           controller: _quantityController,
-                          validator: nonEmptyStringValidator,
+                          validator: (value) =>
+                              nonEmptyStringValidator(value, appTexts),
                           keyboardType: TextInputType.number,
                         ),
                         const Gap(20),
