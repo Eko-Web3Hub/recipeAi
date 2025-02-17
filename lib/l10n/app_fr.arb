@@ -335,5 +335,9 @@
     "@addToKitchenInvontory": {
         "description": "Libellé pour l'action d'ajouter un élément à l'inventaire de la cuisine"
     },
-    "addToKitchenInvontory": "Ajouter à l'inventaire"
+    "addToKitchenInvontory": "Ajouter à l'inventaire",
+    "@noSavedReceipes": {
+        "description": "Message affiché lorsqu'il n'y a pas de recettes enregistrées"
+    },
+    "noSavedReceipes": "Aucune recette enregistrée 😉. \nAllez sélectionner parmi vos recettes disponibles !"
 }

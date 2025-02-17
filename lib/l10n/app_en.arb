@@ -335,5 +335,9 @@
     "@addToKitchenInvontory": {
         "description": "Label for the action of adding an item to the kitchen inventory"
     },
-    "addToKitchenInvontory": "Add to inventory"
+    "addToKitchenInvontory": "Add to inventory",
+    "@noSavedReceipes": {
+        "description": "Message displayed when there are no saved recipes"
+    },
+    "noSavedReceipes": "No saved recipes 😉. \nGo select between your available recipes!"
 }
