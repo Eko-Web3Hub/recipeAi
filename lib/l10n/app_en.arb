@@ -275,5 +275,41 @@
     "@notificationEmptyTitle": {
         "description": "Message displayed when there are no notifications for the user"
     },
-    "notificationEmptyTitle": "No notifications for \nyou yet 😉!"
+    "notificationEmptyTitle": "No notifications for \nyou yet 😉!",
+    "@onboardingTitle1": {
+        "description": "Title for the first onboarding step about filling the kitchen inventory"
+    },
+    "onboardingTitle1": "Fill your kitchen inventory easily",
+    "@onboardingDesc1": {
+        "description": "Description for the first onboarding step about uploading kitchen inventory or invoices"
+    },
+    "onboardingDesc1": "Upload your kitchen inventory or invoices, and we'll generate recipes just for you.",
+    "@onboardingTitle3": {
+        "description": "Title for the third onboarding step about personalized preferences"
+    },
+    "onboardingTitle3": "Personalized Preferences",
+    "@onboardingTitle2": {
+        "description": "Title for the second onboarding step about smart recipe generation"
+    },
+    "onboardingTitle2": "Smart Recipe Generation",
+    "@onboardingDesc2": {
+        "description": "Description for the second onboarding step about generating recipes from ingredients"
+    },
+    "onboardingDesc2": "From ingredients to quick \nrecipes you can save.",
+    "@skip": {
+        "description": "Label for the button to skip a step"
+    },
+    "skip": "Skip",
+    "@frenchFood": {
+        "description": "Label for the French food category"
+    },
+    "frenchFood": "French Food",
+    "@startScreenDescription": {
+        "description": "Description for the start screen about transforming ingredients into dishes"
+    },
+    "startScreenDescription": "Turn your ingredients into culinary \nmasterpieces.",
+    "@startCooking": {
+        "description": "Label for the action of starting to cook"
+    },
+    "startCooking": "Start Cooking"
 }

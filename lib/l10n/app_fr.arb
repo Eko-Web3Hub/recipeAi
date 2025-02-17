@@ -275,5 +275,41 @@
     "@notificationEmptyTitle": {
         "description": "Message affiché lorsqu'il n'y a pas encore de notifications pour l'utilisateur"
     },
-    "notificationEmptyTitle": "Aucune notification pour \nvous pour le moment 😉!"
+    "notificationEmptyTitle": "Aucune notification pour \nvous pour le moment 😉!",
+    "@onboardingTitle1": {
+        "description": "Titre de la première étape de l'onboarding sur le remplissage de l'inventaire de la cuisine"
+    },
+    "onboardingTitle1": "Remplissez facilement votre inventaire de cuisine",
+    "@onboardingDesc1": {
+        "description": "Description de la première étape de l'onboarding sur le téléchargement de l'inventaire de cuisine ou des factures"
+    },
+    "onboardingDesc1": "Téléchargez votre inventaire de cuisine ou vos factures, et nous générerons des recettes rien que pour vous.",
+    "@onboardingTitle3": {
+        "description": "Titre de la troisième étape de l'onboarding sur les préférences personnalisées"
+    },
+    "onboardingTitle3": "Préférences personnalisées",
+    "@onboardingTitle2": {
+        "description": "Titre de la deuxième étape de l'onboarding sur la génération intelligente de recettes"
+    },
+    "onboardingTitle2": "Génération intelligente de recettes",
+    "@onboardingDesc2": {
+        "description": "Description de la deuxième étape de l'onboarding sur la génération de recettes à partir des ingrédients"
+    },
+    "onboardingDesc2": "Des ingrédients aux recettes rapides \nque vous pouvez enregistrer.",
+    "@skip": {
+        "description": "Libellé pour le bouton permettant d’ignorer une étape"
+    },
+    "skip": "Ignorer",
+    "@frenchFood": {
+        "description": "Libellé pour la catégorie de la cuisine française"
+    },
+    "frenchFood": "Cuisine française",
+    "@startScreenDescription": {
+        "description": "Description pour l'écran de démarrage sur la transformation des ingrédients en plats"
+    },
+    "startScreenDescription": "Transformez vos ingrédients en chefs-d'œuvre culinaires.",
+    "@startCooking": {
+        "description": "Libellé pour l'action de commencer à cuisiner"
+    },
+    "startCooking": "Commencer à cuisiner"
 }

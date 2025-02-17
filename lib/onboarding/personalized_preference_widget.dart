@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
 class PersonalizedPreferenceWidget extends StatelessWidget {
@@ -12,17 +13,19 @@ class PersonalizedPreferenceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Column(
       children: [
         const Gap(56),
-        const Align(
+        Align(
           alignment: Alignment.topRight,
           child: Padding(
-            padding: EdgeInsets.only(right: 7),
+            padding: const EdgeInsets.only(right: 7),
             child: _InstructionWidget(
               appTexts.frenchFood,
               27,
-              BorderRadius.only(
+              const BorderRadius.only(
                 topLeft: Radius.circular(50),
                 topRight: Radius.circular(40),
                 bottomRight: Radius.circular(40),

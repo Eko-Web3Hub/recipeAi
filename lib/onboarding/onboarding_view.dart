@@ -3,33 +3,35 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
+import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/onboarding/domain/model/onboarding_model.dart';
 import 'package:recipe_ai/onboarding/onboarding_first_section_widget.dart';
 import 'package:recipe_ai/onboarding/personalized_preference_widget.dart';
 import 'package:recipe_ai/onboarding/smart_receipe_generation_widget.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const _onBoardingFr = [
-  OnboardingModel(
-    title: appTexts.onboardingTitle1,
-    child: OnboardingFirstSectionWidget(),
-    description: appTexts.onboardingDesc1,
-    horizontalPadding: 30,
-    paddingBetweenTitleAndChild: 40,
-  ),
-  OnboardingModel(
-    title: appTexts.onboardingTitle2,
-    child: SmartReceipeGenerationWidget(),
-    description: appTexts.onboardingDesc2,
-    paddingBetweenTitleAndChild: 70,
-  ),
-  OnboardingModel(
-    title: appTexts.onboardingTitle3,
-    textColor: Colors.white,
-    child: PersonalizedPreferenceWidget(),
-  ),
-];
+List<OnboardingModel> _buildOnboarding(AppLocalizations appTexts) => [
+      OnboardingModel(
+        title: appTexts.onboardingTitle1,
+        child: const OnboardingFirstSectionWidget(),
+        description: appTexts.onboardingDesc1,
+        horizontalPadding: 30,
+        paddingBetweenTitleAndChild: 40,
+      ),
+      OnboardingModel(
+        title: appTexts.onboardingTitle2,
+        child: const SmartReceipeGenerationWidget(),
+        description: appTexts.onboardingDesc2,
+        paddingBetweenTitleAndChild: 70,
+      ),
+      OnboardingModel(
+        title: appTexts.onboardingTitle3,
+        textColor: Colors.white,
+        child: const PersonalizedPreferenceWidget(),
+      ),
+    ];
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -42,8 +44,13 @@ class _OnboardingViewState extends State<OnboardingView> {
   final controller = PageController();
   int _currentIndex = 0;
 
+  final List<OnboardingModel> _onBoardingFr =
+      _buildOnboarding(di<TranslationController>().currentLanguage);
+
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Scaffold(
       body: Stack(
         children: [
