@@ -1,17 +1,16 @@
 import 'dart:developer';
-
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-String? nonEmptyStringValidator(String? value) {
+String? nonEmptyStringValidator(String? value, AppLocalizations appTexts) {
   if (value == null || value.isEmpty) {
     return appTexts.fieldCannotBeEmpty;
   }
   return null;
 }
 
-String? emailValidator(String? value) {
+String? emailValidator(String? value, AppLocalizations appTexts) {
   if (value == null || value.isEmpty) {
     return appTexts.fieldCannotBeEmpty;
   }
@@ -21,7 +20,7 @@ String? emailValidator(String? value) {
   return null;
 }
 
-String? passwordValidator(String? value) {
+String? passwordValidator(String? value, AppLocalizations appTexts) {
   if (value == null || value.isEmpty) {
     return appTexts.fieldCannotBeEmpty;
   }
@@ -40,7 +39,8 @@ String? passwordValidator(String? value) {
   return null;
 }
 
-String? confirmPasswordValidator(String? value, String password) {
+String? confirmPasswordValidator(
+    String? value, String password, AppLocalizations appTexts) {
   if (value == null || value.isEmpty) {
     return appTexts.fieldCannotBeEmpty;
   }

@@ -24,7 +24,7 @@ const horizontalScreenPadding = 30.0;
 enum InputType { text, password }
 
 final receipeSample = Receipe(
-  name: ' Burger Healthy',
+  name: 'Burger Healthy',
   ingredients: [
     Ingredient(
       id: const EntityId('1'),
