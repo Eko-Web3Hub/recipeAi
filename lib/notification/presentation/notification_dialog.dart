@@ -5,13 +5,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 
 class NotificationDialog extends StatelessWidget {
   const NotificationDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Padding(
       padding: const EdgeInsets.only(
         top: 14.55,

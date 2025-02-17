@@ -271,5 +271,9 @@
     "@receiptTicketScanError": {
         "description": "Message affiché lorsque l'analyse du reçu ou ticket échoue"
     },
-    "receiptTicketScanError": "Échec de l'analyse du reçu ou ticket"
+    "receiptTicketScanError": "Échec de l'analyse du reçu ou ticket",
+    "@notificationEmptyTitle": {
+        "description": "Message affiché lorsqu'il n'y a pas encore de notifications pour l'utilisateur"
+    },
+    "notificationEmptyTitle": "Aucune notification pour \nvous pour le moment 😉!"
 }

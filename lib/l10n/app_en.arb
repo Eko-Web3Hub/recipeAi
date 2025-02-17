@@ -271,5 +271,9 @@
     "@receiptTicketScanError": {
         "description": "Message displayed when the receipt or ticket scan fails"
     },
-    "receiptTicketScanError": "Failed to scan receipt ticket"
+    "receiptTicketScanError": "Failed to scan receipt ticket",
+    "@notificationEmptyTitle": {
+        "description": "Message displayed when there are no notifications for the user"
+    },
+    "notificationEmptyTitle": "No notifications for \nyou yet 😉!"
 }
