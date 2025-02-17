@@ -8,13 +8,13 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/notification/presentation/notification_dialog.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_submit_btn_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_quizz_controller.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserPreferencesView extends StatefulWidget {
@@ -28,6 +28,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
     with AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
+  final appTexts = di<TranslationController>().currentLanguage;
 
   @override
   void dispose() {
