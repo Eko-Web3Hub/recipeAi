@@ -311,5 +311,17 @@
     "@startCooking": {
         "description": "Label for the action of starting to cook"
     },
-    "startCooking": "Start Cooking"
+    "startCooking": "Start Cooking",
+    "@updateUserPreferenceSuccess": {
+        "description": "Message displayed when the user's preferences are successfully updated"
+    },
+    "updateUserPreferenceSuccess": "Your preferences have been updated.",
+    "@noChangeInUserPreference": {
+        "description": "Message displayed when there is no change in the user's preferences"
+    },
+    "noChangeInUserPreference": "No change in your preferences.",
+    "@update": {
+        "description": "Label for the action of updating something"
+    },
+    "update": "Update"
 }

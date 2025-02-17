@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -34,6 +32,13 @@ class HomeScreenStateError extends HomeScreenState {
   List<Object> get props => [message];
 }
 
+class HomeRtrieveReceipeException extends HomeScreenState {
+  const HomeRtrieveReceipeException();
+
+  @override
+  List<Object> get props => [];
+}
+
 /// The controller for the home screen
 class HomeScreenController extends Cubit<HomeScreenState> {
   HomeScreenController(
@@ -56,9 +61,8 @@ class HomeScreenController extends Cubit<HomeScreenState> {
         currentNow ?? DateTime.now(),
       );
       emit(HomeScreenStateLoaded(receipes));
-    } on RetrieveReceipeException catch (e) {
-      log(e.message);
-      emit(HomeScreenStateError(e.message));
+    } on RetrieveReceipeException catch (_) {
+      emit(const HomeRtrieveReceipeException());
     }
   }
 

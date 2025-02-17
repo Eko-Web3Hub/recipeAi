@@ -311,5 +311,17 @@
     "@startCooking": {
         "description": "Libellé pour l'action de commencer à cuisiner"
     },
-    "startCooking": "Commencer à cuisiner"
+    "startCooking": "Commencer à cuisiner",
+    "@updateUserPreferenceSuccess": {
+        "description": "Message affiché lorsque les préférences de l'utilisateur sont mises à jour avec succès"
+    },
+    "updateUserPreferenceSuccess": "Vos préférences ont été mises à jour.",
+    "@noChangeInUserPreference": {
+        "description": "Message affiché lorsqu'il n'y a pas de changement dans les préférences de l'utilisateur"
+    },
+    "noChangeInUserPreference": "Aucun changement dans vos préférences.",
+    "@update": {
+        "description": "Libellé pour l'action de mettre à jour quelque chose"
+    },
+    "update": "Mettre à jour"
 }
