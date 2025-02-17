@@ -90,7 +90,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       label: appTexts.email,
                       hintText: appTexts.enterEmail,
                       controller: _emailController,
-                      validator: emailValidator,
+                      validator: (value) => emailValidator(value, appTexts),
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const Spacer(),
