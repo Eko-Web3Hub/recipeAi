@@ -30,6 +30,7 @@ class UserPreferenceUpdateWidget extends StatelessWidget {
         di<IAuthUserService>(),
         di<IUserPreferenceRepository>(),
         di<IUserPreferenceQuizzRepository>(),
+        currentUserLanguage: di<TranslationController>().currentLanguageEnum,
       ),
       child: Builder(builder: (context) {
         return BlocBuilder<UserPreferenceUpdateController,

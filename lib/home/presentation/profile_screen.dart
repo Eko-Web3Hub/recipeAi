@@ -107,7 +107,8 @@ class ProfileScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        " ${capitalizeFirtLetter(snapshot.data!.name)}",
+                                        capitalizeFirtLetter(
+                                            snapshot.data!.name),
                                         style: GoogleFonts.poppins(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -155,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
                         builder: (context, btnLogOutState) {
                       return Builder(builder: (context) {
                         return MainBtn(
-                          text: 'Logout',
+                          text: appTexts.signOut,
                           isLoading: btnLogOutState is SignOutBtnLoading,
                           onPressed: () {
                             context.read<SignOutBtnControlller>().signOut();

@@ -139,7 +139,7 @@
     "@yourKitchenInventory": {
         "description": "Titre de la section inventaire de cuisine"
     },
-    "yourKitchenInventory": "Votre inventaire de cuisine",
+    "yourKitchenInventory": "Inventaire",
     "@emptyKitchenText": {
         "description": "Message lorsque l'inventaire est vide"
     },
@@ -323,7 +323,7 @@
     "@update": {
         "description": "Libellé pour l'action de mettre à jour quelque chose"
     },
-    "update": "Mettre à jour",
+    "update": "Modifier",
     "@scanReceiptTicketAppbar": {
         "description": "Titre pour la barre d'applications lors de l'affichage des résultats de l'analyse du ticket"
     },
@@ -339,5 +339,17 @@
     "@noSavedReceipes": {
         "description": "Message affiché lorsqu'il n'y a pas de recettes enregistrées"
     },
-    "noSavedReceipes": "Aucune recette enregistrée 😉. \nAllez sélectionner parmi vos recettes disponibles !"
+    "noSavedReceipes": "Aucune recette enregistrée 😉. \nAllez sélectionner parmi vos recettes disponibles !",
+    "@favorite": {
+        "description": "Libellé pour des éléments favoris"
+    },
+    "favorite": "Favoris",
+    "signOut": "Déconnexion",
+    "@signOut": {
+        "description": "Libellé pour l'action de déconnexion"
+    },
+    "enterProductName": "Entrez le nom du produit",
+    "@enterProductName": {
+        "description": "Placeholder pour le champ du nom du produit"
+    }
 }

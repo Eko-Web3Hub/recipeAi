@@ -80,7 +80,7 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                         const Gap(20),
                         FormFieldWithLabel(
                           label: appTexts.name,
-                          hintText: appTexts.enterName,
+                          hintText: appTexts.enterProductName,
                           controller: _nameController,
                           validator: (value) =>
                               nonEmptyStringValidator(value, appTexts),

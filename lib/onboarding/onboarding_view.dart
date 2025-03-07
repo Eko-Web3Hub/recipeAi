@@ -18,7 +18,7 @@ List<OnboardingModel> _buildOnboarding(AppLocalizations appTexts) => [
         child: const OnboardingFirstSectionWidget(),
         description: appTexts.onboardingDesc1,
         horizontalPadding: 30,
-        paddingBetweenTitleAndChild: 40,
+        paddingBetweenTitleAndChild: 30,
       ),
       OnboardingModel(
         title: appTexts.onboardingTitle2,
@@ -64,7 +64,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           ),
           Column(
             children: [
-              const Gap(60),
+              const Gap(50),
               Expanded(
                 child: PageView.builder(
                   controller: controller,
@@ -116,7 +116,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 content.textColor,
                               ),
                             ),
-                            const Gap(10),
+                            const Gap(5),
                             Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: content.horizontalPadding,
@@ -127,7 +127,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                             if (content.description != null)
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 52,
+                                  horizontal: 30,
                                 ),
                                 child: Text(
                                   content.description!,

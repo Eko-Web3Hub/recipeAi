@@ -36,6 +36,8 @@ class TranslationController {
 
   AppLocalizations get currentLanguage => _languages[_currentLanguage]!;
 
+  AppLanguage get currentLanguageEnum => _currentLanguage;
+
   UserAccountMetaData? _userAccountMetaData;
   late AppLanguage _currentLanguage;
   final Map<AppLanguage, AppLocalizations> _languages;

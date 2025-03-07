@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class FirestoreUserPreferenceQuizzRepository
     implements IUserPreferenceQuizzRepository {
@@ -9,10 +10,15 @@ class FirestoreUserPreferenceQuizzRepository
   FirestoreUserPreferenceQuizzRepository(this._firestore);
 
   static const String _collection = 'UserPreferenceQuizz';
+  static const String _languagesSubCollection = 'Languages';
 
   @override
-  Future<List<UserPreferenceQuestion>> retrieve() async {
-    final doc = await _firestore.collection(_collection).get();
+  Future<List<UserPreferenceQuestion>> retrieve(AppLanguage language) async {
+    final doc = await _firestore
+        .collection(_collection)
+        .doc(_languagesSubCollection)
+        .collection(language.name)
+        .get();
 
     if (doc.docs.isEmpty) {
       return [];

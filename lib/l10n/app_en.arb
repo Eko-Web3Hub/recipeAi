@@ -139,7 +139,7 @@
     "@yourKitchenInventory": {
         "description": "Kitchen inventory section title"
     },
-    "yourKitchenInventory": "Your Kitchen Inventory",
+    "yourKitchenInventory": "Inventory",
     "@emptyKitchenText": {
         "description": "Message when kitchen inventory is empty"
     },
@@ -339,5 +339,17 @@
     "@noSavedReceipes": {
         "description": "Message displayed when there are no saved recipes"
     },
-    "noSavedReceipes": "No saved recipes 😉. \nGo select between your available recipes!"
+    "noSavedReceipes": "No saved recipes 😉. \nGo select between your available recipes!",
+    "@favorite": {
+        "description": "Label for the favorite section"
+    },
+    "favorite": "Favorites",
+    "signOut": "Log out",
+    "@signOut": {
+        "description": "Label for the action of signing out"
+    },
+    "@enterProductName": {
+        "description": "Placeholder for product name input"
+    },
+    "enterProductName": "Enter Product Name"
 }

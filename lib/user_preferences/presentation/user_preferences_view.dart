@@ -66,6 +66,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
     return BlocProvider(
       create: (context) => UserPreferenceQuizzController(
         di.get<IUserPreferenceQuizzRepository>(),
+        currentUserLanguage: di<TranslationController>().currentLanguageEnum,
       ),
       child: Builder(
         builder: (context) {
