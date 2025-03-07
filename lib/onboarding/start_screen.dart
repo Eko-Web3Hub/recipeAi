@@ -20,7 +20,7 @@ class StartScreen extends StatelessWidget {
           children: [
             const Gap(50),
             SizedBox(
-              height: 160,
+              height: 150,
               child: Image.asset(logoPath),
             ),
             const Gap(11),
