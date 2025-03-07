@@ -291,7 +291,7 @@
     "@onboardingTitle2": {
         "description": "Titre de la deuxième étape de l'onboarding sur la génération intelligente de recettes"
     },
-    "onboardingTitle2": "Génération intelligente de recettes",
+    "onboardingTitle2": "Génération intelligente \nde recettes",
     "@onboardingDesc2": {
         "description": "Description de la deuxième étape de l'onboarding sur la génération de recettes à partir des ingrédients"
     },

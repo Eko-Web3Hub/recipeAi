@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
 class StartScreen extends StatelessWidget {
@@ -18,14 +19,20 @@ class StartScreen extends StatelessWidget {
         child: Column(
           children: [
             const Gap(50),
-            Image.asset('assets/images/logo.png'),
+            SizedBox(
+              height: 160,
+              child: Image.asset(logoPath),
+            ),
             const Gap(11),
-            Text(
-              appTexts.startScreenDescription,
-              style: normalSmallTextStyle.copyWith(
-                color: Theme.of(context).primaryColor,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Text(
+                appTexts.startScreenDescription,
+                style: normalSmallTextStyle.copyWith(
+                  color: Theme.of(context).primaryColor,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
             const Gap(24.0),
             Expanded(

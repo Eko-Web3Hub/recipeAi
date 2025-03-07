@@ -217,6 +217,7 @@ class _OnboardingTitle extends StatelessWidget {
           : Theme.of(context).textTheme.displayLarge!.copyWith(
                 color: textColor,
               ),
+      textAlign: TextAlign.center,
     );
   }
 }
