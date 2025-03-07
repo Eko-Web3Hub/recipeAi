@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/utils/safe_emit.dart';
 
 import '../domain/repositories/receipes_based_on_ingredient_user_preference_repository.dart';
 
@@ -40,7 +41,7 @@ class DisplayReceipesBasedOnIngredientUserPreferenceController
         .getReceipesBasedOnIngredientUserPreference(
       _authUserService.currentUser!.uid,
     );
-    emit(
+    safeEmit(
       DisplayReceipesBasedOnIngredientUserPreferenceLoaded(receipes),
     );
   }

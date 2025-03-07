@@ -22,8 +22,8 @@ import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.da
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/styles.dart';
@@ -33,10 +33,12 @@ class ReceipeTicketScanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return SafeArea(
       child: Scaffold(
         appBar: KitchenInventoryAppBar(
-          title: AppText.yourKitchenInventory,
+          title: appTexts.yourKitchenInventory,
           arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
         ),
         body: const _EmptyKitchenInventoryView(
@@ -52,6 +54,8 @@ class KitchenInventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => KitchenInventoryController(
         di<IKitchenInventoryRepository>(),
@@ -60,7 +64,7 @@ class KitchenInventoryScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: KitchenInventoryAppBar(
-            title: AppText.yourKitchenInventory,
+            title: appTexts.yourKitchenInventory,
             arrowLeftOnPressed: () => context.go('/home'),
             action: Row(
               mainAxisSize: MainAxisSize.max,
@@ -195,6 +199,8 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
@@ -204,7 +210,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
             children: [
               Expanded(
                 child: CustomTextFormField(
-                  hintText: AppText.searchForIngredients,
+                  hintText: appTexts.searchForIngredients,
                   controller: searchController,
                   onChange: (query) => onSearchChanged(context),
                   validator: (_) {
@@ -229,7 +235,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppText.addItem,
+                appTexts.addItem,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -260,7 +266,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
           ),
           const Gap(20),
           Text(
-            AppText.myItems,
+            appTexts.myItems,
             style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -292,7 +298,7 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                                 );
                             // Hide the current snackbar
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            showSnackBar(context, AppText.ingredientRemoved);
+                            showSnackBar(context, appTexts.ingredientRemoved);
                           });
                     },
                     itemCount: widget.ingredients.length,
@@ -455,6 +461,7 @@ class _EmptyKitchenInventoryViewState
   }
 
   void _showBottomSheet() {
+    final appTexts = di<TranslationController>().currentLanguage;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -467,7 +474,7 @@ class _EmptyKitchenInventoryViewState
               ListTile(
                 leading: const Icon(Icons.photo_library),
                 title: Text(
-                  AppText.selectPicture,
+                  appTexts.selectPicture,
                   style: smallTextStyle.copyWith(
                     color: Colors.black,
                   ),
@@ -480,7 +487,7 @@ class _EmptyKitchenInventoryViewState
               ListTile(
                 leading: const Icon(Icons.camera_alt),
                 title: Text(
-                  AppText.takePhoto,
+                  appTexts.takePhoto,
                   style: smallTextStyle.copyWith(
                     color: Colors.black,
                   ),
@@ -499,6 +506,8 @@ class _EmptyKitchenInventoryViewState
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -508,7 +517,7 @@ class _EmptyKitchenInventoryViewState
               visible: widget.showDescription,
               child: Center(
                 child: Text(
-                  AppText.emptyKitchenText,
+                  appTexts.emptyKitchenText,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelSmall!.copyWith(
                         color: Colors.black,
@@ -571,7 +580,7 @@ class _EmptyKitchenInventoryViewState
                             "/home/kitchen-inventory/add-kitchen-inventory");
                       },
                       child: Text(
-                        AppText.clickHereToAdd,
+                        appTexts.clickHereToAdd,
                         style: smallTextStyle.copyWith(
                           color: Theme.of(context).primaryColor,
                         ),
@@ -579,14 +588,14 @@ class _EmptyKitchenInventoryViewState
                     ),
                     const Gap(3),
                     Text(
-                      AppText.or,
+                      appTexts.or,
                       style: smallTextStyle,
                     ),
                     const Gap(3),
                     GestureDetector(
                       onTap: _showBottomSheet,
                       child: Text(
-                        AppText.takeYourReceiptPicture,
+                        appTexts.takeYourReceiptPicture,
                         style: smallTextStyle.copyWith(
                           color: Theme.of(context).primaryColor,
                         ),
@@ -620,7 +629,7 @@ class _EmptyKitchenInventoryViewState
                                       is ReceiptTicketScanError) {
                                     return Center(
                                       child: Text(
-                                        (receiptTicketScanState).message,
+                                        appTexts.receiptTicketScanError,
                                       ),
                                     );
                                   }
@@ -635,7 +644,7 @@ class _EmptyKitchenInventoryViewState
                                   right: 40,
                                 ),
                                 child: MainBtn(
-                                  text: AppText.scanReceiptTicket,
+                                  text: appTexts.scanReceiptTicket,
                                   onPressed: () => context
                                       .read<ReceiptTicketScanController>()
                                       .scanReceiptTicket(_receiptPicture!),

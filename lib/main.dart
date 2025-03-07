@@ -15,6 +15,7 @@ import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/nav/router.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -72,7 +73,7 @@ class _MyAppState extends State<MyApp> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: MaterialApp.router(
-            title: 'Recipe AI',
+            title: "Eat'Easy",
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.white,
@@ -95,6 +96,8 @@ class _MyAppState extends State<MyApp> {
               useMaterial3: true,
             ),
             routerConfig: _router,
+            localizationsDelegates: localizationsDelegate,
+            supportedLocales: supportedLocales,
           ),
         ),
       ),

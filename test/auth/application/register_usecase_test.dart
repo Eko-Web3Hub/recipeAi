@@ -88,7 +88,10 @@ void main() {
             );
           } catch (e) {
             expect(e, isA<AuthException>());
-            expect((e as AuthException).message, 'Register failed');
+            expect(
+              (e as AuthException).message,
+              'registerFailed',
+            );
           }
         },
       );

@@ -8,8 +8,9 @@ import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/saved_receipe/presentation/remove_saved_receipe_controller.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+
 import 'package:recipe_ai/utils/constant.dart';
 
 import '../../utils/styles.dart';
@@ -19,6 +20,8 @@ class SavedReceipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => SavedReceipeController(
         di<IUserReceipeRepository>(),
@@ -54,7 +57,7 @@ class SavedReceipeScreen extends StatelessWidget {
                   return state.savedReceipes.isEmpty
                       ? Center(
                           child: Text(
-                            AppText.noSavedReceipes,
+                            appTexts.noSavedReceipes,
                             style: descriptionPlaceHolderStyle,
                             textAlign: TextAlign.center,
                           ),

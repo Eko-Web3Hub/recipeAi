@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
@@ -7,15 +7,24 @@ import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations_fr.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 const baseApiUrl = 'https://langchain-server-819430206108.europe-west1.run.app';
+
+final appLanguages = <AppLanguage, AppLocalizations>{
+  AppLanguage.fr: AppLocalizationsFr(),
+  AppLanguage.en: AppLocalizationsEn(),
+};
 
 const horizontalScreenPadding = 30.0;
 
 enum InputType { text, password }
 
 final receipeSample = Receipe(
-  name: ' Burger Healthy',
+  name: 'Burger Healthy',
   ingredients: [
     Ingredient(
       id: const EntityId('1'),
@@ -85,3 +94,32 @@ final dioOption = BaseOptions(
     'accept': 'application/json',
   },
 );
+
+const localizationsDelegate = [
+  AppLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+];
+
+const supportedLocales = [
+  Locale('en'),
+  Locale('fr'),
+];
+
+enum AppLanguage { en, fr }
+
+AppLanguage appLanguageFromString(String language) {
+  switch (language) {
+    case 'en':
+      return AppLanguage.en;
+    case 'fr':
+      return AppLanguage.fr;
+    default:
+      throw Exception('Language not supported yet');
+  }
+}
+
+enum AuthError { userNotFound, somethingWentWrong }
+
+const logoPath = 'assets/images/newLogo.png';

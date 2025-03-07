@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -97,7 +98,10 @@ GoRouter createRouter() => GoRouter(
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) =>
               ScaffoldWithNestedNavigation(
-            appBarTitle: genAppBarTitle(state.fullPath),
+            appBarTitle: genAppBarTitle(
+              state.fullPath,
+              AppLocalizations.of(context)!,
+            ),
             navigationShell: navigationShell,
             hideNavBar: hideNavBar(state.fullPath),
           ),
@@ -219,11 +223,11 @@ GoRouter createRouter() => GoRouter(
       ],
     );
 
-String? genAppBarTitle(String? path) {
+String? genAppBarTitle(String? path, AppLocalizations appTexts) {
   log('genAppBarTitle: $path');
   switch (path) {
     case '/save-recipes':
-      return 'Saved Recipes';
+      return appTexts.favorite;
     case '/notification-screen':
       return 'Notifications';
     case '/profil-screen':

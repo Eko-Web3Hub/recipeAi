@@ -12,7 +12,8 @@ import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_reposito
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_controller.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+
 import 'package:recipe_ai/utils/styles.dart';
 
 class IngredientDismissedWidget extends StatelessWidget {
@@ -26,6 +27,8 @@ class IngredientDismissedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Dismissible(
       onDismissed: onDismissed,
       direction: DismissDirection.endToStart,
@@ -39,7 +42,7 @@ class IngredientDismissedWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 20),
             child: Text(
-              AppText.delete,
+              appTexts.delete,
               style: normalSmallTextStyle,
             ),
           ),
@@ -61,6 +64,8 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => ReceiptTicketScanResultController(
         di<IKitchenInventoryRepository>(),
@@ -78,7 +83,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
           return SafeArea(
             child: Scaffold(
               appBar: KitchenInventoryAppBar(
-                title: AppText.scanReceiptTicketAppbar,
+                title: appTexts.scanReceiptTicketAppbar,
                 arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
               ),
               body: Column(
@@ -90,7 +95,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                         horizontal: 40,
                       ),
                       child: Text(
-                        AppText.scanAiReceiptDescription,
+                        appTexts.scanAiReceiptDescription,
                         style: Theme.of(context).textTheme.labelSmall!.copyWith(
                               color: Colors.black,
                             ),
@@ -107,7 +112,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                             context
                                 .read<ReceiptTicketScanResultController>()
                                 .removeIngredient(index);
-                            showSnackBar(context, AppText.ingredientRemoved);
+                            showSnackBar(context, appTexts.ingredientRemoved);
                           },
                           ingredient: ingredients[index],
                           getIngredientQuantity: (quantity) {
@@ -129,7 +134,7 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: MainBtn(
-                      text: AppText.addToKitchenInvontory,
+                      text: appTexts.addToKitchenInvontory,
                       onPressed: context
                           .read<ReceiptTicketScanResultController>()
                           .addIngredientsToKitchenInventory,

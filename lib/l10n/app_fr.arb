@@ -1,0 +1,355 @@
+{
+    "@@locale": "fr",
+    "@hello": {
+        "description": "Message de bienvenue"
+    },
+    "hello": "Bonjour",
+    "@welcomeBack": {
+        "description": "Message de retour"
+    },
+    "welcomeBack": "Bon retour !",
+    "@email": {
+        "description": "Étiquette du champ email"
+    },
+    "email": "Email",
+    "@enterEmail": {
+        "description": "Placeholder pour l'entrée email"
+    },
+    "enterEmail": "Entrez votre email",
+    "@password": {
+        "description": "Étiquette du champ mot de passe"
+    },
+    "password": "Mot de passe",
+    "@enterPassword": {
+        "description": "Placeholder pour l'entrée du mot de passe"
+    },
+    "enterPassword": "Entrez votre mot de passe",
+    "@signIn": {
+        "description": "Texte du bouton de connexion"
+    },
+    "signIn": "Se connecter",
+    "@signUp": {
+        "description": "Texte du bouton d'inscription"
+    },
+    "signUp": "S'inscrire",
+    "@dontHaveAnAccount": {
+        "description": "Message pour les nouveaux utilisateurs"
+    },
+    "dontHaveAnAccount": "Vous n'avez pas de compte ?",
+    "@createAnAccount": {
+        "description": "Texte du bouton de création de compte"
+    },
+    "createAnAccount": "Créer un compte",
+    "@registerDetails": {
+        "description": "Instructions d'inscription"
+    },
+    "registerDetails": "Aidons-vous à configurer votre compte, \nça ne prendra pas longtemps.",
+    "@enterName": {
+        "description": "Placeholder pour le champ nom"
+    },
+    "enterName": "Entrez votre nom",
+    "@name": {
+        "description": "Étiquette du champ nom"
+    },
+    "name": "Nom",
+    "@confirmPassword": {
+        "description": "Étiquette du champ de confirmation du mot de passe"
+    },
+    "confirmPassword": "Confirmez le mot de passe",
+    "@enterConfirmPassword": {
+        "description": "Placeholder pour le champ de confirmation du mot de passe"
+    },
+    "enterConfirmPassword": "Retapez le mot de passe",
+    "@acceptTermsAndConditions": {
+        "description": "Texte de l'acceptation des termes et conditions"
+    },
+    "acceptTermsAndConditions": "Accepter les termes et conditions",
+    "@alreadyAMember": {
+        "description": "Message pour les utilisateurs existants"
+    },
+    "alreadyAMember": "Déjà membre ?",
+    "@fieldCannotBeEmpty": {
+        "description": "Message de validation pour les champs requis"
+    },
+    "fieldCannotBeEmpty": "Ce champ est requis",
+    "@invalidEmail": {
+        "description": "Message de validation pour email invalide"
+    },
+    "invalidEmail": "Email invalide",
+    "@userNotFound": {
+        "description": "Message d'erreur pour utilisateur non trouvé"
+    },
+    "userNotFound": "Aucun utilisateur trouvé avec cet email",
+    "@registerFailed": {
+        "description": "Message d'erreur pour échec d'inscription"
+    },
+    "registerFailed": "Échec de l'inscription",
+    "@registerSuccess": {
+        "description": "Message de succès pour inscription réussie"
+    },
+    "registerSuccess": "Inscription réussie",
+    "@next": {
+        "description": "Texte du bouton suivant"
+    },
+    "next": "Suivant",
+    "@previous": {
+        "description": "Texte du bouton précédent"
+    },
+    "previous": "Précédent",
+    "@finish": {
+        "description": "Texte du bouton terminer"
+    },
+    "finish": "Terminer",
+    "@wantToReceiveNotification": {
+        "description": "Message pour activer les notifications"
+    },
+    "wantToReceiveNotification": "Souhaitez-vous recevoir des notifications ?",
+    "@yes": {
+        "description": "Option oui"
+    },
+    "yes": "Oui",
+    "@no": {
+        "description": "Option non"
+    },
+    "no": "Non",
+    "@letCreateMealToday": {
+        "description": "Message motivant pour cuisiner"
+    },
+    "letCreateMealToday": "Créons de délicieux plats aujourd'hui",
+    "@somethingWentWrong": {
+        "description": "Message d'erreur générique"
+    },
+    "somethingWentWrong": "Une erreur est survenue. Veuillez réessayer",
+    "@ingredients": {
+        "description": "Titre de la section des ingrédients"
+    },
+    "ingredients": "Ingrédients",
+    "@steps": {
+        "description": "Titre de la section des étapes"
+    },
+    "steps": "Étapes",
+    "@receipeRetrievalError": {
+        "description": "Message d'erreur pour la récupération des recettes"
+    },
+    "receipeRetrievalError": "Erreur lors de la récupération des recettes",
+    "@quickRecipes": {
+        "description": "Titre de la section recettes rapides"
+    },
+    "quickRecipes": "Recettes rapides",
+    "@yourKitchenInventory": {
+        "description": "Titre de la section inventaire de cuisine"
+    },
+    "yourKitchenInventory": "Inventaire",
+    "@emptyKitchenText": {
+        "description": "Message lorsque l'inventaire est vide"
+    },
+    "emptyKitchenText": "Il semble que votre inventaire de cuisine soit vide !",
+    "@clickHereToAdd": {
+        "description": "Invite à ajouter manuellement des éléments"
+    },
+    "clickHereToAdd": "Cliquez ici pour ajouter manuellement",
+    "@or": {
+        "description": "Séparateur de choix alternatif"
+    },
+    "or": "ou",
+    "@takeYourReceiptPicture": {
+        "description": "Message pour scanner un reçu"
+    },
+    "takeYourReceiptPicture": "Prenez une photo de votre reçu",
+    "@addKitchen": {
+        "description": "Texte du bouton d'ajout à l'inventaire"
+    },
+    "addKitchen": "Ajouter à l'inventaire",
+    "@quantity": {
+        "description": "Étiquette pour la quantité"
+    },
+    "quantity": "Quantité",
+    "@enterQuantity": {
+        "description": "Placeholder pour la quantité"
+    },
+    "enterQuantity": "Entrez la quantité",
+    "@validate": {
+        "description": "Texte du bouton de validation"
+    },
+    "validate": "Valider",
+    "@addIngredientSuccess": {
+        "description": "Message de succès pour l'ajout d'un ingrédient"
+    },
+    "addIngredientSuccess": "Ingrédient ajouté avec succès",
+    "@forgotPassword": {
+        "description": "Texte pour mot de passe oublié"
+    },
+    "forgotPassword": "Mot de passe oublié ?",
+    "@forgotternPassword": {
+        "description": "Texte pour mot de passe oublié (version complète)"
+    },
+    "forgotternPassword": "Mot de passe oublié",
+    "@resetPasswordSuccess": {
+        "description": "Message affiché lorsqu'un e-mail de réinitialisation du mot de passe est envoyé"
+    },
+    "resetPasswordSuccess": "Nous vous avons envoyé un e-mail pour réinitialiser votre mot de passe",
+    "@updateUserPreference": {
+        "description": "Texte pour changer les préférences de l'utilisateur"
+    },
+    "updateUserPreference": "Modifier vos préférences",
+    "@deleteAccountError": {
+        "description": "Message d'erreur affiché lorsque la suppression du compte échoue"
+    },
+    "deleteAccountError": "Échec de la suppression de votre compte. Une erreur s'est produite",
+    "@deleteAccountSuccess": {
+        "description": "Message affiché lorsque la suppression du compte réussit"
+    },
+    "deleteAccountSuccess": "Nous sommes désolés de vous voir partir. Votre compte a été supprimé",
+    "@changesPreferences": {
+        "description": "Libellé pour modifier les préférences de l'utilisateur"
+    },
+    "changesPreferences": "Modifier les préférences",
+    "@deleteAccount": {
+        "description": "Label for deleting the user account"
+    },
+    "deleteAccount": "Supprimer votre compte",
+    "@confirmAccountDeletion": {
+        "description": "Message demandant à l'utilisateur de confirmer la suppression de son compte"
+    },
+    "confirmAccountDeletion": "Voulez-vous vraiment supprimer votre compte ?",
+    "@delete": {
+        "description": "Libellé pour l'action de suppression"
+    },
+    "delete": "Supprimer",
+    "@deleteAccountRequiredRecentLogin": {
+        "description": "Message informant l'utilisateur qu'il doit se reconnecter pour supprimer son compte"
+    },
+    "deleteAccountRequiredRecentLogin": "Vous devez vous reconnecter pour supprimer votre compte",
+    "@deleteAccountIncorrectPassword": {
+        "description": "Message affiché lorsque le mot de passe saisi est incorrect"
+    },
+    "deleteAccountIncorrectPassword": "Le mot de passe est incorrect. Essayez à nouveau ou réinitialisez votre mot de passe dans la page des paramètres.",
+    "@emptyReceipes": {
+        "description": "Message affiché lorsqu'il n'y a pas de recettes disponibles"
+    },
+    "emptyReceipes": "Aucune recette 😉. \nMettez à jour vos préférences",
+    "@receipeIdeas": {
+        "description": "Libellé pour la section des idées de recettes"
+    },
+    "receipeIdeas": "Idées de recettes",
+    "@receipeIdeasDescription": {
+        "description": "Description expliquant les suggestions de recettes basées sur l'inventaire de l'utilisateur"
+    },
+    "receipeIdeasDescription": "Nous vous suggérons quelques recettes \nbasées sur votre inventaire.",
+    "@cannotGenerateReceipeIdeas": {
+        "description": "Message affiché lorsque les idées de recettes ne peuvent pas être générées en raison d'ingrédients insuffisants ou de préférences non sélectionnées"
+    },
+    "cannotGenerateReceipeIdeas": "Nous ne pouvons pas générer d'idées de recettes pour vous. Veuillez ajouter plus d'ingrédients à votre inventaire et sélectionner vos préférences.",
+    "@searchForIngredients": {
+        "description": "Libellé pour l'action de rechercher des ingrédients"
+    },
+    "searchForIngredients": "Rechercher des ingrédients",
+    "@addItem": {
+        "description": "Libellé pour l'action d'ajouter un élément"
+    },
+    "addItem": "Ajouter un élément",
+    "@myItems": {
+        "description": "Libellé pour la section affichant les éléments de l'utilisateur"
+    },
+    "myItems": "Mes éléments",
+    "@ingredientRemoved": {
+        "description": "Message affiché lorsqu'un ingrédient est supprimé avec succès"
+    },
+    "ingredientRemoved": "Ingrédient supprimé",
+    "@selectPicture": {
+        "description": "Libellé pour l'action de sélectionner une image"
+    },
+    "selectPicture": "Sélectionner une image",
+    "@takePhoto": {
+        "description": "Libellé pour l'action de prendre une photo"
+    },
+    "takePhoto": "Prendre une photo",
+    "@scanReceiptTicket": {
+        "description": "Libellé pour l'action de scanner un reçu ou un ticket"
+    },
+    "scanReceiptTicket": "Scanner le reçu ou ticket",
+    "@receiptTicketScanError": {
+        "description": "Message affiché lorsque l'analyse du reçu ou ticket échoue"
+    },
+    "receiptTicketScanError": "Échec de l'analyse du reçu ou ticket",
+    "@notificationEmptyTitle": {
+        "description": "Message affiché lorsqu'il n'y a pas encore de notifications pour l'utilisateur"
+    },
+    "notificationEmptyTitle": "Aucune notification pour \nvous pour le moment 😉!",
+    "@onboardingTitle1": {
+        "description": "Titre de la première étape de l'onboarding sur le remplissage de l'inventaire de la cuisine"
+    },
+    "onboardingTitle1": "Remplissez facilement votre inventaire de cuisine",
+    "@onboardingDesc1": {
+        "description": "Description de la première étape de l'onboarding sur le téléchargement de l'inventaire de cuisine ou des factures"
+    },
+    "onboardingDesc1": "Téléchargez votre inventaire de cuisine ou vos factures, et nous générerons des recettes rien que pour vous.",
+    "@onboardingTitle3": {
+        "description": "Titre de la troisième étape de l'onboarding sur les préférences personnalisées"
+    },
+    "onboardingTitle3": "Préférences personnalisées",
+    "@onboardingTitle2": {
+        "description": "Titre de la deuxième étape de l'onboarding sur la génération intelligente de recettes"
+    },
+    "onboardingTitle2": "Génération intelligente \nde recettes",
+    "@onboardingDesc2": {
+        "description": "Description de la deuxième étape de l'onboarding sur la génération de recettes à partir des ingrédients"
+    },
+    "onboardingDesc2": "Des ingrédients aux recettes rapides \nque vous pouvez enregistrer.",
+    "@skip": {
+        "description": "Libellé pour le bouton permettant d’ignorer une étape"
+    },
+    "skip": "Ignorer",
+    "@frenchFood": {
+        "description": "Libellé pour la catégorie de la cuisine française"
+    },
+    "frenchFood": "Cuisine française",
+    "@startScreenDescription": {
+        "description": "Description pour l'écran de démarrage sur la transformation des ingrédients en plats"
+    },
+    "startScreenDescription": "Transformez vos ingrédients en chefs-d'œuvre culinaires.",
+    "@startCooking": {
+        "description": "Libellé pour l'action de commencer à cuisiner"
+    },
+    "startCooking": "C'est parti !",
+    "@updateUserPreferenceSuccess": {
+        "description": "Message affiché lorsque les préférences de l'utilisateur sont mises à jour avec succès"
+    },
+    "updateUserPreferenceSuccess": "Vos préférences ont été mises à jour.",
+    "@noChangeInUserPreference": {
+        "description": "Message affiché lorsqu'il n'y a pas de changement dans les préférences de l'utilisateur"
+    },
+    "noChangeInUserPreference": "Aucun changement dans vos préférences.",
+    "@update": {
+        "description": "Libellé pour l'action de mettre à jour quelque chose"
+    },
+    "update": "Modifier",
+    "@scanReceiptTicketAppbar": {
+        "description": "Titre pour la barre d'applications lors de l'affichage des résultats de l'analyse du ticket"
+    },
+    "scanReceiptTicketAppbar": "Résultat de l'analyse du ticket",
+    "@scanAiReceiptDescription": {
+        "description": "Description du processus de numérisation du reçu par IA avec une note sur les erreurs possibles"
+    },
+    "scanAiReceiptDescription": "(Nous utilisons l'IA pour scanner votre reçu. L'IA peut faire des erreurs, veuillez vérifier et corriger les données)",
+    "@addToKitchenInvontory": {
+        "description": "Libellé pour l'action d'ajouter un élément à l'inventaire de la cuisine"
+    },
+    "addToKitchenInvontory": "Ajouter à l'inventaire",
+    "@noSavedReceipes": {
+        "description": "Message affiché lorsqu'il n'y a pas de recettes enregistrées"
+    },
+    "noSavedReceipes": "Aucune recette enregistrée 😉. \nAllez sélectionner parmi vos recettes disponibles !",
+    "@favorite": {
+        "description": "Libellé pour des éléments favoris"
+    },
+    "favorite": "Favoris",
+    "signOut": "Déconnexion",
+    "@signOut": {
+        "description": "Libellé pour l'action de déconnexion"
+    },
+    "enterProductName": "Entrez le nom du produit",
+    "@enterProductName": {
+        "description": "Placeholder pour le champ du nom du produit"
+    }
+}

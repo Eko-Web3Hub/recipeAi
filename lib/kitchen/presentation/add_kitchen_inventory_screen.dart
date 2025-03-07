@@ -10,7 +10,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 
@@ -41,6 +41,8 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (_) => AddKitchenInventoryController(
           di<IKitchenInventoryRepository>(), di<IAuthUserService>()),
@@ -50,7 +52,7 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
             context.pop();
             showSnackBar(
               context,
-              AppText.addIngredientSuccess,
+              appTexts.addIngredientSuccess,
             );
           } else if (state is AddKitchenFailed) {
             showSnackBar(
@@ -63,7 +65,7 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
         child: SafeArea(
           child: Scaffold(
             appBar: KitchenInventoryAppBar(
-              title: AppText.addKitchen,
+              title: appTexts.addKitchen,
               arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
             ),
             body: Builder(builder: (context) {
@@ -77,24 +79,26 @@ class _AddKitchenInventoryScreenState extends State<AddKitchenInventoryScreen> {
                       children: [
                         const Gap(20),
                         FormFieldWithLabel(
-                          label: AppText.name,
-                          hintText: AppText.enterName,
+                          label: appTexts.name,
+                          hintText: appTexts.enterProductName,
                           controller: _nameController,
-                          validator: nonEmptyStringValidator,
+                          validator: (value) =>
+                              nonEmptyStringValidator(value, appTexts),
                           keyboardType: TextInputType.name,
                         ),
                         const Gap(20),
                         FormFieldWithLabel(
-                          label: AppText.quantity,
-                          hintText: AppText.enterQuantity,
+                          label: appTexts.quantity,
+                          hintText: appTexts.enterQuantity,
                           controller: _quantityController,
-                          validator: nonEmptyStringValidator,
+                          validator: (value) =>
+                              nonEmptyStringValidator(value, appTexts),
                           keyboardType: TextInputType.number,
                         ),
                         const Gap(20),
                         MainBtn(
                           isLoading: false,
-                          text: AppText.validate,
+                          text: appTexts.validate,
                           onPressed: () {
                             _handleIngredient(context);
                           },
