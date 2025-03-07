@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/utils/safe_emit.dart';
 
 abstract class ReceipeItemState extends Equatable {
   const ReceipeItemState();
@@ -27,8 +28,8 @@ class ReceipeItemStateError extends ReceipeItemState {
 }
 
 class ReceipeItemController extends Cubit<ReceipeItemState> {
-  ReceipeItemController(this._receipe, this._userReceipeRepository,
-      this._authUserService)
+  ReceipeItemController(
+      this._receipe, this._userReceipeRepository, this._authUserService)
       : super(const ReceipeItemStateSaved()) {
     checkReceipeStatus();
   }
@@ -62,14 +63,15 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
   Future<void> checkReceipeStatus() async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      _userReceipeRepository.isReceiptSaved(uid, _receipe.name.toLowerCase().replaceAll(' ', '')).listen(
-            (isSaved) {
-               emit(isSaved
-          ? const ReceipeItemStateSaved()
-          : const ReceipeItemStateUnsaved());
-            },
-          );
-     
+      _userReceipeRepository
+          .isReceiptSaved(uid, _receipe.name.toLowerCase().replaceAll(' ', ''))
+          .listen(
+        (isSaved) {
+          safeEmit(isSaved
+              ? const ReceipeItemStateSaved()
+              : const ReceipeItemStateUnsaved());
+        },
+      );
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error checking receipe status"));
     }

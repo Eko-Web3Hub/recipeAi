@@ -63,10 +63,10 @@ class _MultipleChoiceQuestion extends StatelessWidget {
                 bottom: 15.0,
               ),
               child: CheckBoxOption(
-                option: option,
-                isSelected: question.isOptionSelected(option),
+                option: option.label,
+                isSelected: question.isOptionSelected(option.key),
                 onChanged: (isSelected) {
-                  question.answer(option);
+                  question.answer(option.key);
                 },
               ),
             ),
