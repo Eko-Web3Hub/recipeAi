@@ -10,6 +10,7 @@ import 'package:recipe_ai/user_preferences/domain/model/user_preference_question
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class AuthUserServiceMock extends Mock implements IAuthUserService {}
 
@@ -52,6 +53,7 @@ void main() {
     question.copyWith(),
     question2.copyWith(),
   ];
+  const appLanguage = AppLanguage.en;
 
   setUp(() {
     authUserService = AuthUserServiceMock();
@@ -70,6 +72,7 @@ void main() {
         authUserService,
         userPreferenceRepository,
         userPreferenceQuizzRepository,
+        currentUserLanguage: appLanguage,
       );
 
   blocTest<UserPreferenceUpdateController, UserPreferenceUpdateState>(
@@ -96,7 +99,8 @@ void main() {
         (_) => Future.value(userPreference),
       );
 
-      when(() => userPreferenceQuizzRepository.retrieve()).thenAnswer(
+      when(() => userPreferenceQuizzRepository.retrieve(appLanguage))
+          .thenAnswer(
         (_) => Future.value(userPreferenceQuizz),
       );
     },

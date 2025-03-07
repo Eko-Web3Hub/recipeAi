@@ -34,7 +34,7 @@ abstract class UserPreferenceQuestion extends Equatable {
 }
 
 class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
-  final List<String> options;
+  final List<Option> options;
 
   UserPreferenceQuestionMultipleChoice({
     required super.title,
@@ -50,7 +50,9 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
       title: json['title'] as String,
       description: json['description'] as String,
       type: userPreferenceQuestionTypeFromString(json['type'] as String),
-      options: (json['options'] as List).cast<String>(),
+      options: (json['options'] as List)
+          .map((option) => Option.fromJson(option))
+          .toList(),
     );
   }
 
@@ -73,7 +75,9 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
     final currentSelectedOptions = <String>[];
 
     currentSelectedOptions.addAll(
-      options.where((option) => preferences[option] == true),
+      options
+          .where((option) => preferences[option.key] == true)
+          .map((e) => e.key),
     );
     final newQuestion = copyWith();
     for (final option in currentSelectedOptions) {
@@ -86,7 +90,7 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
   UserPreferenceQuestionMultipleChoice copyWith({
     String? title,
     String? description,
-    List<String>? options,
+    List<Option>? options,
   }) {
     return UserPreferenceQuestionMultipleChoice(
       title: title ?? this.title,
@@ -106,9 +110,29 @@ class UserPreferenceQuestionMultipleChoice extends UserPreferenceQuestion {
     final json = <String, dynamic>{};
 
     for (final option in options) {
-      json[option] = selectedOptions.contains(option);
+      json[option.key] = selectedOptions.contains(option.key);
     }
 
     return json;
   }
+}
+
+class Option extends Equatable {
+  final String label;
+  final String key;
+
+  const Option({
+    required this.label,
+    required this.key,
+  });
+
+  factory Option.fromJson(Map<String, dynamic> json) {
+    return Option(
+      label: json['label'] as String,
+      key: json['key'] as String,
+    );
+  }
+
+  @override
+  List<Object?> get props => [label, key];
 }

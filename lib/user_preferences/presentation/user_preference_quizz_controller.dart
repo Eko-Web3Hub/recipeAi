@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 abstract class UserPreferenceQuizzState extends Equatable {}
 
@@ -30,8 +31,9 @@ class UserPreferenceQuizzError extends UserPreferenceQuizzState {
 
 class UserPreferenceQuizzController extends Cubit<UserPreferenceQuizzState> {
   UserPreferenceQuizzController(
-    this._userPreferenceQuizzRepository,
-  ) : super(UserPreferenceQuizzLoading()) {
+    this._userPreferenceQuizzRepository, {
+    required this.currentUserLanguage,
+  }) : super(UserPreferenceQuizzLoading()) {
     _load();
   }
 
@@ -39,11 +41,15 @@ class UserPreferenceQuizzController extends Cubit<UserPreferenceQuizzState> {
 
   Future<void> _load() async {
     try {
-      final questions = await _userPreferenceQuizzRepository.retrieve();
+      final questions = await _userPreferenceQuizzRepository.retrieve(
+        currentUserLanguage,
+      );
       emit(UserPreferenceQuizzLoaded(questions));
     } catch (e) {
       log(e.toString());
       emit(UserPreferenceQuizzError());
     }
   }
+
+  final AppLanguage currentUserLanguage;
 }

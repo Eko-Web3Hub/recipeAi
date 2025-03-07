@@ -10,11 +10,12 @@ import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dar
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/register/register_controller.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
+
+import '../../../user_account/presentation/translation_controller.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -45,6 +46,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (_) => RegisterController(
         di<RegisterUsecase>(),
@@ -55,12 +58,20 @@ class _RegisterViewState extends State<RegisterView> {
             context.go('/user-preferences');
             showSnackBar(
               context,
-              AppText.registerSuccess,
+              appTexts.registerSuccess,
             );
           } else if (state is RegisterControllerFailed) {
+            var msg = '';
+
+            if (state.message == registerFailedCodeError) {
+              msg = appTexts.registerFailed;
+            } else {
+              msg = state.message ?? appTexts.somethingWentWrong;
+            }
+
             showSnackBar(
               context,
-              state.message!,
+              msg,
               isError: true,
             );
           }
@@ -82,43 +93,47 @@ class _RegisterViewState extends State<RegisterView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Gap(10),
-                            const HeadTitle(
-                              title: AppText.createAnAccount,
-                              subTitle: AppText.registerDetails,
+                            HeadTitle(
+                              title: appTexts.createAnAccount,
+                              subTitle: appTexts.registerDetails,
                             ),
                             const Gap(20),
                             FormFieldWithLabel(
-                              label: AppText.name,
-                              hintText: AppText.enterName,
+                              label: appTexts.name,
+                              hintText: appTexts.enterName,
                               controller: _nameController,
-                              validator: nonEmptyStringValidator,
+                              validator: (value) =>
+                                  nonEmptyStringValidator(value, appTexts),
                               keyboardType: TextInputType.name,
                             ),
                             const Gap(10),
                             FormFieldWithLabel(
-                              label: AppText.email,
-                              hintText: AppText.enterEmail,
+                              label: appTexts.email,
+                              hintText: appTexts.enterEmail,
                               controller: _emailController,
-                              validator: emailValidator,
+                              validator: (value) =>
+                                  emailValidator(value, appTexts),
                               keyboardType: TextInputType.emailAddress,
                             ),
                             const Gap(10),
                             FormFieldWithLabel(
-                              label: AppText.password,
-                              hintText: AppText.enterPassword,
+                              label: appTexts.password,
+                              hintText: appTexts.enterPassword,
                               controller: _passwordController,
-                              validator: passwordValidator,
+                              validator: (value) =>
+                                  passwordValidator(value, appTexts),
                               inputType: InputType.password,
                               keyboardType: TextInputType.visiblePassword,
                             ),
                             const Gap(10),
                             FormFieldWithLabel(
-                              label: AppText.confirmPassword,
-                              hintText: AppText.enterConfirmPassword,
+                              label: appTexts.confirmPassword,
+                              hintText: appTexts.enterConfirmPassword,
                               controller: _passwordConfirmController,
                               validator: (value) => confirmPasswordValidator(
                                 value,
                                 _passwordController.text,
+                                appTexts,
                               ),
                               inputType: InputType.password,
                               keyboardType: TextInputType.visiblePassword,
@@ -132,7 +147,7 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             const Gap(20),
                             MainBtn(
-                              text: AppText.signUp,
+                              text: appTexts.signUp,
                               showRightIcon: true,
                               onPressed: _acceptTerms
                                   ? () => _handleRegister(contextBuilder)
@@ -153,8 +168,8 @@ class _RegisterViewState extends State<RegisterView> {
                         children: [
                           Center(
                             child: AuthBottomAction(
-                              firstText: '${AppText.alreadyAMember} ',
-                              secondText: AppText.signIn,
+                              firstText: '${appTexts.alreadyAMember} ',
+                              secondText: appTexts.signIn,
                               onPressed: () {
                                 context.go('/login');
                               },
@@ -236,6 +251,8 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -259,7 +276,7 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
         InkWell(
           onTap: () => launchUrlFunc(termsAndConditionsUrl),
           child: Text(
-            AppText.acceptTermsAndConditions,
+            appTexts.acceptTermsAndConditions,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
               fontSize: 11,

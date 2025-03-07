@@ -8,6 +8,7 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
@@ -16,7 +17,6 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_progre
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_btn_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_controller.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -30,6 +30,7 @@ class UserPreferenceUpdateWidget extends StatelessWidget {
         di<IAuthUserService>(),
         di<IUserPreferenceRepository>(),
         di<IUserPreferenceQuizzRepository>(),
+        currentUserLanguage: di<TranslationController>().currentLanguageEnum,
       ),
       child: Builder(builder: (context) {
         return BlocBuilder<UserPreferenceUpdateController,
@@ -74,6 +75,8 @@ class _DisplayUserPreferenceQuizState
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return BlocProvider(
       create: (context) => UserPreferenceUpdateBtnController(
         di<IAuthUserService>(),
@@ -85,13 +88,16 @@ class _DisplayUserPreferenceQuizState
             UserPreferenceUpdateBtnState>(
           listener: (context, state) {
             if (state is UserPreferenceUpdateBtnSuccess) {
-              showSnackBar(context, AppText.updateUserPreferenceSuccess);
+              showSnackBar(
+                context,
+                appTexts.updateUserPreferenceSuccess,
+              );
               context.read<HomeScreenController>().reload();
             } else if (state is HasNotChangedUserPreference) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    AppText.noChangeInUserPreference,
+                    appTexts.noChangeInUserPreference,
                     style: GoogleFonts.poppins(),
                   ),
                 ),
@@ -120,7 +126,7 @@ class _DisplayUserPreferenceQuizState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _UpdatePreferenceQuizButton(
-                    text: AppText.previous,
+                    text: appTexts.previous,
                     onPressed: _currentPageIndex != 0
                         ? () {
                             _pageController.previousPage(
@@ -137,7 +143,7 @@ class _DisplayUserPreferenceQuizState
                             UserPreferenceUpdateBtnState>(
                         builder: (context, state) {
                       return MainBtn(
-                        text: AppText.update,
+                        text: appTexts.update,
                         isLoading: state is UserPreferenceUpdateBtnLoading,
                         onPressed: () {
                           var userPreference = <String, dynamic>{};
@@ -167,7 +173,7 @@ class _DisplayUserPreferenceQuizState
                               curve: Curves.easeIn,
                             );
                           },
-                    text: AppText.next,
+                    text: appTexts.next,
                   ),
                 ],
               ),

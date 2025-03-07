@@ -96,7 +96,7 @@ void main() {
     ),
     expect: () => <RegisterControllerState?>[
       RegisterControllerFailed(
-        message: errorMessage,
+        message: registerFailedCodeError,
       ),
     ],
   );

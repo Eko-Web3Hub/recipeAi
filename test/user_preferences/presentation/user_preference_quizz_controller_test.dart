@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_quizz_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class UserPreferenceQuizzRepository extends Mock
     implements IUserPreferenceQuizzRepository {}
@@ -20,6 +21,7 @@ void main() {
       options: const ['option1', 'option2'],
     ),
   ];
+  const appLanguage = AppLanguage.en;
 
   setUp(() {
     userPreferenceQuizzRepository = UserPreferenceQuizzRepository();
@@ -28,6 +30,7 @@ void main() {
   UserPreferenceQuizzController buildSut() {
     return UserPreferenceQuizzController(
       userPreferenceQuizzRepository,
+      currentUserLanguage: appLanguage,
     );
   }
 
@@ -35,7 +38,8 @@ void main() {
     'should initialy be loading',
     build: () => buildSut(),
     setUp: () {
-      when(() => userPreferenceQuizzRepository.retrieve()).thenAnswer(
+      when(() => userPreferenceQuizzRepository.retrieve(appLanguage))
+          .thenAnswer(
         (_) => Completer<List<UserPreferenceQuestion>>().future,
       );
     },
@@ -49,7 +53,8 @@ void main() {
     'should emit loaded state when repository returns questions',
     build: () => buildSut(),
     setUp: () {
-      when(() => userPreferenceQuizzRepository.retrieve()).thenAnswer(
+      when(() => userPreferenceQuizzRepository.retrieve(appLanguage))
+          .thenAnswer(
         (_) => Future.value(questions),
       );
     },
@@ -62,7 +67,7 @@ void main() {
     'should emit error state when repository throws an exception',
     build: () => buildSut(),
     setUp: () {
-      when(() => userPreferenceQuizzRepository.retrieve()).thenThrow(
+      when(() => userPreferenceQuizzRepository.retrieve(appLanguage)).thenThrow(
         Exception(),
       );
     },
