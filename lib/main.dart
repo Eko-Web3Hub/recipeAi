@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: MaterialApp.router(
-            title: 'Recipe AI',
+            title: "Eat'Easy",
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.white,
