@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
-import 'package:recipe_ai/utils/app_text.dart';
 
 class AuthUserServiceMock extends Mock implements IAuthUserService {}
 
@@ -72,9 +71,7 @@ void main() {
       ));
     },
     expect: () => [
-      DeleteAccountErrorOcuured(
-        appTexts.deleteAccountError,
-      ),
+      DeleteAccountErrorOcuured(),
     ],
   );
 }

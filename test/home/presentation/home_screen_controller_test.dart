@@ -117,7 +117,9 @@ void main() {
     build: () => buildSut(),
     setUp: () {
       when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
-          .thenThrow(const RetrieveReceipeException('error'));
+          .thenThrow(
+        const RetrieveReceipeException(),
+      );
     },
     act: (bloc) async {
       await pumpEventQueue();
@@ -127,7 +129,7 @@ void main() {
       expect(
         bloc.state,
         equals(
-          const HomeScreenStateError('error'),
+          const HomeRetrieveReceipeException(),
         ),
       ),
     },

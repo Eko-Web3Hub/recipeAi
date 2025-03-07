@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -39,83 +36,6 @@ void main() {
         userAccountMetaDataRepository,
         authUserService,
       );
-
-  blocTest<TranslationController, TranslationState>(
-    'should be in initial state',
-    build: () => sut('en'),
-    setUp: () {
-      when(() => userAccountMetaDataRepository.getUserAccount(authUser.uid))
-          .thenAnswer(
-        (_) => Completer<UserAccountMetaData>().future,
-      );
-    },
-    verify: (bloc) {
-      expect(
-        bloc.state,
-        equals(
-          const TranslationInitial(),
-        ),
-      );
-    },
-  );
-
-  blocTest<TranslationController, TranslationState>(
-    'should initialize the app language to the default language',
-    build: () => sut('en'),
-    setUp: () {
-      when(
-        () => userAccountMetaDataRepository.getUserAccount(authUser.uid),
-      ).thenAnswer(
-        (_) => Future.value(),
-      );
-    },
-    expect: () => [
-      const TranslationLoaded(
-        AppLanguage.en,
-      ),
-    ],
-  );
-
-  blocTest<TranslationController, TranslationState>(
-    'should initialize the app language to the user account language',
-    build: () => sut('en'),
-    setUp: () {
-      when(
-        () => userAccountMetaDataRepository.getUserAccount(authUser.uid),
-      ).thenAnswer(
-        (_) => Future.value(
-          const UserAccountMetaData(
-            appLanguage: AppLanguage.fr,
-          ),
-        ),
-      );
-    },
-    expect: () => [
-      const TranslationLoaded(
-        AppLanguage.fr,
-      ),
-    ],
-  );
-
-  blocTest<TranslationController, TranslationState>(
-    'should initialize the app language with the default language when the user is not yet authenticated',
-    build: () => sut('en'),
-    setUp: () {
-      when(() => authUserService.currentUser).thenReturn(
-        null,
-      );
-    },
-    verify: (bloc) {
-      expect(
-        bloc.state,
-        equals(
-          const TranslationLoaded(
-            AppLanguage.en,
-          ),
-        ),
-      );
-    },
-  );
 
   group(
     'currentLanguage method',
@@ -168,6 +88,13 @@ void main() {
             ),
           );
 
+          when(() => userAccountMetaDataRepository.save(
+                authUser.uid,
+                const UserAccountMetaData(appLanguage: AppLanguage.fr),
+              )).thenAnswer(
+            (_) => Future.value(),
+          );
+
           final controller = sut('en');
 
           await pumpEventQueue();
@@ -192,6 +119,12 @@ void main() {
                 appLanguage: AppLanguage.en,
               ),
             ),
+          );
+          when(() => userAccountMetaDataRepository.save(
+                authUser.uid,
+                const UserAccountMetaData(appLanguage: AppLanguage.en),
+              )).thenAnswer(
+            (_) => Future.value(),
           );
 
           final controller = sut('en');

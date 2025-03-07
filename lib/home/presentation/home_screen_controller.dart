@@ -32,8 +32,8 @@ class HomeScreenStateError extends HomeScreenState {
   List<Object> get props => [message];
 }
 
-class HomeRtrieveReceipeException extends HomeScreenState {
-  const HomeRtrieveReceipeException();
+class HomeRetrieveReceipeException extends HomeScreenState {
+  const HomeRetrieveReceipeException();
 
   @override
   List<Object> get props => [];
@@ -62,7 +62,7 @@ class HomeScreenController extends Cubit<HomeScreenState> {
       );
       emit(HomeScreenStateLoaded(receipes));
     } on RetrieveReceipeException catch (_) {
-      emit(const HomeRtrieveReceipeException());
+      emit(const HomeRetrieveReceipeException());
     }
   }
 

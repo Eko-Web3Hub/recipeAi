@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/utils/app_text.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class FirebaseAuth extends Mock implements IFirebaseAuth {}
 
@@ -166,8 +166,8 @@ void main() {
           } catch (e) {
             expect(
               e,
-              const AuthException(
-                appTexts.userNotFound,
+              AuthException(
+                AuthError.userNotFound.name,
               ),
             );
           }
@@ -190,8 +190,8 @@ void main() {
           } catch (e) {
             expect(
               e,
-              const AuthException(
-                appTexts.userNotFound,
+              AuthException(
+                AuthError.userNotFound.name,
               ),
             );
           }
@@ -214,8 +214,8 @@ void main() {
           } catch (e) {
             expect(
               e,
-              const AuthException(
-                appTexts.somethingWentWrong,
+              AuthException(
+                AuthError.somethingWentWrong.name,
               ),
             );
           }
