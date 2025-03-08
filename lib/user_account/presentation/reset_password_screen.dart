@@ -74,16 +74,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap(40),
-                    InkWell(
-                      child: SvgPicture.asset(
-                        'assets/images/arrow-black-left.svg',
-                      ),
-                      onTap: () => context.go('/login'),
-                    ),
-                    const Gap(10),
-                    Text(
-                      appTexts.forgotternPassword,
-                      style: headTitleStyle,
+                    Row(
+                      children: [
+                        InkWell(
+                          child: SvgPicture.asset(
+                            'assets/images/arrow-black-left.svg',
+                          ),
+                          onTap: () => context.go('/login'),
+                        ),
+                        const Gap(10),
+                        Text(
+                          appTexts.forgotternPassword,
+                          style: headTitleStyle,
+                        ),
+                      ],
                     ),
                     const Gap(70),
                     FormFieldWithLabel(
