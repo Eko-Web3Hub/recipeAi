@@ -9,7 +9,7 @@ class FirestoreUserPreferenceQuizzRepository
 
   FirestoreUserPreferenceQuizzRepository(this._firestore);
 
-  static const String _collection = 'UserPreferenceQuizz';
+  static const String _collection = 'UserPreferenceQuizzV2';
   static const String _languagesSubCollection = 'Languages';
 
   @override

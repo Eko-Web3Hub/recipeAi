@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.white,
-              primaryColor: const Color(0xff129575),
+              primaryColor: const Color(0xff57b031),
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               textTheme: TextTheme(
                 displayLarge: GoogleFonts.poppins(
