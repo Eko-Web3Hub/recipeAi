@@ -24,7 +24,7 @@ List<OnboardingModel> _buildOnboarding(AppLocalizations appTexts) => [
         title: appTexts.onboardingTitle2,
         child: const SmartReceipeGenerationWidget(),
         description: appTexts.onboardingDesc2,
-        paddingBetweenTitleAndChild: 70,
+        paddingBetweenTitleAndChild: 60,
       ),
       OnboardingModel(
         title: appTexts.onboardingTitle3,
@@ -64,7 +64,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           ),
           Column(
             children: [
-              const Gap(50),
+              const Gap(80),
               Expanded(
                 child: PageView.builder(
                   controller: controller,
@@ -85,7 +85,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                         Visibility(
                           visible: index == 1,
                           child: Positioned(
-                            left: (widthScreen / 2) + 34,
+                            left: (widthScreen / 2) * 1.5,
+                            right: 0,
                             bottom: -30,
                             child: Stack(
                               children: [
@@ -98,7 +99,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 ),
                                 Positioned(
                                   top: 10,
-                                  left: 30,
+                                  left: 5,
                                   child: Image.asset(
                                     'assets/images/heartImage.png',
                                   ),
@@ -111,9 +112,13 @@ class _OnboardingViewState extends State<OnboardingView> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Center(
-                              child: _OnboardingTitle(
-                                content.title,
-                                content.textColor,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: _OnboardingTitle(
+                                  content.title,
+                                  content.textColor,
+                                ),
                               ),
                             ),
                             const Gap(5),
@@ -190,7 +195,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   ),
                 ),
               ),
-              const Gap(13),
+              const Gap(40),
             ],
           ),
         ],

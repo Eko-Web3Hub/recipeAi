@@ -73,7 +73,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Gap(40),
+                    const Gap(80),
                     Row(
                       children: [
                         InkWell(
