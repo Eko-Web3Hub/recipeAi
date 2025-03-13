@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 
 abstract class LoginViewState {}
@@ -20,9 +22,11 @@ class LoginViewError extends LoginViewState {
 class LoginViewController extends Cubit<LoginViewState> {
   LoginViewController(
     this._authService,
+    this._analyticsRepository,
   ) : super(LoginViewInitial());
 
   final IAuthService _authService;
+  final IAnalyticsRepository _analyticsRepository;
 
   Future<void> login({
     required String email,
@@ -35,6 +39,9 @@ class LoginViewController extends Cubit<LoginViewState> {
         password: password,
       );
       if (result) {
+        _analyticsRepository.logEvent(
+          LoginFinishEvent(),
+        );
         emit(LoginViewSuccess());
       }
     } on AuthException catch (e) {

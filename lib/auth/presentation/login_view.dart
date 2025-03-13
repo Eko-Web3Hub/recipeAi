@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/presentation/components/auth_bottom_action.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
@@ -29,12 +31,21 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    di<IAnalyticsRepository>().logEvent(
+      LoginStartEvent(),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
     return BlocProvider(
       create: (context) => LoginViewController(
         di<IAuthService>(),
+        di<IAnalyticsRepository>(),
       ),
       child: BlocListener<LoginViewController, LoginViewState>(
         listener: (context, state) {

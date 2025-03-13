@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/register_usecase.dart';
 
@@ -23,9 +25,11 @@ class RegisterControllerFailed extends RegisterControllerState {
 class RegisterController extends Cubit<RegisterControllerState?> {
   RegisterController(
     this._registerUsecase,
+    this._analyticsRepository,
   ) : super(null);
 
   final RegisterUsecase _registerUsecase;
+  final IAnalyticsRepository _analyticsRepository;
 
   Future<void> register({
     required String email,
@@ -40,6 +44,9 @@ class RegisterController extends Cubit<RegisterControllerState?> {
       );
 
       if (result) {
+        _analyticsRepository.logEvent(
+          RegisterFinishEvent(),
+        );
         emit(
           RegisterControllerSuccess(),
         );
@@ -51,7 +58,7 @@ class RegisterController extends Cubit<RegisterControllerState?> {
           message: e.message,
         ),
       );
-    } catch (e) {
+    } on Exception catch (_) {
       emit(
         RegisterControllerFailed(
           message: registerFailedCodeError,
