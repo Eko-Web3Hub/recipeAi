@@ -44,7 +44,10 @@ void main() {
                 title: 'title',
                 description: 'description',
                 type: UserPreferenceQuestionType.multipleChoice,
-                options: const ['option1', 'option2'],
+                options: const [
+                  Option(label: 'option1', key: 'option1'),
+                  Option(label: 'option2', key: 'option2'),
+                ],
               );
 
               question.answer('option1');
@@ -60,7 +63,10 @@ void main() {
                 title: 'title',
                 description: 'description',
                 type: UserPreferenceQuestionType.multipleChoice,
-                options: const ['option1', 'option2'],
+                options: const [
+                  Option(label: 'option1', key: 'option1'),
+                  Option(label: 'option2', key: 'option2'),
+                ],
               );
 
               question.answer('option1');
@@ -84,7 +90,10 @@ void main() {
             title: 'title',
             description: 'description',
             type: UserPreferenceQuestionType.multipleChoice,
-            options: const ['option1', 'option2'],
+            options: const [
+              Option(label: 'option1', key: 'option1'),
+              Option(label: 'option2', key: 'option2')
+            ],
           );
 
           question.answer('option1');
@@ -107,7 +116,11 @@ void main() {
             title: 'title',
             description: 'description',
             type: UserPreferenceQuestionType.multipleChoice,
-            options: const ['African', 'Halal', 'French'],
+            options: const [
+              Option(label: 'African', key: 'African'),
+              Option(label: 'Halal', key: 'Halal'),
+              Option(label: 'French', key: 'French'),
+            ],
           );
           const userPreference = UserPreference(
             {
@@ -139,7 +152,11 @@ void main() {
             title: 'title',
             description: 'description',
             type: UserPreferenceQuestionType.multipleChoice,
-            options: const ['option1', 'option2', 'option3'],
+            options: const [
+              Option(label: 'option1', key: 'option1'),
+              Option(label: 'option2', key: 'option2'),
+              Option(label: 'option3', key: 'option3'),
+            ],
           );
 
           question.answer('option1');
