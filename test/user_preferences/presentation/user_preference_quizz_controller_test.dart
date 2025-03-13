@@ -18,7 +18,10 @@ void main() {
       title: 'title',
       description: 'description',
       type: UserPreferenceQuestionType.multipleChoice,
-      options: const ['option1', 'option2'],
+      options: const [
+        Option(label: 'option1', key: 'option1'),
+        Option(label: 'option2', key: 'option2'),
+      ],
     ),
   ];
   const appLanguage = AppLanguage.en;

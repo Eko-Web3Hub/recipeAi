@@ -37,13 +37,21 @@ void main() {
     title: 'title',
     description: 'description',
     type: UserPreferenceQuestionType.multipleChoice,
-    options: const ['French', 'Lactose-Free', 'Italian'],
+    options: const [
+      Option(label: 'French', key: 'French'),
+      Option(label: 'Lactose-Free', key: 'Lactose-Free'),
+      Option(label: 'Italian', key: 'Italian'),
+    ],
   );
   final question2 = UserPreferenceQuestionMultipleChoice(
     title: 'title',
     description: 'description',
     type: UserPreferenceQuestionType.multipleChoice,
-    options: const ['option1', 'option2', 'option3'],
+    options: const [
+      Option(label: 'option1', key: 'option1'),
+      Option(label: 'option2', key: 'option2'),
+      Option(label: 'option3', key: 'option3'),
+    ],
   );
   final userPreferenceQuizz = [
     question.copyWith(),

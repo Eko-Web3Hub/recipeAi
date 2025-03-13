@@ -21,13 +21,27 @@ void main() {
     title: 'Your preference cuisine',
     description: 'Select your preference cuisine',
     type: UserPreferenceQuestionType.multipleChoice,
-    options: const ['Italian', 'Chinese', 'Japanese', 'Korean', 'Indian'],
+    options: const [
+      Option(label: 'Italian', key: 'Italian'),
+      Option(label: 'Chinese', key: 'Chinese'),
+      Option(label: 'Japanese', key: 'Japanese'),
+      Option(label: 'Korean', key: 'Korean'),
+      Option(
+        label: 'Indian',
+        key: 'Indian',
+      ),
+    ],
   );
   final questionTwo = UserPreferenceQuestionMultipleChoice(
     title: 'Your preference diet',
     description: 'Select your preference diet',
     type: UserPreferenceQuestionType.multipleChoice,
-    options: const ['Vegetarian', 'Vegan', 'Pescetarian', 'Keto'],
+    options: const [
+      Option(label: 'Vegetarian', key: 'Vegetarian'),
+      Option(label: 'Vegan', key: 'Vegan'),
+      Option(label: 'Pescetarian', key: 'Pescetarian'),
+      Option(label: 'Keto', key: 'Keto'),
+    ],
   );
   late List<UserPreferenceQuestion> questions;
   final optionSelected1 = ['Italian', 'Japanese', 'Indian'];
