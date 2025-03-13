@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/onboarding/domain/model/onboarding_model.dart';
@@ -46,6 +48,21 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   final List<OnboardingModel> _onBoardingFr =
       _buildOnboarding(di<TranslationController>().currentLanguage);
+
+  @override
+  void initState() {
+    super.initState();
+
+    di<IAnalyticsRepository>().logEvent(
+      OnboardingStartedEvent(),
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

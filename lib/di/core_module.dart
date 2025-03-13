@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -12,6 +14,9 @@ class CoreModule implements IDiModule {
 
   @override
   void register(DiContainer di) {
+    di.registerSingleton<IAnalyticsRepository>(
+      AnalyticsRepository(FirebaseAnalytics.instance),
+    );
     di.registerSingleton<FirebaseAuth>(
       FirebaseAuth.instance,
     );
