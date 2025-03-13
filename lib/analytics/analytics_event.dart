@@ -16,3 +16,13 @@ class OnboardingStartedEvent extends AnalyticsEvent {
   @override
   String get name => 'onboarding_started';
 }
+
+class OnboardingCompletedEvent extends AnalyticsEvent {
+  OnboardingCompletedEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'onboarding_completed';
+}

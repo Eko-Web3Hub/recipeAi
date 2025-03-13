@@ -64,6 +64,12 @@ class _OnboardingViewState extends State<OnboardingView> {
     super.dispose();
   }
 
+  void _logOnboardingCompleted() {
+    di<IAnalyticsRepository>().logEvent(
+      OnboardingCompletedEvent(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
@@ -185,6 +191,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   text: appTexts.next,
                   onPressed: () {
                     if (controller.page == _onBoardingFr.length - 1) {
+                      _logOnboardingCompleted();
                       context.go(
                         '/login',
                       );
@@ -199,9 +206,12 @@ class _OnboardingViewState extends State<OnboardingView> {
               ),
               const Gap(13),
               InkWell(
-                onTap: () => context.go(
-                  '/login',
-                ),
+                onTap: () {
+                  _logOnboardingCompleted();
+                  context.go(
+                    '/login',
+                  );
+                },
                 child: Text(
                   appTexts.skip,
                   style: GoogleFonts.poppins(
