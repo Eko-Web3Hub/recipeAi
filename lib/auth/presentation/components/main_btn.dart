@@ -9,7 +9,7 @@ class MainBtn extends StatelessWidget {
     required this.text,
     this.showRightIcon = false,
     this.onPressed,
-    this.height = 60,
+    this.height = 50,
     this.backgroundColor,
     this.textColor,
     this.isLoading = false,
