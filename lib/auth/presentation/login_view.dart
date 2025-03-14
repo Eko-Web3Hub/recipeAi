@@ -178,7 +178,7 @@ class _HeadTitle extends StatelessWidget {
           ),
         ),
         Text(
-          appTexts.welcomeBack,
+          '${appTexts.welcomeBack} 🥰',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             fontSize: 20,
