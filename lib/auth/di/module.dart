@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/register_usecase.dart';
@@ -33,6 +34,7 @@ class AuthModule implements IDiModule {
     di.registerFactory<IAuthUserService>(
       () => AuthUserService(
         di<IFirebaseAuth>(),
+        di<IAnalyticsRepository>(),
       ),
     );
     di.registerFactory(

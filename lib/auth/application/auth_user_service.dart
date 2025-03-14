@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 
 abstract class IAuthUserService {
@@ -75,14 +76,17 @@ class FirebaseAuthProd implements IFirebaseAuth {
 
 class AuthUserService implements IAuthUserService {
   final IFirebaseAuth _firebaseAuth;
+  final IAnalyticsRepository _analyticsRepository;
 
   AuthUserService(
     this._firebaseAuth,
+    this._analyticsRepository,
   );
 
   @override
   Stream<AuthUser?> get authStateChanges =>
       _firebaseAuth.authStateChanges.map((currentUser) {
+        _analyticsRepository.setUserId(currentUser?.uid ?? '');
         if (currentUser == null) {
           return null;
         }

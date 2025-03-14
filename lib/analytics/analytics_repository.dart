@@ -3,6 +3,7 @@ import 'package:recipe_ai/analytics/analytics_event.dart';
 
 abstract class IAnalyticsRepository {
   Future<void> logEvent(AnalyticsEvent event);
+  Future<void> setUserId(String userId);
 }
 
 class AnalyticsRepository implements IAnalyticsRepository {
@@ -17,4 +18,8 @@ class AnalyticsRepository implements IAnalyticsRepository {
       parameters: event.parameters,
     );
   }
+
+  @override
+  Future<void> setUserId(String userId) =>
+      _firebaseAnalytics.setUserId(id: userId);
 }

@@ -1,16 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 
 class FirebaseAuthMock extends Mock implements IFirebaseAuth {}
+
+class AnalyticsRepositoryMock extends Mock implements IAnalyticsRepository {}
 
 class FakeUser extends Mock implements User {}
 
 void main() {
   late IFirebaseAuth firebaseAuth;
   late User user;
+  late IAnalyticsRepository analyticsRepository;
   const currentUser = AuthUser(
     uid: EntityId('uid'),
     email: 'email@gmail.com',
@@ -19,6 +23,14 @@ void main() {
   setUp(() {
     firebaseAuth = FirebaseAuthMock();
     user = FakeUser();
+    analyticsRepository = AnalyticsRepositoryMock();
+
+    when(
+      () => analyticsRepository.setUserId(currentUser.uid.value),
+    ).thenAnswer((_) => Future.value());
+    when(
+      () => analyticsRepository.setUserId(''),
+    ).thenAnswer((_) => Future.value());
   });
 
   void whenCurrentUserIsAuthenticated() {
@@ -36,9 +48,8 @@ void main() {
           when(() => firebaseAuth.authStateChanges)
               .thenAnswer((_) => Stream.value(null));
 
-          final authUserService = AuthUserService(
-            firebaseAuth,
-          );
+          final authUserService =
+              AuthUserService(firebaseAuth, analyticsRepository);
 
           final response = await authUserService.authStateChanges.first;
 
@@ -56,6 +67,7 @@ void main() {
 
           final authUserService = AuthUserService(
             firebaseAuth,
+            analyticsRepository,
           );
 
           final response = await authUserService.authStateChanges.first;
@@ -79,6 +91,7 @@ void main() {
 
           final authUserService = AuthUserService(
             firebaseAuth,
+            analyticsRepository,
           );
 
           final response = authUserService.currentUser;
@@ -92,9 +105,8 @@ void main() {
         () {
           whenCurrentUserIsAuthenticated();
 
-          final authUserService = AuthUserService(
-            firebaseAuth,
-          );
+          final authUserService =
+              AuthUserService(firebaseAuth, analyticsRepository);
 
           final response = authUserService.currentUser;
 
