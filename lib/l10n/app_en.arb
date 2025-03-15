@@ -7,7 +7,7 @@
     "@welcomeBack": {
         "description": "Welcome back message"
     },
-    "welcomeBack": "Welcome Back!",
+    "welcomeBack": "Welcome Back",
     "@email": {
         "description": "Email field label"
     },
