@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
@@ -50,7 +50,8 @@ GoRouter createRouter() => GoRouter(
           name: 'SplashScreen',
           path: '/',
           builder: (context, state) => const SplashScreen(),
-          redirect: (BuildContext context, _) {
+          redirect: (BuildContext context, _)  {
+
             final authState = context.read<AuthNavigationController>().state;
             if (authState == AuthNavigationState.loading) {
               return null;

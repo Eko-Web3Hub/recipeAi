@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -156,7 +157,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 });
                               },
                             ),
-                            const Gap(20),
+                            const Gap(10),
                             MainBtn(
                               text: appTexts.signUp,
                               showRightIcon: true,
@@ -164,6 +165,97 @@ class _RegisterViewState extends State<RegisterView> {
                                   ? () => _handleRegister(contextBuilder)
                                   : null,
                             ),
+                            const Gap(10.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 50,
+                                  height: 1,
+                                  decoration: const BoxDecoration(
+                                      color: Color(0xFFD9D9D9)),
+                                ),
+                                const Gap(7),
+                                Text(appTexts.signInWith,
+                                    style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 11,
+                                        color: const Color(0xFFD9D9D9))),
+                                const Gap(7),
+                                Container(
+                                  width: 50,
+                                  height: 1,
+                                  decoration: const BoxDecoration(
+                                      color: Color(0xFFD9D9D9)),
+                                ),
+                              ],
+                            ),
+                            const Gap(10.0),
+                            BlocBuilder<RegisterController,
+                                RegisterControllerState?>(
+                              builder: (context, state) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        context
+                                            .read<RegisterController>()
+                                            .googleSignIn();
+                                      },
+                                      child: Container(
+                                        width: 44,
+                                        height: 44,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: const Color(0xFF696969)
+                                                      .withValues(alpha: 0.1),
+                                                  offset: const Offset(0, 0),
+                                                  blurRadius: 5,
+                                                  spreadRadius: 3)
+                                            ]),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                              'assets/icon/google_btn.svg'),
+                                        ),
+                                      ),
+                                    ),
+                                    const Gap(25),
+                                    GestureDetector(
+                                      onTap: () {
+                                        context
+                                            .read<RegisterController>()
+                                            .appleSignIn();
+                                      },
+                                      child: Container(
+                                        width: 44,
+                                        height: 44,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: const Color(0xFF696969)
+                                                      .withValues(alpha: 0.1),
+                                                  offset: const Offset(0, 0),
+                                                  blurRadius: 5,
+                                                  spreadRadius: 3)
+                                            ]),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                              'assets/icon/apple.svg'),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
+                            )
                             // const Spacer(),
                           ],
                         ),
@@ -186,7 +278,7 @@ class _RegisterViewState extends State<RegisterView> {
                               },
                             ),
                           ),
-                          const Gap(21),
+                          const Gap(8),
                         ],
                       ),
                     ),

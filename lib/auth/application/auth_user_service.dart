@@ -19,6 +19,8 @@ class DeleteAccountExeption implements Exception {
 abstract class IFirebaseAuth {
   Future<void> sendPasswordResetEmail(String email);
   Future<void> deleteAccount();
+
+  Future<void> signInWithCredentials(OAuthCredential credentials);
   Future<void> signOut();
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password});
@@ -72,6 +74,10 @@ class FirebaseAuthProd implements IFirebaseAuth {
       _firebaseAuth.sendPasswordResetEmail(
         email: email,
       );
+
+  @override
+  Future<void> signInWithCredentials(OAuthCredential credentials) =>
+      _firebaseAuth.signInWithCredential(credentials);
 }
 
 class AuthUserService implements IAuthUserService {

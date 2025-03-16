@@ -15,6 +15,15 @@ class RegisterUsecase {
     this._userPersonnalInfoRepository,
   );
 
+
+    Future<bool> registerWithApple() async {
+    return await _authService.appleSignIn();
+  }
+
+  Future<bool> registerWithGoogle() async {
+    return await _authService.googleSignIn();
+  }
+
   Future<bool> register({
     required String email,
     required String password,

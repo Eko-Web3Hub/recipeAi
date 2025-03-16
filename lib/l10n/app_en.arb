@@ -351,5 +351,14 @@
     "@enterProductName": {
         "description": "Placeholder for product name input"
     },
-    "enterProductName": "Enter Product Name"
+    "enterProductName": "Enter Product Name",
+    "requestCanceled":"Request Canceled",
+    "@requestCanceled": {
+         "description": "Label for request canceled"
+    },
+    "signInWith":"Or Sign in With",
+    "@signInWith": {
+        "description":"Label for sign in With"
+    }
+
 }
