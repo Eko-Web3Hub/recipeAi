@@ -12,6 +12,11 @@ class RegisterControllerSuccess extends RegisterControllerState {
   List<Object?> get props => [];
 }
 
+class RegisterControllerLoading extends RegisterControllerState {
+  @override
+  List<Object?> get props => [];
+}
+
 class RegisterControllerFailed extends RegisterControllerState {
   final String? message;
 
@@ -30,6 +35,42 @@ class RegisterController extends Cubit<RegisterControllerState?> {
 
   final RegisterUsecase _registerUsecase;
   final IAnalyticsRepository _analyticsRepository;
+
+  Future<void> googleSignIn() async {
+    try {
+      final result = await _registerUsecase.registerWithGoogle();
+      if (result) {
+        _analyticsRepository.logEvent(
+          RegisterFinishEvent(),
+        );
+        emit(RegisterControllerSuccess());
+      }
+    } on AuthException catch (e) {
+      emit(
+        RegisterControllerFailed(
+          message: e.message,
+        ),
+      );
+    }
+  }
+
+  Future<void> appleSignIn() async {
+    try {
+      final result = await _registerUsecase.registerWithApple();
+      if (result) {
+        _analyticsRepository.logEvent(
+          RegisterFinishEvent(),
+        );
+        emit(RegisterControllerSuccess());
+      }
+    } on AuthException catch (e) {
+      emit(
+        RegisterControllerFailed(
+          message: e.message,
+        ),
+      );
+    }
+  }
 
   Future<void> register({
     required String email,

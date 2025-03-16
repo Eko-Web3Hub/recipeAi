@@ -15,6 +15,7 @@ import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/nav/router.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 void main() async {
@@ -76,7 +77,7 @@ class _MyAppState extends State<MyApp> {
             title: "Eat'Easy",
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              scaffoldBackgroundColor: Colors.white,
+              scaffoldBackgroundColor: secondaryColor,
               primaryColor: const Color(0xff57b031),
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               textTheme: TextTheme(

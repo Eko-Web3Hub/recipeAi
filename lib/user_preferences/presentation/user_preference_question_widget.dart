@@ -103,7 +103,7 @@ class _CheckBoxOptionState extends State<CheckBoxOption> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         setState(() {
           isSelected = !isSelected;
@@ -153,11 +153,13 @@ class _CustomCheckBox extends StatelessWidget {
         ),
         color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
       ),
-      child: Icon(
-        Icons.check,
-        color: isSelected ? Colors.white : Colors.black,
-        size: 15,
-      ),
+      child: isSelected
+          ? Icon(
+              Icons.check,
+              color: isSelected ? Colors.white : Colors.black,
+              size: 15,
+            )
+          : Container(),
     );
   }
 }

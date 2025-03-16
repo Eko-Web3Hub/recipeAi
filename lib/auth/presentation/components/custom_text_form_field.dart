@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/utils/colors.dart';
 
 import '../../../utils/constant.dart';
 
 InputBorder _inputBorder = OutlineInputBorder(
   borderSide: const BorderSide(
-    width: 1.5,
-    color: Color(0xffD9D9D9),
+    width: 1,
+    color: greenPrimary80Color,
   ),
   borderRadius: BorderRadius.circular(
     10,
@@ -58,6 +59,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         cursorColor: Theme.of(context).primaryColor,
         onChanged: widget.onChange,
         decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
           hintText: widget.hintText,
           hintStyle: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
@@ -69,7 +72,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             horizontal: 20,
           ),
           border: _inputBorder,
-          enabledBorder: _inputBorder,
+          enabledBorder: _inputBorder.copyWith(borderSide: BorderSide.none),
           focusedBorder: _inputBorder,
           suffixIcon: widget.inputType == InputType.password
               ? IconButton(

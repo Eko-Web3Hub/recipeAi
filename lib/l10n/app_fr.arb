@@ -351,5 +351,13 @@
     "enterProductName": "Entrez le nom du produit",
     "@enterProductName": {
         "description": "Placeholder pour le champ du nom du produit"
+    },
+    "requestCanceled":"Requête annulée",
+    "@requestCanceled": {
+         "description": "Label for request canceled"
+    },
+    "signInWith":"Ou connectez-vous avec",
+    "@signInWith": {
+        "description":"Label for sign in With"
     }
 }
