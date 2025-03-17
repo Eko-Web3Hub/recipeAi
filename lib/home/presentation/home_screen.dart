@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -191,22 +193,49 @@ class ReceipeItem extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: Colors.white
-            // color: const Color(0xFFEBEBEB),
-            ),
+            borderRadius: BorderRadius.circular(10), color: Colors.white),
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-              child: Image.asset(
-                "assets/images/recipe_image.jpeg",
-                width: double.infinity,
-                fit: BoxFit.cover,
-                height: 140,
-              ),
+            Builder(
+              builder: (context) {
+                if (receipe.imageUrl == null) {
+                  return _ImageRecipeContainer(
+                    child: SvgPicture.asset(
+                      "assets/images/receipe_placeholder_icon.svg",
+                      width: 90,
+                      height: 90,
+                    ),
+                  );
+                }
+
+                return CachedNetworkImage(
+                  imageUrl: receipe.imageUrl!,
+                  progressIndicatorBuilder: (context, url, progress) =>
+                      _ImageRecipeContainer(
+                          child: CustomCircularLoader(
+                    value: progress.progress,
+                  )),
+                  errorWidget: (context, url, error) => _ImageRecipeContainer(
+                    child: SvgPicture.asset(
+                      "assets/images/receipe_placeholder_icon.svg",
+                      width: 90,
+                      height: 90,
+                    ),
+                  ),
+                  imageBuilder: (context, imageProvider) => ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                    child: Image(
+                      image: imageProvider,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      height: 140,
+                    ),
+                  ),
+                );
+              },
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -277,6 +306,29 @@ class ReceipeItem extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ImageRecipeContainer extends StatelessWidget {
+  const _ImageRecipeContainer({
+    required this.child,
+  });
+
+  final Widget? child;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 140,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+        color: greyVariantColor,
+      ),
+      child: child,
     );
   }
 }
