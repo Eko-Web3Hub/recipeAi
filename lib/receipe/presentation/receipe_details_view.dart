@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +15,45 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_circul
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_widget.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+
+class _RecipeImageContainer extends StatelessWidget {
+  const _RecipeImageContainer({
+    required this.child,
+    required this.image,
+  });
+
+  final Widget? child;
+  final DecorationImage? image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.5,
+      decoration: BoxDecoration(
+        color: const Color(0xffEBEBEB),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+        image: image,
+      ),
+      child: child,
+    );
+  }
+}
+
+class _RecipeImagePlaceHolder extends StatelessWidget {
+  const _RecipeImagePlaceHolder();
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      "assets/images/receipe_placeholder_icon.svg",
+      width: 90,
+      height: 90,
+    );
+  }
+}
 
 /// ReceipeDetailsView
 /// Contains the details of a receipe
@@ -53,20 +93,42 @@ class ReceipeDetailsView extends StatelessWidget {
                 children: [
                   Stack(
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        decoration: const BoxDecoration(
-                          color: Color(0xffEBEBEB),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
-                          ),
-                          image: DecorationImage(
-                            image:
-                                AssetImage('assets/images/recipe_image.jpeg'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                      Builder(
+                        builder: (context) {
+                          if (receipe.imageUrl == null) {
+                            return const _RecipeImageContainer(
+                              image: null,
+                              child: _RecipeImagePlaceHolder(),
+                            );
+                          }
+
+                          return CachedNetworkImage(
+                            imageUrl: receipe.imageUrl!,
+                            errorWidget: (context, url, error) =>
+                                _RecipeImageContainer(
+                              image: null,
+                              child: SvgPicture.asset(
+                                "assets/images/receipe_placeholder_icon.svg",
+                                width: 90,
+                                height: 90,
+                              ),
+                            ),
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
+                            ),
+                            imageBuilder: (context, imageProvider) =>
+                                _RecipeImageContainer(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                              child: null,
+                            ),
+                          );
+                        },
                       ),
                       Container(
                         margin: const EdgeInsets.only(
