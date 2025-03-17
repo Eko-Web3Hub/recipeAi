@@ -46,6 +46,7 @@ dependencies:
   firebase_analytics: ^11.4.4
   google_sign_in: ^6.3.0
   sign_in_with_apple: ^6.1.4
+  cached_network_image: ^3.4.1
   
   
 
