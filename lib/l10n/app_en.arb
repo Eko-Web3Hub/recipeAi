@@ -352,13 +352,28 @@
         "description": "Placeholder for product name input"
     },
     "enterProductName": "Enter Product Name",
-    "requestCanceled":"Request Canceled",
+    "requestCanceled": "Request Canceled",
     "@requestCanceled": {
-         "description": "Label for request canceled"
+        "description": "Label for request canceled"
     },
-    "signInWith":"Or Sign in With",
+    "signInWith": "Or Sign in With",
     "@signInWith": {
-        "description":"Label for sign in With"
+        "description": "Label for sign in With"
+    },
+    "passwordRequirement": "Your password should contain at least",
+    "@passwordRequirement": {
+        "description": "Label for password requirement"
+    },
+    "passwordLength": "06 characters",
+    "@passwordLength": {
+        "description": "Label for password length"
+    },
+    "atLeastOneNumber": "one number",
+    "@atLeastOneNumber": {
+        "description": "Label for at least one number"
+    },
+    "atLeastOneUpperCaseLetter": "one uppercase letter",
+    "@atLeastOneUpperCaseLetter": {
+        "description": "Label for at least one uppercase letter"
     }
-
 }

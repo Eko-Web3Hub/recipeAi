@@ -22,21 +22,37 @@ String? emailValidator(String? value, AppLocalizations appTexts) {
 
 String? passwordValidator(String? value, AppLocalizations appTexts) {
   if (value == null || value.isEmpty) {
-    return appTexts.fieldCannotBeEmpty;
+    return '';
   }
   if (value.length < 6) {
-    return 'Password must be at least 6 characters';
+    return '';
   }
 
   if (!value.contains(RegExp(r'[0-9]'))) {
-    return 'Password must contain at least one number';
+    return '';
   }
 
   if (!value.contains(RegExp(r'[A-Z]'))) {
-    return 'Password must contain at least one  \n uppercase letter';
+    return '';
   }
 
   return null;
+}
+
+bool isPasswordValid(String value) {
+  if (value.length < 6) {
+    return false;
+  }
+
+  if (!value.contains(RegExp(r'[0-9]'))) {
+    return false;
+  }
+
+  if (!value.contains(RegExp(r'[A-Z]'))) {
+    return false;
+  }
+
+  return true;
 }
 
 String? confirmPasswordValidator(

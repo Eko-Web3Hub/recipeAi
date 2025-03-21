@@ -352,12 +352,28 @@
     "@enterProductName": {
         "description": "Placeholder pour le champ du nom du produit"
     },
-    "requestCanceled":"Requête annulée",
+    "requestCanceled": "Requête annulée",
     "@requestCanceled": {
-         "description": "Label for request canceled"
+        "description": "Label for request canceled"
     },
-    "signInWith":"Ou connectez-vous avec",
+    "signInWith": "Ou connectez-vous avec",
     "@signInWith": {
-        "description":"Label for sign in With"
+        "description": "Label pour se connecter avec"
+    },
+    "passwordRequirement": "Votre mot de passe doit contenir au moins",
+    "@passwordRequirement": {
+        "description": "Label pour les exigences de mot de passe"
+    },
+    "passwordLength": "06 caractères",
+    "@passwordLength": {
+        "description": "Label pour la longueur du mot de passe"
+    },
+    "atLeastOneNumber": "un chiffre",
+    "@atLeastOneNumber": {
+        "description": "Label pour au moins un chiffre"
+    },
+    "atLeastOneUpperCaseLetter": "une lettre majuscule",
+    "@atLeastOneUpperCaseLetter": {
+        "description": "Label pour au moins une lettre majuscule"
     }
 }

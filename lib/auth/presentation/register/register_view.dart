@@ -20,6 +20,8 @@ import 'package:recipe_ai/utils/remote_config_data_source.dart';
 
 import '../../../user_account/presentation/translation_controller.dart';
 
+int _passwordMinLength = 6;
+
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -31,14 +33,15 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController =
-      TextEditingController();
+
+  String password = '';
+
   final _formKey = GlobalKey<FormState>();
   bool _acceptTerms = false;
 
   void _handleRegister(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      // Register user
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (_formKey.currentState!.validate() && isPasswordValid(password)) {
       context.read<RegisterController>().register(
             name: _nameController.text,
             email: _emailController.text,
@@ -132,23 +135,51 @@ class _RegisterViewState extends State<RegisterView> {
                               label: appTexts.password,
                               hintText: appTexts.enterPassword,
                               controller: _passwordController,
-                              validator: (value) =>
-                                  passwordValidator(value, appTexts),
+                              validator: null,
                               inputType: InputType.password,
                               keyboardType: TextInputType.visiblePassword,
+                              onChange: (passwordValue) {
+                                setState(() {
+                                  password = passwordValue;
+                                });
+                              },
                             ),
                             const Gap(10),
-                            FormFieldWithLabel(
-                              label: appTexts.confirmPassword,
-                              hintText: appTexts.enterConfirmPassword,
-                              controller: _passwordConfirmController,
-                              validator: (value) => confirmPasswordValidator(
-                                value,
-                                _passwordController.text,
-                                appTexts,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    appTexts.passwordRequirement,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      height: 16.5 / 12,
+                                      color: isPasswordValid(password)
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  ),
+                                  const Gap(4),
+                                  _PasswordCheck(
+                                    label: appTexts.passwordLength,
+                                    isCorrect:
+                                        password.length >= _passwordMinLength,
+                                  ),
+                                  _PasswordCheck(
+                                    label: appTexts.atLeastOneNumber,
+                                    isCorrect:
+                                        password.contains(RegExp(r'[0-9]')),
+                                  ),
+                                  _PasswordCheck(
+                                    label: appTexts.atLeastOneUpperCaseLetter,
+                                    isCorrect:
+                                        password.contains(RegExp(r'[A-Z]')),
+                                  ),
+                                ],
                               ),
-                              inputType: InputType.password,
-                              keyboardType: TextInputType.visiblePassword,
                             ),
                             _CheckBoxReglement(
                               (value) {
@@ -256,7 +287,6 @@ class _RegisterViewState extends State<RegisterView> {
                                 );
                               },
                             )
-                            // const Spacer(),
                           ],
                         ),
                       ),
@@ -288,6 +318,43 @@ class _RegisterViewState extends State<RegisterView> {
             );
           }),
         ),
+      ),
+    );
+  }
+}
+
+class _PasswordCheck extends StatelessWidget {
+  const _PasswordCheck({
+    required this.label,
+    required this.isCorrect,
+  });
+
+  final String label;
+  final bool isCorrect;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isCorrect ? Icons.check : Icons.close,
+            color: isCorrect ? Colors.green : Colors.red,
+            size: 15,
+          ),
+          const Gap(5),
+          Text(
+            label,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              height: 16.5 / 12,
+              color: isCorrect ? Colors.green : Colors.red,
+            ),
+          ),
+        ],
       ),
     );
   }

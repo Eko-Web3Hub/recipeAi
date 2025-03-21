@@ -13,6 +13,7 @@ class FormFieldWithLabel extends StatelessWidget {
     required this.validator,
     this.inputType = InputType.text,
     this.keyboardType,
+    this.onChange,
   });
 
   final String label;
@@ -21,6 +22,7 @@ class FormFieldWithLabel extends StatelessWidget {
   final String? Function(String?)? validator;
   final InputType inputType;
   final TextInputType? keyboardType;
+  final Function(String)? onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class FormFieldWithLabel extends StatelessWidget {
           validator: validator,
           inputType: inputType,
           keyboardType: keyboardType,
+          onChange: onChange,
         ),
       ],
     );
