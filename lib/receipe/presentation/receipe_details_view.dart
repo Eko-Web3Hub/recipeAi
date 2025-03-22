@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
@@ -15,6 +16,7 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_circul
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_widget.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/function_caller.dart';
 
 class _RecipeImageContainer extends StatelessWidget {
   const _RecipeImageContainer({
@@ -28,6 +30,7 @@ class _RecipeImageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.5,
       decoration: BoxDecoration(
         color: const Color(0xffEBEBEB),
@@ -93,42 +96,61 @@ class ReceipeDetailsView extends StatelessWidget {
                 children: [
                   Stack(
                     children: [
-                      Builder(
-                        builder: (context) {
-                          if (receipe.imageUrl == null) {
-                            return const _RecipeImageContainer(
-                              image: null,
-                              child: _RecipeImagePlaceHolder(),
-                            );
-                          }
+                      BlocProvider(
+                        create: (context) => RecipeImageLoader(
+                          di<FunctionsCaller>(),
+                          receipe.name,
+                        ),
+                        child: Builder(builder: (context) {
+                          return BlocBuilder<RecipeImageLoader,
+                              RecipeImageState>(
+                            builder: (context, recipeImageState) {
+                              if (recipeImageState is RecipeImageLoading) {
+                                return const _RecipeImageContainer(
+                                  image: null,
+                                  child: CustomCircularLoader(),
+                                );
+                              }
 
-                          return CachedNetworkImage(
-                            imageUrl: receipe.imageUrl!,
-                            errorWidget: (context, url, error) =>
-                                _RecipeImageContainer(
-                              image: null,
-                              child: SvgPicture.asset(
-                                "assets/images/receipe_placeholder_icon.svg",
-                                width: 90,
-                                height: 90,
-                              ),
-                            ),
-                            progressIndicatorBuilder:
-                                (context, url, progress) => Center(
-                              child: CircularProgressIndicator(
-                                value: progress.progress,
-                              ),
-                            ),
-                            imageBuilder: (context, imageProvider) =>
-                                _RecipeImageContainer(
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                              child: null,
-                            ),
+                              final receipeImageUrl =
+                                  (recipeImageState as RecipeImageLoaded).url;
+
+                              if (receipeImageUrl == null) {
+                                return const _RecipeImageContainer(
+                                  image: null,
+                                  child: _RecipeImagePlaceHolder(),
+                                );
+                              }
+
+                              return CachedNetworkImage(
+                                imageUrl: receipeImageUrl,
+                                errorWidget: (context, url, error) =>
+                                    _RecipeImageContainer(
+                                  image: null,
+                                  child: SvgPicture.asset(
+                                    "assets/images/receipe_placeholder_icon.svg",
+                                    width: 90,
+                                    height: 90,
+                                  ),
+                                ),
+                                progressIndicatorBuilder:
+                                    (context, url, progress) => Center(
+                                  child: CircularProgressIndicator(
+                                    value: progress.progress,
+                                  ),
+                                ),
+                                imageBuilder: (context, imageProvider) =>
+                                    _RecipeImageContainer(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  child: null,
+                                ),
+                              );
+                            },
                           );
-                        },
+                        }),
                       ),
                       Container(
                         margin: const EdgeInsets.only(

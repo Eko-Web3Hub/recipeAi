@@ -29,7 +29,6 @@ void main() {
       name: 'name',
       ingredients: [],
       steps: [],
-      imageUrl: '',
       totalCalories: '',
     ),
   ];

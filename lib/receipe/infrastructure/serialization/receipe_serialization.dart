@@ -7,22 +7,20 @@ import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_step_seri
 abstract class ReceipeSerialization {
   static Receipe fromJson(Map<String, dynamic> json) {
     return Receipe(
-        name: json["name"],
-        ingredients: (json["ingredients"] as List)
-            .map<Ingredient>(
-              (ingredient) => IngredientSerialization.fromJson(ingredient),
-            )
-            .toList(),
-        steps: (json["steps"] as List)
-            .map<ReceipeStep>(
-              (step) => ReceipeStepSerialization.fromJson(step),
-            )
-            .toList(),
-        averageTime: json["averageTime"],
-        totalCalories: json["totalCalories"],
-        imageUrl: json["imageUrl"],
-       
-        );
+      name: json["name"],
+      ingredients: (json["ingredients"] as List)
+          .map<Ingredient>(
+            (ingredient) => IngredientSerialization.fromJson(ingredient),
+          )
+          .toList(),
+      steps: (json["steps"] as List)
+          .map<ReceipeStep>(
+            (step) => ReceipeStepSerialization.fromJson(step),
+          )
+          .toList(),
+      averageTime: json["averageTime"],
+      totalCalories: json["totalCalories"],
+    );
   }
 
   static Map<String, dynamic> toJson(Receipe receipe) {
@@ -40,8 +38,6 @@ abstract class ReceipeSerialization {
           .toList(),
       "averageTime": receipe.averageTime,
       "totalCalories": receipe.totalCalories,
-      "imageUrl": receipe.imageUrl,
-     
     };
   }
 }

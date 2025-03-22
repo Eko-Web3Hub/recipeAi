@@ -8,16 +8,14 @@ class Receipe extends Equatable {
   final List<ReceipeStep> steps;
   final String averageTime;
   final String totalCalories;
-  final String? imageUrl;
- 
 
-  const Receipe(
-      {required this.name,
-      required this.ingredients,
-      required this.steps,
-      required this.averageTime,
-      required this.totalCalories,
-      this.imageUrl});
+  const Receipe({
+    required this.name,
+    required this.ingredients,
+    required this.steps,
+    required this.averageTime,
+    required this.totalCalories,
+  });
 
   @override
   List<Object?> get props => [name, ingredients, steps];

@@ -7,6 +7,7 @@ import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
 
 class CoreModule implements IDiModule {
@@ -34,6 +35,10 @@ class CoreModule implements IDiModule {
       () => RemoteConfigDataSource(
         di<FirebaseRemoteConfig>(),
       ),
+    );
+
+    di.registerFactory<FunctionsCaller>(
+      () => FunctionsCaller.inject(),
     );
   }
 }

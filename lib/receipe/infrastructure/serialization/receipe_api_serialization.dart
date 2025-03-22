@@ -24,7 +24,6 @@ abstract class ReceipeApiSerialization {
               .toList(),
       averageTime: json["average_time"] ?? "",
       totalCalories: json["total_calories"] ?? "",
-      imageUrl: json["image_url"] ?? "",
     );
   }
 
@@ -43,7 +42,6 @@ abstract class ReceipeApiSerialization {
           .toList(),
       "average_time": receipe.averageTime,
       "total_calories": receipe.totalCalories,
-      "image_url": receipe.imageUrl,
     };
   }
 }
