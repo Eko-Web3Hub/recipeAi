@@ -6,6 +6,8 @@ A new Flutter project.
 
 
 ## Architectures
+
+### Suggestion de recette sur la page principale
 ```mermaid
 flowchart TD
     %% Inscription et collecte des préférences
