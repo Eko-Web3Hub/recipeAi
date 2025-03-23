@@ -1157,7 +1157,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.36):
     - BoringSSL-GRPC/Interface (= 0.0.36)
   - BoringSSL-GRPC/Interface (0.0.36)
-  - cloud_firestore (5.6.0):
+  - cloud_firestore (5.6.5):
     - Firebase/Firestore (= 11.8.0)
     - firebase_core
     - Flutter
@@ -1222,14 +1222,14 @@ PODS:
     - Firebase/Analytics (= 11.8.0)
     - firebase_core
     - Flutter
-  - firebase_auth (5.3.4):
+  - firebase_auth (5.5.1):
     - Firebase/Auth (= 11.8.0)
     - firebase_core
     - Flutter
   - firebase_core (3.12.1):
     - Firebase/CoreOnly (= 11.8.0)
     - Flutter
-  - firebase_remote_config (5.3.1):
+  - firebase_remote_config (5.4.2):
     - Firebase/RemoteConfig (= 11.8.0)
     - firebase_core
     - Flutter
@@ -1590,16 +1590,16 @@ SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   BoringSSL-GRPC: ca6a8e5d04812fce8ffd6437810c2d46f925eaeb
-  cloud_firestore: 20d3df8e41c4507e903392235655b85a5694f447
+  cloud_firestore: 56e7bb3888f09698dc061d38d02d87d4fd80e2cb
   cloud_functions: ca4f38f0c2722036ea361a210035aa262f4ed832
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
-  file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
+  file_picker: b159e0c068aef54932bb15dc9fd1571818edaf49
   Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf
   firebase_analytics: e3b6782e70e32b7fa18f7cd233e3201975dd86aa
-  firebase_auth: 6a2a13ab699bb2046d237816864636baa15845a8
+  firebase_auth: 3d848b9b866b201e5c8e0c06d8b2cec272fd8825
   firebase_core: ac395f994af4e28f6a38b59e05a88ca57abeb874
-  firebase_remote_config: c2e662674e7dfb94aa3c26bdb66570af606aa265
+  firebase_remote_config: a98909ec3fd3aef7a128d5a507181c82abc8694e
   FirebaseABTesting: 7d6eee42b9137541eac2610e5fea3568d956707a
   FirebaseAnalytics: 4fd42def128146e24e480e89f310e3d8534ea42b
   FirebaseAppCheckInterop: 7bf86d55a2b7e9bd91464120eba3e52e4b63b2e2
@@ -1617,7 +1617,7 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: 98897a64aa372eac3c5b3fe2816594ccfaac55ef
   FirebaseSharedSwift: 672954eac7b141d6954fab9a32d45d6b1d922df8
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_native_splash: e8a1e01082d97a8099d973f919f57904c925008a
+  flutter_native_splash: f71420956eb811e6d310720fee915f1d42852e7a
   google_sign_in_ios: 4111e87aa5e24a4404f00ea13479f35e571969cc
   GoogleAppMeasurement: fc0817122bd4d4189164f85374e06773b9561896
   GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
