@@ -79,3 +79,7 @@ Future<void> launchUrlFunc(String url) async {
     log(e.toString());
   }
 }
+
+String convertRecipeNameToFirestoreId(String recipeName) {
+  return recipeName.replaceAll(' ', '_').toLowerCase();
+}

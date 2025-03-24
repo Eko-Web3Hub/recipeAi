@@ -18,5 +18,6 @@ class Receipe extends Equatable {
   });
 
   @override
-  List<Object?> get props => [name, ingredients, steps];
+  List<Object?> get props =>
+      [name, ingredients, steps, averageTime, totalCalories];
 }

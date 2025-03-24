@@ -392,5 +392,13 @@
     },
      "letsCook":"Let's cook!",
     "@letsCook": {
-        "description": "Label for let's cook"}
+        "description": "Label for let's cook"},
+    "step": "Step",
+    "@step": {
+        "description": "Label for step"
+    },
+    "averageTime": "Avg Time",
+    "@averageTime": {
+        "description": "Label for average time"
+    }
 }

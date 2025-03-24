@@ -5,8 +5,11 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/application/update_user_receipe_usecase.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart';
 import 'package:recipe_ai/receipe/infrastructure/receipe_repository.dart';
+import 'package:recipe_ai/receipe/infrastructure/user_recipe_translate_repository.dart';
 
 class ReceipeModule implements IDiModule {
   const ReceipeModule();
@@ -17,6 +20,11 @@ class ReceipeModule implements IDiModule {
       () => UserReceipeRepository(
         di<FirebaseFirestore>(),
         di<Dio>(),
+      ),
+    );
+    di.registerLazySingleton<IUserRecipeTranslateRepository>(
+      () => FirestoreUserRecipeTranslateRepository(
+        di<FirebaseFirestore>(),
       ),
     );
 
@@ -31,6 +39,9 @@ class ReceipeModule implements IDiModule {
         di<IUserReceipeRepository>(),
         di<IAuthUserService>(),
       ),
+    );
+    di.registerFactory<UserRecipeTranslateService>(
+      () => UserRecipeTranslateService.inject(),
     );
   }
 }

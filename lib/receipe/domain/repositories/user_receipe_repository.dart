@@ -20,5 +20,7 @@ abstract class IUserReceipeRepository {
   Future<bool> isOneReceiptSaved(EntityId uid, String receipeName);
   Stream<bool> isReceiptSaved(EntityId uid, String receipeName);
 
+  Future<void> translateUserReceipe(EntityId uid, String language);
+
   Future<void> removeSavedReceipe(EntityId uid, String documentId);
 }

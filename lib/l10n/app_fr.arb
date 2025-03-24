@@ -391,5 +391,13 @@
     },
     "letsCook":"Cuisinons!",
     "@letsCook": {
-        "description": "Label for let's cook"}
+        "description": "Label for let's cook"},
+    "step": "Étape",
+    "@step": {
+        "description": "Label pour étape"
+    },
+    "averageTime": "Temps moyen",
+    "@averageTime": {
+        "description": "Label pour temps moyen"
+    }
 }
