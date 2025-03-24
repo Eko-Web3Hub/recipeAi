@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
-import 'package:recipe_ai/di/core_module.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:recipe_ai/utils/local_storage_repo.dart';
 
 abstract class OnboardingState extends Equatable {}
 

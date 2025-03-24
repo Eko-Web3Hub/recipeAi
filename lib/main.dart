@@ -10,7 +10,6 @@ import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/firebase_options.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
@@ -20,7 +19,7 @@ import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:recipe_ai/utils/local_storage_repo.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

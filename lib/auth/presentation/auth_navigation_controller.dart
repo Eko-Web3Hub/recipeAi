@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/local_storage_repo.dart';
 
 enum AuthNavigationState {
   loading,
