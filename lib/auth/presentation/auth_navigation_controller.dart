@@ -1,29 +1,39 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/di/core_module.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 enum AuthNavigationState {
   loading,
   loggedIn,
-  loggedOut,
+  loggedOutButHasSeenTheOnboarding,
+  loggedOutWithoutSeenTheOnboarding
 }
 
 class AuthNavigationController extends Cubit<AuthNavigationState> {
   AuthNavigationController(
     this._authUserService,
+    this._prefs,
   ) : super(AuthNavigationState.loading) {
     _load();
   }
 
   final IAuthUserService _authUserService;
 
-  void _load() {
+  void _load()  {
     authStateChangeSubscription = _authUserService.authStateChanges.listen(
-      (user) {
+      (user) async {
         if (user != null) {
           emit(AuthNavigationState.loggedIn);
         } else {
-          emit(AuthNavigationState.loggedOut);
+          final hasSeenTheOnboarding = (await _prefs.getBool(hasSeenOnboardingKey)) ?? false;
+          if (hasSeenTheOnboarding) {
+            emit(AuthNavigationState.loggedOutButHasSeenTheOnboarding);
+          } else {
+              emit(AuthNavigationState.loggedOutWithoutSeenTheOnboarding);
+          }
+          
         }
       },
     );
@@ -36,4 +46,5 @@ class AuthNavigationController extends Cubit<AuthNavigationState> {
   }
 
   StreamSubscription<AuthUser?>? authStateChangeSubscription;
+  final ILocalStorageRepository _prefs;
 }

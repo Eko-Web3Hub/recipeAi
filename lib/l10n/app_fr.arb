@@ -375,5 +375,21 @@
     "atLeastOneUpperCaseLetter": "une lettre majuscule",
     "@atLeastOneUpperCaseLetter": {
         "description": "Label pour au moins une lettre majuscule"
-    }
+    },
+    "continueWithApple":"Continuer avec Apple",
+    "@continueWithApple": {
+        "description": "Label for continue with Apple"
+    },
+
+    "continueWithGoogle":"Continuer avec Google",
+    "@continueWithGoogle": {
+        "description": "Label for continue with Google"
+    },
+    "continueWithEmail":"Continuer avec Email",
+    "@continueWithEmail": {
+        "description": "Label for continue with email"
+    },
+    "letsCook":"Cuisinons!",
+    "@letsCook": {
+        "description": "Label for let's cook"}
 }

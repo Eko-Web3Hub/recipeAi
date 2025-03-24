@@ -48,6 +48,7 @@ dependencies:
   sign_in_with_apple: ^6.1.4
   cached_network_image: ^3.4.1
   cloud_functions: ^5.3.4
+  shared_preferences: ^2.5.2
   
   
 

@@ -347,7 +347,7 @@ class _ImageRecipeContainer extends StatelessWidget {
         ),
         color: greyVariantColor,
       ),
-      child: child,
+      child: Center(child: child),
     );
   }
 }

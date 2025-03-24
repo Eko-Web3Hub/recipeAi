@@ -6,17 +6,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/firebase_options.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/nav/router.dart';
+import 'package:recipe_ai/onboarding/presentation/onboarding_view_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -49,11 +53,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
+    providers: [
         BlocProvider(
           create: (_) => AuthNavigationController(
             di<IAuthUserService>(),
+            di<ILocalStorageRepository>(),
           ),
+        ),
+         BlocProvider(
+          create: (_) =>  OnboardingController(
+          di<ILocalStorageRepository>(), di<IAnalyticsRepository>()),
         ),
         BlocProvider(
           create: (_) => HomeScreenController(

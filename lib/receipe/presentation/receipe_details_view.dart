@@ -40,7 +40,7 @@ class _RecipeImageContainer extends StatelessWidget {
         ),
         image: image,
       ),
-      child: child,
+      child: Center(child: child),
     );
   }
 }

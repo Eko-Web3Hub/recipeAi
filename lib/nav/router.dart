@@ -18,8 +18,8 @@ import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/notification/presentation/notification_screen.dart';
-import 'package:recipe_ai/onboarding/onboarding_view.dart';
-import 'package:recipe_ai/onboarding/start_screen.dart';
+import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
+import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
@@ -36,10 +36,22 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
       return '/';
     case AuthNavigationState.loggedIn:
       return null;
-    case AuthNavigationState.loggedOut:
-      return '/login';
+    case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
+      return '/onboarding/start';
+    default:
+      return '/onboarding';
   }
 }
+
+// FutureOr<String?> _guardOnboarding(
+//     BuildContext context, GoRouterState state) async {
+//   final onboardingState = context.read<OnboardingController>().state;
+
+//   if (onboardingState is OnboardingCompleted) {
+//     return '/onboarding/start';
+//   }
+//   return null;
+// }
 
 GoRouter createRouter() => GoRouter(
       initialLocation: '/',
@@ -50,27 +62,33 @@ GoRouter createRouter() => GoRouter(
           name: 'SplashScreen',
           path: '/',
           builder: (context, state) => const SplashScreen(),
-          redirect: (BuildContext context, _)  {
-
+          redirect: (BuildContext context, _) {
             final authState = context.read<AuthNavigationController>().state;
             if (authState == AuthNavigationState.loading) {
               return null;
             }
 
-            return authState == AuthNavigationState.loggedIn
-                ? '/home'
-                : '/onboarding';
+            switch (authState) {
+              case AuthNavigationState.loggedIn:
+                return '/home';
+              case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
+                return '/onboarding/start';
+              default:
+                return '/onboarding';
+            }
           },
         ),
+
         GoRoute(
           name: 'OnBoarding',
           path: '/onboarding',
-          builder: (context, state) => const StartScreen(),
+          //  redirect: _guardOnboarding,
+          builder: (context, state) => const OnboardingView(),
           routes: <RouteBase>[
             GoRoute(
-              name: 'OnBoardingSlider',
-              path: 'slider',
-              builder: (context, state) => const OnboardingView(),
+              name: 'start',
+              path: 'start',
+              builder: (context, state) => const StartScreen(),
             ),
           ],
         ),
