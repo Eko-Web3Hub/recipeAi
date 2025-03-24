@@ -142,4 +142,11 @@ class UserReceipeRepository implements IUserReceipeRepository {
   Future<void> deleteUserReceipe(EntityId uid) {
     return _firestore.collection(userReceipeCollection).doc(uid.value).delete();
   }
+
+  @override
+  Future<void> translateUserReceipe(EntityId uid, String language) {
+    final url = "$baseApiUrl/translate-recipes/${uid.value}/French";
+
+    return _dio.post(url);
+  }
 }

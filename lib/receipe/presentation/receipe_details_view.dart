@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
@@ -77,8 +78,15 @@ class ReceipeDetailsView extends StatelessWidget {
 
     return BlocProvider(
       create: (_) => receipeId != null
-          ? ReceipeDetailsController(receipeId, null)
-          : ReceipeDetailsController.fromReceipe(receipe!),
+          ? ReceipeDetailsController(
+              receipeId,
+              null,
+              di<UserRecipeTranslateService>(),
+            )
+          : ReceipeDetailsController.fromReceipe(
+              receipe!,
+              di<UserRecipeTranslateService>(),
+            ),
       child: Builder(builder: (context) {
         return Scaffold(
           body: BlocBuilder<ReceipeDetailsController, ReceipeDetailsState>(
@@ -316,6 +324,8 @@ class _StepView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return SizedBox(
       width: double.infinity,
       child: Card(
@@ -335,7 +345,7 @@ class _StepView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Step $index',
+                '${appTexts.step} $index',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,

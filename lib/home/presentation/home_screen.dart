@@ -14,6 +14,8 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
+import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -185,6 +187,8 @@ class ReceipeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return GestureDetector(
       onTap: () => context.push(
         '/home/recipe-details',
@@ -258,68 +262,77 @@ class ReceipeItem extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: BlocProvider(
+                create: (context) => RecipeMetadataCardLoader(
+                  receipe,
+                  di<UserRecipeTranslateService>(),
+                ),
+                child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
+                    builder: (context, receipeTranslateState) {
+                  return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(
-                          receipe.name,
-                          style: smallTextStyle,
-                        ),
-                      ),
-                      Text(
-                        receipe.totalCalories,
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          height: 14.52 / 12,
-                          color: Colors.black,
-                        ),
-                      )
-                    ],
-                  ),
-                  const Gap(8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Expanded(
+                            child: Text(
+                              receipeTranslateState.name,
+                              style: smallTextStyle,
+                            ),
+                          ),
                           Text(
-                            "Avg Time",
-                            style: GoogleFonts.poppins(
+                            '${_getOnlyNumber(receipe.totalCalories)} cal*',
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.w400,
-                              color: neutralGreyColor,
-                              fontSize: 11,
-                              height: 16.5 / 11,
+                              fontSize: 12,
+                              height: 14.52 / 12,
+                              color: Colors.black,
                             ),
-                          ),
-                          Text(
-                            receipe.averageTime,
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 11,
-                              color: neutralBlackColor,
-                              height: 16.5 / 11,
-                            ),
-                          ),
+                          )
                         ],
                       ),
-                      GestureDetector(
-                        onTap: onTap,
-                        child: SvgPicture.asset(
-                          isSaved
-                              ? "assets/images/favorite.svg"
-                              : "assets/images/favorite_outlined.svg",
-                        ),
-                      )
+                      const Gap(8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                appTexts.averageTime,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w400,
+                                  color: neutralGreyColor,
+                                  fontSize: 11,
+                                  height: 16.5 / 11,
+                                ),
+                              ),
+                              Text(
+                                receipe.averageTime,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 11,
+                                  color: neutralBlackColor,
+                                  height: 16.5 / 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: onTap,
+                            child: SvgPicture.asset(
+                              isSaved
+                                  ? "assets/images/favorite.svg"
+                                  : "assets/images/favorite_outlined.svg",
+                            ),
+                          )
+                        ],
+                      ),
                     ],
-                  ),
-                ],
+                  );
+                }),
               ),
             )
           ],
@@ -327,6 +340,10 @@ class ReceipeItem extends StatelessWidget {
       ),
     );
   }
+}
+
+String _getOnlyNumber(String text) {
+  return text.replaceAll(RegExp(r'[^0-9]'), '');
 }
 
 class _ImageRecipeContainer extends StatelessWidget {

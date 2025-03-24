@@ -25,6 +25,7 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
       if (currentUserReceipe == null) {
         final receipes = await _retrieveAndSave(uid, now);
+        _userReceipeRepository.translateUserReceipe(uid, "French");
 
         return receipes;
       }
@@ -33,6 +34,8 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
       if (now.difference(lastUpdatedDate).inDays >= 1) {
         final receipes = await _retrieveAndSave(uid, now);
+        _userReceipeRepository.translateUserReceipe(uid, "French");
+
         return receipes;
       } else {
         return currentUserReceipe.receipes;
