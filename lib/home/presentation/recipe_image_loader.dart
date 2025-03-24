@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/utils/safe_emit.dart';
 
 import '../../utils/function_caller.dart';
 
@@ -32,7 +33,7 @@ class RecipeImageLoader extends Cubit<RecipeImageState> {
       'retrieve_recipe_image',
       {'recipe_name': recipeName},
     );
-    emit(RecipeImageLoaded(response['url']));
+    safeEmit(RecipeImageLoaded(response['url']));
   }
 
   final FunctionsCaller _functionsCaller;

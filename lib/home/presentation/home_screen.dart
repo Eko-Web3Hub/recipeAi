@@ -283,7 +283,7 @@ class ReceipeItem extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            receipe.totalCalories,
+                            '${_getOnlyNumber(receipe.totalCalories)} cal*',
                             style: GoogleFonts.inter(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
@@ -340,6 +340,10 @@ class ReceipeItem extends StatelessWidget {
       ),
     );
   }
+}
+
+String _getOnlyNumber(String text) {
+  return text.replaceAll(RegExp(r'[^0-9]'), '');
 }
 
 class _ImageRecipeContainer extends StatelessWidget {

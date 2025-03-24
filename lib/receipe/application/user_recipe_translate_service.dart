@@ -3,6 +3,7 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 import '../../user_account/presentation/translation_controller.dart';
 
@@ -23,7 +24,11 @@ class UserRecipeTranslateService {
   Stream<Receipe?> watchTranslatedRecipe({
     required String recipeName,
   }) {
+    final currentLanguage = _translationController.currentLanguageEnum;
     final uid = _authUserService.currentUser!.uid;
+    if (currentLanguage == AppLanguage.en) {
+      return Stream.value(null);
+    }
 
     return _userRecipeTranslateRepository.watchTranslatedRecipe(
       recipeName: EntityId(recipeName),
