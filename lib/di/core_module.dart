@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -8,6 +9,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
+import 'package:recipe_ai/utils/local_storage_repo.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
 
 class CoreModule implements IDiModule {
@@ -40,5 +42,10 @@ class CoreModule implements IDiModule {
     di.registerFactory<FunctionsCaller>(
       () => FunctionsCaller.inject(),
     );
+
+    di.registerSingletonAsync<ILocalStorageRepository>(
+      () async => LocalStorageRepository(),
+    );
   }
 }
+

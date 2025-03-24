@@ -33,7 +33,7 @@ TextStyle _deleteTextStyle = GoogleFonts.poppins(
 void _delectionSuccess(BuildContext context) {
   final appTexts = di<TranslationController>().currentLanguage;
 
-  context.go('/login');
+  context.go('/onboarding/start');
   showSnackBar(
     context,
     appTexts.deleteAccountSuccess,

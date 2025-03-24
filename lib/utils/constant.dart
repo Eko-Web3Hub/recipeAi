@@ -122,3 +122,4 @@ AppLanguage appLanguageFromString(String language) {
 enum AuthError { userNotFound, somethingWentWrong }
 
 const logoPath = 'assets/images/newLogo.png';
+const hasSeenOnboardingKey = 'has_already_seen_onboarding';
