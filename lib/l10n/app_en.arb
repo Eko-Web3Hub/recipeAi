@@ -375,5 +375,13 @@
     "atLeastOneUpperCaseLetter": "one uppercase letter",
     "@atLeastOneUpperCaseLetter": {
         "description": "Label for at least one uppercase letter"
+    },
+    "step": "Step",
+    "@step": {
+        "description": "Label for step"
+    },
+    "averageTime": "Avg Time",
+    "@averageTime": {
+        "description": "Label for average time"
     }
 }

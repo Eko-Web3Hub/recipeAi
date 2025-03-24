@@ -324,6 +324,8 @@ class _StepView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return SizedBox(
       width: double.infinity,
       child: Card(
@@ -343,7 +345,7 @@ class _StepView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Step $index',
+                '${appTexts.step} $index',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,

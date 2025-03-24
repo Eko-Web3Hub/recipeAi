@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/ddd/entity.dart';
@@ -48,7 +50,7 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   void _load(Receipe recipe) async {
     final recipeName = convertRecipeNameToFirestoreId(recipe.name);
 
-    _userRecipeTranslateService
+    _subscription = _userRecipeTranslateService
         .watchTranslatedRecipe(
       recipeName: recipeName,
     )
@@ -65,7 +67,14 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     );
   }
 
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
+
   int? seconds;
   EntityId? receipeId;
   final UserRecipeTranslateService _userRecipeTranslateService;
+  StreamSubscription<Receipe?>? _subscription;
 }

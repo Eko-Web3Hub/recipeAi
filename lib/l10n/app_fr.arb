@@ -375,5 +375,13 @@
     "atLeastOneUpperCaseLetter": "une lettre majuscule",
     "@atLeastOneUpperCaseLetter": {
         "description": "Label pour au moins une lettre majuscule"
+    },
+    "step": "Étape",
+    "@step": {
+        "description": "Label pour étape"
+    },
+    "averageTime": "Temps moyen",
+    "@averageTime": {
+        "description": "Label pour temps moyen"
     }
 }
