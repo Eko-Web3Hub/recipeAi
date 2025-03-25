@@ -66,15 +66,12 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           : FloatingActionButton(
               onPressed: () {
                 /// reditect to camera screen
-                context.go("/home/kitchen-inventory");
+                // context.go("/home/kitchen-inventory");
               },
               backgroundColor: greenPrimaryColor,
               shape: const CircleBorder(),
-              child: const Center(
-                child: Icon(
-                  Icons.camera_alt_rounded,
-                  color: Colors.white,
-                ),
+              child: Center(
+                child: SvgPicture.asset('assets/images/aiFillWhite.svg'),
               ),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
