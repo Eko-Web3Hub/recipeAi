@@ -64,6 +64,7 @@ class HomeScreenController extends Cubit<HomeScreenState> {
     } on RetrieveReceipeException catch (_) {
       emit(const HomeRetrieveReceipeException());
     }
+    // emit(HomeScreenStateLoaded([]));
   }
 
   Future<void> reload() async {

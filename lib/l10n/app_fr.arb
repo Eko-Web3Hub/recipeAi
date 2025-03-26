@@ -376,22 +376,22 @@
     "@atLeastOneUpperCaseLetter": {
         "description": "Label pour au moins une lettre majuscule"
     },
-    "continueWithApple":"Continuer avec Apple",
+    "continueWithApple": "Continuer avec Apple",
     "@continueWithApple": {
         "description": "Label for continue with Apple"
     },
-
-    "continueWithGoogle":"Continuer avec Google",
+    "continueWithGoogle": "Continuer avec Google",
     "@continueWithGoogle": {
         "description": "Label for continue with Google"
     },
-    "continueWithEmail":"Continuer avec Email",
+    "continueWithEmail": "Continuer avec Email",
     "@continueWithEmail": {
         "description": "Label for continue with email"
     },
-    "letsCook":"Cuisinons!",
+    "letsCook": "Cuisinons!",
     "@letsCook": {
-        "description": "Label for let's cook"},
+        "description": "Label for let's cook"
+    },
     "step": "Étape",
     "@step": {
         "description": "Label pour étape"
@@ -399,5 +399,17 @@
     "averageTime": "Temps moyen",
     "@averageTime": {
         "description": "Label pour temps moyen"
+    },
+    "generateRecipe": "Générer des recettes",
+    "@generateRecipe": {
+        "description": "Label pour générer des recettes"
+    },
+    "generateRecipeWithGroceriePhoto": "À partir d'une photo d'ingredients",
+    "@generateRecipeWithGroceriePhoto": {
+        "description": "Label pour générer des recettes avec une photo d'ingrédients"
+    },
+    "generateRecipeWithGrocerieList": "À partir de votre liste d'ingrédients",
+    "@generateRecipeWithGrocerieList": {
+        "description": "Label pour générer des recettes avec votre liste d'ingrédients"
     }
 }

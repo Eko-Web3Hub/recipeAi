@@ -376,23 +376,22 @@
     "@atLeastOneUpperCaseLetter": {
         "description": "Label for at least one uppercase letter"
     },
-
-    "continueWithApple":"Continue with Apple",
+    "continueWithApple": "Continue with Apple",
     "@continueWithApple": {
         "description": "Label for continue with Apple"
     },
-
-    "continueWithGoogle":"Continue with Google",
+    "continueWithGoogle": "Continue with Google",
     "@continueWithGoogle": {
         "description": "Label for continue with Google"
     },
-    "continueWithEmail":"Continue with email",
+    "continueWithEmail": "Continue with email",
     "@continueWithEmail": {
         "description": "Label for continue with email"
     },
-     "letsCook":"Let's cook!",
+    "letsCook": "Let's cook!",
     "@letsCook": {
-        "description": "Label for let's cook"},
+        "description": "Label for let's cook"
+    },
     "step": "Step",
     "@step": {
         "description": "Label for step"
@@ -400,5 +399,17 @@
     "averageTime": "Avg Time",
     "@averageTime": {
         "description": "Label for average time"
+    },
+    "generateRecipe": "Generate Recipe",
+    "@generateRecipe": {
+        "description": "Label for generating recipes"
+    },
+    "generateRecipeWithGroceriePhoto": "From groceries photo",
+    "@generateRecipeWithGroceriePhoto": {
+        "description": "Label for generating recipes from a photo of groceries"
+    },
+    "generateRecipeWithGrocerieList": "From your groceries list",
+    "@generateRecipeWithGrocerieList": {
+        "description": "Label for generating recipes from a list of groceries"
     }
 }

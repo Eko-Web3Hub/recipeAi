@@ -27,6 +27,15 @@ import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
+// class HomeScreen extends StatelessWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text("HomeScreen");
+//   }
+// }
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -38,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     SchedulerBinding.instance.addPostFrameCallback((_) {
       context.read<HomeScreenController>().reload();
     });
@@ -135,6 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ReceipeItemState>(
                                             builder: (context, state) {
                                               return ReceipeItem(
+                                                key: ValueKey(homeScreenState
+                                                    .receipes[index].name),
                                                 receipe: homeScreenState
                                                     .receipes[index],
                                                 isSaved: state
