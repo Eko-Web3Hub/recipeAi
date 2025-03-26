@@ -125,6 +125,7 @@ void _showAiActionRecipeBottomSheet(BuildContext context) =>
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) => _AiGenRecipeBottomSheet(),
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
@@ -154,13 +155,25 @@ class _AiGenRecipeBottomSheet extends StatelessWidget {
                   SvgPicture.asset('assets/images/rectangleSeparationBar.svg'),
             ),
             const Gap(7),
-            Text(
-              appText.generateRecipe,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: Colors.black,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  appText.generateRecipe,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: SvgPicture.asset(
+                    'assets/images/carbon_close-outline.svg',
+                  ),
+                ),
+              ],
             ),
             const Gap(32),
             _ActionBtn(
