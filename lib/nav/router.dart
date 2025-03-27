@@ -12,6 +12,7 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
+import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -113,6 +114,18 @@ GoRouter createRouter() => GoRouter(
           name: 'UserPreferences',
           path: '/user-preferences',
           builder: (context, state) => const UserPreferencesView(),
+        ),
+        GoRoute(
+          name: 'ReceipeIdeaWithIngredientPhotoScreen',
+          path: '/receipe-idea-with-ingredient-photo',
+          builder: (context, state) {
+            final recipes = (state.extra! as Map<String, dynamic>)['recipes']
+                as List<Receipe>;
+
+            return RecipesIdeaWithIngredientPhotoScreen(
+              recipes: recipes,
+            );
+          },
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) =>
