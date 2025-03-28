@@ -411,5 +411,11 @@
     "generateRecipeWithGrocerieList": "From your groceries list",
     "@generateRecipeWithGrocerieList": {
         "description": "Label for generating recipes from a list of groceries"
+    },
+    "fillKitchen":"Let’s fill your kitchen with goodness",
+    "@fillKitchen": {
+        "description":"Label for filling your kitchen with goodness"
     }
+    
+
 }

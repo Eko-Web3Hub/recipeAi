@@ -129,6 +129,7 @@ class KitchenInventoryAppBar extends StatelessWidget
     this.arrowLeftOnPressed,
     required this.title,
     this.action,
+    this.showBackBtn = true,
   });
 
   final String title;
@@ -136,6 +137,7 @@ class KitchenInventoryAppBar extends StatelessWidget
   final VoidCallback? arrowLeftOnPressed;
 
   final Widget? action;
+  final bool showBackBtn;
 
   @override
   Widget build(BuildContext context) {
@@ -151,11 +153,13 @@ class KitchenInventoryAppBar extends StatelessWidget
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              InkWell(
-                onTap: arrowLeftOnPressed,
-                child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
-              ),
-              const Gap(25),
+              if (showBackBtn) ...[
+                InkWell(
+                  onTap: arrowLeftOnPressed,
+                  child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
+                ),
+                const Gap(25),
+              ],
               Text(
                 title,
                 style: mediumTextStyle,

@@ -411,5 +411,9 @@
     "generateRecipeWithGrocerieList": "À partir de votre liste d'ingrédients",
     "@generateRecipeWithGrocerieList": {
         "description": "Label pour générer des recettes avec votre liste d'ingrédients"
+    },
+    "fillKitchen":"Remplissons votre cuisine de bienfaits",
+    "@fillKitchen": {
+        "description":"Label for filling your kitchen with goodness"
     }
 }
