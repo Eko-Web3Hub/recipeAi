@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 
@@ -155,7 +156,9 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
 
   void _takeCameraPicture() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+    final XFile? photo = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
     if (photo != null) {
       setState(() {
         _ingredientsImage = File(photo.path);
@@ -240,10 +243,11 @@ class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
   RecipeIdeasNavigation(this.context);
 
   @override
-  void goToRecipeIdeas(List<Receipe> recipes) {
+  void goToRecipeIdeas(TranslatedRecipe recipes) {
     context.push('/receipe-idea-with-ingredient-photo', extra: {
       'recipes': recipes,
     });
+    Navigator.of(context).pop();
   }
 
   final BuildContext context;
@@ -279,6 +283,8 @@ class _GenRecipeFromIngredientPicture extends StatelessWidget {
           lazy: false,
           create: (context) => GenerateRecipeWithIngredientPhotoController(
             RecipeIdeasNavigation(context),
+            di<IUserReceipeRepository>(),
+            file,
           ),
           child: CustomCircularLoader(
             size: 20,

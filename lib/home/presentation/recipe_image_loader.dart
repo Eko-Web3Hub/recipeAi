@@ -25,7 +25,7 @@ class RecipeImageLoader extends Cubit<RecipeImageState> {
     this._functionsCaller,
     this.recipeName,
   ) : super(RecipeImageLoading()) {
-    _load();
+    // _load();
   }
 
   void _load() async {

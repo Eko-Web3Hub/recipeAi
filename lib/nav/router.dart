@@ -120,10 +120,25 @@ GoRouter createRouter() => GoRouter(
           path: '/receipe-idea-with-ingredient-photo',
           builder: (context, state) {
             final recipes = (state.extra! as Map<String, dynamic>)['recipes']
-                as List<Receipe>;
+                as TranslatedRecipe;
 
             return RecipesIdeaWithIngredientPhotoScreen(
               recipes: recipes,
+            );
+          },
+        ),
+        GoRoute(
+          name: 'RecipeDetailss',
+          path: '/recipe-details',
+          redirect: _guardAuth,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final receipeId = extra['receipeId'] as EntityId?;
+            final receipe = extra['receipe'] as Receipe?;
+
+            return ReceipeDetailsView(
+              receipeId: receipeId,
+              receipe: receipe,
             );
           },
         ),

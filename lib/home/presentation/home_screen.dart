@@ -190,11 +190,13 @@ class ReceipeItem extends StatelessWidget {
   final Receipe receipe;
   final bool isSaved;
   final void Function() onTap;
+  final String redirectionPath;
   const ReceipeItem({
     super.key,
     required this.receipe,
     required this.isSaved,
     required this.onTap,
+    this.redirectionPath = '/home/recipe-details',
   });
 
   @override
@@ -203,7 +205,7 @@ class ReceipeItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => context.push(
-        '/home/recipe-details',
+        redirectionPath,
         extra: {
           'receipe': receipe,
         },

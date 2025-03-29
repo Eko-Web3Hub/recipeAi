@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
@@ -7,6 +9,8 @@ abstract class IUserReceipeRepository {
     EntityId uid,
   );
   Future<List<Receipe>> getReceipesBasedOnUserPreferencesFromApi(EntityId uid);
+
+  Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(File file);
 
   Future<void> save(EntityId uid, UserReceipe userReceipe);
 

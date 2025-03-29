@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -148,5 +149,28 @@ class UserReceipeRepository implements IUserReceipeRepository {
     final url = "$baseApiUrl/translate-recipes/${uid.value}/French";
 
     return _dio.post(url);
+  }
+
+  @override
+  Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(
+      File file) async {
+    try {
+      final apiRoute = "$baseApiUrl/gen-receipe-with-ingredient-picture";
+      final fileToSend = await MultipartFile.fromFile(
+        file.path,
+        filename: file.path.split("/").last,
+      );
+      final formData = FormData.fromMap({
+        "file": fileToSend,
+      });
+      final response = await _dio.post(apiRoute, data: formData);
+
+      final json = response.data as Map<String, dynamic>;
+
+      return TranslatedRecipe.fromJson(json);
+    } catch (e) {
+      log('An error occurred while generating recipes with ingredients picture: $e');
+      return null;
+    }
   }
 }
