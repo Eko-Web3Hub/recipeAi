@@ -84,39 +84,65 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: hideNavBar
           ? null
-          : NavigationBar(
+          : BottomAppBar(
               height: 70,
-              surfaceTintColor: Colors.transparent,
-              indicatorColor: Colors.transparent,
-              backgroundColor: Colors.white,
-              selectedIndex: navigationShell.currentIndex,
-              indicatorShape: const RoundedRectangleBorder(),
-              destinations: _navigationsItems
-                  .map<Widget>((NavigationItem item) => Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: InkWell(
-                          onTap: () => _goBranch(
-                            _navigationsItems.indexOf(item),
-                          ),
-                          overlayColor:
-                              WidgetStateProperty.all(Colors.transparent),
-                          child: SvgPicture.asset(
-                            "assets/images/${item.icon}.svg",
-                            width: 24,
-                            height: 24,
-                            fit: BoxFit.contain,
-                            colorFilter: ColorFilter.mode(
-                              _navigationsItems.indexOf(item) ==
-                                      navigationShell.currentIndex
-                                  ? greenPrimaryColor
-                                  : const Color(0xFFDADADA),
-                              BlendMode.srcATop,
-                            ),
-                          ),
-                        ),
-                      ))
-                  .toList(),
+              color: Colors.white,
+              shape: const CircularNotchedRectangle(),
+              notchMargin: 8,
+              child: Row(
+                children: [
+                  for (int i = 0; i < 2; i++)
+                    _NavBarItem(
+                      index: i,
+                      item: _navigationsItems[i],
+                      currentIndex: navigationShell.currentIndex,
+                      onTap: _goBranch,
+                    ),
+                  const SizedBox(width: 64),
+                  for (int i = 2; i < 4; i++)
+                    _NavBarItem(
+                      index: i,
+                      item: _navigationsItems[i],
+                      currentIndex: navigationShell.currentIndex,
+                      onTap: _goBranch,
+                    ),
+                ],
+              ),
             ),
+
+      // NavigationBar(
+      //     height: 70,
+      //     surfaceTintColor: Colors.transparent,
+      //     indicatorColor: Colors.transparent,
+      //     backgroundColor: Colors.white,
+      //     selectedIndex: navigationShell.currentIndex,
+      //     indicatorShape: const RoundedRectangleBorder(),
+      //     destinations: _navigationsItems
+      //         .map<Widget>((NavigationItem item) => Padding(
+      //               padding: const EdgeInsets.all(15),
+      //               child: InkWell(
+      //                 onTap: () => _goBranch(
+      //                   _navigationsItems.indexOf(item),
+      //                 ),
+      //                 overlayColor:
+      //                     WidgetStateProperty.all(Colors.transparent),
+      //                 child: SvgPicture.asset(
+      //                   "assets/images/${item.icon}.svg",
+      //                   width: 24,
+      //                   height: 24,
+      //                   fit: BoxFit.contain,
+      //                   colorFilter: ColorFilter.mode(
+      //                     _navigationsItems.indexOf(item) ==
+      //                             navigationShell.currentIndex
+      //                         ? greenPrimaryColor
+      //                         : const Color(0xFFDADADA),
+      //                     BlendMode.srcATop,
+      //                   ),
+      //                 ),
+      //               ),
+      //             ))
+      //         .toList(),
+      //   ),
     );
   }
 }
@@ -132,6 +158,44 @@ void _showAiActionRecipeBottomSheet(BuildContext context) =>
         ),
       ),
     );
+
+class _NavBarItem extends StatelessWidget {
+  final int index;
+  final NavigationItem item;
+  final int currentIndex;
+  final void Function(int) onTap;
+
+  const _NavBarItem({
+    required this.index,
+    required this.item,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = index == currentIndex;
+
+    return Expanded(
+      child: InkWell(
+        onTap: () => onTap(index),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        child: Center(
+          child: SvgPicture.asset(
+            "assets/images/${item.icon}.svg",
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              isSelected ? greenPrimaryColor : const Color(0xFFDADADA),
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class _AiGenRecipeBottomSheet extends StatelessWidget {
   const _AiGenRecipeBottomSheet();

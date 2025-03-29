@@ -248,34 +248,30 @@ class InventoryScreen extends StatelessWidget {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 7),
-                            child: Expanded(
-                              child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.only(bottom: 90),
-                                itemBuilder: (context, index) {
-                                  final ingredient =
-                                      state.ingredientsSuggested[index];
-                                  return IngredientCategoryItem(
-                                      isSelected: controller
-                                          .isIngredientSelected(ingredient),
-                                      onTap: () {
-                                        if (!controller
-                                            .isIngredientSelected(ingredient)) {
-                                          queryController.clear();
-                                          controller.addIngredient(ingredient);
-                                          controller
-                                              .closeIngredientsSuggested();
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(
+                                  bottom: 90, left: 5, right: 5, top: 5),
+                              itemBuilder: (context, index) {
+                                final ingredient =
+                                    state.ingredientsSuggested[index];
+                                return IngredientCategoryItem(
+                                    isSelected: controller
+                                        .isIngredientSelected(ingredient),
+                                    onTap: () {
+                                      if (!controller
+                                          .isIngredientSelected(ingredient)) {
+                                        queryController.clear();
+                                        controller.addIngredient(ingredient);
+                                        controller.closeIngredientsSuggested();
 
-                                          FocusScope.of(context).unfocus();
-                                        }
-                                      },
-                                      ingredient: ingredient);
-                                },
-                                itemCount: state.ingredientsSuggested.length,
-                              ),
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                    },
+                                    ingredient: ingredient);
+                              },
+                              itemCount: state.ingredientsSuggested.length,
                             ),
                           ),
                         ),
@@ -341,56 +337,51 @@ class InventoryScreen extends StatelessWidget {
                               itemCount: state.ingredientsAddedByUser.length,
                             ),
                           ),
-                    
-                      SliverPadding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        sliver: SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: 40,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                final category = state.categories[index];
-                                return CategoryItem(
-                                  isSelected: state.categoryIdSelected ==
-                                      category.id?.value,
-                                  onTap: () {
-                                    controller.onSelectCategory(
-                                        category.id?.value ?? '');
-                                  },
-                                  category: state.categories[index],
-                                );
-                              },
-                              itemCount: state.categories.length,
-                            ),
+                    SliverPadding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      sliver: SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 40,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final category = state.categories[index];
+                              return CategoryItem(
+                                isSelected: state.categoryIdSelected ==
+                                    category.id?.value,
+                                onTap: () {
+                                  controller.onSelectCategory(
+                                      category.id?.value ?? '');
+                                },
+                                category: state.categories[index],
+                              );
+                            },
+                            itemCount: state.categories.length,
                           ),
                         ),
                       ),
-
-                      SliverPadding(
-                        padding: const EdgeInsets.only(
-                            bottom: 40, left: 10, right: 10),
-                        sliver: SliverList.builder(
-                          itemBuilder: (context, index) {
-                            final ingredient = state.ingredients[index];
-                            return IngredientCategoryItem(
-                              isSelected:
-                                  controller.isIngredientSelected(ingredient),
-                              onTap: () {
-                                if (!controller
-                                    .isIngredientSelected(ingredient)) {
-                                  controller.addIngredient(ingredient);
-                                }
-                              },
-                              ingredient: ingredient,
-                            );
-                          },
-                          itemCount: state.ingredients.length,
-                        ),
-                      )
-
-                 
-                    
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.only(
+                          bottom: 40, left: 10, right: 10),
+                      sliver: SliverList.builder(
+                        itemBuilder: (context, index) {
+                          final ingredient = state.ingredients[index];
+                          return IngredientCategoryItem(
+                            isSelected:
+                                controller.isIngredientSelected(ingredient),
+                            onTap: () {
+                              if (!controller
+                                  .isIngredientSelected(ingredient)) {
+                                controller.addIngredient(ingredient);
+                              }
+                            },
+                            ingredient: ingredient,
+                          );
+                        },
+                        itemCount: state.ingredients.length,
+                      ),
+                    )
                   ],
                 ),
               ),

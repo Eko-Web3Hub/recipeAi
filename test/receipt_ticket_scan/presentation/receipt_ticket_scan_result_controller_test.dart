@@ -81,6 +81,48 @@ void main() {
     ),
   ];
 
+   final thirdUpdatedIngredients = <Ingredient>[
+    Ingredient(
+      name: "Potatoes",
+      quantity: "4",
+      date: DateTime(2022, 12, 12),
+      id: const EntityId("1"),
+    ),
+    Ingredient(
+      name: "Oignon",
+      quantity: "5",
+      date: DateTime(2022, 12, 12),
+      id: const EntityId("2"),
+    ),
+    Ingredient(
+      name: "Salt",
+      quantity: "3",
+      date: DateTime(2022, 12, 12),
+      id: const EntityId("3"),
+    ),
+  ];
+
+  final fourthUpdatedIngredients = <Ingredient>[
+    Ingredient(
+      name: "Potatoes",
+      quantity: "4",
+      date: DateTime(2022, 12, 12),
+      id: const EntityId("1"),
+    ),
+    Ingredient(
+      name: "Oignon",
+      quantity: "5",
+      date: DateTime(2022, 12, 12),
+      id: const EntityId("2"),
+    ),
+    Ingredient(
+      name: "Ail",
+      quantity: "3",
+      date: DateTime(2022, 12, 12),
+      id: const EntityId("3"),
+    ),
+  ];
+
   setUp(() {
     kitchenInventoryRepository = KitchenInventoryRepository();
     authUserService = AuthUserService();
@@ -115,6 +157,23 @@ void main() {
       ),
       ReceiptTicketScanUpdateIngredientSuccess(
         ingredients: secondUpdatedIngredients,
+      ),
+    ],
+  );
+
+  blocTest<ReceiptTicketScanResultController, ReceiptTicketScanResultState>(
+    'should update ingredient name',
+    build: () => buildSut(),
+    act: (bloc) {
+      bloc.updateIngredientName(0, 'Potatoes');
+      bloc.updateIngredientName(2, 'Ail');
+    },
+    expect: () => [
+      ReceiptTicketScanUpdateIngredientSuccess(
+        ingredients: thirdUpdatedIngredients,
+      ),
+      ReceiptTicketScanUpdateIngredientSuccess(
+        ingredients: fourthUpdatedIngredients,
       ),
     ],
   );
