@@ -1,23 +1,96 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/%20inventory/domain/repositories/inventory_repository.dart';
 import 'package:recipe_ai/%20inventory/presentation/components/category_item.dart';
 import 'package:recipe_ai/%20inventory/presentation/components/ingredient_category_item.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
+import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
+import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/styles.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'inventory_controller.dart';
 
 class InventoryScreen extends StatelessWidget {
-  const InventoryScreen({super.key});
+  InventoryScreen({super.key});
+
+  void _takeCameraPicture(ReceiptTicketScanController controller) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      controller.scanReceiptTicket(File(photo.path));
+    }
+  }
+
+  void _uploadReceiptPicture(ReceiptTicketScanController controller) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
+    if (photo != null) {
+      controller.scanReceiptTicket(File(photo.path));
+    }
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+    final controller = context.read<ReceiptTicketScanController>();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: Text(
+                  appTexts.selectPicture,
+                  style: smallTextStyle.copyWith(
+                    color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  _uploadReceiptPicture(controller);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: Text(
+                  appTexts.takePhoto,
+                  style: smallTextStyle.copyWith(
+                    color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  _takeCameraPicture(controller);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  final queryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +121,21 @@ class InventoryScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Autocomplete<Ingredient>(
+                            child: RawAutocomplete<Ingredient>(
                               displayStringForOption: (option) {
                                 return option.name;
                               },
-                              optionsBuilder: (textEditingValue) async {
-                                await controller.searchIngredients(
-                                    textEditingValue.text.toLowerCase());
-                                // final test = state.ingredientsSuggested;
-                                return state.ingredientsSuggested;
+                              optionsBuilder: (textEditingValue) {
+                                return [];
                               },
-                              onSelected: (ingredient) {
-                                if (!controller
-                                    .isIngredientSelected(ingredient)) {
-                                  controller.addIngredient(ingredient);
-                                }
-                              },
+                              onSelected: (ingredient) {},
                               optionsViewBuilder:
                                   (context, onSelected, options) {
                                 return Align(
                                   alignment: Alignment.topCenter,
-                                  child: SizedBox(
-                                    height: 200,
-                                    child: Material(
+                                  child: Material(
+                                    child: SizedBox(
+                                      width: 100.w,
                                       child: ListView.builder(
                                         itemBuilder: (context, index) {
                                           final ingredient =
@@ -101,21 +166,73 @@ class InventoryScreen extends StatelessWidget {
                                   validator: (_) {
                                     return;
                                   },
-                                  controller: textEditingController,
+                                  controller: queryController,
                                 );
                               },
                             ),
                           ),
                           const Gap(11),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Theme.of(context).primaryColor),
-                            child: Icon(
-                              Icons.camera_alt_rounded,
-                              color: Colors.white,
+                          BlocProvider(
+                            create: (context) => ReceiptTicketScanController(
+                              di<IReceiptTicketScanRepository>(),
+                            ),
+                            child: BlocConsumer<ReceiptTicketScanController,
+                                ReceiptTicketScanState>(
+                              listener: (context, state) {
+                                if (state is ReceiptTicketScanLoaded) {
+                                  //A retravailler
+                                  context.push(
+                                    "/home/kitchen-inventory/receipt-ticket-scan-result",
+                                    extra: {
+                                      "ingredients": (state)
+                                          .receiptTicket
+                                          .products
+                                          .map(
+                                            (product) => Ingredient(
+                                              name: product.name,
+                                              quantity: product.quantity,
+                                              date: null,
+                                              id: null,
+                                            ),
+                                          )
+                                          .toList(),
+                                    },
+                                  );
+                                } else if (state is ReceiptTicketScanError) {
+                                  showSnackBar(
+                                    context,
+                                    appTexts.somethingWentWrong,
+                                    isError: true,
+                                  );
+                                }
+                              },
+                              builder: (context, state) {
+                                return GestureDetector(
+                                  onTap: state is! ReceiptTicketScanLoading
+                                      ? () {
+                                          _showBottomSheet(context);
+                                        }
+                                      : null,
+                                  child: state is ReceiptTicketScanLoading
+                                      ? Center(
+                                          child: CustomProgress(
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                          child: Icon(
+                                            Icons.camera_alt_rounded,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                );
+                              },
                             ),
                           )
                         ],
@@ -126,36 +243,49 @@ class InventoryScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 20),
                         sliver: SliverToBoxAdapter(
                           child: Container(
-                            height: 20.h,
+                            height: state.ingredientsSuggested.length * 60,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                             ),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 7),
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                final ingredient =
-                                    state.ingredientsSuggested[index];
-                                return IngredientCategoryItem(
-                                    isSelected: controller
-                                        .isIngredientSelected(ingredient),
-                                    onTap: () {
-                                      if (!controller
-                                          .isIngredientSelected(ingredient)) {
-                                        controller.addIngredient(ingredient);
-                                      }
-                                    },
-                                    ingredient: ingredient);
-                              },
-                              itemCount: state.ingredientsSuggested.length,
+                            child: Expanded(
+                              child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.only(bottom: 90),
+                                itemBuilder: (context, index) {
+                                  final ingredient =
+                                      state.ingredientsSuggested[index];
+                                  return IngredientCategoryItem(
+                                      isSelected: controller
+                                          .isIngredientSelected(ingredient),
+                                      onTap: () {
+                                        if (!controller
+                                            .isIngredientSelected(ingredient)) {
+                                          queryController.clear();
+                                          controller.addIngredient(ingredient);
+                                          controller
+                                              .closeIngredientsSuggested();
+
+                                          FocusScope.of(context).unfocus();
+                                        }
+                                      },
+                                      ingredient: ingredient);
+                                },
+                                itemCount: state.ingredientsSuggested.length,
+                              ),
                             ),
                           ),
                         ),
                       )
                     ],
+                    SliverToBoxAdapter(
+                      child: Gap(20),
+                    ),
                     SliverPadding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      padding: const EdgeInsets.only(bottom: 10),
                       sliver: SliverToBoxAdapter(
                         child: Text(
                           appTexts.myItems,
@@ -168,19 +298,21 @@ class InventoryScreen extends StatelessWidget {
                             child: Center(
                               child: Column(
                                 children: [
+                                  const Gap(20),
                                   Image.asset(
                                     'assets/images/placeholder_inventory.png',
-                                    width: 180,
-                                    height: 80,
+                                    width: 200,
+                                    height: 100,
                                     fit: BoxFit.cover,
                                   ),
-                                  const Gap(5),
+                                  const Gap(10),
                                   Text(
                                     appTexts.fillKitchen,
                                     style: GoogleFonts.poppins(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w400),
-                                  )
+                                  ),
+                                  const Gap(30),
                                 ],
                               ),
                             ),
@@ -191,17 +323,25 @@ class InventoryScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final ingredient =
                                     state.ingredientsAddedByUser[index];
-                                return IngredientCategoryItem(
-                                    isSelected: true,
-                                    onTap: () {
-                                      controller.removeIngredient(ingredient);
-                                    },
-                                    ingredient: ingredient);
+                                return IngredientDismissedWidget(
+                                  onDismissed: (dismissDirection) {
+                                    controller.removeIngredient(ingredient);
+                                    // Hide the current snackbar
+                                    ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar();
+                                    showSnackBar(
+                                        context, appTexts.ingredientRemoved);
+                                  },
+                                  child: IngredientCategoryItem(
+                                      isSelected: true,
+                                      onTap: () {},
+                                      ingredient: ingredient),
+                                );
                               },
                               itemCount: state.ingredientsAddedByUser.length,
                             ),
                           ),
-                    if (MediaQuery.of(context).viewInsets.bottom == 0) ...[
+                    
                       SliverPadding(
                         padding: const EdgeInsets.only(bottom: 20),
                         sliver: SliverToBoxAdapter(
@@ -226,64 +366,31 @@ class InventoryScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 50.h,
-                          child: PageView.builder(
-                            onPageChanged: (value) {
-                              final category = state.categories[value];
-                              controller
-                                  .onSelectCategory(category.id?.value ?? '');
-                            },
-                            itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      "A to Z",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  const Gap(15),
-                                  Expanded(
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      padding: const EdgeInsets.only(
-                                          bottom: 40, left: 10, right: 10),
-                                      itemBuilder: (context, index) {
-                                        final ingredient =
-                                            state.ingredients[index];
-                                        return IngredientCategoryItem(
-                                          isSelected: controller
-                                              .isIngredientSelected(ingredient),
-                                          onTap: () {
-                                            if (!controller
-                                                .isIngredientSelected(
-                                                    ingredient)) {
-                                              controller
-                                                  .addIngredient(ingredient);
-                                            }
-                                          },
-                                          ingredient: ingredient,
-                                        );
-                                      },
-                                      itemCount: state.ingredients.length,
-                                    ),
-                                  )
-                                ],
-                              );
-                            },
-                            itemCount: state.categories.length,
-                          ),
+
+                      SliverPadding(
+                        padding: const EdgeInsets.only(
+                            bottom: 40, left: 10, right: 10),
+                        sliver: SliverList.builder(
+                          itemBuilder: (context, index) {
+                            final ingredient = state.ingredients[index];
+                            return IngredientCategoryItem(
+                              isSelected:
+                                  controller.isIngredientSelected(ingredient),
+                              onTap: () {
+                                if (!controller
+                                    .isIngredientSelected(ingredient)) {
+                                  controller.addIngredient(ingredient);
+                                }
+                              },
+                              ingredient: ingredient,
+                            );
+                          },
+                          itemCount: state.ingredients.length,
                         ),
                       )
-                    ]
+
+                 
+                    
                   ],
                 ),
               ),

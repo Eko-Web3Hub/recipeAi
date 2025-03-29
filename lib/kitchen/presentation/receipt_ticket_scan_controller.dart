@@ -32,6 +32,7 @@ class ReceiptTicketScanLoaded extends ReceiptTicketScanState {
 
 class ReceiptTicketScanError extends ReceiptTicketScanState {
   ReceiptTicketScanError();
+  
 
   @override
   List<Object?> get props => [];

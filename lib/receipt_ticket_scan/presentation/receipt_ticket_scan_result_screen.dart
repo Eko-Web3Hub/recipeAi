@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
-import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
-
 import 'package:recipe_ai/utils/styles.dart';
 
 class IngredientDismissedWidget extends StatelessWidget {
@@ -33,6 +32,7 @@ class IngredientDismissedWidget extends StatelessWidget {
       onDismissed: onDismissed,
       direction: DismissDirection.endToStart,
       background: Container(
+        height: 20,
         decoration: BoxDecoration(
           color: Colors.red,
           borderRadius: BorderRadius.circular(10),
@@ -76,16 +76,46 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
           ReceiptTicketScanResultState>(
         listener: (context, state) {
           if (state is ReceiptTicketScanUpdateKitechenInventorySuccess) {
-            context.go('/home/kitchen-inventory');
+            context.pop();
           }
         },
         child: Builder(builder: (context) {
           return SafeArea(
             child: Scaffold(
-              appBar: KitchenInventoryAppBar(
-                title: appTexts.scanReceiptTicketAppbar,
-                arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                actions: [
+                  GestureDetector(
+                    onTap: () {
+                      context
+                          .read<ReceiptTicketScanResultController>()
+                          .addIngredientsToKitchenInventory();
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 15),
+                      height: 25,
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                        child: Text(
+                          'Add to inventory',
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
+              // appBar: KitchenInventoryAppBar(
+              //   title: appTexts.scanReceiptTicketAppbar,
+              //   arrowLeftOnPressed: () => context.go('/home/kitchen-inventory'),
+              // ),
               body: Column(
                 children: [
                   const Gap(20.0),
@@ -105,7 +135,8 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                   const Gap(30.0),
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 50),
                       itemBuilder: (context, index) {
                         return IngredientItem(
                           onDismissed: (direction) {
@@ -115,6 +146,16 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                             showSnackBar(context, appTexts.ingredientRemoved);
                           },
                           ingredient: ingredients[index],
+                          getIngredientName: (name) {
+                             if (name != null) {
+                              context
+                                  .read<ReceiptTicketScanResultController>()
+                                  .updateIngredientName(
+                                    index,
+                                   name,
+                                  );
+                            }
+                          },
                           getIngredientQuantity: (quantity) {
                             log(quantity.toString());
                             if (quantity != null) {
@@ -131,16 +172,6 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                       itemCount: ingredients.length,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: MainBtn(
-                      text: appTexts.addToKitchenInvontory,
-                      onPressed: context
-                          .read<ReceiptTicketScanResultController>()
-                          .addIngredientsToKitchenInventory,
-                    ),
-                  ),
-                  const Gap(30.0),
                 ],
               ),
             ),

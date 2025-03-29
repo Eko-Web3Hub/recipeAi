@@ -4,7 +4,10 @@ import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 
 class IngredientCategoryItem extends StatelessWidget {
   const IngredientCategoryItem(
-      {super.key, required this.isSelected, required this.onTap, required this.ingredient});
+      {super.key,
+      required this.isSelected,
+      required this.onTap,
+      required this.ingredient});
   final bool isSelected;
   final Ingredient ingredient;
 
@@ -15,7 +18,7 @@ class IngredientCategoryItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
             color: isSelected ? Color(0xFFFFCE80) : Colors.transparent,

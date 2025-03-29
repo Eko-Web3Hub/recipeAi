@@ -79,9 +79,13 @@ class InventoryController extends Cubit<InventoryState> {
     loadIngredients(categoryId);
   }
 
+  void closeIngredientsSuggested() {
+    emit(state.copyWith(ingredientsSuggested: []));
+  }
+
   void listenToQuerySearch() {
     _searchController.stream
-        .debounceTime(Duration(milliseconds: 500))
+        .debounceTime(Duration(milliseconds: 200))
         .distinct()
         .listen(
       (query) async {

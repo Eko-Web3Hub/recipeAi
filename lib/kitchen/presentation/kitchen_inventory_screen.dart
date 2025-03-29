@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -322,8 +321,10 @@ class IngredientItem extends StatefulWidget {
     this.getIngredientQuantity,
     required this.onDismissed,
     this.readOnly = false,
+    this.getIngredientName,
   });
   final Function(String? value)? getIngredientQuantity;
+  final Function(String? value)? getIngredientName;
   final Function(DismissDirection)? onDismissed;
   final bool readOnly;
 
@@ -333,11 +334,13 @@ class IngredientItem extends StatefulWidget {
 
 class _IngredientItemState extends State<IngredientItem> {
   final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _quantityController.text = widget.ingredient.quantity.toString();
+    _nameController.text = widget.ingredient.name.toString();
   }
 
   @override
@@ -353,70 +356,90 @@ class _IngredientItemState extends State<IngredientItem> {
           onDismissed: widget.onDismissed,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withValues(alpha: 0.2),
-                  spreadRadius: 1,
-                  blurRadius: 8,
-                  offset: const Offset(0, 4), // décalage de l'ombre
-                ),
-              ],
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFFFBA4D)),
             ),
             margin: const EdgeInsets.only(bottom: 10),
             child: Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 20,
-                bottom: 20,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              // padding: const EdgeInsets.only(
+              //   left: 10,
+              //   right: 10,
+              //   top: 20,
+              //   bottom: 20,
+              // ),
               child: Row(
                 children: [
-                  Text(
-                    widget.ingredient.name,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 50,
-                    height: 30,
-                    child: TextFormField(
-                      readOnly: widget.readOnly,
-                      controller: _quantityController,
-                      onChanged: (String quantity) {
-                        if (widget.getIngredientQuantity != null) {
-                          widget.getIngredientQuantity!(quantity);
-                        }
-                        if (widget.ingredient.id != null) {
-                          context
-                              .read<IngredientController>()
-                              .updateIngredient(quantity);
-                        }
-                      },
-                      textAlign: TextAlign.center,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[0-9]'),
-                        ),
-                      ],
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 2,
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xffEEEEEE),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide.none,
+                  Expanded(
+                    child: SizedBox(
+                      height: 30,
+                      child: TextFormField(
+                        readOnly: widget.readOnly,
+                        controller: _nameController,
+                        onChanged: (String name) {
+                          if (widget.getIngredientName != null) {
+                            widget.getIngredientName!(name);
+                          }
+                        },
+                        textAlign: TextAlign.start,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 2,
+                          ),
+                          // filled: true,
+                          // fillColor: const Color(0xffEEEEEE),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                  // Text(
+                  //   widget.ingredient.name,
+                  //   style: GoogleFonts.poppins(
+                  //     fontWeight: FontWeight.w600,
+                  //     fontSize: 14,
+                  //   ),
+                  // ),
+
+                  // SizedBox(
+                  //   width: 50,
+                  //   height: 30,
+                  //   child: TextFormField(
+                  //     readOnly: widget.readOnly,
+                  //     controller: _quantityController,
+                  //     onChanged: (String quantity) {
+                  //       if (widget.getIngredientQuantity != null) {
+                  //         widget.getIngredientQuantity!(quantity);
+                  //       }
+                  //       if (widget.ingredient.id != null) {
+                  //         context
+                  //             .read<IngredientController>()
+                  //             .updateIngredient(quantity);
+                  //       }
+                  //     },
+                  //     textAlign: TextAlign.center,
+                  //     inputFormatters: [
+                  //       FilteringTextInputFormatter.allow(
+                  //         RegExp(r'[0-9]'),
+                  //       ),
+                  //     ],
+                  //     decoration: InputDecoration(
+                  //       contentPadding: const EdgeInsets.symmetric(
+                  //         horizontal: 2,
+                  //       ),
+                  //       filled: true,
+                  //       fillColor: const Color(0xffEEEEEE),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(5),
+                  //         borderSide: BorderSide.none,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
