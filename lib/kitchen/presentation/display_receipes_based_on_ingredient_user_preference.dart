@@ -37,7 +37,7 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
           appBar: KitchenInventoryAppBar(
             title: appTexts.receipeIdeas,
             arrowLeftOnPressed: () => context.go(
-              '/home/kitchen-inventory',
+              '/home',
             ),
           ),
           body: Padding(
