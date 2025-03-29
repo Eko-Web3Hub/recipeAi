@@ -49,6 +49,7 @@ dependencies:
   cached_network_image: ^3.4.1
   cloud_functions: ^5.3.4
   shared_preferences: ^2.5.2
+  collection: ^1.19.0
   
   
 

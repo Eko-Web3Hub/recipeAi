@@ -8,4 +8,17 @@ abstract class IUserRecipeTranslateRepository {
     required AppLanguage language,
     required EntityId recipeName,
   });
+
+  Future<void> saveTranslatedRecipe({
+    required EntityId uid,
+    required AppLanguage language,
+    required EntityId recipeName,
+    required Receipe receipe,
+  });
+
+  Future<void> removeTranslatedRecipe({
+    required EntityId uid,
+    required AppLanguage language,
+    required EntityId recipeName,
+  });
 }

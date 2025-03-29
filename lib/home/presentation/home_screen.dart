@@ -27,15 +27,6 @@ import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
-// class HomeScreen extends StatelessWidget {
-//   const HomeScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Text("HomeScreen");
-//   }
-// }
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

@@ -142,6 +142,7 @@ GoRouter createRouter() => GoRouter(
             );
           },
         ),
+
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) =>
               ScaffoldWithNestedNavigation(

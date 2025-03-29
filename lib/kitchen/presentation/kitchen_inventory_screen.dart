@@ -141,7 +141,7 @@ class KitchenInventoryAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 4.0,
+        top: 14.0,
         left: 30.0,
       ),
       child: Row(
@@ -169,7 +169,7 @@ class KitchenInventoryAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(70);
+  Size get preferredSize => const Size.fromHeight(90);
 }
 
 class _InventoryContentView extends StatefulWidget {

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/home/presentation/recipe_with_ingredient_photo_controller.dart';
 import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:collection/collection.dart';
 
 class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
   const RecipesIdeaWithIngredientPhotoScreen({
@@ -34,11 +39,11 @@ class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
             '/home',
           ),
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalScreenPadding,
-            ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: horizontalScreenPadding,
+          ),
+          child: SafeArea(
             child: Column(
               children: [
                 BlocBuilder<RecipesIdeaWithIngredientPhotoController,
@@ -58,13 +63,32 @@ class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: state
-                            .map<Widget>(
-                              (recipe) => ReceipeItem(
-                                redirectionPath: '/recipe-details',
-                                key: ValueKey(recipe.name),
-                                receipe: recipe,
-                                isSaved: false,
-                                onTap: () {},
+                            .mapIndexed<Widget>(
+                              (index, recipe) => BlocProvider(
+                                create: (context) =>
+                                    RecipeWithIngredientPhotoController(
+                                  di<IUserReceipeRepository>(),
+                                  di<IAuthUserService>(),
+                                  di<IUserRecipeTranslateRepository>(),
+                                  recipes.recipesEn[index],
+                                  recipes.recipesFr[index],
+                                ),
+                                child: Builder(builder: (context) {
+                                  return BlocBuilder<
+                                      RecipeWithIngredientPhotoController,
+                                      bool>(builder: (context, isFavorite) {
+                                    return ReceipeItem(
+                                      key: ValueKey(recipe.name),
+                                      redirectionPath: '/recipe-details',
+                                      receipe: recipe,
+                                      isSaved: isFavorite,
+                                      onTap: () => context
+                                          .read<
+                                              RecipeWithIngredientPhotoController>()
+                                          .toggleFavorite(),
+                                    );
+                                  });
+                                }),
                               ),
                             )
                             .toList(),
