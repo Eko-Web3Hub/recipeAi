@@ -128,6 +128,13 @@ GoRouter createRouter() => GoRouter(
           },
         ),
         GoRoute(
+          name: 'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
+          path: '/display-receipes-based-on-ingredient-user-preference',
+          redirect: _guardAuth,
+          builder: (context, state) =>
+              const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
+        ),
+        GoRoute(
           name: 'RecipeDetailss',
           path: '/recipe-details',
           redirect: _guardAuth,
@@ -210,15 +217,6 @@ GoRouter createRouter() => GoRouter(
                           redirect: _guardAuth,
                           builder: (context, state) =>
                               const ReceipeTicketScanScreen(),
-                        ),
-                        GoRoute(
-                          name:
-                              'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
-                          path:
-                              'display-receipes-based-on-ingredient-user-preference',
-                          redirect: _guardAuth,
-                          builder: (context, state) =>
-                              const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
                         ),
                       ],
                     ),

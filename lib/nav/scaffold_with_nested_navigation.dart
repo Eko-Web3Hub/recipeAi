@@ -223,6 +223,11 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                   _ActionBtn(
                     'assets/images/groceryList.svg',
                     appText.generateRecipeWithGrocerieList,
+                    onTap: () {
+                      context.push(
+                          '/display-receipes-based-on-ingredient-user-preference');
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ],
               ),
