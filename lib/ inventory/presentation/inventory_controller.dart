@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../domain/model/category.dart';
 import '../domain/repositories/inventory_repository.dart';
@@ -30,7 +34,8 @@ final class InventoryState extends Equatable {
         ingredients,
         ingredientsSuggested,
         categoryIdSelected,
-        ingredientsAddedByUser
+        ingredientsAddedByUser,
+        isBusy,
       ];
 
   InventoryState copyWith({
@@ -62,13 +67,33 @@ class InventoryController extends Cubit<InventoryState> {
   InventoryController(this._inventoryRepository,
       this._kitchenInventoryRepository, this._authUserService)
       : super(InventoryState()) {
+    listenToQuerySearch();
     loadCategories();
     loadIngredientsAdded();
   }
 
+  final _searchController = StreamController<String>.broadcast();
+
   void onSelectCategory(String categoryId) {
     emit(state.copyWith(categoryIdSelected: categoryId));
     loadIngredients(categoryId);
+  }
+
+  void listenToQuerySearch() {
+    _searchController.stream
+        .debounceTime(Duration(milliseconds: 500))
+        .distinct()
+        .listen(
+      (query) async {
+        if (query.isEmpty) {
+          emit(state.copyWith(ingredientsSuggested: []));
+          return;
+        }
+        final results = await _inventoryRepository.searchIngredients(query);
+        log("Results: $results");
+        emit(state.copyWith(ingredientsSuggested: results));
+      },
+    );
   }
 
   bool isIngredientSelected(Ingredient ingredient) {
@@ -105,6 +130,10 @@ class InventoryController extends Cubit<InventoryState> {
         emit(state.copyWith(ingredientsAddedByUser: ingredientsFetched));
       },
     );
+  }
+
+  Future<void> searchIngredients(String query) async {
+    _searchController.add(query);
   }
 
   Future<void> loadCategories() async {
