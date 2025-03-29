@@ -12,6 +12,7 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
+import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -114,6 +115,41 @@ GoRouter createRouter() => GoRouter(
           path: '/user-preferences',
           builder: (context, state) => const UserPreferencesView(),
         ),
+        GoRoute(
+          name: 'ReceipeIdeaWithIngredientPhotoScreen',
+          path: '/receipe-idea-with-ingredient-photo',
+          builder: (context, state) {
+            final recipes = (state.extra! as Map<String, dynamic>)['recipes']
+                as TranslatedRecipe;
+
+            return RecipesIdeaWithIngredientPhotoScreen(
+              recipes: recipes,
+            );
+          },
+        ),
+        GoRoute(
+          name: 'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
+          path: '/display-receipes-based-on-ingredient-user-preference',
+          redirect: _guardAuth,
+          builder: (context, state) =>
+              const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
+        ),
+        GoRoute(
+          name: 'RecipeDetailss',
+          path: '/recipe-details',
+          redirect: _guardAuth,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final receipeId = extra['receipeId'] as EntityId?;
+            final receipe = extra['receipe'] as Receipe?;
+
+            return ReceipeDetailsView(
+              receipeId: receipeId,
+              receipe: receipe,
+            );
+          },
+        ),
+
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) =>
               ScaffoldWithNestedNavigation(
@@ -181,15 +217,6 @@ GoRouter createRouter() => GoRouter(
                           redirect: _guardAuth,
                           builder: (context, state) =>
                               const ReceipeTicketScanScreen(),
-                        ),
-                        GoRoute(
-                          name:
-                              'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
-                          path:
-                              'display-receipes-based-on-ingredient-user-preference',
-                          redirect: _guardAuth,
-                          builder: (context, state) =>
-                              const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
                         ),
                       ],
                     ),

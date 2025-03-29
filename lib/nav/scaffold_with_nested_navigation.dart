@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
+import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 
 import '../utils/colors.dart';
 
@@ -125,6 +133,8 @@ void _showAiActionRecipeBottomSheet(BuildContext context) =>
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) => _AiGenRecipeBottomSheet(),
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
@@ -133,8 +143,28 @@ void _showAiActionRecipeBottomSheet(BuildContext context) =>
       ),
     );
 
-class _AiGenRecipeBottomSheet extends StatelessWidget {
+class _AiGenRecipeBottomSheet extends StatefulWidget {
   const _AiGenRecipeBottomSheet();
+
+  @override
+  State<_AiGenRecipeBottomSheet> createState() =>
+      _AiGenRecipeBottomSheetState();
+}
+
+class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
+  File? _ingredientsImage;
+
+  void _takeCameraPicture() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? photo = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (photo != null) {
+      setState(() {
+        _ingredientsImage = File(photo.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,24 +184,58 @@ class _AiGenRecipeBottomSheet extends StatelessWidget {
                   SvgPicture.asset('assets/images/rectangleSeparationBar.svg'),
             ),
             const Gap(7),
-            Text(
-              appText.generateRecipe,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: Colors.black,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  _ingredientsImage != null
+                      ? appText.generateRecipeWithGroceriePhoto
+                      : appText.generateRecipe,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: SvgPicture.asset(
+                    'assets/images/carbon_close-outline.svg',
+                  ),
+                ),
+              ],
             ),
             const Gap(32),
-            _ActionBtn(
-              'assets/images/grocery_icon.svg',
-              appText.generateRecipeWithGroceriePhoto,
+            Visibility(
+              visible: _ingredientsImage == null,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _ActionBtn(
+                    'assets/images/grocery_icon.svg',
+                    appText.generateRecipeWithGroceriePhoto,
+                    onTap: () {
+                      _takeCameraPicture();
+                    },
+                  ),
+                  const Gap(12),
+                  _ActionBtn(
+                    'assets/images/groceryList.svg',
+                    appText.generateRecipeWithGrocerieList,
+                    onTap: () {
+                      context.push(
+                          '/display-receipes-based-on-ingredient-user-preference');
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
             ),
-            const Gap(12),
-            _ActionBtn(
-              'assets/images/groceryList.svg',
-              appText.generateRecipeWithGrocerieList,
-            ),
+            if (_ingredientsImage != null)
+              Center(
+                child: _GenRecipeFromIngredientPicture(_ingredientsImage!),
+              ),
             const Gap(50),
           ],
         ),
@@ -180,46 +244,107 @@ class _AiGenRecipeBottomSheet extends StatelessWidget {
   }
 }
 
-class _ActionBtn extends StatelessWidget {
-  const _ActionBtn(
-    this.icon,
-    this.title,
-  );
+class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
+  RecipeIdeasNavigation(this.context);
 
-  final String icon;
-  final String title;
+  @override
+  void goToRecipeIdeas(TranslatedRecipe recipes) {
+    context.push('/receipe-idea-with-ingredient-photo', extra: {
+      'recipes': recipes,
+    });
+    Navigator.of(context).pop();
+  }
+
+  final BuildContext context;
+}
+
+class _GenRecipeFromIngredientPicture extends StatelessWidget {
+  const _GenRecipeFromIngredientPicture(this.file);
+
+  final File file;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(
-        top: 8,
-        right: 19,
-        bottom: 8,
-        left: 19,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: Color(0xffD9D9D9),
-        ),
-      ),
-      child: Row(
-        children: [
-          SvgPicture.asset(
-            icon,
-          ),
-          const Gap(10),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Color(0xff333333),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 300,
+          height: MediaQuery.of(context).size.height * 0.6,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 2,
+              color: Color(0xffFFAD30),
+            ),
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: FileImage(file),
+              fit: BoxFit.cover,
             ),
           ),
-        ],
+        ),
+        const Gap(30),
+        BlocProvider(
+          lazy: false,
+          create: (context) => GenerateRecipeWithIngredientPhotoController(
+            RecipeIdeasNavigation(context),
+            di<IUserReceipeRepository>(),
+            file,
+          ),
+          child: CustomCircularLoader(
+            size: 20,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ActionBtn extends StatelessWidget {
+  const _ActionBtn(
+    this.icon,
+    this.title, {
+    this.onTap,
+  });
+
+  final String icon;
+  final String title;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          top: 8,
+          right: 19,
+          bottom: 8,
+          left: 19,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Color(0xffD9D9D9),
+          ),
+        ),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              icon,
+            ),
+            const Gap(10),
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                color: Color(0xff333333),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

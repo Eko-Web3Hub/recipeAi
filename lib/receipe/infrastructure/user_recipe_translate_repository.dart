@@ -33,4 +33,33 @@ class FirestoreUserRecipeTranslateRepository
   }
 
   final FirebaseFirestore _firestore;
+
+  @override
+  Future<void> removeTranslatedRecipe({
+    required EntityId uid,
+    required AppLanguage language,
+    required EntityId recipeName,
+  }) {
+    return _firestore
+        .collection(userReceipeTranslateCollection)
+        .doc(uid.value)
+        .collection(language.name)
+        .doc(recipeName.value)
+        .delete();
+  }
+
+  @override
+  Future<void> saveTranslatedRecipe({
+    required EntityId uid,
+    required AppLanguage language,
+    required EntityId recipeName,
+    required Receipe receipe,
+  }) {
+    return _firestore
+        .collection(userReceipeTranslateCollection)
+        .doc(uid.value)
+        .collection(language.name)
+        .doc(recipeName.value)
+        .set(ReceipeApiSerialization.toJson(receipe));
+  }
 }
