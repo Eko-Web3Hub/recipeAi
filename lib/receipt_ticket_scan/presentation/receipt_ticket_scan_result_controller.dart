@@ -74,6 +74,27 @@ class ReceiptTicketScanResultController
     );
   }
 
+  void updateIngredientName(
+    int index,
+    String newName,
+  ) {
+    final updatedIngredients = ingredients.map((ingredient) {
+      if (ingredients.indexOf(ingredient) == index) {
+        return ingredient.copy(
+          name: newName,
+        );
+      }
+      return ingredient;
+    }).toList();
+    ingredients = updatedIngredients;
+
+    emit(
+      ReceiptTicketScanUpdateIngredientSuccess(
+        ingredients: updatedIngredients,
+      ),
+    );
+  }
+
   void addIngredientsToKitchenInventory() async {
     await Future.wait(ingredients
         .map(

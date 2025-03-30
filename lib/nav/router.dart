@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
@@ -18,7 +19,6 @@ import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredi
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
-import 'package:recipe_ai/notification/presentation/notification_screen.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
@@ -238,10 +238,10 @@ GoRouter createRouter() => GoRouter(
             StatefulShellBranch(
               routes: <RouteBase>[
                 GoRoute(
-                  name: 'NotificationScreen',
-                  path: '/notification-screen',
+                  name: 'InventoryScreen',
+                  path: '/inventory-screen',
                   redirect: _guardAuth,
-                  builder: (context, state) => const NotificationScreen(),
+                  builder: (context, state) => InventoryScreen(),
                 ),
               ],
             ),

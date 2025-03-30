@@ -20,6 +20,7 @@ final appLanguages = <AppLanguage, AppLocalizations>{
 };
 
 const horizontalScreenPadding = 30.0;
+const verticalScreenPadding = 20.0;
 
 enum InputType { text, password }
 
