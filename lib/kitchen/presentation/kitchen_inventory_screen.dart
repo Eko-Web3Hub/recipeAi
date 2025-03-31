@@ -140,39 +140,28 @@ class KitchenInventoryAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 14.0,
-        left: 30.0,
+    return AppBar(
+      title: Text(
+        title,
+        style: mediumTextStyle,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showBackBtn) ...[
-                InkWell(
-                  onTap: arrowLeftOnPressed,
-                  child: SvgPicture.asset('assets/images/arrow-black-left.svg'),
-                ),
-                const Gap(25),
-              ],
-              Text(
-                title,
-                style: mediumTextStyle,
+      automaticallyImplyLeading: false,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      centerTitle: true,
+      leading: showBackBtn
+          ? InkWell(
+              onTap: arrowLeftOnPressed,
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
               ),
-            ],
-          ),
-          if (action != null) action!,
-        ],
-      ),
+            )
+          : null,
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(90);
+  Size get preferredSize => const Size.fromHeight(70);
 }
 
 class _InventoryContentView extends StatefulWidget {

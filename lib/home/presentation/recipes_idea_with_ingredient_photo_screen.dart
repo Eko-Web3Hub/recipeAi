@@ -43,61 +43,59 @@ class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: horizontalScreenPadding,
           ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                BlocBuilder<RecipesIdeaWithIngredientPhotoController,
-                    List<Receipe>?>(
-                  builder: (context, state) {
-                    if (state == null) {
-                      return const Center(
-                        child: CustomCircularLoader(
-                          size: 20,
-                        ),
-                      );
-                    }
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        top: 15,
-                        bottom: 20,
-                      ),
-                      child: Column(
-                        children: state
-                            .mapIndexed<Widget>(
-                              (index, recipe) => BlocProvider(
-                                create: (context) =>
-                                    RecipeWithIngredientPhotoController(
-                                  di<IUserReceipeRepository>(),
-                                  di<IAuthUserService>(),
-                                  di<IUserRecipeTranslateRepository>(),
-                                  recipes.recipesEn[index],
-                                  recipes.recipesFr[index],
-                                ),
-                                child: Builder(builder: (context) {
-                                  return BlocBuilder<
-                                      RecipeWithIngredientPhotoController,
-                                      bool>(builder: (context, isFavorite) {
-                                    return ReceipeItem(
-                                      key: ValueKey(recipe.name),
-                                      redirectionPath: '/recipe-details',
-                                      receipe: recipe,
-                                      isSaved: isFavorite,
-                                      onTap: () => context
-                                          .read<
-                                              RecipeWithIngredientPhotoController>()
-                                          .toggleFavorite(),
-                                    );
-                                  });
-                                }),
-                              ),
-                            )
-                            .toList(),
+          child: Column(
+            children: [
+              BlocBuilder<RecipesIdeaWithIngredientPhotoController,
+                  List<Receipe>?>(
+                builder: (context, state) {
+                  if (state == null) {
+                    return const Center(
+                      child: CustomCircularLoader(
+                        size: 20,
                       ),
                     );
-                  },
-                ),
-              ],
-            ),
+                  }
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      top: 15,
+                      bottom: 20,
+                    ),
+                    child: Column(
+                      children: state
+                          .mapIndexed<Widget>(
+                            (index, recipe) => BlocProvider(
+                              create: (context) =>
+                                  RecipeWithIngredientPhotoController(
+                                di<IUserReceipeRepository>(),
+                                di<IAuthUserService>(),
+                                di<IUserRecipeTranslateRepository>(),
+                                recipes.recipesEn[index],
+                                recipes.recipesFr[index],
+                              ),
+                              child: Builder(builder: (context) {
+                                return BlocBuilder<
+                                    RecipeWithIngredientPhotoController,
+                                    bool>(builder: (context, isFavorite) {
+                                  return ReceipeItem(
+                                    key: ValueKey(recipe.name),
+                                    redirectionPath: '/recipe-details',
+                                    receipe: recipe,
+                                    isSaved: isFavorite,
+                                    onTap: () => context
+                                        .read<
+                                            RecipeWithIngredientPhotoController>()
+                                        .toggleFavorite(),
+                                  );
+                                });
+                              }),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

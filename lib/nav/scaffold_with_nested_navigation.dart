@@ -207,7 +207,6 @@ class _NavBarItem extends StatelessWidget {
   }
 }
 
-
 class _AiGenRecipeBottomSheet extends StatefulWidget {
   const _AiGenRecipeBottomSheet();
 
@@ -222,7 +221,7 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
   void _takeCameraPicture() async {
     final ImagePicker picker = ImagePicker();
     final XFile? photo = await picker.pickImage(
-      source: ImageSource.camera,
+      source: ImageSource.gallery,
     );
     if (photo != null) {
       setState(() {
