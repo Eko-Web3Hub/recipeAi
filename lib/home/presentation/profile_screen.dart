@@ -16,9 +16,12 @@ import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/device_info.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 TextStyle _noTextStyle = GoogleFonts.poppins(
   color: Colors.black,
@@ -60,6 +63,22 @@ class ProfileScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) => const _LoginAgainDialog(),
     );
+  }
+
+  Future<void> _openFeedBackLink() async {
+    final encodedUid =
+        Uri.encodeComponent(di<IAuthUserService>().currentUser!.uid.value);
+    final device = await deviceInfo();
+    final appVersion = await getAppVersion();
+
+    final encodedDevice = Uri.encodeComponent(device);
+    final encodedAppVersion = Uri.encodeComponent(appVersion);
+
+    final url =
+        'https://tally.so/r/nGblKQ?uid=$encodedUid&device=$encodedDevice&version=$encodedAppVersion';
+    final uri = Uri.parse(url);
+
+    await launchUrl(uri);
   }
 
   @override
@@ -134,6 +153,13 @@ class ProfileScreen extends StatelessWidget {
                     textColor: null,
                     onPressed: () {
                       context.push("/profil-screen/update-user-preference");
+                    },
+                  ),
+                  _TextButton(
+                    text: appTexts.sendABug,
+                    textColor: null,
+                    onPressed: () {
+                      _openFeedBackLink();
                     },
                   ),
                   _TextButton(

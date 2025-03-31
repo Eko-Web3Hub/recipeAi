@@ -412,10 +412,12 @@
     "@generateRecipeWithGrocerieList": {
         "description": "Label for generating recipes from a list of groceries"
     },
-    "fillKitchen":"Let’s fill your kitchen with goodness",
+    "fillKitchen": "Let’s fill your kitchen with goodness",
     "@fillKitchen": {
-        "description":"Label for filling your kitchen with goodness"
+        "description": "Label for filling your kitchen with goodness"
+    },
+    "sendABug": "Send a bug",
+    "@sendABug": {
+        "description": "Label for sending a bug"
     }
-    
-
 }
