@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/%20inventory/domain/repositories/inventory_repository.dart';
 import 'package:recipe_ai/%20inventory/presentation/components/category_item.dart';
 import 'package:recipe_ai/%20inventory/presentation/components/ingredient_category_item.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
@@ -175,6 +176,8 @@ class InventoryScreen extends StatelessWidget {
                           BlocProvider(
                             create: (context) => ReceiptTicketScanController(
                               di<IReceiptTicketScanRepository>(),
+                              di<IAnalyticsRepository>(),
+                              di<IAuthUserService>(),
                             ),
                             child: BlocConsumer<ReceiptTicketScanController,
                                 ReceiptTicketScanState>(

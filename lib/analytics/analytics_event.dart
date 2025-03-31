@@ -66,3 +66,33 @@ class RegisterFinishEvent extends AnalyticsEvent {
   @override
   String get name => 'register_finish';
 }
+
+class RecipeSeenEvent extends AnalyticsEvent {
+  RecipeSeenEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipe_seen';
+}
+
+class TicketScanSuccessEvent extends AnalyticsEvent {
+  TicketScanSuccessEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'ticket_scan_success';
+}
+
+class TicketScanErrorEvent extends AnalyticsEvent {
+  TicketScanErrorEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'ticket_scan_error';
+}

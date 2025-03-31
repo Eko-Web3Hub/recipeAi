@@ -9,6 +9,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
@@ -544,8 +545,9 @@ class _EmptyKitchenInventoryViewState
             const Gap(40),
             BlocProvider(
               create: (context) => ReceiptTicketScanController(
-                di<IReceiptTicketScanRepository>(),
-              ),
+                  di<IReceiptTicketScanRepository>(),
+                  di<IAnalyticsRepository>(),
+                  di<IAuthUserService>()),
               child: BlocListener<ReceiptTicketScanController,
                   ReceiptTicketScanState>(
                 listener: (context, state) {

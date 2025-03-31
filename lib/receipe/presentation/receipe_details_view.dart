@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
@@ -62,7 +65,7 @@ class _RecipeImagePlaceHolder extends StatelessWidget {
 /// ReceipeDetailsView
 /// Contains the details of a receipe
 /// The receipe is passed or loaded using the receipe id
-class ReceipeDetailsView extends StatelessWidget {
+class ReceipeDetailsView extends StatefulWidget {
   const ReceipeDetailsView({
     super.key,
     required this.receipeId,
@@ -73,18 +76,32 @@ class ReceipeDetailsView extends StatelessWidget {
   final Receipe? receipe;
 
   @override
+  State<ReceipeDetailsView> createState() => _ReceipeDetailsViewState();
+}
+
+class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      di<AnalyticsRepository>().logEvent(RecipeSeenEvent());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
     return BlocProvider(
-      create: (_) => receipeId != null
+      create: (_) => widget.receipeId != null
           ? ReceipeDetailsController(
-              receipeId,
+              widget.receipeId,
               null,
               di<UserRecipeTranslateService>(),
             )
           : ReceipeDetailsController.fromReceipe(
-              receipe!,
+              widget.receipe!,
               di<UserRecipeTranslateService>(),
             ),
       child: Builder(builder: (context) {
