@@ -4,6 +4,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/%20inventory/domain/model/category.dart';
 import 'package:recipe_ai/%20inventory/domain/repositories/inventory_repository.dart';
 import 'package:recipe_ai/%20inventory/presentation/inventory_controller.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
@@ -16,10 +18,13 @@ class AuthUserServiceMock extends Mock implements IAuthUserService {}
 class KitchenInventoryRepositoryMock extends Mock
     implements IKitchenInventoryRepository {}
 
+class AnalyticsRepositoryMock extends Mock implements IAnalyticsRepository {}
+
 void main() {
   late IKitchenInventoryRepository kitchenInventoryRepository;
   late IAuthUserService authUserService;
   late IInventoryRepository inventoryRepository;
+  late IAnalyticsRepository analyticsRepository;
   const authUser = AuthUser(
     uid: EntityId('uid'),
     email: 'email@gmail.com',
@@ -76,10 +81,15 @@ void main() {
     );
   }
 
+  setUpAll(() {
+    registerFallbackValue(IngredientManuallyAddedEvent());
+  });
+
   setUp(() {
     kitchenInventoryRepository = KitchenInventoryRepositoryMock();
     authUserService = AuthUserServiceMock();
     inventoryRepository = InventoryRepositoryMock();
+    analyticsRepository = AnalyticsRepositoryMock();
 
     when(() => authUserService.currentUser).thenReturn(authUser);
     when(() => inventoryRepository.getCategories()).thenAnswer(
@@ -88,10 +98,16 @@ void main() {
     when(() => inventoryRepository.getIngredients(any())).thenAnswer(
       (_) => Stream.value(fakeIngredients),
     );
+    when(() => analyticsRepository.logEvent(any()))
+        .thenAnswer((_) => Future.value());
   });
 
   InventoryController sut() => InventoryController(
-      inventoryRepository, kitchenInventoryRepository, authUserService);
+        inventoryRepository,
+        kitchenInventoryRepository,
+        authUserService,
+        analyticsRepository,
+      );
 
   // void givenFullIngredients() {
   //   when(

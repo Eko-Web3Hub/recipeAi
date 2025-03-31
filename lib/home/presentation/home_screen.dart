@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
@@ -119,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               homeScreenState.receipes[index],
                                               di<IUserReceipeRepository>(),
                                               di<IAuthUserService>(),
+                                              di<IAnalyticsRepository>(),
                                             ),
                                         child: BlocListener<
                                             ReceipeItemController,

@@ -96,3 +96,76 @@ class TicketScanErrorEvent extends AnalyticsEvent {
   @override
   String get name => 'ticket_scan_error';
 }
+
+class RecipeSavedEvent extends AnalyticsEvent {
+  RecipeSavedEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipe_saved';
+}
+
+class RecipeGenerateUsingIngredientListSavedEvent extends AnalyticsEvent {
+  RecipeGenerateUsingIngredientListSavedEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipe_generate_using_ingredient_list_saved';
+}
+
+class RecipeGenerateUsingIngredientListUnSavedEvent extends AnalyticsEvent {
+  RecipeGenerateUsingIngredientListUnSavedEvent(
+      {Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipe_generate_using_ingredient_list_unsaved';
+}
+
+class RecipeGenerateUsingIngredientPictureSavedEvent extends AnalyticsEvent {
+  RecipeGenerateUsingIngredientPictureSavedEvent(
+      {Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipe_generate_using_ingredient_picture_saved';
+}
+
+class RecipeGenerateUsingIngredientPictureUnSavedEvent extends AnalyticsEvent {
+  RecipeGenerateUsingIngredientPictureUnSavedEvent(
+      {Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipe_generate_using_ingredient_picture_unsaved';
+}
+
+class RecipeUnSaveEvent extends AnalyticsEvent {
+  RecipeUnSaveEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipe_unsave';
+}
+
+class IngredientManuallyAddedEvent extends AnalyticsEvent {
+  IngredientManuallyAddedEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'ingredient_manually_added';
+}

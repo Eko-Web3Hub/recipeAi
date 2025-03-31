@@ -97,8 +97,12 @@ class InventoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
     return BlocProvider(
-      create: (context) => InventoryController(di<IInventoryRepository>(),
-          di<IKitchenInventoryRepository>(), di<IAuthUserService>()),
+      create: (context) => InventoryController(
+        di<IInventoryRepository>(),
+        di<IKitchenInventoryRepository>(),
+        di<IAuthUserService>(),
+        di<IAnalyticsRepository>(),
+      ),
       child: BlocBuilder<InventoryController, InventoryState>(
         builder: (context, state) {
           final controller = context.read<InventoryController>();

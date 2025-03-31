@@ -1,6 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
@@ -11,9 +13,13 @@ class ReceipeRepositoryMock extends Mock implements IUserReceipeRepository {}
 
 class AuthUserServiceMock extends Mock implements IAuthUserService {}
 
+class AnalyticsRepositoryMock extends Mock implements IAnalyticsRepository {}
+
 void main() {
   late IUserReceipeRepository receipeRepository;
   late IAuthUserService authUserService;
+  late IAnalyticsRepository analyticsRepository;
+
   const AuthUser authUser = AuthUser(
     uid: EntityId("uid"),
     email: "test@gmail.com",
@@ -29,10 +35,19 @@ void main() {
     return receipe.name.toLowerCase().replaceAll(' ', '');
   }
 
+  setUpAll(() {
+    registerFallbackValue(RecipeSavedEvent());
+  });
+
   setUp(
     () {
       receipeRepository = ReceipeRepositoryMock();
       authUserService = AuthUserServiceMock();
+      analyticsRepository = AnalyticsRepositoryMock();
+
+      when(() => analyticsRepository.logEvent(any())).thenAnswer(
+        (_) => Future.value(),
+      );
     },
   );
 
@@ -41,6 +56,7 @@ void main() {
       receipe,
       receipeRepository,
       authUserService,
+      analyticsRepository,
     );
   }
 
@@ -105,7 +121,6 @@ void main() {
 
       when(() => receipeRepository.saveOneReceipt(
             authUser.uid,
-            
             receipe,
           )).thenThrow(Exception());
 

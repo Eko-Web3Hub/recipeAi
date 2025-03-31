@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
@@ -63,10 +65,14 @@ class InventoryController extends Cubit<InventoryState> {
   final IInventoryRepository _inventoryRepository;
   final IKitchenInventoryRepository _kitchenInventoryRepository;
   final IAuthUserService _authUserService;
+  final IAnalyticsRepository _analyticsRepository;
 
-  InventoryController(this._inventoryRepository,
-      this._kitchenInventoryRepository, this._authUserService)
-      : super(InventoryState()) {
+  InventoryController(
+    this._inventoryRepository,
+    this._kitchenInventoryRepository,
+    this._authUserService,
+    this._analyticsRepository,
+  ) : super(InventoryState()) {
     listenToQuerySearch();
     loadCategories();
     loadIngredientsAdded();
@@ -111,6 +117,10 @@ class InventoryController extends Cubit<InventoryState> {
     try {
       final uid = _authUserService.currentUser!.uid;
       _kitchenInventoryRepository.addIngredient(uid, ingredient);
+
+      _analyticsRepository.logEvent(
+        IngredientManuallyAddedEvent(),
+      );
     } catch (e) {
       //
     }

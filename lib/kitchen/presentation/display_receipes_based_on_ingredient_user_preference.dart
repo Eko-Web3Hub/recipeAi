@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
@@ -130,6 +132,7 @@ class _DisplayLoadedRecipe extends StatelessWidget {
                 receipes[index],
                 di<IUserReceipeRepository>(),
                 di<IAuthUserService>(),
+                di<IAnalyticsRepository>(),
               ),
               child: BlocListener<ReceipeItemController, ReceipeItemState>(
                 listener: (context, state) {
@@ -145,8 +148,14 @@ class _DisplayLoadedRecipe extends StatelessWidget {
                       onTap: () {
                         if (state is ReceipeItemStateSaved) {
                           context.read<ReceipeItemController>().removeReceipe();
+                          di<IAnalyticsRepository>().logEvent(
+                            RecipeGenerateUsingIngredientListUnSavedEvent(),
+                          );
                         } else {
                           context.read<ReceipeItemController>().saveReceipe();
+                          di<IAnalyticsRepository>().logEvent(
+                            RecipeGenerateUsingIngredientListSavedEvent(),
+                          );
                         }
                       },
                     );

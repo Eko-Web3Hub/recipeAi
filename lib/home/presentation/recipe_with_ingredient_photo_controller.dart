@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -16,6 +18,7 @@ class RecipeWithIngredientPhotoController extends Cubit<bool> {
     this._userReceipeRepository,
     this._authUserService,
     this._userRecipeTranslateRepository,
+    this._analyticsRepository,
     this.receipe,
     this.receipeFr,
   ) : super(false) {
@@ -45,6 +48,9 @@ class RecipeWithIngredientPhotoController extends Cubit<bool> {
         language: AppLanguage.fr,
         recipeName: EntityId(recipeTranslateName),
       );
+      _analyticsRepository
+          .logEvent(RecipeGenerateUsingIngredientPictureUnSavedEvent());
+      _analyticsRepository.logEvent(RecipeUnSaveEvent());
     } else {
       await _userReceipeRepository.saveOneReceipt(uid, receipe);
       await _userRecipeTranslateRepository.saveTranslatedRecipe(
@@ -53,6 +59,10 @@ class RecipeWithIngredientPhotoController extends Cubit<bool> {
         recipeName: EntityId(recipeTranslateName),
         receipe: receipeFr,
       );
+      _analyticsRepository.logEvent(
+        RecipeGenerateUsingIngredientPictureSavedEvent(),
+      );
+      _analyticsRepository.logEvent(RecipeSavedEvent());
     }
   }
 
@@ -61,4 +71,5 @@ class RecipeWithIngredientPhotoController extends Cubit<bool> {
   final Receipe receipe;
   final Receipe receipeFr;
   final IUserRecipeTranslateRepository _userRecipeTranslateRepository;
+  final IAnalyticsRepository _analyticsRepository;
 }

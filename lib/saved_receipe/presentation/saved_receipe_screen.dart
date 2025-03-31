@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
@@ -70,6 +71,7 @@ class SavedReceipeScreen extends StatelessWidget {
                               create: (context) => RemoveSavedReceipeController(
                                 di<IUserReceipeRepository>(),
                                 di<IAuthUserService>(),
+                                di<IAnalyticsRepository>(),
                               ),
                               child: BlocListener<RemoveSavedReceipeController,
                                   ReceipeItemState>(

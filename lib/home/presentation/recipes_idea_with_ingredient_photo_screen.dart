@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
@@ -69,6 +70,7 @@ class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
                                 di<IUserReceipeRepository>(),
                                 di<IAuthUserService>(),
                                 di<IUserRecipeTranslateRepository>(),
+                                di<IAnalyticsRepository>(),
                                 recipes.recipesEn[index],
                                 recipes.recipesFr[index],
                               ),
