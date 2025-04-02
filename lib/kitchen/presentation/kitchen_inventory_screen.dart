@@ -148,7 +148,9 @@ class KitchenInventoryAppBar extends StatelessWidget
       ),
       automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      elevation: 0,
       centerTitle: true,
+      surfaceTintColor: Colors.transparent,
       leading: showBackBtn
           ? InkWell(
               onTap: arrowLeftOnPressed,
@@ -162,7 +164,7 @@ class KitchenInventoryAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(70);
+  Size get preferredSize => const Size.fromHeight(60);
 }
 
 class _InventoryContentView extends StatefulWidget {

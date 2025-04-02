@@ -85,7 +85,7 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      di<AnalyticsRepository>().logEvent(RecipeSeenEvent());
+      di<IAnalyticsRepository>().logEvent(RecipeSeenEvent());
     });
   }
 
@@ -394,7 +394,7 @@ class _StepView extends StatelessWidget {
                         height: 29,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: const Color(0xff1976D2),
+                          color: const Color(0xff2254BF),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 3),

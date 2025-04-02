@@ -34,41 +34,39 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
         di<IAuthUserService>(),
         di<IReceipesBasedOnIngredientUserPreferenceRepository>(),
       ),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: KitchenInventoryAppBar(
-            title: appTexts.receipeIdeas,
-            arrowLeftOnPressed: () => context.go(
-              '/home',
-            ),
+      child: Scaffold(
+        appBar: KitchenInventoryAppBar(
+          title: appTexts.receipeIdeas,
+          arrowLeftOnPressed: () => context.go(
+            '/home',
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalScreenPadding,
-            ),
-            child: Column(
-              children: [
-                BlocBuilder<
-                    DisplayReceipesBasedOnIngredientUserPreferenceController,
-                    DisplayReceipesBasedOnIngredientUserPreferenceState>(
-                  builder: (context, state) {
-                    if (state
-                        is DisplayReceipesBasedOnIngredientUserPreferenceLoading) {
-                      return const _LoadingView();
-                    }
-                    final receipes = (state
-                            as DisplayReceipesBasedOnIngredientUserPreferenceLoaded)
-                        .receipes;
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: horizontalScreenPadding,
+          ),
+          child: Column(
+            children: [
+              BlocBuilder<
+                  DisplayReceipesBasedOnIngredientUserPreferenceController,
+                  DisplayReceipesBasedOnIngredientUserPreferenceState>(
+                builder: (context, state) {
+                  if (state
+                      is DisplayReceipesBasedOnIngredientUserPreferenceLoading) {
+                    return const _LoadingView();
+                  }
+                  final receipes = (state
+                          as DisplayReceipesBasedOnIngredientUserPreferenceLoaded)
+                      .receipes;
 
-                    return Expanded(
-                      child: _DisplayLoadedRecipe(
-                        receipes: receipes,
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+                  return Expanded(
+                    child: _DisplayLoadedRecipe(
+                      receipes: receipes,
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -145,6 +143,7 @@ class _DisplayLoadedRecipe extends StatelessWidget {
                     return ReceipeItem(
                       receipe: receipes[index],
                       isSaved: state is ReceipeItemStateSaved,
+                      redirectionPath: '/recipe-details',
                       onTap: () {
                         if (state is ReceipeItemStateSaved) {
                           context.read<ReceipeItemController>().removeReceipe();

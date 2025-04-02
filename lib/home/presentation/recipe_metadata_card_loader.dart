@@ -17,17 +17,17 @@ class RecipeMetadataCardLoader extends Cubit<Receipe> {
   void _load() {
     final recipeId = convertRecipeNameToFirestoreId(receipe.name);
 
-    _subscription = _userRecipeTranslateService
-        .watchTranslatedRecipe(
-      recipeName: recipeId,
-    )
-        .listen(
-      (event) {
-        if (event != null) {
-          safeEmit(event);
-        }
-      },
-    );
+    // _subscription = _userRecipeTranslateService
+    //     .watchTranslatedRecipe(
+    //   recipeName: recipeId,
+    // )
+    //     .listen(
+    //   (event) {
+    //     if (event != null) {
+    //       safeEmit(event);
+    //     }
+    //   },
+    // );
   }
 
   @override
