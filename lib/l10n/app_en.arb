@@ -396,7 +396,7 @@
     "@step": {
         "description": "Label for step"
     },
-    "averageTime": "Avg Time",
+    "averageTime": "Time",
     "@averageTime": {
         "description": "Label for average time"
     },

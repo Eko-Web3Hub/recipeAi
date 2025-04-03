@@ -216,6 +216,7 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: ExpansionTile(
+                      initiallyExpanded: true,
                       title: Text(
                         appTexts.ingredients,
                         style: normalTextStyle,
@@ -278,9 +279,14 @@ class _DisplayIngredients extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          child: CheckBoxOption(
-            option: ingredient,
-            onChanged: (isSelected) {},
+          child: Text(
+            ingredient,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              height: 24 / 16,
+              color: const Color(0xff1E1E1E),
+            ),
           ),
         ),
         Flexible(
