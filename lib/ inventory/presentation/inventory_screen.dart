@@ -291,7 +291,7 @@ class InventoryScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10),
                       sliver: SliverToBoxAdapter(
                         child: Text(
-                          appTexts.myItems,
+                          appTexts.ingredients,
                           style: normalTextStyle,
                         ),
                       ),
