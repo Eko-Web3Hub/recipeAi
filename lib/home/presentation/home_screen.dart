@@ -328,11 +328,16 @@ class ReceipeItem extends StatelessWidget {
                             ],
                           ),
                           GestureDetector(
+                            behavior: HitTestBehavior.opaque,
                             onTap: onTap,
-                            child: SvgPicture.asset(
-                              isSaved
-                                  ? "assets/images/favorite.svg"
-                                  : "assets/images/favorite_outlined.svg",
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              color: Colors.transparent,
+                              child: SvgPicture.asset(
+                                isSaved
+                                    ? "assets/images/favorite.svg"
+                                    : "assets/images/favorite_outlined.svg",
+                              ),
                             ),
                           )
                         ],
