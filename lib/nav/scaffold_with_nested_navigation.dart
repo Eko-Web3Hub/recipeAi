@@ -77,6 +77,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           ? null
           : Builder(builder: (context) {
               return FloatingActionButton(
+                elevation: 0,
                 onPressed: () {
                   /// reditect to camera screen
                   // context.go("/home/kitchen-inventory");
@@ -93,6 +94,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       bottomNavigationBar: hideNavBar
           ? null
           : BottomAppBar(
+              elevation: 0,
               height: 70,
               color: Colors.white,
               shape: const CircularNotchedRectangle(),
@@ -197,7 +199,7 @@ class _NavBarItem extends StatelessWidget {
             width: 24,
             height: 24,
             colorFilter: ColorFilter.mode(
-              isSelected ? greenPrimaryColor : const Color(0xFFDADADA),
+              isSelected ? greenPrimaryColor : const Color(0xFF484848),
               BlendMode.srcIn,
             ),
           ),
