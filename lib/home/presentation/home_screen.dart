@@ -391,7 +391,11 @@ class _HeadLeftSection extends StatelessWidget {
         const Gap(5.0),
         Text(
           appTexts.letCreateMealToday,
-          style: Theme.of(context).textTheme.labelSmall,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+            color: Color(0xff333333),
+          ),
         ),
       ],
     );
