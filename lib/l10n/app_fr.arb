@@ -331,7 +331,7 @@
     "@scanAiReceiptDescription": {
         "description": "Description du processus de numérisation du reçu par IA avec une note sur les erreurs possibles"
     },
-    "scanAiReceiptDescription": "(Nous utilisons l'IA pour scanner votre reçu. L'IA peut faire des erreurs, veuillez vérifier et corriger les données)",
+    "scanAiReceiptDescription": "(Nous utilisons l'IA pour extraire des informations de votre ticket. Des erreurs peuvent survenir, veuillez vérifier et modifier si nécessaire.)",
     "@addToKitchenInvontory": {
         "description": "Libellé pour l'action d'ajouter un élément à l'inventaire de la cuisine"
     },
