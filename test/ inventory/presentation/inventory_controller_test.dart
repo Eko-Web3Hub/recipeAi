@@ -265,6 +265,12 @@ void main() {
         ingredientFour
       ];
 
+       List<Ingredient> filteredIngredients =
+        fakeIngredients.where((ingredient) {
+      return !ingredientsWithIngredientFour.any((addedIngredient) =>
+          addedIngredient.name.toLowerCase() == ingredient.name.toLowerCase());
+    }).toList();
+
       blocTest<InventoryController, InventoryState>(
         'should add ingredient to inventory',
         build: () => sut(),
@@ -274,6 +280,12 @@ void main() {
                 authUser.uid,
               )).thenAnswer(
             (_) => Stream.value(ingredientsWithIngredientFour),
+          );
+
+            when(() => kitchenInventoryRepository.getIngredientsAddedByUser(
+                authUser.uid,
+              )).thenAnswer(
+            (_) => Future.value(ingredientsWithIngredientFour),
           );
 
           // Mock de suppression
@@ -303,18 +315,18 @@ void main() {
             categoryIdSelected: fakeCategories.first.id?.value,
           ),
 
-          // 2. Ingrédients ajoutés (mockés ici sans Water)
-          InventoryState(
-            categories: fakeCategories,
-            categoryIdSelected: fakeCategories.first.id?.value,
-            ingredientsAddedByUser: ingredientsWithIngredientFour,
-          ),
+          // // 2. Ingrédients ajoutés (mockés ici sans Water)
+          // InventoryState(
+          //   categories: fakeCategories,
+          //   categoryIdSelected: fakeCategories.first.id?.value,
+          //   ingredientsAddedByUser: ingredientsWithIngredientFour,
+          // ),
 
           // 3. Ingrédients de la catégorie
           InventoryState(
             categories: fakeCategories,
             categoryIdSelected: fakeCategories.first.id?.value,
-            ingredients: fakeIngredients,
+            ingredients: filteredIngredients,
             ingredientsAddedByUser: ingredientsWithIngredientFour,
           ),
         ],
