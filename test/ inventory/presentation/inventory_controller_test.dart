@@ -95,7 +95,7 @@ void main() {
     when(() => inventoryRepository.getCategories()).thenAnswer(
       (_) => Stream.value(fakeCategories),
     );
-    when(() => inventoryRepository.getIngredients(any())).thenAnswer(
+    when(() => inventoryRepository.watchIngredients(any())).thenAnswer(
       (_) => Stream.value(fakeIngredients),
     );
     when(() => analyticsRepository.logEvent(any()))
@@ -130,7 +130,7 @@ void main() {
               (_) => Stream.value(fakeCategories),
             );
 
-            when(() => inventoryRepository.getIngredients(any())).thenAnswer(
+            when(() => inventoryRepository.watchIngredients(any())).thenAnswer(
               (_) => Stream.value(fakeIngredients),
             );
 
