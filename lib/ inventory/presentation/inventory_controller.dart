@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:rxdart/rxdart.dart';
@@ -101,7 +102,17 @@ class InventoryController extends Cubit<InventoryState> {
         }
         final results = await _inventoryRepository.searchIngredients(query);
         log("Results: $results");
-        emit(state.copyWith(ingredientsSuggested: results));
+        if (results.isEmpty && query.isNotEmpty) {
+          emit(state.copyWith(ingredientsSuggested: [
+            Ingredient(
+                name: query,
+                quantity: '1',
+                date: DateTime.now(),
+                id: EntityId(query))
+          ]));
+        } else {
+          emit(state.copyWith(ingredientsSuggested: results));
+        }
       },
     );
   }
@@ -118,6 +129,10 @@ class InventoryController extends Cubit<InventoryState> {
       final uid = _authUserService.currentUser!.uid;
       _kitchenInventoryRepository.addIngredient(uid, ingredient);
 
+      //get new ingredients loaded by user
+      final newIngredientsAdded =
+          await _kitchenInventoryRepository.getIngredientsAddedByUser(uid);
+      refreshIngredients(newIngredientsAdded);
       _analyticsRepository.logEvent(
         IngredientManuallyAddedEvent(),
       );
@@ -131,6 +146,17 @@ class InventoryController extends Cubit<InventoryState> {
       final uid = _authUserService.currentUser!.uid;
       _kitchenInventoryRepository.removeIngredient(
           uid: uid, ingredientId: ingredient.id!);
+
+      //refresh ingredients list
+      final ingredients = await _inventoryRepository
+          .getIngredients(state.categoryIdSelected ?? '');
+
+      List<Ingredient> filteredIngredients = ingredients.where((ingredient) {
+        return !state.ingredientsAddedByUser.any((addedIngredient) =>
+            addedIngredient.name.toLowerCase() ==
+            ingredient.name.toLowerCase());
+      }).toList();
+      emit(state.copyWith(ingredients: filteredIngredients));
     } catch (e) {
       //
     }
@@ -150,6 +176,15 @@ class InventoryController extends Cubit<InventoryState> {
     _searchController.add(query);
   }
 
+  void refreshIngredients(List<Ingredient> ingredients) {
+    List<Ingredient> filteredIngredients =
+        state.ingredients.where((ingredient) {
+      return !ingredients.any((addedIngredient) =>
+          addedIngredient.name.toLowerCase() == ingredient.name.toLowerCase());
+    }).toList();
+    emit(state.copyWith(ingredients: filteredIngredients));
+  }
+
   Future<void> loadCategories() async {
     _inventoryRepository.getCategories().listen(
       (categoriesFetched) {
@@ -164,9 +199,16 @@ class InventoryController extends Cubit<InventoryState> {
   }
 
   Future<void> loadIngredients(String categoryId) async {
-    _inventoryRepository.getIngredients(categoryId).listen(
+    _inventoryRepository.watchIngredients(categoryId).listen(
       (ingredientsFetched) {
-        emit(state.copyWith(ingredients: ingredientsFetched));
+        // Filtrer les ingrédients en comparant les id
+        List<Ingredient> filteredIngredients =
+            ingredientsFetched.where((ingredient) {
+          return !state.ingredientsAddedByUser.any((addedIngredient) =>
+              addedIngredient.name.toLowerCase() ==
+              ingredient.name.toLowerCase());
+        }).toList();
+        emit(state.copyWith(ingredients: filteredIngredients));
       },
     );
   }

@@ -331,7 +331,7 @@
     "@scanAiReceiptDescription": {
         "description": "Description of the AI-powered receipt scanning process with a note about potential errors"
     },
-    "scanAiReceiptDescription": "(We use AI to scan your receipt. AI can make mistakes, please verify and correct the data)",
+    "scanAiReceiptDescription": "(We’re using AI to extract informations from your ticket. Mistake can happen, please check and edit if necessary.)",
     "@addToKitchenInvontory": {
         "description": "Label for the action of adding an item to the kitchen inventory"
     },

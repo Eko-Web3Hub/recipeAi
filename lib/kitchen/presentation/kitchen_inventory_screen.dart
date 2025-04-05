@@ -354,7 +354,8 @@ class _IngredientItemState extends State<IngredientItem> {
             ),
             margin: const EdgeInsets.only(bottom: 10),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 11.5),
               // padding: const EdgeInsets.only(
               //   left: 10,
               //   right: 10,
@@ -368,6 +369,8 @@ class _IngredientItemState extends State<IngredientItem> {
                       height: 30,
                       child: TextFormField(
                         readOnly: widget.readOnly,
+                        style: GoogleFonts.poppins(
+                            fontSize: 11, fontWeight: FontWeight.w400),
                         controller: _nameController,
                         onChanged: (String name) {
                           if (widget.getIngredientName != null) {

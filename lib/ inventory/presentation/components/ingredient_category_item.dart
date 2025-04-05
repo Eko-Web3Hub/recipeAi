@@ -5,10 +5,9 @@ import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 class IngredientCategoryItem extends StatelessWidget {
   const IngredientCategoryItem(
       {super.key,
-      required this.isSelected,
+    
       required this.onTap,
       required this.ingredient});
-  final bool isSelected;
   final Ingredient ingredient;
 
   final void Function() onTap;
@@ -18,25 +17,20 @@ class IngredientCategoryItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11.5),
+        // margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-            color: isSelected ? Color(0xFFFFCE80) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            color:
+                Colors.white.withValues(alpha: 0.35),
+            borderRadius: BorderRadius.circular(10),
             border:
-                isSelected ? null : Border.all(color: const Color(0xFFFFBA4D))),
-        child: Center(
-          child: Row(
-            children: [
-              Text(
-                ingredient.name,
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
-                    fontSize: 11),
-              ),
-            ],
-          ),
+                Border.all(color: const Color(0xFFFFBA4D))),
+        child: Text(
+          ingredient.name,
+          style: GoogleFonts.poppins(
+              color: Colors.black,
+              fontWeight:  FontWeight.w400,
+              fontSize: 11),
         ),
       ),
     );

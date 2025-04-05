@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/%20inventory/domain/repositories/inventory_repository.dart';
 import 'package:recipe_ai/%20inventory/presentation/components/category_item.dart';
 import 'package:recipe_ai/%20inventory/presentation/components/ingredient_category_item.dart';
+import 'package:recipe_ai/%20inventory/presentation/components/ingredient_selected_item.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
@@ -18,7 +19,6 @@ import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_reposito
 import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
-import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -147,9 +147,7 @@ class InventoryScreen extends StatelessWidget {
                                               options.elementAt(index);
 
                                           return IngredientCategoryItem(
-                                              isSelected: controller
-                                                  .isIngredientSelected(
-                                                      ingredient),
+                                            
                                               onTap: () {},
                                               ingredient: ingredient);
                                         },
@@ -263,7 +261,7 @@ class InventoryScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final ingredient =
                                     state.ingredientsSuggested[index];
-                                return IngredientCategoryItem(
+                                return IngredientSelectedItem(
                                     isSelected: controller
                                         .isIngredientSelected(ingredient),
                                     onTap: () {
@@ -326,20 +324,12 @@ class InventoryScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final ingredient =
                                     state.ingredientsAddedByUser[index];
-                                return IngredientDismissedWidget(
-                                  onDismissed: (dismissDirection) {
-                                    controller.removeIngredient(ingredient);
-                                    // Hide the current snackbar
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    showSnackBar(
-                                        context, appTexts.ingredientRemoved);
-                                  },
-                                  child: IngredientCategoryItem(
-                                      isSelected: true,
-                                      onTap: () {},
-                                      ingredient: ingredient),
-                                );
+                                return IngredientSelectedItem(
+                                    isSelected: true,
+                                    onTap: () {
+                                      controller.removeIngredient(ingredient);
+                                    },
+                                    ingredient: ingredient);
                               },
                               itemCount: state.ingredientsAddedByUser.length,
                             ),
@@ -369,26 +359,52 @@ class InventoryScreen extends StatelessWidget {
                       ),
                     ),
                     SliverPadding(
-                      padding: const EdgeInsets.only(
-                          bottom: 40, left: 10, right: 10),
-                      sliver: SliverList.builder(
-                        itemBuilder: (context, index) {
-                          final ingredient = state.ingredients[index];
-                          return IngredientCategoryItem(
-                            isSelected:
-                                controller.isIngredientSelected(ingredient),
-                            onTap: () {
-                              if (!controller
-                                  .isIngredientSelected(ingredient)) {
-                                controller.addIngredient(ingredient);
-                              }
-                            },
-                            ingredient: ingredient,
-                          );
-                        },
-                        itemCount: state.ingredients.length,
-                      ),
-                    )
+                        padding: const EdgeInsets.only(
+                            bottom: 40, left: 10, right: 10),
+                        sliver: SliverToBoxAdapter(
+                          child: Wrap(
+                            direction: Axis.horizontal,
+                            spacing: 10,
+                            alignment: WrapAlignment.start,
+                            crossAxisAlignment: WrapCrossAlignment.start,
+                            runSpacing: 20,
+                            children: List.generate(
+                              state.ingredients.length,
+                              (index) {
+                                return IngredientCategoryItem(
+                                
+                                  onTap: () {
+                                    if (!controller.isIngredientSelected(
+                                        state.ingredients[index])) {
+                                      controller.addIngredient(
+                                          state.ingredients[index]);
+                                    }
+                                  },
+                                  ingredient: state.ingredients[index],
+                                );
+                              },
+                            ),
+                          ),
+                        )
+
+                        // SliverList.builder(
+                        //   itemBuilder: (context, index) {
+                        //     final ingredient = state.ingredients[index];
+                        //     return IngredientCategoryItem(
+                        //       isSelected:
+                        //           controller.isIngredientSelected(ingredient),
+                        //       onTap: () {
+                        //         if (!controller
+                        //             .isIngredientSelected(ingredient)) {
+                        //           controller.addIngredient(ingredient);
+                        //         }
+                        //       },
+                        //       ingredient: ingredient,
+                        //     );
+                        //   },
+                        //   itemCount: state.ingredients.length,
+                        // ),
+                        )
                   ],
                 ),
               ),

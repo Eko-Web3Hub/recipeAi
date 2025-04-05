@@ -32,7 +32,9 @@ class IngredientDismissedWidget extends StatelessWidget {
       onDismissed: onDismissed,
       direction: DismissDirection.endToStart,
       background: Container(
-        height: 20,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.only(bottom: 10),
+        //height: 20,
         decoration: BoxDecoration(
           color: Colors.red,
           borderRadius: BorderRadius.circular(10),
@@ -147,12 +149,12 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                           },
                           ingredient: ingredients[index],
                           getIngredientName: (name) {
-                             if (name != null) {
+                            if (name != null) {
                               context
                                   .read<ReceiptTicketScanResultController>()
                                   .updateIngredientName(
                                     index,
-                                   name,
+                                    name,
                                   );
                             }
                           },

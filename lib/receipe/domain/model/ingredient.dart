@@ -29,5 +29,5 @@ class Ingredient extends Equatable {
   }
 
   @override
-  List<Object?> get props => [name, quantity];
+  List<Object?> get props => [id,name, quantity];
 }

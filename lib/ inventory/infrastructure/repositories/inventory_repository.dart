@@ -32,7 +32,7 @@ class InventoryRepository implements IInventoryRepository {
   }
 
   @override
-  Stream<List<Ingredient>> getIngredients(String categoryId) {
+  Stream<List<Ingredient>> watchIngredients(String categoryId) {
     return _firestore
         .collection(categoriesCollections)
         .doc(categoryId)
@@ -68,5 +68,24 @@ class InventoryRepository implements IInventoryRepository {
       },
     ).toList();
     return results;
+  }
+
+  @override
+  Future<List<Ingredient>> getIngredients(String categoryId) {
+    return _firestore
+        .collection(categoriesCollections)
+        .doc(categoryId)
+        .collection(ingredientsCollections)
+        .orderBy('name')
+        .get()
+        .then(
+      (snapshot) {
+        return snapshot.docs
+            .map<Ingredient>(
+              (doc) => IngredientSerialization.fromJson(doc.data()),
+            )
+            .toList();
+      },
+    );
   }
 }
