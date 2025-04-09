@@ -30,7 +30,7 @@ class NavigationItem extends Equatable {
 
 const List<NavigationItem> _navigationsItems = [
   NavigationItem(icon: "home"),
-  NavigationItem(icon: "union"),
+  NavigationItem(icon: "favorite_outlined"),
   NavigationItem(icon: "list_add"),
   NavigationItem(icon: "profile"),
 ];
