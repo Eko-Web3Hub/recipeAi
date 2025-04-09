@@ -98,6 +98,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               height: 70,
               color: Colors.white,
               shape: const CircularNotchedRectangle(),
+              surfaceTintColor: Colors.transparent,
               notchMargin: 8,
               child: Row(
                 children: [
