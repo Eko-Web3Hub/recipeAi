@@ -155,6 +155,34 @@ class ProfileScreen extends StatelessWidget {
                       context.push("/profil-screen/update-user-preference");
                     },
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        appTexts.changeLanguage,
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                      ),
+                      DropdownButton<AppLanguageItem>(
+                        items: appLanguagesItem
+                            .map((item) => DropdownMenuItem<AppLanguageItem>(
+                                  value: item,
+                                  child: Text(
+                                    item.label,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (newItem) {},
+                      ),
+                    ],
+                  ),
                   _TextButton(
                     text: appTexts.sendABug,
                     textColor: null,
@@ -438,3 +466,18 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
     );
   }
 }
+
+class AppLanguageItem {
+  final String label;
+  final String key;
+
+  AppLanguageItem({
+    required this.label,
+    required this.key,
+  });
+}
+
+final appLanguagesItem = [
+  AppLanguageItem(label: 'English', key: 'en'),
+  AppLanguageItem(label: 'Français', key: 'fr'),
+];

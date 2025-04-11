@@ -54,6 +54,7 @@ dependencies:
   collection: ^1.19.0
   device_info_plus: ^11.3.0
   package_info_plus: ^8.3.0
+  spec: ^0.2.3
   
   
 

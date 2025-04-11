@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -107,7 +109,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                             final content = _onBoardingFr[index];
                             final widthScreen =
                                 MediaQuery.of(context).size.width;
-    
+
                             return Stack(
                               clipBehavior: Clip.none,
                               children: [
@@ -196,6 +198,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         child: MainBtn(
                           text: appTexts.next,
                           onPressed: () {
+                            log(controller.page.toString());
                             if (controller.page == _onBoardingFr.length - 1) {
                               context
                                   .read<OnboardingController>()
