@@ -17,7 +17,6 @@ import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/user_preferences/presentation/user_preference_question_widget.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
