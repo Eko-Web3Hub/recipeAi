@@ -387,16 +387,14 @@ class _HeadLeftSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         const _UserTitleWidget(),
         const Gap(5.0),
-        Text(
-          appTexts.letCreateMealToday,
+        TranslatedText(
+          textSelector: (lang) => lang.letCreateMealToday,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             fontSize: 12,
@@ -413,20 +411,19 @@ class _UserTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return StreamBuilder<UserPersonnalInfo?>(
       stream: di<IUserPersonnalInfoService>().watch(),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
-          return Text(
-            '${appTexts.hello} ${capitalizeFirtLetter(snapshot.data!.name)}',
+          return TranslatedText(
+            textSelector: (lang) =>
+                '${lang.hello} ${capitalizeFirtLetter(snapshot.data!.name)}',
             style: Theme.of(context).textTheme.displayLarge,
           );
         }
 
-        return Text(
-          '${appTexts.hello} !',
+        return TranslatedText(
+          textSelector: (lang) => lang.hello,
           style: Theme.of(context).textTheme.displayLarge,
         );
       },
