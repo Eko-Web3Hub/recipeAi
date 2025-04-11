@@ -22,6 +22,24 @@ class UserAccountMetaData extends Equatable {
     );
   }
 
+  UserAccountMetaData changeLanguage(
+    AppLanguage appLanguage,
+  ) {
+    assert(appLanguage != this.appLanguage);
+
+    return _copyWith(
+      appLanguage: appLanguage,
+    );
+  }
+
+  UserAccountMetaData _copyWith({
+    AppLanguage? appLanguage,
+  }) {
+    return UserAccountMetaData(
+      appLanguage: appLanguage ?? this.appLanguage,
+    );
+  }
+
   @override
   List<Object?> get props => [appLanguage];
 }

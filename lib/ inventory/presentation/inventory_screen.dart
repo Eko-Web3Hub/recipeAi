@@ -15,6 +15,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
@@ -47,7 +48,6 @@ class InventoryScreen extends StatelessWidget {
   }
 
   void _showBottomSheet(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
     final controller = context.read<ReceiptTicketScanController>();
     showModalBottomSheet(
       context: context,
@@ -60,8 +60,8 @@ class InventoryScreen extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: Text(
-                  appTexts.selectPicture,
+                title: TranslatedText(
+                  textSelector: (lang) => lang.selectPicture,
                   style: smallTextStyle.copyWith(
                     color: Colors.black,
                   ),
@@ -73,8 +73,8 @@ class InventoryScreen extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: Text(
-                  appTexts.takePhoto,
+                title: TranslatedText(
+                  textSelector: (lang) => lang.takePhoto,
                   style: smallTextStyle.copyWith(
                     color: Colors.black,
                   ),
@@ -95,7 +95,6 @@ class InventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
     return BlocProvider(
       create: (context) => InventoryController(
         di<IInventoryRepository>(),
@@ -106,13 +105,14 @@ class InventoryScreen extends StatelessWidget {
       child: BlocBuilder<InventoryController, InventoryState>(
         builder: (context, state) {
           final controller = context.read<InventoryController>();
+
           return SafeArea(
             child: Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
-                title: Text(
-                  appTexts.yourKitchenInventory,
+                title: TranslatedText(
+                  textSelector: (lang) => lang.yourKitchenInventory,
                   style: mediumTextStyle,
                 ),
               ),
@@ -123,125 +123,142 @@ class InventoryScreen extends StatelessWidget {
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: RawAutocomplete<Ingredient>(
-                              displayStringForOption: (option) {
-                                return option.name;
-                              },
-                              optionsBuilder: (textEditingValue) {
-                                return [];
-                              },
-                              onSelected: (ingredient) {},
-                              optionsViewBuilder:
-                                  (context, onSelected, options) {
-                                return Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Material(
-                                    child: SizedBox(
-                                      width: 100.w,
-                                      child: ListView.builder(
-                                        itemBuilder: (context, index) {
-                                          final ingredient =
-                                              options.elementAt(index);
+                      child: Builder(builder: (context) {
+                        return ListenableBuilder(
+                            listenable: di<TranslationController>(),
+                            builder: (context, _) {
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    child: RawAutocomplete<Ingredient>(
+                                      displayStringForOption: (option) {
+                                        return option.name;
+                                      },
+                                      optionsBuilder: (textEditingValue) {
+                                        return [];
+                                      },
+                                      onSelected: (ingredient) {},
+                                      optionsViewBuilder:
+                                          (context, onSelected, options) {
+                                        return Align(
+                                          alignment: Alignment.topCenter,
+                                          child: Material(
+                                            child: SizedBox(
+                                              width: 100.w,
+                                              child: ListView.builder(
+                                                itemBuilder: (context, index) {
+                                                  final ingredient =
+                                                      options.elementAt(index);
 
-                                          return IngredientCategoryItem(
-                                            
-                                              onTap: () {},
-                                              ingredient: ingredient);
-                                        },
-                                        itemCount: options.length,
-                                      ),
+                                                  return IngredientCategoryItem(
+                                                      onTap: () {},
+                                                      ingredient: ingredient);
+                                                },
+                                                itemCount: options.length,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      fieldViewBuilder: (context,
+                                          textEditingController,
+                                          focusNode,
+                                          onFieldSubmitted) {
+                                        return CustomTextFormField(
+                                          hintText: di<TranslationController>()
+                                              .currentLanguage
+                                              .searchForIngredients,
+                                          inputType: InputType.text,
+                                          onChange: (value) {
+                                            controller.searchIngredients(
+                                                value.toLowerCase());
+                                          },
+                                          validator: (_) {
+                                            return;
+                                          },
+                                          controller: queryController,
+                                        );
+                                      },
                                     ),
                                   ),
-                                );
-                              },
-                              fieldViewBuilder: (context, textEditingController,
-                                  focusNode, onFieldSubmitted) {
-                                return CustomTextFormField(
-                                  hintText: appTexts.searchForIngredients,
-                                  inputType: InputType.text,
-                                  onChange: (value) {
-                                    controller
-                                        .searchIngredients(value.toLowerCase());
-                                  },
-                                  validator: (_) {
-                                    return;
-                                  },
-                                  controller: queryController,
-                                );
-                              },
-                            ),
-                          ),
-                          const Gap(11),
-                          BlocProvider(
-                            create: (context) => ReceiptTicketScanController(
-                              di<IReceiptTicketScanRepository>(),
-                              di<IAnalyticsRepository>(),
-                              di<IAuthUserService>(),
-                            ),
-                            child: BlocConsumer<ReceiptTicketScanController,
-                                ReceiptTicketScanState>(
-                              listener: (context, state) {
-                                if (state is ReceiptTicketScanLoaded) {
-                                  //A retravailler
-                                  context.push(
-                                    "/home/kitchen-inventory/receipt-ticket-scan-result",
-                                    extra: {
-                                      "ingredients": (state)
-                                          .receiptTicket
-                                          .products
-                                          .map(
-                                            (product) => Ingredient(
-                                              name: product.name,
-                                              quantity: product.quantity,
-                                              date: null,
-                                              id: null,
-                                            ),
-                                          )
-                                          .toList(),
-                                    },
-                                  );
-                                } else if (state is ReceiptTicketScanError) {
-                                  showSnackBar(
-                                    context,
-                                    appTexts.somethingWentWrong,
-                                    isError: true,
-                                  );
-                                }
-                              },
-                              builder: (context, state) {
-                                return GestureDetector(
-                                  onTap: state is! ReceiptTicketScanLoading
-                                      ? () {
-                                          _showBottomSheet(context);
+                                  const Gap(11),
+                                  BlocProvider(
+                                    create: (context) =>
+                                        ReceiptTicketScanController(
+                                      di<IReceiptTicketScanRepository>(),
+                                      di<IAnalyticsRepository>(),
+                                      di<IAuthUserService>(),
+                                    ),
+                                    child: BlocConsumer<
+                                        ReceiptTicketScanController,
+                                        ReceiptTicketScanState>(
+                                      listener: (context, state) {
+                                        if (state is ReceiptTicketScanLoaded) {
+                                          //A retravailler
+                                          context.push(
+                                            "/home/kitchen-inventory/receipt-ticket-scan-result",
+                                            extra: {
+                                              "ingredients": (state)
+                                                  .receiptTicket
+                                                  .products
+                                                  .map(
+                                                    (product) => Ingredient(
+                                                      name: product.name,
+                                                      quantity:
+                                                          product.quantity,
+                                                      date: null,
+                                                      id: null,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            },
+                                          );
+                                        } else if (state
+                                            is ReceiptTicketScanError) {
+                                          showSnackBar(
+                                            context,
+                                            di<TranslationController>()
+                                                .currentLanguage
+                                                .somethingWentWrong,
+                                            isError: true,
+                                          );
                                         }
-                                      : null,
-                                  child: state is ReceiptTicketScanLoading
-                                      ? Center(
-                                          child: CustomProgress(
-                                            color: Colors.black,
-                                          ),
-                                        )
-                                      : Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                          child: Icon(
-                                            Icons.camera_alt_rounded,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                );
-                              },
-                            ),
-                          )
-                        ],
-                      ),
+                                      },
+                                      builder: (context, state) {
+                                        return GestureDetector(
+                                          onTap:
+                                              state is! ReceiptTicketScanLoading
+                                                  ? () {
+                                                      _showBottomSheet(context);
+                                                    }
+                                                  : null,
+                                          child: state
+                                                  is ReceiptTicketScanLoading
+                                              ? Center(
+                                                  child: CustomProgress(
+                                                    color: Colors.black,
+                                                  ),
+                                                )
+                                              : Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                  child: Icon(
+                                                    Icons.camera_alt_rounded,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      }),
                     ),
                     if (state.ingredientsSuggested.isNotEmpty) ...[
                       SliverPadding(
@@ -288,8 +305,8 @@ class InventoryScreen extends StatelessWidget {
                     SliverPadding(
                       padding: const EdgeInsets.only(bottom: 10),
                       sliver: SliverToBoxAdapter(
-                        child: Text(
-                          appTexts.ingredients,
+                        child: TranslatedText(
+                          textSelector: (lang) => lang.ingredients,
                           style: normalTextStyle,
                         ),
                       ),
@@ -307,11 +324,12 @@ class InventoryScreen extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   ),
                                   const Gap(10),
-                                  Text(
-                                    appTexts.fillKitchen,
+                                  TranslatedText(
+                                    textSelector: (lang) => lang.fillKitchen,
                                     style: GoogleFonts.poppins(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w400),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                   const Gap(30),
                                 ],
@@ -372,7 +390,6 @@ class InventoryScreen extends StatelessWidget {
                               state.ingredients.length,
                               (index) {
                                 return IngredientCategoryItem(
-                                
                                   onTap: () {
                                     if (!controller.isIngredientSelected(
                                         state.ingredients[index])) {
@@ -385,26 +402,7 @@ class InventoryScreen extends StatelessWidget {
                               },
                             ),
                           ),
-                        )
-
-                        // SliverList.builder(
-                        //   itemBuilder: (context, index) {
-                        //     final ingredient = state.ingredients[index];
-                        //     return IngredientCategoryItem(
-                        //       isSelected:
-                        //           controller.isIngredientSelected(ingredient),
-                        //       onTap: () {
-                        //         if (!controller
-                        //             .isIngredientSelected(ingredient)) {
-                        //           controller.addIngredient(ingredient);
-                        //         }
-                        //       },
-                        //       ingredient: ingredient,
-                        //     );
-                        //   },
-                        //   itemCount: state.ingredients.length,
-                        // ),
-                        )
+                        ))
                   ],
                 ),
               ),
