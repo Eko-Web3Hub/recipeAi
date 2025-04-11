@@ -21,7 +21,7 @@ class OnboardingController extends Cubit<OnboardingState?> {
   final ILocalStorageRepository _prefs;
   final IAnalyticsRepository _analyticsRepository;
 
-  OnboardingController(this._prefs, this._analyticsRepository) : super(null) {}
+  OnboardingController(this._prefs, this._analyticsRepository) : super(null);
 
   Future<void> completeOnboarding() async {
     _analyticsRepository.logEvent(
