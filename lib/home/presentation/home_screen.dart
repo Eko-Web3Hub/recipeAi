@@ -16,6 +16,7 @@ import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
+import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
@@ -76,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const Gap(15),
-                Text(
-                  appTexts.quickRecipes,
+                TranslatedText(
+                  textSelector: (lang) => lang.quickRecipes,
                   style: Theme.of(context)
                       .textTheme
                       .displayLarge
