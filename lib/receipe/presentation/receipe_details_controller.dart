@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/safe_emit.dart';
@@ -32,6 +34,8 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     this.receipeId,
     this.seconds,
     this._userRecipeTranslateService,
+    this._authUserService,
+    this._userAccountMetaDataRepository,
   ) : super(
           const ReceipeDetailsState.loading(),
         ) {
@@ -41,6 +45,8 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   ReceipeDetailsController.fromReceipe(
     Receipe receipe,
     this._userRecipeTranslateService,
+    this._authUserService,
+    this._userAccountMetaDataRepository,
   ) : super(
           ReceipeDetailsState.loaded(receipe),
         ) {
@@ -49,6 +55,33 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
 
   void _load(Receipe recipe) async {
     final recipeName = convertRecipeNameToFirestoreId(recipe.name);
+
+    _subscription = _userAccountMetaDataRepository
+        .watchUserAccount(_authUserService.currentUser!.uid)
+        .listen((userAccount) async {
+      if (userAccount != null) {
+        final recipeId = convertRecipeNameToFirestoreId(recipe.name);
+        final recipeTranslated =
+            await _userRecipeTranslateService.getTranslatedRecipe(
+          userAccount.appLanguage,
+          EntityId(recipeId),
+        );
+        if (recipeTranslated == null) {
+          safeEmit(
+            ReceipeDetailsState.loaded(recipe),
+          );
+          return;
+        }
+
+        safeEmit(
+          ReceipeDetailsState.loaded(
+            recipeTranslated,
+          ),
+        );
+      } else {
+        ReceipeDetailsState.loaded(recipe);
+      }
+    });
 
     _subscription = _userRecipeTranslateService
         .watchTranslatedRecipe(
@@ -76,5 +109,7 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   int? seconds;
   EntityId? receipeId;
   final UserRecipeTranslateService _userRecipeTranslateService;
-  StreamSubscription<Receipe?>? _subscription;
+  final IAuthUserService _authUserService;
+  final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
+  StreamSubscription? _subscription;
 }

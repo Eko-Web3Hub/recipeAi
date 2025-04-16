@@ -8,7 +8,8 @@ abstract class IUserReceipeRepository {
   Future<UserReceipe?> getReceipesBasedOnUserPreferencesFromFirestore(
     EntityId uid,
   );
-  Future<List<Receipe>> getReceipesBasedOnUserPreferencesFromApi(EntityId uid);
+  Future<TranslatedRecipe> getReceipesBasedOnUserPreferencesFromApi(
+      EntityId uid);
 
   Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(File file);
 

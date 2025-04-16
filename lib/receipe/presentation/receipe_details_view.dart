@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
@@ -16,6 +17,7 @@ import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -99,10 +101,14 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
               widget.receipeId,
               null,
               di<UserRecipeTranslateService>(),
+              di<IAuthUserService>(),
+              di<IUserAccountMetaDataRepository>(),
             )
           : ReceipeDetailsController.fromReceipe(
               widget.receipe!,
               di<UserRecipeTranslateService>(),
+              di<IAuthUserService>(),
+              di<IUserAccountMetaDataRepository>(),
             ),
       child: Builder(builder: (context) {
         return Scaffold(

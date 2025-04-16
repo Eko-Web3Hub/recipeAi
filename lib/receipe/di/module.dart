@@ -4,12 +4,12 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
-import 'package:recipe_ai/receipe/application/update_user_receipe_usecase.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart';
 import 'package:recipe_ai/receipe/infrastructure/receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/user_recipe_translate_repository.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 
 class ReceipeModule implements IDiModule {
   const ReceipeModule();
@@ -32,12 +32,8 @@ class ReceipeModule implements IDiModule {
       () => RetrieveReceipeFromApiOneTimePerDayUsecase(
         di<IUserReceipeRepository>(),
         di<IAuthUserService>(),
-      ),
-    );
-    di.registerFactory<UpdateUserReceipeUsecase>(
-      () => UpdateUserReceipeUsecase(
-        di<IUserReceipeRepository>(),
-        di<IAuthUserService>(),
+        di<IUserRecipeTranslateRepository>(),
+        di<IUserAccountMetaDataRepository>(),
       ),
     );
     di.registerFactory<UserRecipeTranslateService>(

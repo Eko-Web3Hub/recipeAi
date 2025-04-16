@@ -29,4 +29,18 @@ class FirestoreUserAccountMetaRepository
           userAccount.toJson(),
         );
   }
+
+  @override
+  Stream<UserAccountMetaData?> watchUserAccount(EntityId uid) {
+    return _firestore
+        .collection(_collectionName)
+        .doc(uid.value)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        return UserAccountMetaData.fromJson(snapshot.data()!);
+      }
+      return null;
+    });
+  }
 }

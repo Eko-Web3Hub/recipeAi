@@ -3,6 +3,10 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
+import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/functions.dart';
 
 class RetrieveReceipeException implements Exception {
   const RetrieveReceipeException();
@@ -11,10 +15,14 @@ class RetrieveReceipeException implements Exception {
 class RetrieveReceipeFromApiOneTimePerDayUsecase {
   final IUserReceipeRepository _userReceipeRepository;
   final IAuthUserService _authUserService;
+  final IUserRecipeTranslateRepository _userRecipeTranslateRepository;
+  final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
 
   const RetrieveReceipeFromApiOneTimePerDayUsecase(
     this._userReceipeRepository,
     this._authUserService,
+    this._userRecipeTranslateRepository,
+    this._userAccountMetaDataRepository,
   );
 
   Future<List<Receipe>> retrieve(DateTime now) async {
@@ -25,7 +33,6 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
       if (currentUserReceipe == null) {
         final receipes = await _retrieveAndSave(uid, now);
-        _userReceipeRepository.translateUserReceipe(uid, "French");
 
         return receipes;
       }
@@ -34,7 +41,6 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
       if (now.difference(lastUpdatedDate).inDays >= 1) {
         final receipes = await _retrieveAndSave(uid, now);
-        _userReceipeRepository.translateUserReceipe(uid, "French");
 
         return receipes;
       } else {
@@ -45,18 +51,57 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
     }
   }
 
-  Future<List<Receipe>> _retrieveAndSave(EntityId uid, DateTime now) async {
+  Future<List<Receipe>> _retrieveAndSave(
+    EntityId uid,
+    DateTime now,
+  ) async {
     final receipes = await _userReceipeRepository
         .getReceipesBasedOnUserPreferencesFromApi(uid);
+    final userSetting =
+        await _userAccountMetaDataRepository.getUserAccount(uid);
+    final defaultLanguage = userSetting?.appLanguage ?? AppLanguage.en;
+    final recipesEnWithFirestoreId = receipes.recipesEn
+        .map(
+          (e) => e.assignFirestoreRecipeId(
+            EntityId(
+              convertRecipeNameToFirestoreId(e.name),
+            ),
+          ),
+        )
+        .toList();
 
     _userReceipeRepository.save(
       uid,
       UserReceipe(
-        receipes: receipes,
+        receipes: recipesEnWithFirestoreId,
         lastUpdatedDate: now,
       ),
     );
+    final recipesWithFirestoreId = <Receipe>[];
 
-    return receipes;
+    for (var i = 0; i < receipes.recipesEn.length; i++) {
+      final recipe = receipes.recipesFr[i].assignFirestoreRecipeId(
+        EntityId(
+          convertRecipeNameToFirestoreId(receipes.recipesEn[i].name),
+        ),
+      );
+      recipesWithFirestoreId.add(recipe);
+    }
+
+    _userRecipeTranslateRepository.saveTranslatedRecipes(
+      uid: uid,
+      language: AppLanguage.fr,
+      receipes: recipesWithFirestoreId,
+    );
+
+    _userRecipeTranslateRepository.saveTranslatedRecipes(
+      uid: uid,
+      language: AppLanguage.en,
+      receipes: recipesEnWithFirestoreId,
+    );
+
+    return defaultLanguage == AppLanguage.en
+        ? receipes.recipesEn
+        : receipes.recipesFr;
   }
 }
