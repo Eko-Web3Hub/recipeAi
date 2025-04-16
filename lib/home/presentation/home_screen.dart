@@ -20,6 +20,7 @@ import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
@@ -274,6 +275,8 @@ class ReceipeItem extends StatelessWidget {
                 create: (context) => RecipeMetadataCardLoader(
                   receipe,
                   di<UserRecipeTranslateService>(),
+                  di<IUserAccountMetaDataRepository>(),
+                  di<IAuthUserService>(),
                 ),
                 child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
                     builder: (context, receipeTranslateState) {
