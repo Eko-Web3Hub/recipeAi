@@ -419,5 +419,9 @@
     "sendABug": "Send a bug",
     "@sendABug": {
         "description": "Label for sending a bug"
+    },
+    "changeLanguage": "Change Language",
+    "@changeLanguage": {
+        "description": "Label for changing the language"
     }
 }

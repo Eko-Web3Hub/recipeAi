@@ -30,7 +30,7 @@ class NavigationItem extends Equatable {
 
 const List<NavigationItem> _navigationsItems = [
   NavigationItem(icon: "home"),
-  NavigationItem(icon: "union"),
+  NavigationItem(icon: "favorite_outlined"),
   NavigationItem(icon: "list_add"),
   NavigationItem(icon: "profile"),
 ];
@@ -98,6 +98,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               height: 70,
               color: Colors.white,
               shape: const CircularNotchedRectangle(),
+              surfaceTintColor: Colors.transparent,
               notchMargin: 8,
               child: Row(
                 children: [

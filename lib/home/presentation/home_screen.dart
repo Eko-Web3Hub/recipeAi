@@ -16,9 +16,11 @@ import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
+import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
@@ -76,8 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const Gap(15),
-                Text(
-                  appTexts.quickRecipes,
+                TranslatedText(
+                  textSelector: (lang) => lang.quickRecipes,
                   style: Theme.of(context)
                       .textTheme
                       .displayLarge
@@ -273,6 +275,8 @@ class ReceipeItem extends StatelessWidget {
                 create: (context) => RecipeMetadataCardLoader(
                   receipe,
                   di<UserRecipeTranslateService>(),
+                  di<IUserAccountMetaDataRepository>(),
+                  di<IAuthUserService>(),
                 ),
                 child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
                     builder: (context, receipeTranslateState) {
@@ -386,16 +390,14 @@ class _HeadLeftSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         const _UserTitleWidget(),
         const Gap(5.0),
-        Text(
-          appTexts.letCreateMealToday,
+        TranslatedText(
+          textSelector: (lang) => lang.letCreateMealToday,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             fontSize: 12,
@@ -412,20 +414,19 @@ class _UserTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return StreamBuilder<UserPersonnalInfo?>(
       stream: di<IUserPersonnalInfoService>().watch(),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
-          return Text(
-            '${appTexts.hello} ${capitalizeFirtLetter(snapshot.data!.name)}',
+          return TranslatedText(
+            textSelector: (lang) =>
+                '${lang.hello} ${capitalizeFirtLetter(snapshot.data!.name)}',
             style: Theme.of(context).textTheme.displayLarge,
           );
         }
 
-        return Text(
-          '${appTexts.hello} !',
+        return TranslatedText(
+          textSelector: (lang) => lang.hello,
           style: Theme.of(context).textTheme.displayLarge,
         );
       },

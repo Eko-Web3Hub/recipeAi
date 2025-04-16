@@ -1,3 +1,4 @@
+import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
@@ -20,6 +21,9 @@ abstract class ReceipeSerialization {
           .toList(),
       averageTime: json["averageTime"],
       totalCalories: json["totalCalories"],
+      firestoreRecipeId: json["firestoreRecipeId"] != null
+          ? EntityId(json["firestoreRecipeId"])
+          : null,
     );
   }
 
@@ -38,6 +42,7 @@ abstract class ReceipeSerialization {
           .toList(),
       "averageTime": receipe.averageTime,
       "totalCalories": receipe.totalCalories,
+      "firestoreRecipeId": receipe.firestoreRecipeId?.value,
     };
   }
 }

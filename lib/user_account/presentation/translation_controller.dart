@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/user_account/domain/models/user_account_meta_data.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-class TranslationController {
+class TranslationController extends ChangeNotifier {
   TranslationController(
     this._languages,
     this.defaultLanguage,
@@ -21,11 +22,11 @@ class TranslationController {
     }
 
     final uid = _authUserService.currentUser!.uid;
-    _userAccountMetaData =
+    final userAccountMetaData =
         await _userAccountMetaDataRepository.getUserAccount(uid);
 
-    if (_userAccountMetaData != null) {
-      _currentLanguage = _userAccountMetaData!.appLanguage;
+    if (userAccountMetaData != null) {
+      _currentLanguage = userAccountMetaData.appLanguage;
     }
 
     _userAccountMetaDataRepository.save(
@@ -34,11 +35,32 @@ class TranslationController {
     );
   }
 
+  Future<void> changeLanguage(String appLanguageKey) async {
+    if (currentLanguageEnum.name == appLanguageKey) {
+      return;
+    }
+
+    _currentLanguage = AppLanguage.values
+        .firstWhere((element) => element.name == appLanguageKey);
+
+    final currentUserAccountMetaData = await _userAccountMetaDataRepository
+        .getUserAccount(_authUserService.currentUser!.uid);
+    final userAccountMetadataUpdated =
+        currentUserAccountMetaData!.changeLanguage(
+      _currentLanguage,
+    );
+    _userAccountMetaDataRepository.save(
+      _authUserService.currentUser!.uid,
+      userAccountMetadataUpdated,
+    );
+
+    notifyListeners();
+  }
+
   AppLocalizations get currentLanguage => _languages[_currentLanguage]!;
 
   AppLanguage get currentLanguageEnum => _currentLanguage;
 
-  UserAccountMetaData? _userAccountMetaData;
   late AppLanguage _currentLanguage;
   final Map<AppLanguage, AppLocalizations> _languages;
   final AppLanguage defaultLanguage;

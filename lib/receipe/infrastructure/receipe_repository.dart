@@ -7,13 +7,13 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
-import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_api_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/user_receipe_serialization.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserReceipeRepository implements IUserReceipeRepository {
-  static const String baseUrl = "$baseApiUrl/gen-receipe-with-user-preference";
+  static const String baseUrl =
+      "$baseApiUrl/v2/gen-receipe-with-user-preference";
   static const String kitchenInventoryCollection = "KitchenInventory";
   static const String receipesCollection = "receipes";
 
@@ -25,20 +25,14 @@ class UserReceipeRepository implements IUserReceipeRepository {
   final Dio _dio;
 
   @override
-  Future<List<Receipe>> getReceipesBasedOnUserPreferencesFromApi(
+  Future<TranslatedRecipe> getReceipesBasedOnUserPreferencesFromApi(
       EntityId uid) async {
     final apiRoute = "$baseUrl/${uid.value}";
     final response = await _dio.get(apiRoute);
     log(response.toString());
     final json = response.data as Map<String, dynamic>;
-    final results = json["receipes"] as List;
-    return results
-        .map<Receipe>(
-          (receipe) => ReceipeApiSerialization.fromJson(receipe),
-        )
-        .where((receipe) =>
-            receipe.steps.isNotEmpty && receipe.ingredients.isNotEmpty)
-        .toList();
+
+    return TranslatedRecipe.fromJson(json);
   }
 
   @override

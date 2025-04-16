@@ -43,8 +43,15 @@ void _delectionSuccess(BuildContext context) {
   );
 }
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late AppLanguageItem _currentAppLanguageItem;
 
   Future<bool?> _showConfirmationDialog(BuildContext context) {
     return showDialog<bool>(
@@ -79,6 +86,16 @@ class ProfileScreen extends StatelessWidget {
     final uri = Uri.parse(url);
 
     await launchUrl(uri);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _currentAppLanguageItem = appLanguagesItem.firstWhere(
+      (item) =>
+          item.key == di<TranslationController>().currentLanguageEnum.name,
+    );
   }
 
   @override
@@ -154,6 +171,46 @@ class ProfileScreen extends StatelessWidget {
                     onPressed: () {
                       context.push("/profil-screen/update-user-preference");
                     },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          appTexts.changeLanguage,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                        DropdownButton<AppLanguageItem>(
+                          value: _currentAppLanguageItem,
+                          items: appLanguagesItem
+                              .map((item) => DropdownMenuItem<AppLanguageItem>(
+                                    value: item,
+                                    child: Text(
+                                      item.label,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          onChanged: (newItem) {
+                            if (newItem != null) {
+                              setState(() {
+                                _currentAppLanguageItem = newItem;
+                              });
+                              di<TranslationController>()
+                                  .changeLanguage(newItem.key);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   _TextButton(
                     text: appTexts.sendABug,
@@ -438,3 +495,18 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
     );
   }
 }
+
+class AppLanguageItem {
+  final String label;
+  final String key;
+
+  AppLanguageItem({
+    required this.label,
+    required this.key,
+  });
+}
+
+final appLanguagesItem = [
+  AppLanguageItem(label: 'English', key: 'en'),
+  AppLanguageItem(label: 'Français', key: 'fr'),
+];
