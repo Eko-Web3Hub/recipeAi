@@ -5,23 +5,24 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/safe_emit.dart';
 
 class RecipeMetadataCardLoader extends Cubit<Receipe> {
   RecipeMetadataCardLoader(
-    this.receipe,
+    this.recipe,
     this._userRecipeTranslateService,
     this._userAccountMetaDataRepository,
     this._authUserService,
-  ) : super(receipe) {
+  ) : super(recipe) {
     _load();
   }
 
   void _load() {
-    final recipeId = receipe.firestoreRecipeId?.value ??
-        convertRecipeNameToFirestoreId(receipe.name);
+    final recipeId = recipe.firestoreRecipeId?.value ??
+        convertRecipeNameToFirestoreId(recipe.name);
     _subscription = _userAccountMetaDataRepository
         .watchUserAccount(_authUserService.currentUser!.uid)
         .listen((userAccount) async {
@@ -32,13 +33,13 @@ class RecipeMetadataCardLoader extends Cubit<Receipe> {
           EntityId(recipeId),
         );
         if (recipeTranslated == null) {
-          safeEmit(receipe);
+          safeEmit(recipe);
           return;
         }
 
         safeEmit(recipeTranslated);
       } else {
-        safeEmit(receipe);
+        safeEmit(recipe);
       }
     });
   }
@@ -49,7 +50,7 @@ class RecipeMetadataCardLoader extends Cubit<Receipe> {
     return super.close();
   }
 
-  final Receipe receipe;
+  final UserReceipeV2 recipe;
   final UserRecipeTranslateService _userRecipeTranslateService;
   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
   final IAuthUserService _authUserService;

@@ -127,7 +127,6 @@ class _DisplayLoadedRecipe extends StatelessWidget {
               builder: (context, state) {
                 return ReceipeItem(
                   receipe: receipes[index],
-                  isSaved: state is ReceipeItemStateSaved,
                   redirectionPath: '/recipe-details',
                 );
               },

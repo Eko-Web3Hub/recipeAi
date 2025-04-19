@@ -106,69 +106,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     if (homeScreenState is HomeScreenStateLoaded) {
                       return Expanded(
-                          child: homeScreenState.receipes.isEmpty
-                              ? Center(
-                                  child: Text(
-                                    appTexts.emptyReceipes,
-                                    style: smallTextStyle,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              : ListView.builder(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 20, top: 15),
-                                  itemBuilder: (context, index) {
-                                    return BlocProvider(
-                                        create: (context) =>
-                                            ReceipeItemController(
-                                              homeScreenState.receipes[index],
-                                              di<IUserReceipeRepository>(),
-                                              di<IAuthUserService>(),
-                                              di<IAnalyticsRepository>(),
-                                            ),
-                                        child: BlocListener<
-                                            ReceipeItemController,
-                                            ReceipeItemState>(
-                                          listener: (context, state) {
-                                            if (state
-                                                is ReceipeItemStateError) {
-                                              showSnackBar(
-                                                  context, state.message,
-                                                  isError: true);
-                                            }
-                                          },
-                                          child: BlocBuilder<
-                                              ReceipeItemController,
-                                              ReceipeItemState>(
-                                            builder: (context, state) {
-                                              return ReceipeItem(
-                                                key: ValueKey(homeScreenState
-                                                    .receipes[index].name),
-                                                receipe: homeScreenState
-                                                    .receipes[index],
-                                                isSaved: state
-                                                    is ReceipeItemStateSaved,
-                                                onTap: () {
-                                                  if (state
-                                                      is ReceipeItemStateSaved) {
-                                                    context
-                                                        .read<
-                                                            ReceipeItemController>()
-                                                        .removeReceipe();
-                                                  } else {
-                                                    context
-                                                        .read<
-                                                            ReceipeItemController>()
-                                                        .saveReceipe();
-                                                  }
-                                                },
-                                              );
-                                            },
-                                          ),
-                                        ));
-                                  },
-                                  itemCount: homeScreenState.receipes.length,
-                                ));
+                        child: homeScreenState.receipes.isEmpty
+                            ? Center(
+                                child: Text(
+                                  appTexts.emptyReceipes,
+                                  style: smallTextStyle,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            : ListView.builder(
+                                padding:
+                                    const EdgeInsets.only(bottom: 20, top: 15),
+                                itemBuilder: (context, index) {
+                                  return ReceipeItem(
+                                    key: ValueKey(
+                                        homeScreenState.receipes[index].name),
+                                    receipe: homeScreenState.receipes[index],
+                                  );
+                                },
+                                itemCount: homeScreenState.receipes.length,
+                              ),
+                      );
                     }
 
                     return const SizedBox();
@@ -185,12 +143,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class ReceipeItem extends StatelessWidget {
   final UserReceipeV2 receipe;
-  final bool isSaved;
+
   final String redirectionPath;
   const ReceipeItem({
     super.key,
     required this.receipe,
-    required this.isSaved,
     this.redirectionPath = '/home/recipe-details',
   });
 
@@ -310,7 +267,7 @@ class ReceipeItem extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${_getOnlyNumber(receipe.totalCalories)} cal*',
+                                  '${_getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
                                   style: GoogleFonts.inter(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 12,
@@ -337,7 +294,7 @@ class ReceipeItem extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      receipe.averageTime,
+                                      receipeTranslateState.averageTime,
                                       style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 11,
@@ -347,21 +304,25 @@ class ReceipeItem extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: context
-                                      .read<ReceipeItemController>()
-                                      .toggleFavorite,
-                                  child: Container(
-                                    padding: EdgeInsets.all(16),
-                                    color: Colors.transparent,
-                                    child: SvgPicture.asset(
-                                      isSaved
-                                          ? "assets/images/favorite.svg"
-                                          : "assets/images/favorite_outlined.svg",
+                                BlocBuilder<ReceipeItemController,
+                                        ReceipeItemState>(
+                                    builder: (context, recipeItemSaved) {
+                                  return GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: context
+                                        .read<ReceipeItemController>()
+                                        .toggleFavorite,
+                                    child: Container(
+                                      padding: EdgeInsets.all(16),
+                                      color: Colors.transparent,
+                                      child: SvgPicture.asset(
+                                        recipeItemSaved is ReceipeItemStateSaved
+                                            ? "assets/images/favorite.svg"
+                                            : "assets/images/favorite_outlined.svg",
+                                      ),
                                     ),
-                                  ),
-                                )
+                                  );
+                                })
                               ],
                             ),
                           ],
