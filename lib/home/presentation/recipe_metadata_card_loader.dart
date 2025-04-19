@@ -2,44 +2,38 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/ddd/entity.dart';
-import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
-import 'package:recipe_ai/utils/functions.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/safe_emit.dart';
 
 class RecipeMetadataCardLoader extends Cubit<Receipe> {
   RecipeMetadataCardLoader(
-    this.recipe,
-    this._userRecipeTranslateService,
+    this.userRecipe,
     this._userAccountMetaDataRepository,
     this._authUserService,
-  ) : super(recipe) {
+  ) : super(userRecipe.receipeEn) {
     _load();
   }
 
   void _load() {
-    final recipeId = recipe.firestoreRecipeId?.value ??
-        convertRecipeNameToFirestoreId(recipe.name);
     _subscription = _userAccountMetaDataRepository
         .watchUserAccount(_authUserService.currentUser!.uid)
         .listen((userAccount) async {
       if (userAccount != null) {
-        final recipeTranslated =
-            await _userRecipeTranslateService.getTranslatedRecipe(
-          userAccount.appLanguage,
-          EntityId(recipeId),
-        );
-        if (recipeTranslated == null) {
-          safeEmit(recipe);
-          return;
+        if (userAccount.appLanguage == AppLanguage.fr) {
+          safeEmit(userRecipe.receipeFr);
+        } else if (userAccount.appLanguage == AppLanguage.en) {
+          safeEmit(userRecipe.receipeEn);
+        } else {
+          throw Exception(
+            'Unsupported language: ${userAccount.appLanguage}',
+          );
         }
-
-        safeEmit(recipeTranslated);
       } else {
-        safeEmit(recipe);
+        // If user account is null, emit the recipe in English by default
+        safeEmit(userRecipe.receipeEn);
       }
     });
   }
@@ -50,8 +44,7 @@ class RecipeMetadataCardLoader extends Cubit<Receipe> {
     return super.close();
   }
 
-  final UserReceipeV2 recipe;
-  final UserRecipeTranslateService _userRecipeTranslateService;
+  final UserReceipeV2 userRecipe;
   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
   final IAuthUserService _authUserService;
 
