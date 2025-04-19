@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/utils/safe_emit.dart';
 
 abstract class ReceipeItemState extends Equatable {
@@ -31,22 +31,25 @@ class ReceipeItemStateError extends ReceipeItemState {
 
 class ReceipeItemController extends Cubit<ReceipeItemState> {
   ReceipeItemController(
-    this._receipe,
+    this._receipeId,
     this._userReceipeRepository,
     this._authUserService,
     this._analyticsRepository,
   ) : super(const ReceipeItemStateSaved()) {
     checkReceipeStatus();
   }
-  final Receipe _receipe;
-  final IUserReceipeRepository _userReceipeRepository;
+  final EntityId _receipeId;
+  final IUserReceipeRepositoryV2 _userReceipeRepository;
   final IAuthUserService _authUserService;
   final IAnalyticsRepository _analyticsRepository;
 
-  Future<void> saveReceipe() async {
+  Future<void> _saveReceipe() async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      await _userReceipeRepository.saveOneReceipt(uid, _receipe);
+      await _userReceipeRepository.saveOneReceipt(
+        uid,
+        _receipeId,
+      );
       _analyticsRepository.logEvent(
         RecipeSavedEvent(),
       );
@@ -57,11 +60,13 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
     }
   }
 
-  Future<void> removeReceipe() async {
+  Future<void> _removeReceipe() async {
     try {
       final uid = _authUserService.currentUser!.uid;
       await _userReceipeRepository.removeSavedReceipe(
-          uid, _receipe.name.toLowerCase().replaceAll(' ', ''));
+        uid,
+        _receipeId,
+      );
 
       _analyticsRepository.logEvent(
         RecipeUnSaveEvent(),
@@ -73,11 +78,22 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
     }
   }
 
+  void toggleFavorite() {
+    if (state is ReceipeItemStateSaved) {
+      _removeReceipe();
+    } else {
+      _saveReceipe();
+    }
+  }
+
   Future<void> checkReceipeStatus() async {
     try {
       final uid = _authUserService.currentUser!.uid;
       _userReceipeRepository
-          .isReceiptSaved(uid, _receipe.name.toLowerCase().replaceAll(' ', ''))
+          .isReceiptSaved(
+        uid,
+        _receipeId,
+      )
           .listen(
         (isSaved) {
           safeEmit(isSaved

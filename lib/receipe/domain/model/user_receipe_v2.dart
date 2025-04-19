@@ -5,8 +5,8 @@ import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 class UserReceipeV2 extends Equatable {
   const UserReceipeV2({
     required this.id,
-    required this.receipesFr,
-    required this.receipesEn,
+    required this.receipeFr,
+    required this.receipeEn,
     required this.createdDate,
     required this.isForHome,
     required this.isAddedToFavorites,
@@ -15,16 +15,16 @@ class UserReceipeV2 extends Equatable {
   /// The [id] is the unique identifier for the user recipe.
   /// Is null only when the recipe is not saved in the database.
   final EntityId? id;
-  final List<Receipe> receipesFr;
-  final List<Receipe> receipesEn;
+  final Receipe receipeFr;
+  final Receipe receipeEn;
   final DateTime createdDate;
   final bool isForHome;
   final bool isAddedToFavorites;
 
   @override
   List<Object?> get props => [
-        receipesFr,
-        receipesEn,
+        receipeFr,
+        receipeEn,
         createdDate,
         isForHome,
         isAddedToFavorites,
