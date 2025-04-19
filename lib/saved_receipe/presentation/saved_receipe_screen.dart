@@ -55,54 +55,46 @@ class SavedReceipeScreen extends StatelessWidget {
                 }
 
                 if (state is SavedReceipeStateLoaded) {
-                  return state.savedReceipes.isEmpty
-                      ? Center(
-                          child: Text(
-                            appTexts.noSavedReceipes,
-                            style: descriptionPlaceHolderStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      : ListView.builder(
-                          padding: const EdgeInsets.only(bottom: 20, top: 15),
-                          itemBuilder: (context, index) {
-                            final data = state.savedReceipes[index];
-                            return BlocProvider(
-                              create: (context) => RemoveSavedReceipeController(
-                                di<IUserReceipeRepository>(),
-                                di<IAuthUserService>(),
-                                di<IAnalyticsRepository>(),
-                              ),
-                              child: BlocListener<RemoveSavedReceipeController,
-                                  ReceipeItemState>(
-                                listener: (context, state) {
-                                  if (state is ReceipeItemStateError) {
-                                    showSnackBar(context, state.message,
-                                        isError: true);
-                                  }
-                                },
-                                child: BlocBuilder<RemoveSavedReceipeController,
-                                    ReceipeItemState>(
-                                  builder: (context, state) {
-                                    return ReceipeItem(
-                                      receipe: data,
-                                      isSaved: state is ReceipeItemStateSaved,
-                                      onTap: () {
-                                        context
-                                            .read<
-                                                RemoveSavedReceipeController>()
-                                            .removeReceipe(data.name
-                                                .toLowerCase()
-                                                .replaceAll(' ', ''));
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: state.savedReceipes.length,
-                        );
+                  return SizedBox.shrink();
+                  // return state.savedReceipes.isEmpty
+                  //     ? Center(
+                  //         child: Text(
+                  //           appTexts.noSavedReceipes,
+                  //           style: descriptionPlaceHolderStyle,
+                  //           textAlign: TextAlign.center,
+                  //         ),
+                  //       )
+                  //     : ListView.builder(
+                  //         padding: const EdgeInsets.only(bottom: 20, top: 15),
+                  //         itemBuilder: (context, index) {
+                  //           final data = state.savedReceipes[index];
+                  //           return BlocProvider(
+                  //             create: (context) => RemoveSavedReceipeController(
+                  //               di<IUserReceipeRepository>(),
+                  //               di<IAuthUserService>(),
+                  //               di<IAnalyticsRepository>(),
+                  //             ),
+                  //             child: BlocListener<RemoveSavedReceipeController,
+                  //                 ReceipeItemState>(
+                  //               listener: (context, state) {
+                  //                 if (state is ReceipeItemStateError) {
+                  //                   showSnackBar(context, state.message,
+                  //                       isError: true);
+                  //                 }
+                  //               },
+                  //               child: BlocBuilder<RemoveSavedReceipeController,
+                  //                   ReceipeItemState>(
+                  //                 builder: (context, state) {
+                  //                   return ReceipeItem(
+                  //                     receipe: data,
+                  //                   );
+                  //                 },
+                  //               ),
+                  //             ),
+                  //           );
+                  //         },
+                  //         itemCount: state.savedReceipes.length,
+                  //       );
                 }
 
                 return const SizedBox();

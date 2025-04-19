@@ -61,39 +61,35 @@ class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
                       top: 15,
                       bottom: 20,
                     ),
-                    child: Column(
-                      children: state
-                          .mapIndexed<Widget>(
-                            (index, recipe) => BlocProvider(
-                              create: (context) =>
-                                  RecipeWithIngredientPhotoController(
-                                di<IUserReceipeRepository>(),
-                                di<IAuthUserService>(),
-                                di<IUserRecipeTranslateRepository>(),
-                                di<IAnalyticsRepository>(),
-                                recipes.recipesEn[index],
-                                recipes.recipesFr[index],
-                              ),
-                              child: Builder(builder: (context) {
-                                return BlocBuilder<
-                                    RecipeWithIngredientPhotoController,
-                                    bool>(builder: (context, isFavorite) {
-                                  return ReceipeItem(
-                                    key: ValueKey(recipe.name),
-                                    redirectionPath: '/recipe-details',
-                                    receipe: recipe,
-                                    isSaved: isFavorite,
-                                    onTap: () => context
-                                        .read<
-                                            RecipeWithIngredientPhotoController>()
-                                        .toggleFavorite(),
-                                  );
-                                });
-                              }),
-                            ),
-                          )
-                          .toList(),
-                    ),
+                    child: Placeholder(),
+                    // child: Column(
+                    //   children: state
+                    //       .mapIndexed<Widget>(
+                    //         (index, recipe) => BlocProvider(
+                    //           create: (context) =>
+                    //               RecipeWithIngredientPhotoController(
+                    //             di<IUserReceipeRepository>(),
+                    //             di<IAuthUserService>(),
+                    //             di<IUserRecipeTranslateRepository>(),
+                    //             di<IAnalyticsRepository>(),
+                    //             recipes.recipesEn[index],
+                    //             recipes.recipesFr[index],
+                    //           ),
+                    //           child: Builder(builder: (context) {
+                    //             return BlocBuilder<
+                    //                 RecipeWithIngredientPhotoController,
+                    //                 bool>(builder: (context, isFavorite) {
+                    //               return ReceipeItem(
+                    //                 key: ValueKey(recipe.name),
+                    //                 redirectionPath: '/recipe-details',
+                    //                 receipe: recipe,
+                    //               );
+                    //             });
+                    //           }),
+                    //         ),
+                    //       )
+                    //       .toList(),
+                    // ),
                   );
                 },
               ),
