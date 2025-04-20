@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -74,7 +76,8 @@ class StartScreen extends StatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: BlocBuilder<StartViewController, StartViewState?>(
+                        child:
+                            BlocBuilder<StartViewController, StartViewState?>(
                           builder: (context, state) {
                             final controller =
                                 context.read<StartViewController>();
@@ -103,43 +106,45 @@ class StartScreen extends StatelessWidget {
                                     ),
                                   ),
                                   const Gap(15),
-                                  SignInWithAppleBuilder(
-                                    builder: (context) {
-                                      return MaterialButton(
-                                        minWidth: double.infinity,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        onPressed: () {
-                                          controller.appleSignIn();
-                                        },
-                                        height: 50,
-                                        color: Colors.white,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            SvgPicture.asset(
-                                                'assets/icon/apple.svg'),
-                                            const Spacer(
-                                              flex: 2,
-                                            ),
-                                            Text(
-                                              appTexts.continueWithApple,
-                                              style:
-                                                  normalSmallTextStyle.copyWith(
-                                                color: Colors.black,
+                                  if (Platform.isIOS) ...[
+                                    SignInWithAppleBuilder(
+                                      builder: (context) {
+                                        return MaterialButton(
+                                          minWidth: double.infinity,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          onPressed: () {
+                                            controller.appleSignIn();
+                                          },
+                                          height: 50,
+                                          color: Colors.white,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SvgPicture.asset(
+                                                  'assets/icon/apple.svg'),
+                                              const Spacer(
+                                                flex: 2,
                                               ),
-                                            ),
-                                            const Spacer(
-                                              flex: 3,
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  const Gap(15),
+                                              Text(
+                                                appTexts.continueWithApple,
+                                                style: normalSmallTextStyle
+                                                    .copyWith(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const Spacer(
+                                                flex: 3,
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    const Gap(15),
+                                  ],
                                   MaterialButton(
                                     minWidth: double.infinity,
                                     shape: RoundedRectangleBorder(
