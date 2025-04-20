@@ -8,16 +8,17 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
-import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/user_preferences/presentation/user_preference_question_widget.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
@@ -73,7 +74,7 @@ class ReceipeDetailsView extends StatefulWidget {
   });
 
   final EntityId? receipeId;
-  final Receipe? receipe;
+  final UserReceipeV2? receipe;
 
   @override
   State<ReceipeDetailsView> createState() => _ReceipeDetailsViewState();
@@ -91,18 +92,18 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return BlocProvider(
       create: (_) => widget.receipeId != null
           ? ReceipeDetailsController(
               widget.receipeId,
               null,
-              di<UserRecipeTranslateService>(),
+              di<IAuthUserService>(),
+              di<IUserAccountMetaDataRepository>(),
             )
           : ReceipeDetailsController.fromReceipe(
               widget.receipe!,
-              di<UserRecipeTranslateService>(),
+              di<IAuthUserService>(),
+              di<IUserAccountMetaDataRepository>(),
             ),
       child: Builder(builder: (context) {
         return Scaffold(
@@ -217,10 +218,9 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: ExpansionTile(
                       initiallyExpanded: true,
-                      title: Text(
-                        appTexts.ingredients,
-                        style: normalTextStyle,
-                      ),
+                      title: TranslatedText(
+                          textSelector: (lang) => lang.ingredients,
+                          style: normalTextStyle),
                       children: [
                         const Gap(15.0),
                         Padding(
@@ -347,8 +347,6 @@ class _StepView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return SizedBox(
       width: double.infinity,
       child: Card(
@@ -367,8 +365,8 @@ class _StepView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${appTexts.step} $index',
+              TranslatedText(
+                textSelector: (lang) => '${lang.step} $index',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,

@@ -1,10 +1,9 @@
 import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/utils/safe_emit.dart';
 
 abstract class SavedReceipeState extends Equatable {
   const SavedReceipeState();
@@ -18,7 +17,7 @@ class SavedReceipeStateLoading extends SavedReceipeState {
 
 class SavedReceipeStateLoaded extends SavedReceipeState {
   const SavedReceipeStateLoaded(this.savedReceipes);
-  final List<Receipe> savedReceipes;
+  final List<UserReceipeV2> savedReceipes;
 
   @override
   List<Object> get props => [savedReceipes];
@@ -34,22 +33,20 @@ class SavedReceipeStateError extends SavedReceipeState {
 
 /// The controller for the saved receipe screen
 class SavedReceipeController extends Cubit<SavedReceipeState> {
-  SavedReceipeController(this._userReceipeRepository, this._authUserService)
+  SavedReceipeController(this._userReceipeService)
       : super(const SavedReceipeStateLoading()) {
     _load();
   }
 
-  final IUserReceipeRepository _userReceipeRepository;
-  final IAuthUserService _authUserService;
+  final IUserRecipeService _userReceipeService;
 
   Future<void> _load() async {
     try {
-      final uid = _authUserService.currentUser!.uid;
-      _userReceipeRepository.watchAllSavedReceipes(uid).listen(
-            (savedReceipts) {
-              emit(SavedReceipeStateLoaded(savedReceipts));
-            },
-          );
+      _userReceipeService.watchAllSavedReceipes().listen(
+        (savedReceipes) {
+          safeEmit(SavedReceipeStateLoaded(savedReceipes));
+        },
+      );
     } on Exception catch (e) {
       log(e.toString());
       emit(SavedReceipeStateError(e.toString()));

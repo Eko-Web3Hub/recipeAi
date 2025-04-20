@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 
@@ -29,11 +29,9 @@ class HasNotChangedUserPreference extends UserPreferenceUpdateBtnState {
 
 class UserPreferenceUpdateBtnController
     extends Cubit<UserPreferenceUpdateBtnState> {
-  UserPreferenceUpdateBtnController(
-    this._authUserService,
-    this._userPreferenceRepository,
-    this._userReceipeRepository,
-  ) : super(
+  UserPreferenceUpdateBtnController(this._authUserService,
+      this._userPreferenceRepository, this._userReceipeService)
+      : super(
           UserPreferenceUpdateBtnInitial(),
         );
 
@@ -55,13 +53,11 @@ class UserPreferenceUpdateBtnController
       newUserPreference,
     );
 
-    await _userReceipeRepository.deleteUserReceipe(
-      uid,
-    );
+    await _userReceipeService.removeLastRecipesHomeUpdatedDate();
     emit(UserPreferenceUpdateBtnSuccess());
   }
 
   final IAuthUserService _authUserService;
   final IUserPreferenceRepository _userPreferenceRepository;
-  final IUserReceipeRepository _userReceipeRepository;
+  final IUserRecipeService _userReceipeService;
 }

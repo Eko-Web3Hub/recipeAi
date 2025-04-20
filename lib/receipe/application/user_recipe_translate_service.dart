@@ -37,6 +37,16 @@ class UserRecipeTranslateService {
     );
   }
 
+  Future<Receipe?> getTranslatedRecipe(
+    AppLanguage appLanguage,
+    EntityId recipeName,
+  ) =>
+      _userRecipeTranslateRepository.getTranslatedRecipe(
+        uid: _authUserService.currentUser!.uid,
+        language: appLanguage,
+        recipeName: recipeName,
+      );
+
   final IAuthUserService _authUserService;
   final TranslationController _translationController;
   final IUserRecipeTranslateRepository _userRecipeTranslateRepository;

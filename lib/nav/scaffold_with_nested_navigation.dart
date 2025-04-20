@@ -8,10 +8,11 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 
@@ -30,7 +31,7 @@ class NavigationItem extends Equatable {
 
 const List<NavigationItem> _navigationsItems = [
   NavigationItem(icon: "home"),
-  NavigationItem(icon: "union"),
+  NavigationItem(icon: "favorite_outlined"),
   NavigationItem(icon: "list_add"),
   NavigationItem(icon: "profile"),
 ];
@@ -98,6 +99,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               height: 70,
               color: Colors.white,
               shape: const CircularNotchedRectangle(),
+              surfaceTintColor: Colors.transparent,
               notchMargin: 8,
               child: Row(
                 children: [
@@ -222,6 +224,7 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
 
   void _takeCameraPicture() async {
     final ImagePicker picker = ImagePicker();
+    // change to ImageSource.camera
     final XFile? photo = await picker.pickImage(
       source: ImageSource.camera,
     );
@@ -314,7 +317,7 @@ class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
   RecipeIdeasNavigation(this.context);
 
   @override
-  void goToRecipeIdeas(TranslatedRecipe recipes) {
+  void goToRecipeIdeas(List<UserReceipeV2> recipes) {
     context.push('/receipe-idea-with-ingredient-photo', extra: {
       'recipes': recipes,
     });
@@ -354,7 +357,8 @@ class _GenRecipeFromIngredientPicture extends StatelessWidget {
           lazy: false,
           create: (context) => GenerateRecipeWithIngredientPhotoController(
             RecipeIdeasNavigation(context),
-            di<IUserReceipeRepository>(),
+            di<IUserReceipeRepositoryV2>(),
+            di<IAuthUserService>(),
             file,
           ),
           child: CustomCircularLoader(

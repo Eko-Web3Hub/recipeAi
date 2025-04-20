@@ -62,4 +62,46 @@ class FirestoreUserRecipeTranslateRepository
         .doc(recipeName.value)
         .set(ReceipeApiSerialization.toJson(receipe));
   }
+
+  @override
+  Future<void> saveTranslatedRecipes({
+    required EntityId uid,
+    required AppLanguage language,
+    required List<Receipe> receipes,
+  }) {
+    final batch = _firestore.batch();
+    final collectionRef = _firestore
+        .collection(userReceipeTranslateCollection)
+        .doc(uid.value)
+        .collection(language.name);
+
+    for (final receipe in receipes) {
+      final docRef = collectionRef.doc(
+        receipe.firestoreRecipeId!.value,
+      );
+      batch.set(docRef, ReceipeApiSerialization.toJson(receipe));
+    }
+
+    return batch.commit();
+  }
+
+  @override
+  Future<Receipe?> getTranslatedRecipe({
+    required EntityId uid,
+    required AppLanguage language,
+    required EntityId recipeName,
+  }) {
+    return _firestore
+        .collection(userReceipeTranslateCollection)
+        .doc(uid.value)
+        .collection(language.name)
+        .doc(recipeName.value)
+        .get()
+        .then((snapshot) {
+      if (snapshot.exists) {
+        return ReceipeApiSerialization.fromJson(snapshot.data()!);
+      }
+      return null;
+    });
+  }
 }

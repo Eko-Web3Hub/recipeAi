@@ -1,10 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-
-import '../../receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
 abstract class HomeScreenState extends Equatable {
   const HomeScreenState();
@@ -18,7 +16,7 @@ class HomeScreenStateLoading extends HomeScreenState {
 
 class HomeScreenStateLoaded extends HomeScreenState {
   const HomeScreenStateLoaded(this.receipes);
-  final List<Receipe> receipes;
+  final List<UserReceipeV2> receipes;
 
   @override
   List<Object> get props => [receipes];
@@ -43,16 +41,14 @@ class HomeRetrieveReceipeException extends HomeScreenState {
 class HomeScreenController extends Cubit<HomeScreenState> {
   HomeScreenController(
     this._retrieveReceipeFromApiOneTimePerDayUsecase,
-    this._userReceipeRepository,
-    this._authUserService, {
+    this._userReceipeService, {
     DateTime? now,
   }) : super(const HomeScreenStateLoading()) {
     currentNow = now;
   }
-  final IUserReceipeRepository _userReceipeRepository;
+  final IUserRecipeService _userReceipeService;
   final RetrieveReceipeFromApiOneTimePerDayUsecase
       _retrieveReceipeFromApiOneTimePerDayUsecase;
-  final IAuthUserService _authUserService;
 
   Future<void> _load() async {
     try {
@@ -64,7 +60,6 @@ class HomeScreenController extends Cubit<HomeScreenState> {
     } on RetrieveReceipeException catch (_) {
       emit(const HomeRetrieveReceipeException());
     }
-    // emit(HomeScreenStateLoaded([]));
   }
 
   Future<void> reload() async {
@@ -74,9 +69,7 @@ class HomeScreenController extends Cubit<HomeScreenState> {
 
   Future<void> regenerateUserReceipe() async {
     emit(const HomeScreenStateLoading());
-    await _userReceipeRepository.deleteUserReceipe(
-      _authUserService.currentUser!.uid,
-    );
+    await _userReceipeService.removeLastRecipesHomeUpdatedDate();
     await _load();
   }
 

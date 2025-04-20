@@ -419,5 +419,17 @@
     "sendABug": "Send a bug",
     "@sendABug": {
         "description": "Label for sending a bug"
+    },
+    "changeLanguage": "Change Language",
+    "@changeLanguage": {
+        "description": "Label for changing the language"
+    },
+    "historic": "History",
+    "@historic": {
+        "description": "Label for history"
+    },
+    "emptyHistoric": "Oops 🥲, your recipe history is empty",
+    "@emptyHistoric": {
+        "description": "Label for empty historic"
     }
 }
