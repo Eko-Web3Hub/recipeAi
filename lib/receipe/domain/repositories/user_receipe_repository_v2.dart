@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
 abstract class IUserReceipeRepositoryV2 {
-  Future<UserReceipe?> getReceipesBasedOnUserPreferencesFromFirestore(
+  Future<List<UserReceipeV2>> getReceipesBasedOnUserPreferencesFromFirestore(
     EntityId uid,
   );
+
   Future<TranslatedRecipe> getReceipesBasedOnUserPreferencesFromApi(
       EntityId uid);
 
@@ -19,17 +19,18 @@ abstract class IUserReceipeRepositoryV2 {
     List<UserReceipeV2> userReceipe,
   );
 
-  Future<void> deleteUserReceipe(EntityId uid);
+  Future<void> saveUserReceipe(EntityId uid, UserReceipeV2 recipe);
 
-  Stream<List<Receipe>> watchAllSavedReceipes(EntityId uid);
+  Future<void> delete({
+    required EntityId uid,
+    required EntityId receipeId,
+  });
 
-  Stream<UserReceipe?> watchUserReceipe(EntityId uid);
+  Stream<List<UserReceipeV2>> watchAllSavedReceipes(EntityId uid);
 
-  Future<void> saveOneReceipt(EntityId uid, EntityId receipeId);
-  Future<bool> isOneReceiptSaved(EntityId uid, String receipeName);
+  Stream<List<UserReceipeV2?>> watchUserReceipe(EntityId uid);
+
   Stream<bool> isReceiptSaved(EntityId uid, EntityId receipeId);
 
   Future<void> translateUserReceipe(EntityId uid, String language);
-
-  Future<void> removeSavedReceipe(EntityId uid, EntityId receipeId);
 }
