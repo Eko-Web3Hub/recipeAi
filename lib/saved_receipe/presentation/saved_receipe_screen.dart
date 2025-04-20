@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_ai/analytics/analytics_repository.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
-import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
-import 'package:recipe_ai/saved_receipe/presentation/remove_saved_receipe_controller.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
@@ -25,8 +20,7 @@ class SavedReceipeScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => SavedReceipeController(
-        di<IUserReceipeRepository>(),
-        di<IAuthUserService>(),
+        di<IUserRecipeService>(),
       ),
       child: Builder(
         builder: (context) {
@@ -67,38 +61,9 @@ class SavedReceipeScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 20, top: 15),
                           itemBuilder: (context, index) {
                             final data = state.savedReceipes[index];
-                            return BlocProvider(
-                              create: (context) => RemoveSavedReceipeController(
-                                di<IUserReceipeRepository>(),
-                                di<IAuthUserService>(),
-                                di<IAnalyticsRepository>(),
-                              ),
-                              child: BlocListener<RemoveSavedReceipeController,
-                                  ReceipeItemState>(
-                                listener: (context, state) {
-                                  if (state is ReceipeItemStateError) {
-                                    showSnackBar(context, state.message,
-                                        isError: true);
-                                  }
-                                },
-                                child: BlocBuilder<RemoveSavedReceipeController,
-                                    ReceipeItemState>(
-                                  builder: (context, state) {
-                                    return ReceipeItem(
-                                      receipe: data,
-                                      isSaved: state is ReceipeItemStateSaved,
-                                      onTap: () {
-                                        context
-                                            .read<
-                                                RemoveSavedReceipeController>()
-                                            .removeReceipe(data.name
-                                                .toLowerCase()
-                                                .replaceAll(' ', ''));
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
+                            return ReceipeItem(
+                              key: ValueKey(data.id),
+                              receipe: data,
                             );
                           },
                           itemCount: state.savedReceipes.length,

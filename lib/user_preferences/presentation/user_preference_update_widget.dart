@@ -7,7 +7,7 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
@@ -81,7 +81,7 @@ class _DisplayUserPreferenceQuizState
       create: (context) => UserPreferenceUpdateBtnController(
         di<IAuthUserService>(),
         di<IUserPreferenceRepository>(),
-        di<IUserReceipeRepository>(),
+        di<IUserRecipeService>(),
       ),
       child: Builder(builder: (context) {
         return BlocListener<UserPreferenceUpdateBtnController,
