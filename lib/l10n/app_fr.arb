@@ -427,5 +427,9 @@
     "historic": "Historique",
     "@historic": {
         "description": "Label pour historique"
+    },
+    "emptyHistoric": "Oops 🥲, ton historique de recette est vide",
+    "@emptyHistoric": {
+        "description": "Label pour historique vide"
     }
 }

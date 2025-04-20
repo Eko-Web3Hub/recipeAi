@@ -10,6 +10,7 @@ import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/home/presentation/historic/historic_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
@@ -168,6 +169,12 @@ GoRouter createRouter() => GoRouter(
                   path: '/home',
                   redirect: _guardAuth,
                   routes: <RouteBase>[
+                    GoRoute(
+                      name: 'HistoricScreen',
+                      path: '/historic',
+                      redirect: _guardAuth,
+                      builder: (context, state) => HistoricScreen(),
+                    ),
                     GoRoute(
                       name: 'RecipeDetails',
                       path: 'recipe-details',

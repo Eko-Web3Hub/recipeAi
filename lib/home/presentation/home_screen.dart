@@ -88,14 +88,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           .displayLarge
                           ?.copyWith(fontSize: 17),
                     ),
-                    TranslatedText(
-                      textSelector: (lang) => lang.historic,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        height: 16.5 / 12,
-                        color: Colors.black,
-                        decoration: TextDecoration.underline,
+                    GestureDetector(
+                      onTap: () => context.go('/home/historic'),
+                      child: TranslatedText(
+                        textSelector: (lang) => lang.historic,
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          height: 16.5 / 12,
+                          color: Colors.black,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ],

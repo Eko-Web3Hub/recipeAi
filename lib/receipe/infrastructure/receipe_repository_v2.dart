@@ -21,6 +21,8 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
 
   static const String _isAddedToFavoritesKey = 'isAddedToFavorites';
 
+  static const String _createdDateKey = 'createdDate';
+
   // static const String _createdDateKey = 'createdDate';
 
   final FirebaseFirestore _firestore;
@@ -120,7 +122,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Stream<List<UserReceipeV2?>> watchUserReceipe(EntityId uid) {
+  Stream<List<UserReceipeV2>> watchUserReceipe(EntityId uid) {
     return _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
@@ -232,6 +234,24 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     return recipesDocs.docs
         .map<UserReceipeV2>(
             (userRecipe) => UserReceipeV2.fromJson(userRecipe.data()))
+        .toList();
+  }
+
+  @override
+  Future<List<UserReceipeV2>> getAllUserRecipe(EntityId uid) async {
+    final docSnapshot = await _firestore
+        .collection(userReceipeV2Collection)
+        .doc(uid.value)
+        .collection(receipesCollection)
+        .orderBy(_createdDateKey, descending: true)
+        .get();
+
+    final docs = docSnapshot.docs;
+
+    return docs
+        .map<UserReceipeV2>((userRecipe) => UserReceipeV2.fromJson(
+              userRecipe.data(),
+            ))
         .toList();
   }
 }
