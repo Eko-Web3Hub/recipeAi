@@ -28,6 +28,8 @@ abstract class IUserReceipeRepositoryV2 {
 
   Stream<List<UserReceipeV2>> watchAllSavedReceipes(EntityId uid);
 
+  Future<List<UserReceipeV2>> getHomeUserReceipes(EntityId uid);
+
   Stream<List<UserReceipeV2?>> watchUserReceipe(EntityId uid);
 
   Stream<bool> isReceiptSaved(EntityId uid, EntityId receipeId);

@@ -1,17 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/application/retrieve_recipes_based_on_user_ingredient_and_preferences_usecase.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart';
-import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
-import 'package:recipe_ai/utils/constant.dart';
-import 'package:recipe_ai/utils/functions.dart';
 
 class RetrieveReceipeException implements Exception {
   const RetrieveReceipeException();
@@ -47,7 +40,16 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
         return receipes;
       } else {
-        return currentUserReceipe.receipes;
+        final currentRecipes =
+            await _userReceipeRepositoryV2.getHomeUserReceipes(uid);
+
+        /// Filtered the recipes to get only the recent one according to the lastUpdatedDated
+        final filterRecipes = currentRecipes
+            .where((userRecipe) =>
+                userRecipe.createdDate.isAtSameMomentAs(lastUpdatedDate))
+            .toList();
+
+        return filterRecipes;
       }
     } catch (e) {
       throw const RetrieveReceipeException();

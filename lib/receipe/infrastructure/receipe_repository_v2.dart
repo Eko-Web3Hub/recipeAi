@@ -219,4 +219,19 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
         .doc(recipe.id!.value)
         .set(recipe.toJson());
   }
+
+  @override
+  Future<List<UserReceipeV2>> getHomeUserReceipes(EntityId uid) async {
+    final recipesDocs = await _firestore
+        .collection(userReceipeV2Collection)
+        .doc(uid.value)
+        .collection(receipesCollection)
+        .where(_isForHomeKey, isEqualTo: true)
+        .get();
+
+    return recipesDocs.docs
+        .map<UserReceipeV2>(
+            (userRecipe) => UserReceipeV2.fromJson(userRecipe.data()))
+        .toList();
+  }
 }

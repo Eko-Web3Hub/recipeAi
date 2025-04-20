@@ -18,10 +18,8 @@ import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
-import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
@@ -104,30 +102,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Expanded(child: Text(homeScreenState.message));
                     }
 
-                    // if (homeScreenState is HomeScreenStateLoaded) {
-                    //   return Expanded(
-                    //     child: homeScreenState.receipes.isEmpty
-                    //         ? Center(
-                    //             child: Text(
-                    //               appTexts.emptyReceipes,
-                    //               style: smallTextStyle,
-                    //               textAlign: TextAlign.center,
-                    //             ),
-                    //           )
-                    //         : ListView.builder(
-                    //             padding:
-                    //                 const EdgeInsets.only(bottom: 20, top: 15),
-                    //             itemBuilder: (context, index) {
-                    //               return ReceipeItem(
-                    //                 key: ValueKey(
-                    //                     homeScreenState.receipes[index].name),
-                    //                 receipe: homeScreenState.receipes[index],
-                    //               );
-                    //             },
-                    //             itemCount: homeScreenState.receipes.length,
-                    //           ),
-                    //   );
-                    // }
+                    if (homeScreenState is HomeScreenStateLoaded) {
+                      return Expanded(
+                        child: homeScreenState.receipes.isEmpty
+                            ? Center(
+                                child: Text(
+                                  appTexts.emptyReceipes,
+                                  style: smallTextStyle,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            : ListView.builder(
+                                padding:
+                                    const EdgeInsets.only(bottom: 20, top: 15),
+                                itemBuilder: (context, index) {
+                                  return ReceipeItem(
+                                    key: ValueKey(
+                                      homeScreenState.receipes[index].id,
+                                    ),
+                                    receipe: homeScreenState.receipes[index],
+                                  );
+                                },
+                                itemCount: homeScreenState.receipes.length,
+                              ),
+                      );
+                    }
 
                     return const SizedBox();
                   },

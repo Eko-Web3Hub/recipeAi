@@ -12,7 +12,6 @@ import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart
 import 'package:recipe_ai/receipe/infrastructure/receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/receipe_repository_v2.dart';
 import 'package:recipe_ai/receipe/infrastructure/user_recipe_translate_repository.dart';
-import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 
 class ReceipeModule implements IDiModule {
   const ReceipeModule();
@@ -48,8 +47,8 @@ class ReceipeModule implements IDiModule {
       () => RetrieveReceipeFromApiOneTimePerDayUsecase(
         di<IUserReceipeRepository>(),
         di<IAuthUserService>(),
-        di<IUserRecipeTranslateRepository>(),
-        di<IUserAccountMetaDataRepository>(),
+        di<IUserReceipeRepositoryV2>(),
+        di<IUserRecipeService>(),
       ),
     );
     di.registerFactory<UserRecipeTranslateService>(

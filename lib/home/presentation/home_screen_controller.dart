@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
 import '../../receipe/domain/repositories/user_receipe_repository.dart';
 
@@ -18,7 +18,7 @@ class HomeScreenStateLoading extends HomeScreenState {
 
 class HomeScreenStateLoaded extends HomeScreenState {
   const HomeScreenStateLoaded(this.receipes);
-  final List<Receipe> receipes;
+  final List<UserReceipeV2> receipes;
 
   @override
   List<Object> get props => [receipes];
