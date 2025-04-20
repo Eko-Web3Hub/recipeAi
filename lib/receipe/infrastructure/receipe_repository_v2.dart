@@ -152,6 +152,35 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
+  Future<UserRecipeMetadata?> getUserReceipeMetadata(
+    EntityId uid,
+  ) async {
+    final snapshot = await _firestore
+        .collection(userReceipeV2Collection)
+        .doc(uid.value)
+        .get();
+
+    if (snapshot.exists) {
+      final data = snapshot.data();
+      if (data != null) {
+        return UserRecipeMetadata.fromJson(data);
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future<void> saveUserReceipeMetadata(
+    EntityId uid,
+    UserRecipeMetadata metadata,
+  ) {
+    return _firestore.collection(userReceipeV2Collection).doc(uid.value).set(
+          metadata.toJson(),
+          SetOptions(merge: true),
+        );
+  }
+
+  @override
   Future<void> translateUserReceipe(EntityId uid, String language) {
     final url = "$baseApiUrl/translate-recipes/${uid.value}/French";
 

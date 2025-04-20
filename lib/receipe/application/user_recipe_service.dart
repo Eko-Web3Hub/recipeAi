@@ -6,6 +6,8 @@ import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2
 abstract class IUserRecipeService {
   Future<void> addToFavorite(UserReceipeV2 recipe);
   Future<void> removeFromFavorite(UserReceipeV2 recipe);
+  Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid);
+  Future<void> saveUserReceipeMetadata(EntityId uid, DateTime lastUpdatedDate);
   Stream<bool> isReceiptSaved(EntityId receipeId);
   Stream<List<UserReceipeV2>> watchAllSavedReceipes();
 }
@@ -41,4 +43,30 @@ class UserRecipeService implements IUserRecipeService {
   Stream<List<UserReceipeV2>> watchAllSavedReceipes() =>
       _userReceipeRepositoryV2
           .watchAllSavedReceipes(_authUserService.currentUser!.uid);
+
+  @override
+  Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid) =>
+      _userReceipeRepositoryV2.getUserReceipeMetadata(uid);
+
+  @override
+  Future<void> saveUserReceipeMetadata(
+    EntityId uid,
+    DateTime lastUpdatedDate,
+  ) async {
+    final metadata = await _userReceipeRepositoryV2.getUserReceipeMetadata(uid);
+    if (metadata == null) {
+      return _userReceipeRepositoryV2.saveUserReceipeMetadata(
+        uid,
+        UserRecipeMetadata(
+          lastRecipesHomeUpdatedDate: lastUpdatedDate,
+        ),
+      );
+    }
+
+    return _userReceipeRepositoryV2.saveUserReceipeMetadata(
+        uid,
+        metadata.updateLastRecipesHomeUpdatedDate(
+          lastUpdatedDate,
+        ));
+  }
 }

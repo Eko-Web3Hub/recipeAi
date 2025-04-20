@@ -89,3 +89,44 @@ class UserReceipeV2 extends Equatable {
         isAddedToFavorites,
       ];
 }
+
+class UserRecipeMetadata extends Equatable {
+  const UserRecipeMetadata({
+    required this.lastRecipesHomeUpdatedDate,
+  });
+
+  final DateTime lastRecipesHomeUpdatedDate;
+
+  UserRecipeMetadata updateLastRecipesHomeUpdatedDate(
+    DateTime lastRecipesHomeUpdatedDate,
+  ) {
+    return _copyWith(lastRecipesHomeUpdatedDate: lastRecipesHomeUpdatedDate);
+  }
+
+  UserRecipeMetadata _copyWith({
+    DateTime? lastRecipesHomeUpdatedDate,
+  }) {
+    return UserRecipeMetadata(
+      lastRecipesHomeUpdatedDate:
+          lastRecipesHomeUpdatedDate ?? this.lastRecipesHomeUpdatedDate,
+    );
+  }
+
+  factory UserRecipeMetadata.fromJson(Map<String, dynamic> json) {
+    return UserRecipeMetadata(
+      lastRecipesHomeUpdatedDate:
+          (json["lastRecipesHomeUpdatedDate"] as Timestamp).toDate(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "lastRecipesHomeUpdatedDate": lastRecipesHomeUpdatedDate,
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+        lastRecipesHomeUpdatedDate,
+      ];
+}
