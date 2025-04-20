@@ -16,7 +16,7 @@ import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/nav/router.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/local_storage_repo.dart';
@@ -53,68 +53,65 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-    providers: [
+      providers: [
         BlocProvider(
           create: (_) => AuthNavigationController(
             di<IAuthUserService>(),
             di<ILocalStorageRepository>(),
           ),
         ),
-         BlocProvider(
-          create: (_) =>  OnboardingController(
-          di<ILocalStorageRepository>(), di<IAnalyticsRepository>()),
+        BlocProvider(
+          create: (_) => OnboardingController(
+              di<ILocalStorageRepository>(), di<IAnalyticsRepository>()),
         ),
         BlocProvider(
           create: (_) => HomeScreenController(
             di<RetrieveReceipeFromApiOneTimePerDayUsecase>(),
-            di<IUserReceipeRepository>(),
-            di<IAuthUserService>(),
+            di<IUserRecipeService>(),
           ),
         ),
       ],
-      child: ResponsiveSizer(
-        builder: (context, orientation, screenType) {
-          return BlocListener<AuthNavigationController, AuthNavigationState>(
-            listener: (context, state) {
-              log('AuthNavigationState: $state');
-              _router.refresh();
+      child: ResponsiveSizer(builder: (context, orientation, screenType) {
+        return BlocListener<AuthNavigationController, AuthNavigationState>(
+          listener: (context, state) {
+            log('AuthNavigationState: $state');
+            _router.refresh();
+          },
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
             },
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
-              child: MaterialApp.router(
-                title: "Eat'Easy",
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  scaffoldBackgroundColor: secondaryColor,
-                  primaryColor: const Color(0xff57b031),
-                  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                  textTheme: TextTheme(
-                    displayLarge: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20.0,
-                      height: 30 / 20,
-                      color: Colors.black,
-                    ),
-                    labelSmall: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 11.0,
-                      height: 16.5 / 11,
-                      color: const Color(0xffA9A9A9),
-                    ),
+            child: MaterialApp.router(
+              title: "Eat'Easy",
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                scaffoldBackgroundColor: secondaryColor,
+                primaryColor: const Color(0xff57b031),
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                textTheme: TextTheme(
+                  displayLarge: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20.0,
+                    height: 30 / 20,
+                    color: Colors.black,
                   ),
-                  useMaterial3: true,
+                  labelSmall: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 11.0,
+                    height: 16.5 / 11,
+                    color: const Color(0xffA9A9A9),
+                  ),
                 ),
-                routerConfig: _router,
-                localizationsDelegates: localizationsDelegate,
-                supportedLocales: supportedLocales,
+                useMaterial3: true,
               ),
+              routerConfig: _router,
+              localizationsDelegates: localizationsDelegate,
+              supportedLocales: supportedLocales,
             ),
-          );
-        }
-      ),
+          ),
+        );
+      }),
     );
   }
 }

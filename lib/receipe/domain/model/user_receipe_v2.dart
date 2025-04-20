@@ -93,12 +93,20 @@ class UserRecipeMetadata extends Equatable {
     required this.lastRecipesHomeUpdatedDate,
   });
 
-  final DateTime lastRecipesHomeUpdatedDate;
+  final DateTime? lastRecipesHomeUpdatedDate;
+
+  const UserRecipeMetadata.initial() : lastRecipesHomeUpdatedDate = null;
 
   UserRecipeMetadata updateLastRecipesHomeUpdatedDate(
     DateTime lastRecipesHomeUpdatedDate,
   ) {
     return _copyWith(lastRecipesHomeUpdatedDate: lastRecipesHomeUpdatedDate);
+  }
+
+  UserRecipeMetadata removeLastRecipesHomeUpdatedDate() {
+    return UserRecipeMetadata(
+      lastRecipesHomeUpdatedDate: null,
+    );
   }
 
   UserRecipeMetadata _copyWith({
@@ -112,8 +120,9 @@ class UserRecipeMetadata extends Equatable {
 
   factory UserRecipeMetadata.fromJson(Map<String, dynamic> json) {
     return UserRecipeMetadata(
-      lastRecipesHomeUpdatedDate:
-          (json["lastRecipesHomeUpdatedDate"] as Timestamp).toDate(),
+      lastRecipesHomeUpdatedDate: json["lastRecipesHomeUpdatedDate"] == null
+          ? null
+          : (json["lastRecipesHomeUpdatedDate"] as Timestamp).toDate(),
     );
   }
 

@@ -8,6 +8,7 @@ abstract class IUserRecipeService {
   Future<void> removeFromFavorite(UserReceipeV2 recipe);
   Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid);
   Future<void> saveUserReceipeMetadata(EntityId uid, DateTime lastUpdatedDate);
+  Future<void> removeLastRecipesHomeUpdatedDate();
   Stream<bool> isReceiptSaved(EntityId receipeId);
   Stream<List<UserReceipeV2>> watchAllSavedReceipes();
 }
@@ -68,5 +69,19 @@ class UserRecipeService implements IUserRecipeService {
         metadata.updateLastRecipesHomeUpdatedDate(
           lastUpdatedDate,
         ));
+  }
+
+  @override
+  Future<void> removeLastRecipesHomeUpdatedDate() async {
+    final uid = _authUserService.currentUser!.uid;
+
+    final metadata =
+        (await _userReceipeRepositoryV2.getUserReceipeMetadata(uid)) ??
+            UserRecipeMetadata.initial();
+
+    return _userReceipeRepositoryV2.saveUserReceipeMetadata(
+      uid,
+      metadata.removeLastRecipesHomeUpdatedDate(),
+    );
   }
 }

@@ -78,12 +78,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const Gap(15),
-                TranslatedText(
-                  textSelector: (lang) => lang.quickRecipes,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayLarge
-                      ?.copyWith(fontSize: 17),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TranslatedText(
+                      textSelector: (lang) => lang.quickRecipes,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displayLarge
+                          ?.copyWith(fontSize: 17),
+                    ),
+                    TranslatedText(
+                      textSelector: (lang) => lang.historic,
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        height: 16.5 / 12,
+                        color: Colors.black,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ],
                 ),
                 BlocBuilder<HomeScreenController, HomeScreenState>(
                   builder: (context, homeScreenState) {

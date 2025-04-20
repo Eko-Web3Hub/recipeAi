@@ -423,5 +423,9 @@
     "changeLanguage": "Change Language",
     "@changeLanguage": {
         "description": "Label for changing the language"
+    },
+    "historic": "History",
+    "@historic": {
+        "description": "Label for history"
     }
 }

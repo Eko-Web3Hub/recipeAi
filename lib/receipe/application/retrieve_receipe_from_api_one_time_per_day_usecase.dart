@@ -29,13 +29,14 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
       final userRecipeMetadata =
           await _userRecipeService.getUserRecipeMetadata(uid);
 
-      if (userRecipeMetadata == null) {
+      if (userRecipeMetadata == null ||
+          userRecipeMetadata.lastRecipesHomeUpdatedDate == null) {
         return _retrieveAndSave(now);
       }
 
       final lastUpdatedDate = userRecipeMetadata.lastRecipesHomeUpdatedDate;
 
-      if (now.difference(lastUpdatedDate).inDays >= 1) {
+      if (now.difference(lastUpdatedDate!).inDays >= 1) {
         final receipes = await _retrieveAndSave(now);
 
         return receipes;
