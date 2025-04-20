@@ -224,6 +224,7 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
 
   void _takeCameraPicture() async {
     final ImagePicker picker = ImagePicker();
+    // change to ImageSource.camera
     final XFile? photo = await picker.pickImage(
       source: ImageSource.camera,
     );
