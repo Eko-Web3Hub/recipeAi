@@ -22,7 +22,6 @@ import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
@@ -121,7 +120,7 @@ GoRouter createRouter() => GoRouter(
           path: '/receipe-idea-with-ingredient-photo',
           builder: (context, state) {
             final recipes = (state.extra! as Map<String, dynamic>)['recipes']
-                as TranslatedRecipe;
+                as List<UserReceipeV2>;
 
             return RecipesIdeaWithIngredientPhotoScreen(
               recipes: recipes,
