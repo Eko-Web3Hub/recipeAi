@@ -23,6 +23,7 @@ import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
@@ -141,7 +142,7 @@ GoRouter createRouter() => GoRouter(
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>;
             final receipeId = extra['receipeId'] as EntityId?;
-            final receipe = extra['receipe'] as Receipe?;
+            final receipe = extra['receipe'] as UserReceipeV2?;
 
             return ReceipeDetailsView(
               receipeId: receipeId,
@@ -175,7 +176,7 @@ GoRouter createRouter() => GoRouter(
                       builder: (context, state) {
                         final extra = state.extra as Map<String, dynamic>;
                         final receipeId = extra['receipeId'] as EntityId?;
-                        final receipe = extra['receipe'] as Receipe?;
+                        final receipe = extra['receipe'] as UserReceipeV2?;
 
                         return ReceipeDetailsView(
                           receipeId: receipeId,

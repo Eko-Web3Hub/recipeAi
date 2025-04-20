@@ -17,6 +17,7 @@ import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
@@ -156,9 +157,8 @@ class ReceipeItem extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => ReceipeItemController(
-        receipe.id!,
-        di<IUserReceipeRepositoryV2>(),
-        di<IAuthUserService>(),
+        receipe,
+        di<IUserRecipeService>(),
         di<IAnalyticsRepository>(),
       ),
       child: BlocListener<ReceipeItemController, ReceipeItemState>(

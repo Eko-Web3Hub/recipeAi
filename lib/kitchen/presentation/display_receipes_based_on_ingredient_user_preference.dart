@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
-import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
+
 import 'package:recipe_ai/kitchen/application/retrieve_recipes_based_on_user_ingredient_and_preferences_usecase.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -122,14 +122,9 @@ class _DisplayLoadedRecipe extends StatelessWidget {
         : ListView.builder(
             padding: const EdgeInsets.only(bottom: 20, top: 15),
             itemCount: receipes.length,
-            itemBuilder: (context, index) =>
-                BlocBuilder<ReceipeItemController, ReceipeItemState>(
-              builder: (context, state) {
-                return ReceipeItem(
-                  receipe: receipes[index],
-                  redirectionPath: '/recipe-details',
-                );
-              },
+            itemBuilder: (context, index) => ReceipeItem(
+              receipe: receipes[index],
+              redirectionPath: '/recipe-details',
             ),
           );
   }

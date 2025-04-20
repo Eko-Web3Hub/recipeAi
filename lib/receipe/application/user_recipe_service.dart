@@ -7,6 +7,7 @@ abstract class IUserRecipeService {
   Future<void> addToFavorite(UserReceipeV2 recipe);
   Future<void> removeFromFavorite(UserReceipeV2 recipe);
   Stream<bool> isReceiptSaved(EntityId receipeId);
+  Stream<List<UserReceipeV2>> watchAllSavedReceipes();
 }
 
 class UserRecipeService implements IUserRecipeService {
@@ -35,4 +36,9 @@ class UserRecipeService implements IUserRecipeService {
   @override
   Stream<bool> isReceiptSaved(EntityId receipeId) => _userReceipeRepositoryV2
       .isReceiptSaved(_authUserService.currentUser!.uid, receipeId);
+
+  @override
+  Stream<List<UserReceipeV2>> watchAllSavedReceipes() =>
+      _userReceipeRepositoryV2
+          .watchAllSavedReceipes(_authUserService.currentUser!.uid);
 }

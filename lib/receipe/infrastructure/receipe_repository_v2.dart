@@ -67,22 +67,20 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     EntityId uid,
     List<UserReceipeV2> userReceipe,
   ) async {
-    final batch = _firestore.batch();
     final recipesWithId = <UserReceipeV2>[];
 
     for (final receipe in userReceipe) {
-      _firestore
+      final docRef = _firestore
           .collection(userReceipeV2Collection)
           .doc(uid.value)
           .collection(receipesCollection)
-          .add(receipe.toJson())
-          .then((newDoc) {
-        recipesWithId.add(receipe.assignId(EntityId(newDoc.id)));
-        batch.update(newDoc, {"id": newDoc.id});
-      });
-    }
+          .doc();
 
-    await batch.commit();
+      final docId = docRef.id;
+      final receipeWithId = receipe.assignId(EntityId(docId));
+      await docRef.set(receipeWithId.toJson());
+      recipesWithId.add(receipeWithId);
+    }
 
     return recipesWithId;
   }
