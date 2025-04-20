@@ -30,8 +30,6 @@ class UserReceipeV2 extends Equatable {
   }
 
   UserReceipeV2 removeFromFavorite() {
-    assert(isAddedToFavorites, "Already removed from favorites");
-
     return _copyWith(isAddedToFavorites: false);
   }
 
