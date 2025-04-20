@@ -13,9 +13,8 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
-import 'package:recipe_ai/receipe/application/user_recipe_translate_service.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -75,7 +74,7 @@ class ReceipeDetailsView extends StatefulWidget {
   });
 
   final EntityId? receipeId;
-  final Receipe? receipe;
+  final UserReceipeV2? receipe;
 
   @override
   State<ReceipeDetailsView> createState() => _ReceipeDetailsViewState();
@@ -93,20 +92,16 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    // final appTexts = di<TranslationController>().currentLanguage;
-
     return BlocProvider(
       create: (_) => widget.receipeId != null
           ? ReceipeDetailsController(
               widget.receipeId,
               null,
-              di<UserRecipeTranslateService>(),
               di<IAuthUserService>(),
               di<IUserAccountMetaDataRepository>(),
             )
           : ReceipeDetailsController.fromReceipe(
               widget.receipe!,
-              di<UserRecipeTranslateService>(),
               di<IAuthUserService>(),
               di<IUserAccountMetaDataRepository>(),
             ),

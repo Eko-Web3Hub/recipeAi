@@ -10,6 +10,7 @@ import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/home/presentation/historic/historic_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
@@ -22,7 +23,7 @@ import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
@@ -120,7 +121,7 @@ GoRouter createRouter() => GoRouter(
           path: '/receipe-idea-with-ingredient-photo',
           builder: (context, state) {
             final recipes = (state.extra! as Map<String, dynamic>)['recipes']
-                as TranslatedRecipe;
+                as List<UserReceipeV2>;
 
             return RecipesIdeaWithIngredientPhotoScreen(
               recipes: recipes,
@@ -141,7 +142,7 @@ GoRouter createRouter() => GoRouter(
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>;
             final receipeId = extra['receipeId'] as EntityId?;
-            final receipe = extra['receipe'] as Receipe?;
+            final receipe = extra['receipe'] as UserReceipeV2?;
 
             return ReceipeDetailsView(
               receipeId: receipeId,
@@ -169,13 +170,19 @@ GoRouter createRouter() => GoRouter(
                   redirect: _guardAuth,
                   routes: <RouteBase>[
                     GoRoute(
+                      name: 'HistoricScreen',
+                      path: '/historic',
+                      redirect: _guardAuth,
+                      builder: (context, state) => HistoricScreen(),
+                    ),
+                    GoRoute(
                       name: 'RecipeDetails',
                       path: 'recipe-details',
                       redirect: _guardAuth,
                       builder: (context, state) {
                         final extra = state.extra as Map<String, dynamic>;
                         final receipeId = extra['receipeId'] as EntityId?;
-                        final receipe = extra['receipe'] as Receipe?;
+                        final receipe = extra['receipe'] as UserReceipeV2?;
 
                         return ReceipeDetailsView(
                           receipeId: receipeId,
