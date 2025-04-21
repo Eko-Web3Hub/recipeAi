@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
@@ -56,8 +57,17 @@ void _registerTranslaterController(BuildContext context) {
   );
 }
 
+const kAndroidRemoteConfigVersionKey = 'latestDeployedVersionOnGoogle';
+const kiOSRemoteConfigVersionKey = 'latestDeployedVersionOnApple';
+
 Future<void> _initRemoteConfig() async {
-  final defaultValues = {'termsAndConditionsUrl': ''};
+  final currentAppVersion = (await PackageInfo.fromPlatform()).version;
+
+  final defaultValues = {
+    'termsAndConditionsUrl': '',
+    kAndroidRemoteConfigVersionKey: currentAppVersion,
+    kiOSRemoteConfigVersionKey: currentAppVersion,
+  };
 
   await di<RemoteConfigDataSource>()
       .initializeFirebaseRemoteConfig(defaultValues);

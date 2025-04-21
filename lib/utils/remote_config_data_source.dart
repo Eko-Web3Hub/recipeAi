@@ -20,7 +20,7 @@ class RemoteConfigDataSource {
     } else {
       await _client.setConfigSettings(RemoteConfigSettings(
         fetchTimeout: const Duration(seconds: 10),
-        minimumFetchInterval: const Duration(hours: 12),
+        minimumFetchInterval: const Duration(hours: 1),
       ));
     }
 

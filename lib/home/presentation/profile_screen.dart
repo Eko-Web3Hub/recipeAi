@@ -318,13 +318,8 @@ class ConfirmationDeleteAccountWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            appTexts.confirmAccountDeletion,
-            style: GoogleFonts.poppins(
-              fontSize: 17,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
+          PopupTitle(
+            title: appTexts.confirmAccountDeletion,
           ),
           const Gap(30),
           Row(
@@ -364,8 +359,9 @@ class DialogLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
       ),
+      backgroundColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -376,6 +372,26 @@ class DialogLayout extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class PopupTitle extends StatelessWidget {
+  const PopupTitle({
+    super.key,
+    required this.title,
+  });
+
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: GoogleFonts.poppins(
+        fontSize: 17,
+        fontWeight: FontWeight.w500,
+      ),
+      textAlign: TextAlign.center,
     );
   }
 }
