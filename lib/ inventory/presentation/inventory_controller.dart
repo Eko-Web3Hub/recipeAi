@@ -9,6 +9,8 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../domain/model/category.dart';
@@ -22,6 +24,7 @@ final class InventoryState extends Equatable {
     this.ingredientsAddedByUser = const [],
     this.isBusy = false,
     this.categoryIdSelected,
+    this.appLanguage = AppLanguage.en,
   });
 
   final List<Category> categories;
@@ -30,6 +33,7 @@ final class InventoryState extends Equatable {
   final List<Ingredient> ingredientsSuggested;
   final bool isBusy;
   final String? categoryIdSelected;
+  final AppLanguage appLanguage;
 
   @override
   List<Object?> get props => [
@@ -39,6 +43,7 @@ final class InventoryState extends Equatable {
         categoryIdSelected,
         ingredientsAddedByUser,
         isBusy,
+        appLanguage,
       ];
 
   InventoryState copyWith({
@@ -48,6 +53,7 @@ final class InventoryState extends Equatable {
     List<Ingredient>? ingredientsAddedByUser,
     bool? isBusy,
     String? categoryIdSelected,
+    AppLanguage? appLanguage,
   }) {
     return InventoryState(
       categories: categories ?? this.categories,
@@ -57,6 +63,7 @@ final class InventoryState extends Equatable {
           ingredientsAddedByUser ?? this.ingredientsAddedByUser,
       isBusy: isBusy ?? this.isBusy,
       categoryIdSelected: categoryIdSelected ?? this.categoryIdSelected,
+      appLanguage: appLanguage ?? this.appLanguage,
     );
   }
 }
@@ -67,16 +74,19 @@ class InventoryController extends Cubit<InventoryState> {
   final IKitchenInventoryRepository _kitchenInventoryRepository;
   final IAuthUserService _authUserService;
   final IAnalyticsRepository _analyticsRepository;
+  final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
 
   InventoryController(
     this._inventoryRepository,
     this._kitchenInventoryRepository,
     this._authUserService,
     this._analyticsRepository,
+    this._userAccountMetaDataRepository,
   ) : super(InventoryState()) {
     listenToQuerySearch();
     loadCategories();
     loadIngredientsAdded();
+    watchAccountMetaData();
   }
 
   final _searchController = StreamController<String>.broadcast();
@@ -183,6 +193,19 @@ class InventoryController extends Cubit<InventoryState> {
           addedIngredient.name.toLowerCase() == ingredient.name.toLowerCase());
     }).toList();
     emit(state.copyWith(ingredients: filteredIngredients));
+  }
+
+  Future<void> watchAccountMetaData() async {
+    final uid = _authUserService.currentUser!.uid;
+    _userAccountMetaDataRepository.watchUserAccount(uid).listen(
+      (userAccountMetaData) {
+        if (userAccountMetaData != null) {
+          emit(state.copyWith(
+            appLanguage: userAccountMetaData.appLanguage,
+          ));
+        }
+      },
+    );
   }
 
   Future<void> loadCategories() async {

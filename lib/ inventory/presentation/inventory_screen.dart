@@ -20,6 +20,7 @@ import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_reposito
 import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -97,11 +98,11 @@ class InventoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => InventoryController(
-        di<IInventoryRepository>(),
-        di<IKitchenInventoryRepository>(),
-        di<IAuthUserService>(),
-        di<IAnalyticsRepository>(),
-      ),
+          di<IInventoryRepository>(),
+          di<IKitchenInventoryRepository>(),
+          di<IAuthUserService>(),
+          di<IAnalyticsRepository>(),
+          di<IUserAccountMetaDataRepository>()),
       child: BlocBuilder<InventoryController, InventoryState>(
         builder: (context, state) {
           final controller = context.read<InventoryController>();
@@ -349,7 +350,8 @@ class InventoryScreen extends StatelessWidget {
                                     },
                                     ingredient: ingredient);
                               },
-                              itemCount: state.ingredientsAddedByUser.length,
+                              itemCount:
+                                  state.ingredientsAddedByUser.reversed.length,
                             ),
                           ),
                     SliverPadding(

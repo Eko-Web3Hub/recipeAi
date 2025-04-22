@@ -7,6 +7,7 @@ abstract class IngredientSerialization {
   static Ingredient fromJson(Map<String, dynamic> json) {
     return Ingredient(
       name: json["name"],
+      nameFr: json["nameFr"],
       quantity: json["quantity"] ?? '1',
       date: json["date"] == null ? null : (json["date"] as Timestamp).toDate(),
       id: json["id"] == null ? null : EntityId(json["id"]),
@@ -19,6 +20,7 @@ abstract class IngredientSerialization {
       "name": ingredient.name,
       "quantity": ingredient.quantity,
       "date": ingredient.date,
+      "nameFr": ingredient.nameFr,
     };
   }
 }

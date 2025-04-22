@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/%20inventory/domain/model/category.dart';
+import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class CategoryItem extends StatelessWidget {
   const CategoryItem(
@@ -14,6 +17,7 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLanguage = di<TranslationController>().currentLanguageEnum;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -31,7 +35,7 @@ class CategoryItem extends StatelessWidget {
             : null,
         child: Center(
           child: Text(
-            category.name,
+            appLanguage == AppLanguage.fr ? category.nameFr : category.name,
             style: GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,

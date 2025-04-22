@@ -104,6 +104,7 @@ class ReceiptTicketScanResultController
                 ? ingredient
                 : ingredient.copy(
                     date: DateTime.now(),
+                    nameFr: ingredient.nameFr ?? ingredient.name,
                   ),
           ),
         )
