@@ -431,5 +431,13 @@
     "emptyHistoric": "Oops 🥲, ton historique de recette est vide",
     "@emptyHistoric": {
         "description": "Label pour historique vide"
+    },
+    "updateAvailable": "Nouvelle mise à jour disponible 🥳 !",
+    "@updateAvailable": {
+        "description": "Label pour mise à jour disponible"
+    },
+    "updateAvailableDescription": "Une nouvelle version de notre application est désormais disponible. Mettez à jour dès maintenant pour profiter pleinement de toutes les nouveautés.",
+    "@updateAvailableDescription": {
+        "description": "Label pour la description de la mise à jour disponible"
     }
 }

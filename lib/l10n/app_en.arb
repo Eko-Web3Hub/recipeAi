@@ -431,5 +431,13 @@
     "emptyHistoric": "Oops 🥲, your recipe history is empty",
     "@emptyHistoric": {
         "description": "Label for empty historic"
+    },
+    "updateAvailable": "App update available 🥳 !",
+    "@updateAvailable": {
+        "description": "Label for app update available"
+    },
+    "updateAvailableDescription": "A new version of our application is now available. Update now to take full advantage of all the new features.",
+    "@updateAvailableDescription": {
+        "description": "Label for update available description"
     }
 }
