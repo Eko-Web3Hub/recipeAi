@@ -1,2 +1,0 @@
-/Users/loichacheme/development/web/projects/recipeAi/android/app/.cxx/Debug/t363a45i/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/loichacheme/development/web/projects/recipeAi/android/app/.cxx/Debug/t363a45i/arm64-v8a/CMakeFiles/rebuild_cache.dir
