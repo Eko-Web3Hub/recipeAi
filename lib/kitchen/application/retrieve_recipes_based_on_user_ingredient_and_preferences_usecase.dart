@@ -15,15 +15,15 @@ class RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase {
 
   Future<List<UserReceipeV2>> retrieve(EntityId uid) async {
     final uid = _authUserService.currentUser!.uid;
-    final receipesFromApi =
+    final receipesTranslated =
         await _receipesBasedOnIngredientUserPreferenceRepository
             .getReceipesBasedOnIngredientUserPreference(uid);
 
-    final convertRecipesToUserRecipes = receipesFromApi
+    final convertRecipesToUserRecipes = receipesTranslated.recipesEn
         .mapIndexed(
           (index, recipe) => convertTranslatedRecipeToUserReciepe(
             id: null,
-            recipeFr: recipe,
+            recipeFr: receipesTranslated.recipesFr[index],
             recipeEn: recipe,
             createdDate: DateTime.now(),
           ),
