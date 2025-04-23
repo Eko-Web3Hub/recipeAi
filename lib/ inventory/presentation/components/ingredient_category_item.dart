@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class IngredientCategoryItem extends StatelessWidget {
   const IngredientCategoryItem(
@@ -14,6 +17,7 @@ class IngredientCategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final appLanguage = di<TranslationController>().currentLanguageEnum;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -26,7 +30,7 @@ class IngredientCategoryItem extends StatelessWidget {
             border:
                 Border.all(color: const Color(0xFFFFBA4D))),
         child: Text(
-          ingredient.name,
+        appLanguage == AppLanguage.fr? '${ingredient.nameFr}': ingredient.name,
           style: GoogleFonts.poppins(
               color: Colors.black,
               fontWeight:  FontWeight.w400,

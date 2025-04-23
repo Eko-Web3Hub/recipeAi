@@ -10,6 +10,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 
 class InventoryRepositoryMock extends Mock implements IInventoryRepository {}
 
@@ -20,19 +21,25 @@ class KitchenInventoryRepositoryMock extends Mock
 
 class AnalyticsRepositoryMock extends Mock implements IAnalyticsRepository {}
 
+class UserAccountMetaDataRepositoryMock
+    extends Mock
+    implements IUserAccountMetaDataRepository {}
+
 void main() {
   late IKitchenInventoryRepository kitchenInventoryRepository;
   late IAuthUserService authUserService;
   late IInventoryRepository inventoryRepository;
   late IAnalyticsRepository analyticsRepository;
+  late IUserAccountMetaDataRepository userAccountMetaDataRepository;
+
   const authUser = AuthUser(
     uid: EntityId('uid'),
     email: 'email@gmail.com',
   );
 
   final fakeCategories = [
-    Category(id: EntityId('1'), name: 'Fruits'),
-    Category(id: EntityId('2'), name: 'Légumes'),
+    Category(id: EntityId('1'), name: 'Fruits',nameFr: 'Fruits'),
+    Category(id: EntityId('2'), name: 'Vegetables',nameFr: 'Légumes'),
   ];
 
   final fakeIngredients = [
@@ -41,12 +48,14 @@ void main() {
       name: 'Banana',
       quantity: '3pcs',
       date: DateTime(2024, 1, 1),
+      nameFr: 'Bananes'
     ),
     Ingredient(
       id: const EntityId('b'),
       name: 'Apple',
       quantity: '2pcs',
       date: DateTime(2024, 1, 2),
+      nameFr: 'Pommes'
     ),
   ];
 
@@ -56,18 +65,21 @@ void main() {
       name: 'Tomatoes',
       quantity: '3pcs',
       date: DateTime.now(),
+      nameFr: 'Tomates'
     ),
     Ingredient(
       name: 'Water',
       quantity: null,
       date: DateTime.now(),
       id: const EntityId('2'),
+      nameFr: 'Eau'
     ),
     Ingredient(
       name: 'Steak',
       quantity: null,
       date: DateTime.now(),
       id: const EntityId('3'),
+      nameFr: 'Steak'
     ),
   ];
 
@@ -90,6 +102,7 @@ void main() {
     authUserService = AuthUserServiceMock();
     inventoryRepository = InventoryRepositoryMock();
     analyticsRepository = AnalyticsRepositoryMock();
+    userAccountMetaDataRepository = UserAccountMetaDataRepositoryMock();
 
     when(() => authUserService.currentUser).thenReturn(authUser);
     when(() => inventoryRepository.getCategories()).thenAnswer(
@@ -107,6 +120,7 @@ void main() {
         kitchenInventoryRepository,
         authUserService,
         analyticsRepository,
+        userAccountMetaDataRepository,
       );
 
   // void givenFullIngredients() {

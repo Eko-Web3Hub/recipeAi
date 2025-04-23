@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -93,7 +95,13 @@ class AuthService implements IAuthService {
   @override
   Future<bool> googleSignIn() async {
     try {
-      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+      const List<String> scopes = <String>[
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ];
+      final GoogleSignInAccount? gUser = await GoogleSignIn(
+        scopes: scopes,
+      ).signIn();
 
       //user cancels google sign in pop up screen
       if (gUser == null) return false;
@@ -110,6 +118,9 @@ class AuthService implements IAuthService {
       return true;
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.message!);
+    } on Exception catch (e) {
+      log('An error occured: ${e.toString()}');
+      rethrow;
     }
   }
 

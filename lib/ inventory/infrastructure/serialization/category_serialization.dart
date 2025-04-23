@@ -7,6 +7,7 @@ abstract class CategorySerialization {
     return Category(
       id: json["id"] == null ? null : EntityId(json["id"]),
       name: json["name"],
+      nameFr: json["nameFr"],
     );
   }
 
@@ -14,6 +15,7 @@ abstract class CategorySerialization {
     return {
       "id": category.id?.value,
       "name": category.name,
+      "nameFr": category.nameFr,
     };
   }
 }

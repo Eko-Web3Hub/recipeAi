@@ -410,6 +410,7 @@ class _LoginAgainDialogState extends State<_LoginAgainDialog> {
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
+    
 
     return DialogLayout(
       child: BlocProvider(

@@ -82,6 +82,7 @@ class KitchenInventoryRepository implements IKitchenInventoryRepository {
                 IngredientSerialization.toJson(
                   ingredient.copy(
                     id: EntityId(value.id),
+                    
                   ),
                 ),
               ),

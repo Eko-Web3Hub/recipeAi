@@ -64,7 +64,8 @@ class InventoryRepository implements IInventoryRepository {
     }
     results = results.where(
       (element) {
-        return element.name.toLowerCase().contains(query);
+        return element.name.toLowerCase().contains(query) ||
+            (element.nameFr ?? '').toLowerCase().contains(query);
       },
     ).toList();
     return results;
