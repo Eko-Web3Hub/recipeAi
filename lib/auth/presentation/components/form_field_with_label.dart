@@ -14,6 +14,7 @@ class FormFieldWithLabel extends StatelessWidget {
     this.inputType = InputType.text,
     this.keyboardType,
     this.onChange,
+    this.initialValue,
   });
 
   final String label;
@@ -23,6 +24,7 @@ class FormFieldWithLabel extends StatelessWidget {
   final InputType inputType;
   final TextInputType? keyboardType;
   final Function(String)? onChange;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class FormFieldWithLabel extends StatelessWidget {
           inputType: inputType,
           keyboardType: keyboardType,
           onChange: onChange,
+          initialValue: initialValue,
         ),
       ],
     );

@@ -8,47 +8,21 @@ import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
-import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
-import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/home/presentation/delete_account_after_an_login.dart';
-import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/app_version.dart';
-import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/device_info.dart';
 import 'package:recipe_ai/utils/functions.dart';
-import 'package:recipe_ai/utils/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-TextStyle _noTextStyle = GoogleFonts.poppins(
-  color: Colors.black,
-  fontWeight: FontWeight.w600,
-);
-
-TextStyle _deleteTextStyle = GoogleFonts.poppins(
-  color: Colors.red,
-  fontWeight: FontWeight.w600,
-);
 
 TextStyle settingHeadTitleStyle = GoogleFonts.poppins(
   fontSize: 14,
   fontWeight: FontWeight.w600,
   color: Colors.black,
 );
-
-void _delectionSuccess(BuildContext context) {
-  final appTexts = di<TranslationController>().currentLanguage;
-
-  context.go('/onboarding/start');
-  showSnackBar(
-    context,
-    appTexts.deleteAccountSuccess,
-  );
-}
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -59,25 +33,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late AppLanguageItem _currentAppLanguageItem;
-
-  Future<bool?> _showConfirmationDialog(BuildContext context) {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return ConfirmationDeleteAccountWidget(
-          noPressed: () => Navigator.of(context).pop(false),
-          yesPressed: () => Navigator.of(context).pop(true),
-        );
-      },
-    );
-  }
-
-  Future<bool?> _showLoginAgainDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => const _LoginAgainDialog(),
-    );
-  }
 
   Future<void> _openFeedBackLink() async {
     final encodedUid =
@@ -109,223 +64,143 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
-    return BlocProvider(
-      create: (context) => DeleteAccountController(
-        di<IFirebaseAuth>(),
-      ),
-      child: Builder(builder: (context) {
-        return BlocListener<DeleteAccountController, DeleteAccountState>(
-          listener: (context, state) {
-            if (state is DeleteAccountSuccess) {
-              _delectionSuccess(context);
-            } else if (state is DeleteAccountRequiredRecentLogin) {
-              _showLoginAgainDialog(context);
-            } else if (state is DeleteAccountErrorOcuured) {
-              showSnackBar(
-                context,
-                appTexts.deleteAccountError,
-                isError: true,
-              );
-            }
-          },
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey.withValues(alpha: 0.4),
-                    child: const UserFirstNameCharOnCapitalCase(),
-                  ),
-                  const Gap(15.0),
-                  StreamBuilder<UserPersonnalInfo?>(
-                    stream: di<IUserPersonnalInfoService>().watch(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data != null) {
-                        return Text(
-                          capitalizeFirtLetter(snapshot.data!.name),
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        );
-                      }
-
-                      return SizedBox.shrink();
-                    },
-                  ),
-                  const Gap(20),
-                  Text(
-                    appTexts.baseSettings,
-                    style: settingHeadTitleStyle,
-                  ),
-                  const Gap(15),
-                  _ProfilOption(
-                    icon: 'assets/icon/accountIcon.svg',
-                    title: appTexts.myAccount,
-                    onPressed: () => context.push(
-                      '/profil-screen/my-account',
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.grey.withValues(alpha: 0.4),
+              child: const UserFirstNameCharOnCapitalCase(),
+            ),
+            const Gap(15.0),
+            StreamBuilder<UserPersonnalInfo?>(
+              stream: di<IUserPersonnalInfoService>().watch(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  return Text(
+                    capitalizeFirtLetter(snapshot.data!.name),
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                  const Gap(15),
-                  _ProfilOption(
-                    icon: 'assets/icon/languagesIcon.svg',
-                    title: appTexts.language,
-                    onPressed: null,
-                  ),
-                  const Gap(30),
-                  Text(
-                    appTexts.kitchenSettings,
-                    style: settingHeadTitleStyle,
-                  ),
-                  const Gap(15),
-                  _ProfilOption(
-                    icon: 'assets/icon/myPreferencesIcon.svg',
-                    title: appTexts.myPreferences,
-                    onPressed: () =>
-                        context.push("/profil-screen/update-user-preference"),
-                  ),
-                  const Gap(15),
-                  _ProfilOption(
-                    icon: 'assets/icon/notificationBell.svg',
-                    title: appTexts.notification,
-                    onPressed: null,
-                  ),
-                  const Gap(30),
-                  Text(
-                    appTexts.help,
-                    style: settingHeadTitleStyle,
-                  ),
-                  const Gap(15),
-                  _ProfilOption(
-                    icon: 'assets/icon/solarBugIcon.svg',
-                    title: appTexts.sendABug,
-                    onPressed: _openFeedBackLink,
-                  ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Text(
-                  //         appTexts.changeLanguage,
-                  //         style: GoogleFonts.poppins(
-                  //           fontWeight: FontWeight.w600,
-                  //           fontSize: 14,
-                  //           color: Colors.black,
-                  //         ),
-                  //       ),
-                  //       DropdownButton<AppLanguageItem>(
-                  //         value: _currentAppLanguageItem,
-                  //         items: appLanguagesItem
-                  //             .map((item) => DropdownMenuItem<AppLanguageItem>(
-                  //                   value: item,
-                  //                   child: Text(
-                  //                     item.label,
-                  //                     style: GoogleFonts.poppins(
-                  //                       fontSize: 14,
-                  //                       color: Colors.black,
-                  //                     ),
-                  //                   ),
-                  //                 ))
-                  //             .toList(),
-                  //         onChanged: (newItem) {
-                  //           if (newItem != null) {
-                  //             setState(() {
-                  //               _currentAppLanguageItem = newItem;
-                  //             });
-                  //             di<TranslationController>()
-                  //                 .changeLanguage(newItem.key);
-                  //           }
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  );
+                }
 
-                  // _TextButton(
-                  //   text: appTexts.deleteAccount,
-                  //   onPressed: () async {
-                  //     final response = await _showConfirmationDialog(context);
-
-                  //     if (response == true) {
-                  //       context.read<DeleteAccountController>().deleteAccount();
-                  //     }
-                  //   },
-                  //   textColor: Colors.red,
-                  // ),
-                  const Gap(50),
-                  BlocProvider(
-                    create: (context) => SignOutBtnControlller(
-                      di<IAuthService>(),
-                    ),
-                    child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                        builder: (context, btnLogOutState) {
-                      return Builder(builder: (context) {
-                        return MainBtn(
-                          text: appTexts.signOut,
-                          isLoading: btnLogOutState is SignOutBtnLoading,
-                          onPressed: () {
-                            context.read<SignOutBtnControlller>().signOut();
-                          },
-                        );
-                      });
-                    }),
-                  ),
-                ],
+                return SizedBox.shrink();
+              },
+            ),
+            const Gap(20),
+            Text(
+              appTexts.baseSettings,
+              style: settingHeadTitleStyle,
+            ),
+            const Gap(15),
+            _ProfilOption(
+              icon: 'assets/icon/accountIcon.svg',
+              title: appTexts.myAccount,
+              onPressed: () => context.push(
+                '/profil-screen/my-account',
               ),
             ),
-          ),
-        );
-      }),
-    );
-  }
-}
+            const Gap(15),
+            _ProfilOption(
+              icon: 'assets/icon/languagesIcon.svg',
+              title: appTexts.language,
+              onPressed: null,
+            ),
+            const Gap(30),
+            Text(
+              appTexts.kitchenSettings,
+              style: settingHeadTitleStyle,
+            ),
+            const Gap(15),
+            _ProfilOption(
+              icon: 'assets/icon/myPreferencesIcon.svg',
+              title: appTexts.myPreferences,
+              onPressed: () =>
+                  context.push("/profil-screen/update-user-preference"),
+            ),
+            const Gap(15),
+            _ProfilOption(
+              icon: 'assets/icon/notificationBell.svg',
+              title: appTexts.notification,
+              onPressed: null,
+            ),
+            const Gap(30),
+            Text(
+              appTexts.help,
+              style: settingHeadTitleStyle,
+            ),
+            const Gap(15),
+            _ProfilOption(
+              icon: 'assets/icon/solarBugIcon.svg',
+              title: appTexts.sendABug,
+              onPressed: _openFeedBackLink,
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text(
+            //         appTexts.changeLanguage,
+            //         style: GoogleFonts.poppins(
+            //           fontWeight: FontWeight.w600,
+            //           fontSize: 14,
+            //           color: Colors.black,
+            //         ),
+            //       ),
+            //       DropdownButton<AppLanguageItem>(
+            //         value: _currentAppLanguageItem,
+            //         items: appLanguagesItem
+            //             .map((item) => DropdownMenuItem<AppLanguageItem>(
+            //                   value: item,
+            //                   child: Text(
+            //                     item.label,
+            //                     style: GoogleFonts.poppins(
+            //                       fontSize: 14,
+            //                       color: Colors.black,
+            //                     ),
+            //                   ),
+            //                 ))
+            //             .toList(),
+            //         onChanged: (newItem) {
+            //           if (newItem != null) {
+            //             setState(() {
+            //               _currentAppLanguageItem = newItem;
+            //             });
+            //             di<TranslationController>()
+            //                 .changeLanguage(newItem.key);
+            //           }
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
-class ConfirmationDeleteAccountWidget extends StatelessWidget {
-  const ConfirmationDeleteAccountWidget({
-    super.key,
-    required this.noPressed,
-    required this.yesPressed,
-  });
-
-  final VoidCallback noPressed;
-  final VoidCallback yesPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
-    return DialogLayout(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          PopupTitle(
-            title: appTexts.confirmAccountDeletion,
-          ),
-          const Gap(30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: noPressed,
-                child: Text(
-                  appTexts.no,
-                  style: _noTextStyle,
-                ),
+            const Gap(50),
+            BlocProvider(
+              create: (context) => SignOutBtnControlller(
+                di<IAuthService>(),
               ),
-              TextButton(
-                onPressed: yesPressed,
-                child: Text(
-                  appTexts.delete,
-                  style: _deleteTextStyle,
-                ),
-              ),
-            ],
-          ),
-        ],
+              child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+                  builder: (context, btnLogOutState) {
+                return Builder(builder: (context) {
+                  return MainBtn(
+                    text: appTexts.signOut,
+                    isLoading: btnLogOutState is SignOutBtnLoading,
+                    onPressed: () {
+                      context.read<SignOutBtnControlller>().signOut();
+                    },
+                  );
+                });
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -380,122 +255,6 @@ class PopupTitle extends StatelessWidget {
   }
 }
 
-class _LoginAgainDialog extends StatefulWidget {
-  const _LoginAgainDialog();
-
-  @override
-  State<_LoginAgainDialog> createState() => _LoginAgainDialogState();
-}
-
-class _LoginAgainDialogState extends State<_LoginAgainDialog> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _passwordController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
-    return DialogLayout(
-      child: BlocProvider(
-        create: (context) => DeleteAccountAfterAnLoginController(
-          di<IFirebaseAuth>(),
-          di<IAuthUserService>(),
-        ),
-        child: BlocListener<DeleteAccountAfterAnLoginController,
-            DeleteAccountAfterAnLoginState>(
-          listener: (context, state) {
-            if (state is DeleteAccountAfterAnLoginSuccess) {
-              Navigator.of(context).pop();
-              _delectionSuccess(context);
-            } else if (state is DeleteAccountAfterAnErrorOcured) {
-              showSnackBar(
-                context,
-                appTexts.deleteAccountError,
-                isError: true,
-              );
-            }
-          },
-          child: Builder(builder: (context) {
-            return Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    appTexts.deleteAccountRequiredRecentLogin,
-                    style: titleDialogStyle,
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(30),
-                  FormFieldWithLabel(
-                    label: appTexts.password,
-                    hintText: appTexts.enterPassword,
-                    controller: _passwordController,
-                    validator: (value) =>
-                        nonEmptyStringValidator(value, appTexts),
-                    inputType: InputType.password,
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  BlocBuilder<DeleteAccountAfterAnLoginController,
-                      DeleteAccountAfterAnLoginState>(
-                    builder: (context, state) {
-                      if (state is DeleteAccountAfterAnLoginIncorrectPassword) {
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            left: 6,
-                          ),
-                          child: Text(
-                            appTexts.deleteAccountIncorrectPassword,
-                            style: GoogleFonts.poppins(
-                              color: Colors.red,
-                              fontSize: 12,
-                            ),
-                          ),
-                        );
-                      }
-
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                  const Gap(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
-                          appTexts.no,
-                          style: _noTextStyle,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context
-                                .read<DeleteAccountAfterAnLoginController>()
-                                .deleteAccountAfterAReLogin(
-                                  _passwordController.text,
-                                );
-                          }
-                        },
-                        child: Text(
-                          appTexts.delete,
-                          style: _deleteTextStyle,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }),
-        ),
-      ),
-    );
-  }
-}
-
 class AppLanguageItem {
   final String label;
   final String key;
@@ -527,7 +286,7 @@ class _ProfilOption extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           SvgPicture.asset(icon),
           const Gap(15),

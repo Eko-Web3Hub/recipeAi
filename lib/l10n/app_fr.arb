@@ -471,5 +471,17 @@
     "nameUser": "Nom d'utilisateur",
     "@nameUser": {
         "description": "Label pour le nom d'utilisateur"
+    },
+    "changeUsername": "Choisissez votre nouveau nom d’utilisateur",
+    "@changeUsername": {
+        "description": "Label pour changer le nom d'utilisateur"
+    },
+    "usernameNotChanged": "Vous n'avez pas changé votre nom d'utilisateur",
+    "@usernameNotChanged": {
+        "description": "Label pour le nom d'utilisateur non changé"
+    },
+    "usernameChanged": "Votre nom d'utilisateur a été changé avec succès",
+    "@usernameChanged": {
+        "description": "Label pour le nom d'utilisateur changé"
     }
 }

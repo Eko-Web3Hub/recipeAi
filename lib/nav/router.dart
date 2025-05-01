@@ -11,6 +11,7 @@ import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
+import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/home/presentation/historic/historic_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
@@ -274,6 +275,12 @@ GoRouter createRouter() => GoRouter(
                       builder: (context, state) =>
                           const UpdateUserPreferenceScreen(),
                     ),
+                    GoRoute(
+                      name: 'ChangeUsernameScreen',
+                      path: 'change-username',
+                      redirect: _guardAuth,
+                      builder: (context, state) => const ChangeUsername(),
+                    ),
                   ],
                 ),
               ],
@@ -300,6 +307,8 @@ String? genAppBarTitle(String? path, AppLocalizations appTexts) {
 bool hideNavBar(String? path) {
   switch (path) {
     case '/profil-screen/update-user-preference':
+      return true;
+    case '/profil-screen/change-username':
       return true;
     default:
       return false;

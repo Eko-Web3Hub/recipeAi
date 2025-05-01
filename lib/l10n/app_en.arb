@@ -471,5 +471,17 @@
     "nameUser": "User Name",
     "@nameUser": {
         "description": "Label for user name"
+    },
+    "changeUsername": "Change your username",
+    "@changeUsername": {
+        "description": "Label for changing username"
+    },
+    "usernameNotChanged": "Username not changed",
+    "@usernameNotChanged": {
+        "description": "Label for username not changed"
+    },
+    "usernameChanged": "Username changed",
+    "@usernameChanged": {
+        "description": "Label for username changed"
     }
 }
