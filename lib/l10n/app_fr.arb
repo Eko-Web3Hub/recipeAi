@@ -439,5 +439,33 @@
     "updateAvailableDescription": "Une nouvelle version de notre application est désormais disponible. Mettez à jour dès maintenant pour profiter pleinement de toutes les nouveautés.",
     "@updateAvailableDescription": {
         "description": "Label pour la description de la mise à jour disponible"
+    },
+    "baseSettings": "Paramètres de base",
+    "@baseSettings": {
+        "description": "Label pour les paramètres de base"
+    },
+    "myAccount": "Mon compte",
+    "@myAccount": {
+        "description": "Label pour mon compte"
+    },
+    "language": "Langues",
+    "@language": {
+        "description": "Label pour la langue"
+    },
+    "kitchenSettings": "Paramètres cuisine",
+    "@kitchenSettings": {
+        "description": "Label pour les paramètres de la cuisine"
+    },
+    "myPreferences": "Mes préférences",
+    "@myPreferences": {
+        "description": "Label pour mes préférences"
+    },
+    "notification": "Notifications",
+    "@notification": {
+        "description": "Label pour les notifications"
+    },
+    "help": "Aide",
+    "@help": {
+        "description": "Label pour l'aide"
     }
 }

@@ -439,5 +439,33 @@
     "updateAvailableDescription": "A new version of our application is now available. Update now to take full advantage of all the new features.",
     "@updateAvailableDescription": {
         "description": "Label for update available description"
+    },
+    "baseSettings": "Base Settings",
+    "@baseSettings": {
+        "description": "Label for base settings"
+    },
+    "myAccount": "My Account",
+    "@myAccount": {
+        "description": "Label for my account"
+    },
+    "language": "Languages",
+    "@language": {
+        "description": "Label for my languages"
+    },
+    "kitchenSettings": "Kitchen Settings",
+    "@kitchenSettings": {
+        "description": "Label for kitchen settings"
+    },
+    "myPreferences": "My Preferences",
+    "@myPreferences": {
+        "description": "Label for my preferences"
+    },
+    "notification": "Notifications",
+    "@notification": {
+        "description": "Label for notifications"
+    },
+    "help": "Help",
+    "@help": {
+        "description": "Label for help"
     }
 }
