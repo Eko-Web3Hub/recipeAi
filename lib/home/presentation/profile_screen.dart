@@ -165,7 +165,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _ProfilOption(
                     icon: 'assets/icon/accountIcon.svg',
                     title: appTexts.myAccount,
-                    onPressed: null,
+                    onPressed: () => context.push(
+                      '/profil-screen/my-account',
+                    ),
                   ),
                   const Gap(15),
                   _ProfilOption(

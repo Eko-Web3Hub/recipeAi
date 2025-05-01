@@ -467,5 +467,9 @@
     "help": "Aide",
     "@help": {
         "description": "Label pour l'aide"
+    },
+    "nameUser": "Nom d'utilisateur",
+    "@nameUser": {
+        "description": "Label pour le nom d'utilisateur"
     }
 }
