@@ -1,0 +1,17 @@
+{
+    "applinks": {
+        "details": [
+            {
+                "appIDs": [
+                    "4876U3X92F.com.recipeai.app"
+                ],
+                "components": [
+                    {
+                        "/": "/*",
+                        "comment": "Matches all paths"
+                    }
+                ]
+            }
+        ]
+    }
+}

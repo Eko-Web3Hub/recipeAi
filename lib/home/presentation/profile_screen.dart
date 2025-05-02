@@ -10,6 +10,7 @@ import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -106,10 +107,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const Gap(15),
-            _ProfilOption(
-              icon: 'assets/icon/languagesIcon.svg',
-              title: appTexts.language,
-              onPressed: null,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _ProfilOption(
+                  icon: 'assets/icon/languagesIcon.svg',
+                  title: appTexts.language,
+                  onPressed: null,
+                ),
+                OptionRightBtn(
+                  value: appLanguagesItem
+                      .firstWhere(
+                          (item) => item.key == _currentAppLanguageItem.key)
+                      .label,
+                  onTap: () {},
+                ),
+              ],
             ),
             const Gap(30),
             Text(

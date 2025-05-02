@@ -179,30 +179,49 @@ class _AccountOption extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                value,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 11,
-                  color: _kGreyColor,
-                ),
-              ),
-              const Gap(5.0),
-              IconButton(
-                onPressed: onTap,
-                icon: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: _kGreyColor,
-                  size: 16,
-                ),
-              ),
-            ],
+          OptionRightBtn(
+            value: value,
+            onTap: onTap,
           ),
         ],
       ),
+    );
+  }
+}
+
+class OptionRightBtn extends StatelessWidget {
+  const OptionRightBtn({
+    super.key,
+    required this.value,
+    required this.onTap,
+  });
+
+  final String value;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          value,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 11,
+            color: _kGreyColor,
+          ),
+        ),
+        const Gap(5.0),
+        IconButton(
+          onPressed: onTap,
+          icon: const Icon(
+            Icons.arrow_forward_ios,
+            color: _kGreyColor,
+            size: 16,
+          ),
+        ),
+      ],
     );
   }
 }

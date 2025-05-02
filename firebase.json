@@ -1,1 +1,73 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"recipe-ai-5e261","appId":"1:819430206108:android:02833473ff6fecc3591b59","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"recipe-ai-5e261","appId":"1:819430206108:ios:8666c8c5d25716ad591b59","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"recipe-ai-5e261","configurations":{"android":"1:819430206108:android:02833473ff6fecc3591b59","ios":"1:819430206108:ios:8666c8c5d25716ad591b59"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "recipe-ai-5e261",
+          "appId": "1:819430206108:android:02833473ff6fecc3591b59",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "recipe-ai-5e261",
+          "appId": "1:819430206108:ios:8666c8c5d25716ad591b59",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "recipe-ai-5e261",
+          "configurations": {
+            "android": "1:819430206108:android:02833473ff6fecc3591b59",
+            "ios": "1:819430206108:ios:8666c8c5d25716ad591b59"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/.well-known/assetlinks.json",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      {
+        "source": "/.well-known/apple-app-site-association",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      {
+        "source": "/apple-app-site-association",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      }
+    ]
+  }
+}
