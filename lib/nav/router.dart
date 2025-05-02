@@ -31,6 +31,7 @@ import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_r
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_account/presentation/reset_password_screen.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
   final authState = context.read<AuthNavigationController>().state;
@@ -149,6 +150,8 @@ GoRouter createRouter() => GoRouter(
             return ReceipeDetailsView(
               receipeId: receipeId,
               receipe: receipe,
+              appLanguage: null,
+              userSharingUid: null,
             );
           },
         ),
@@ -178,6 +181,24 @@ GoRouter createRouter() => GoRouter(
                       builder: (context, state) => HistoricScreen(),
                     ),
                     GoRoute(
+                      name: 'RecipeDetailsWithReceipeId',
+                      path:
+                          'recipe-details/:language/:userSharingUid/:receipeId',
+                      redirect: _guardAuth,
+                      builder: (context, state) {
+                        return ReceipeDetailsView(
+                          appLanguage: appLanguageFromString(
+                              state.pathParameters['language']!),
+                          receipeId:
+                              EntityId(state.pathParameters['receipeId']!),
+                          receipe: null,
+                          userSharingUid: EntityId(
+                            state.pathParameters['userSharingUid']!,
+                          ),
+                        );
+                      },
+                    ),
+                    GoRoute(
                       name: 'RecipeDetails',
                       path: 'recipe-details',
                       redirect: _guardAuth,
@@ -187,8 +208,10 @@ GoRouter createRouter() => GoRouter(
                         final receipe = extra['receipe'] as UserReceipeV2?;
 
                         return ReceipeDetailsView(
+                          appLanguage: null,
                           receipeId: receipeId,
                           receipe: receipe,
+                          userSharingUid: null,
                         );
                       },
                     ),

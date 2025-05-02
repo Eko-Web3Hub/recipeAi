@@ -254,4 +254,32 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
             ))
         .toList();
   }
+
+  @override
+  Future<UserReceipeV2?> getRecipeByName(
+    AppLanguage appLanguage,
+    EntityId recipeName,
+    EntityId uid,
+  ) async {
+    final filterKey =
+        appLanguage == AppLanguage.fr ? 'receipeFr.name' : 'receipeEn.name';
+
+    final docSnapshot = await _firestore
+        .collection(userReceipeV2Collection)
+        .doc(uid.value)
+        .collection(receipesCollection)
+        .where(
+          filterKey,
+          isEqualTo: recipeName.value.replaceAll('_', ' '),
+        )
+        .get();
+
+    final docs = docSnapshot.docs;
+    if (docs.isEmpty) {
+      return null;
+    }
+
+    final userRecipe = docs.first;
+    return UserReceipeV2.fromJson(userRecipe.data());
+  }
 }

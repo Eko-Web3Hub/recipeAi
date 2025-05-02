@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -32,23 +34,40 @@ class ReceipeDetailsState extends Equatable {
 class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   ReceipeDetailsController(
     this.receipeId,
+    this.appLanguage,
+    this.userSharingUid,
     this.seconds,
     this._authUserService,
     this._userAccountMetaDataRepository,
+    this._userReceipeRepositoryV2,
   ) : super(
           const ReceipeDetailsState.loading(),
-        );
+        ) {
+    _loadRecipeUsingId();
+  }
 
   ReceipeDetailsController.fromReceipe(
     UserReceipeV2 receipe,
     this._authUserService,
     this._userAccountMetaDataRepository,
+    this._userReceipeRepositoryV2,
   ) : super(
           ReceipeDetailsState.loaded(receipe.receipeEn),
         ) {
     _load(
       receipe,
     );
+  }
+
+  void _loadRecipeUsingId() async {
+    log('Loading recipe using ID: $receipeId');
+    log('with language: $appLanguage');
+    final recipe = await _userReceipeRepositoryV2.getRecipeByName(
+      appLanguage!,
+      receipeId!,
+      userSharingUid!,
+    );
+    _load(recipe!);
   }
 
   void _load(UserReceipeV2 userRecipe) async {
@@ -87,7 +106,10 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
 
   int? seconds;
   EntityId? receipeId;
+  EntityId? userSharingUid;
   final IAuthUserService _authUserService;
   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
+  final IUserReceipeRepositoryV2 _userReceipeRepositoryV2;
+  AppLanguage? appLanguage;
   StreamSubscription? _subscription;
 }

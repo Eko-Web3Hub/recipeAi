@@ -73,7 +73,6 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                         fontSize: 11,
                       ),
                     ),
-                    const Gap(15.0),
                     BlocBuilder<ChangeUsernameController, ChangeUsernameState>(
                       builder: (context, state) {
                         if (state is ChangeUsernameLoaded) {
@@ -83,7 +82,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                         }
 
                         return FormFieldWithLabel(
-                          label: appTexts.nameUser,
+                          label: '',
                           hintText: '',
                           controller: _usernameController,
                           validator: (value) =>

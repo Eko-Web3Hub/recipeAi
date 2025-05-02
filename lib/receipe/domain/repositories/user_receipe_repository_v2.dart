@@ -3,8 +3,15 @@ import 'dart:io';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 abstract class IUserReceipeRepositoryV2 {
+  Future<UserReceipeV2?> getRecipeByName(
+    AppLanguage appLanguage,
+    EntityId recipeName,
+    EntityId uid,
+  );
+
   Future<List<UserReceipeV2>> getReceipesBasedOnUserPreferencesFromFirestore(
     EntityId uid,
   );
