@@ -3,15 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/change_email_controller.dart';
 import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/home/presentation/email_loader.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/functions.dart';
 
 class ChangeEmailScreen extends StatefulWidget {
   const ChangeEmailScreen({super.key});
@@ -22,6 +25,17 @@ class ChangeEmailScreen extends StatefulWidget {
 
 class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
   final TextEditingController _emailController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _oldEmail = '';
+
+  void _showSnackBar(String text) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            text,
+            style: GoogleFonts.poppins(),
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -36,47 +50,78 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
         padding: EdgeInsets.symmetric(
           horizontal: verticalScreenPadding,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(25.0),
-            Text(
-              appTexts.changeEmailDescription,
-              style: GoogleFonts.poppins(
-                fontSize: 11,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(25.0),
+              Text(
+                appTexts.changeEmailDescription,
+                style: GoogleFonts.poppins(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.start,
               ),
-              textAlign: TextAlign.start,
-            ),
-            const Gap(10),
-            BlocProvider(
-              create: (_) => EmailLoader(
-                di<IUserPersonnalInfoService>(),
-              ),
-              child: BlocBuilder<EmailLoader, String?>(
-                builder: (context, email) {
-                  if (email != null) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _emailController.text = email;
-                    });
-                  }
+              const Gap(10),
+              BlocProvider(
+                create: (_) => EmailLoader(
+                  di<IUserPersonnalInfoService>(),
+                ),
+                child: BlocBuilder<EmailLoader, String?>(
+                  builder: (context, email) {
+                    if (email != null) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _oldEmail = email;
+                        _emailController.text = email;
+                      });
+                    }
 
-                  return CustomTextFormField(
-                    hintText: '',
-                    controller: _emailController,
-                    validator: null,
-                    isReadOnly: true,
-                  );
-                },
+                    return CustomTextFormField(
+                      hintText: '',
+                      controller: _emailController,
+                      validator: (email) => nonEmptyStringValidator(
+                        email,
+                        appTexts,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            const Spacer(),
-            MainBtn(
-              text: appTexts.getTheLink,
-            ),
-            const Gap(kBottomProfilePadding),
-          ],
+              const Spacer(),
+              BlocProvider(
+                create: (_) => ChangeEmailController(
+                  di<IAuthService>(),
+                ),
+                child: Builder(builder: (context) {
+                  return BlocBuilder<ChangeEmailController, ChangeEmailState?>(
+                      builder: (context, changeEmailState) {
+                    return MainBtn(
+                      text: appTexts.getTheLink,
+                      isLoading: changeEmailState is ChangeEmailLoading,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          if (_emailController.text == _oldEmail) {
+                            _showSnackBar(
+                              appTexts.emailNotChanged,
+                            );
+                            return;
+                          }
+
+                          context.read<ChangeEmailController>().changeEmail(
+                                _emailController.text,
+                              );
+                        }
+                      },
+                    );
+                  });
+                }),
+              ),
+              const Gap(kBottomProfilePadding),
+            ],
+          ),
         ),
       ),
     );

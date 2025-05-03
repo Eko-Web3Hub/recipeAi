@@ -488,12 +488,16 @@
     "@changeEmail": {
         "description": "Label pour changer l'email"
     },
-    "changeEmailDescription": "Nous vous enverrons un lien qui vous permettra de confirmer le changement.",
+    "changeEmailDescription": "Entrez la nouvelle adresse mail. Nous vous enverrons un lien qui vous permettra de confirmer le changement.",
     "@changeEmailDescription": {
         "description": "Label pour la description du changement d'email"
     },
     "getTheLink": "Recevoir le lien",
     "@getTheLink": {
         "description": "Label pour obtenir le lien"
+    },
+    "emailNotChanged": "Vous n'avez pas changé votre email",
+    "@emailNotChanged": {
+        "description": "Label pour l'email non changé"
     }
 }

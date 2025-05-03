@@ -18,6 +18,8 @@ abstract class IAuthService {
   Future<bool> register({required String email, required String password});
 
   Future<bool> sendPasswordResetEmail({required String email});
+
+  Future<void> changeEmail(String newEmail);
 }
 
 class AuthException extends Equatable {
@@ -91,6 +93,10 @@ class AuthService implements IAuthService {
     }
     return true;
   }
+
+  @override
+  Future<void> changeEmail(String newEmail) =>
+      _firebaseAuth.currentUser!.verifyBeforeUpdateEmail(newEmail);
 
   @override
   Future<bool> googleSignIn() async {

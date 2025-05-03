@@ -488,12 +488,16 @@
     "@changeEmail": {
         "description": "Label for changing email"
     },
-    "changeEmailDescription": "We will send you an email to change your email address",
+    "changeEmailDescription": "Enter the new email address. We will send you an email to change your email address",
     "@changeEmailDescription": {
         "description": "Label for change email description"
     },
     "getTheLink": "Get the link",
     "@getTheLink": {
         "description": "Label for getting the link"
+    },
+    "emailNotChanged": "Email not changed",
+    "@emailNotChanged": {
+        "description": "Label for email not changed"
     }
 }
