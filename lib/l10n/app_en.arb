@@ -499,5 +499,9 @@
     "emailNotChanged": "Email not changed",
     "@emailNotChanged": {
         "description": "Label for email not changed"
+    },
+    "emailChanged": "Email changed",
+    "@emailChanged": {
+        "description": "Label for email changed"
     }
 }

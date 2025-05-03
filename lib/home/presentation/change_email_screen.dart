@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/change_email_controller.dart';
 import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/home/presentation/email_loader.dart';
@@ -36,6 +38,13 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
           ),
         ),
       );
+
+  Future<bool?> _showLoginAgainDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => const LoginAgainDialog(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,27 +105,44 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                   di<IAuthService>(),
                 ),
                 child: Builder(builder: (context) {
-                  return BlocBuilder<ChangeEmailController, ChangeEmailState?>(
-                      builder: (context, changeEmailState) {
-                    return MainBtn(
-                      text: appTexts.getTheLink,
-                      isLoading: changeEmailState is ChangeEmailLoading,
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (_emailController.text == _oldEmail) {
-                            _showSnackBar(
-                              appTexts.emailNotChanged,
-                            );
-                            return;
-                          }
+                  return BlocListener<ChangeEmailController, ChangeEmailState?>(
+                    listener: (context, state) {
+                      if (state is ChangeEmailSuccess) {
+                        showSnackBar(
+                          context,
+                          appTexts.emailChanged,
+                        );
+                        context.pop();
 
-                          context.read<ChangeEmailController>().changeEmail(
-                                _emailController.text,
+                        return;
+                      } else if (state is ChangeEmailRequiredRecentLogin) {
+                        _showLoginAgainDialog(context);
+                        return;
+                      }
+                    },
+                    child:
+                        BlocBuilder<ChangeEmailController, ChangeEmailState?>(
+                            builder: (context, changeEmailState) {
+                      return MainBtn(
+                        text: appTexts.getTheLink,
+                        isLoading: changeEmailState is ChangeEmailLoading,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (_emailController.text == _oldEmail) {
+                              _showSnackBar(
+                                appTexts.emailNotChanged,
                               );
-                        }
-                      },
-                    );
-                  });
+                              return;
+                            }
+
+                            context.read<ChangeEmailController>().changeEmail(
+                                  _emailController.text,
+                                );
+                          }
+                        },
+                      );
+                    }),
+                  );
                 }),
               ),
               const Gap(kBottomProfilePadding),

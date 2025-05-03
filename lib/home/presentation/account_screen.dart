@@ -56,7 +56,7 @@ class AccountScreen extends StatelessWidget {
   Future<bool?> _showLoginAgainDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (BuildContext context) => const _LoginAgainDialog(),
+      builder: (BuildContext context) => const LoginAgainDialog(),
     );
   }
 
@@ -228,14 +228,14 @@ class OptionRightBtn extends StatelessWidget {
   }
 }
 
-class _LoginAgainDialog extends StatefulWidget {
-  const _LoginAgainDialog();
+class LoginAgainDialog extends StatefulWidget {
+  const LoginAgainDialog({super.key});
 
   @override
-  State<_LoginAgainDialog> createState() => _LoginAgainDialogState();
+  State<LoginAgainDialog> createState() => _LoginAgainDialogState();
 }
 
-class _LoginAgainDialogState extends State<_LoginAgainDialog> {
+class _LoginAgainDialogState extends State<LoginAgainDialog> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
 
