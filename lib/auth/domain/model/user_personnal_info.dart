@@ -3,12 +3,10 @@ import 'package:recipe_ai/ddd/entity.dart';
 
 class UserPersonnalInfo extends Equatable {
   final EntityId uid;
-  final String email;
   final String name;
 
   const UserPersonnalInfo({
     required this.uid,
-    required this.email,
     required this.name,
   });
 
@@ -18,16 +16,14 @@ class UserPersonnalInfo extends Equatable {
 
   UserPersonnalInfo _copyWith({
     EntityId? uid,
-    String? email,
     String? name,
   }) {
     return UserPersonnalInfo(
       uid: uid ?? this.uid,
-      email: email ?? this.email,
       name: name ?? this.name,
     );
   }
 
   @override
-  List<Object?> get props => [uid, email, name];
+  List<Object?> get props => [uid, name];
 }

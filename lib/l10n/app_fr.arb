@@ -500,8 +500,16 @@
     "@emailNotChanged": {
         "description": "Label pour l'email non changé"
     },
-    "emailChanged": "Votre email a été changé avec succès",
+    "emailChanged": "Vérifiez votre boite de réception pour le lien de changement d'email",
     "@emailChanged": {
         "description": "Label pour l'email changé"
+    },
+    "loginInAgainToChangeEmail": "Vous devez vous reconnecter pour changer votre email",
+    "@loginInAgainToChangeEmail": {
+        "description": "Label pour se reconnecter pour changer l'email"
+    },
+    "change": "Changer",
+    "@change": {
+        "description": "Label pour changer quelque chose"
     }
 }

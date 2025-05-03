@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
-import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
+import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
@@ -12,11 +12,56 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/change_email_controller.dart';
 import 'package:recipe_ai/home/presentation/change_username.dart';
-import 'package:recipe_ai/home/presentation/email_loader.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class LoginAgainDialogForChangeEmailMetadata
+    implements ILoginAgainDialogMetadata {
+  const LoginAgainDialogForChangeEmailMetadata({
+    required this.appTexts,
+    required this.context,
+    required this.authService,
+    required this.newEmail,
+  });
+
+  @override
+  String get actionBtnText => appTexts.change;
+
+  @override
+  void onError() {
+    showSnackBar(
+      context,
+      appTexts.deleteAccountError,
+      isError: true,
+    );
+  }
+
+  @override
+  Future<void> onMainBtnPressed() => authService.changeEmail(
+        newEmail,
+      );
+
+  @override
+  void onSuccess() {
+    context.pop();
+    authService.signOut();
+    showSnackBar(
+      context,
+      appTexts.emailChanged,
+    );
+  }
+
+  @override
+  String get popupTitle => appTexts.loginInAgainToChangeEmail;
+
+  final AppLocalizations appTexts;
+  final BuildContext context;
+  final IAuthService authService;
+  final String newEmail;
+}
 
 class ChangeEmailScreen extends StatefulWidget {
   const ChangeEmailScreen({super.key});
@@ -42,8 +87,25 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
   Future<bool?> _showLoginAgainDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (BuildContext context) => const LoginAgainDialog(),
+      builder: (BuildContext context) => LoginAgainDialog(
+        metadata: LoginAgainDialogForChangeEmailMetadata(
+          context: context,
+          appTexts: di<TranslationController>().currentLanguage,
+          authService: di<IAuthService>(),
+          newEmail: _emailController.text,
+        ),
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _oldEmail = di<IAuthUserService>().currentUser?.email ?? '';
+      _emailController.text = _oldEmail;
+    });
   }
 
   @override
@@ -75,28 +137,12 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                 textAlign: TextAlign.start,
               ),
               const Gap(10),
-              BlocProvider(
-                create: (_) => EmailLoader(
-                  di<IUserPersonnalInfoService>(),
-                ),
-                child: BlocBuilder<EmailLoader, String?>(
-                  builder: (context, email) {
-                    if (email != null) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        _oldEmail = email;
-                        _emailController.text = email;
-                      });
-                    }
-
-                    return CustomTextFormField(
-                      hintText: '',
-                      controller: _emailController,
-                      validator: (email) => nonEmptyStringValidator(
-                        email,
-                        appTexts,
-                      ),
-                    );
-                  },
+              CustomTextFormField(
+                hintText: '',
+                controller: _emailController,
+                validator: (email) => nonEmptyStringValidator(
+                  email,
+                  appTexts,
                 ),
               ),
               const Spacer(),

@@ -17,6 +17,7 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 TextStyle _noTextStyle = GoogleFonts.poppins(
   color: Colors.black,
@@ -38,6 +39,45 @@ void _delectionSuccess(BuildContext context) {
   );
 }
 
+class AccountDeleteMetadata implements ILoginAgainDialogMetadata {
+  AccountDeleteMetadata({
+    required this.context,
+    required this.appTexts,
+    required this.firebaseAuth,
+  });
+
+  @override
+  void onSuccess() {
+    context.go('/onboarding/start');
+    showSnackBar(
+      context,
+      appTexts.deleteAccountSuccess,
+    );
+  }
+
+  final BuildContext context;
+  final AppLocalizations appTexts;
+  final IFirebaseAuth firebaseAuth;
+
+  @override
+  void onError() {
+    showSnackBar(
+      context,
+      appTexts.deleteAccountError,
+      isError: true,
+    );
+  }
+
+  @override
+  String get popupTitle => appTexts.deleteAccountIncorrectPassword;
+
+  @override
+  String get actionBtnText => appTexts.delete;
+
+  @override
+  Future<void> onMainBtnPressed() => firebaseAuth.deleteAccount();
+}
+
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
@@ -56,7 +96,13 @@ class AccountScreen extends StatelessWidget {
   Future<bool?> _showLoginAgainDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (BuildContext context) => const LoginAgainDialog(),
+      builder: (BuildContext context) => LoginAgainDialog(
+        metadata: AccountDeleteMetadata(
+          context: context,
+          appTexts: di<TranslationController>().currentLanguage,
+          firebaseAuth: di<IFirebaseAuth>(),
+        ),
+      ),
     );
   }
 
@@ -110,19 +156,19 @@ class AccountScreen extends StatelessWidget {
                                 '/profil-screen/change-username',
                               ),
                             ),
-                            _AccountOption(
-                              label: appTexts.email,
-                              value: snapshot.data!.email,
-                              onTap: () => context.push(
-                                '/profil-screen/change-email',
-                              ),
-                            ),
                           ],
                         );
                       }
 
                       return SizedBox.shrink();
                     },
+                  ),
+                  _AccountOption(
+                    label: appTexts.email,
+                    value: di<IAuthUserService>().currentUser!.email!,
+                    onTap: () => context.push(
+                      '/profil-screen/change-email',
+                    ),
                   ),
                   _AccountOption(
                     label: appTexts.password,
@@ -228,8 +274,22 @@ class OptionRightBtn extends StatelessWidget {
   }
 }
 
+abstract class ILoginAgainDialogMetadata {
+  String get popupTitle;
+  String get actionBtnText;
+
+  Future<void> onMainBtnPressed();
+  void onSuccess();
+  void onError();
+}
+
 class LoginAgainDialog extends StatefulWidget {
-  const LoginAgainDialog({super.key});
+  const LoginAgainDialog({
+    super.key,
+    required this.metadata,
+  });
+
+  final ILoginAgainDialogMetadata metadata;
 
   @override
   State<LoginAgainDialog> createState() => _LoginAgainDialogState();
@@ -248,19 +308,16 @@ class _LoginAgainDialogState extends State<LoginAgainDialog> {
         create: (context) => DeleteAccountAfterAnLoginController(
           di<IFirebaseAuth>(),
           di<IAuthUserService>(),
+          widget.metadata.onMainBtnPressed,
         ),
         child: BlocListener<DeleteAccountAfterAnLoginController,
             DeleteAccountAfterAnLoginState>(
           listener: (context, state) {
             if (state is DeleteAccountAfterAnLoginSuccess) {
               Navigator.of(context).pop();
-              _delectionSuccess(context);
+              widget.metadata.onSuccess();
             } else if (state is DeleteAccountAfterAnErrorOcured) {
-              showSnackBar(
-                context,
-                appTexts.deleteAccountError,
-                isError: true,
-              );
+              widget.metadata.onError();
             }
           },
           child: Builder(builder: (context) {
@@ -270,7 +327,7 @@ class _LoginAgainDialogState extends State<LoginAgainDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    appTexts.deleteAccountRequiredRecentLogin,
+                    widget.metadata.popupTitle,
                     style: titleDialogStyle,
                     textAlign: TextAlign.center,
                   ),
@@ -294,7 +351,7 @@ class _LoginAgainDialogState extends State<LoginAgainDialog> {
                             left: 6,
                           ),
                           child: Text(
-                            appTexts.deleteAccountIncorrectPassword,
+                            widget.metadata.popupTitle,
                             style: GoogleFonts.poppins(
                               color: Colors.red,
                               fontSize: 12,
@@ -328,7 +385,7 @@ class _LoginAgainDialogState extends State<LoginAgainDialog> {
                           }
                         },
                         child: Text(
-                          appTexts.delete,
+                          widget.metadata.actionBtnText,
                           style: _deleteTextStyle,
                         ),
                       ),

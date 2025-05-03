@@ -5,7 +5,6 @@ abstract class UserPersonnalInfoSerialization {
   static Map<String, dynamic> toJson(UserPersonnalInfo userInfo) {
     return {
       'uid': userInfo.uid.value,
-      'email': userInfo.email,
       'name': userInfo.name,
     };
   }
@@ -13,7 +12,6 @@ abstract class UserPersonnalInfoSerialization {
   static UserPersonnalInfo fromMap(Map<String, dynamic> map) {
     return UserPersonnalInfo(
       uid: EntityId(map['uid'] as String),
-      email: map['email'] as String,
       name: map['name'] as String,
     );
   }

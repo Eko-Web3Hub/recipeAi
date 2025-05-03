@@ -15,8 +15,7 @@ class RegisterUsecase {
     this._userPersonnalInfoRepository,
   );
 
-
-    Future<bool> registerWithApple() async {
+  Future<bool> registerWithApple() async {
     return await _authService.appleSignIn();
   }
 
@@ -42,7 +41,6 @@ class RegisterUsecase {
     await _userPersonnalInfoRepository.save(
       UserPersonnalInfo(
         uid: user.uid,
-        email: email,
         name: name,
       ),
     );

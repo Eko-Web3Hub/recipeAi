@@ -34,12 +34,14 @@ class DeleteAccountAfterAnLoginController
   DeleteAccountAfterAnLoginController(
     this._firebaseAuth,
     this._authUserService,
+    this._onMainBtnPressed,
   ) : super(
           DeleteAccountAfterAnLoginInitial(),
         );
 
   final IFirebaseAuth _firebaseAuth;
   final IAuthUserService _authUserService;
+  final Future<void> Function() _onMainBtnPressed;
 
   Future<void> deleteAccountAfterAReLogin(String password) async {
     try {
@@ -48,7 +50,7 @@ class DeleteAccountAfterAnLoginController
         email: _authUserService.currentUser!.email!,
         password: password,
       );
-      await _firebaseAuth.deleteAccount();
+      await _onMainBtnPressed();
 
       emit(DeleteAccountAfterAnLoginSuccess());
     } on FirebaseAuthException catch (e) {
