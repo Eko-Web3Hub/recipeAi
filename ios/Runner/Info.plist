@@ -15,6 +15,17 @@
 					<string>com.googleusercontent.apps.819430206108-9femlqmaivvh7p2n9sp5g8cfpisjqf32</string>
 				</array>
 			</dict>
+			
+			<dict>
+    			<key>CFBundleTypeRole</key>
+    			<string>Editor</string>
+    			<key>CFBundleURLName</key>
+    			<string>recipe-ai-5e261.firebaseapp.com</string>
+    			<key>CFBundleURLSchemes</key>
+    			<array>
+      				<string>com.recipeai.app</string>
+    			</array>
+  			</dict>
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
