@@ -113,7 +113,9 @@ class AccountScreen extends StatelessWidget {
                             _AccountOption(
                               label: appTexts.email,
                               value: snapshot.data!.email,
-                              onTap: null,
+                              onTap: () => context.push(
+                                '/profil-screen/change-email',
+                              ),
                             ),
                           ],
                         );

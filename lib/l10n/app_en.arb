@@ -483,5 +483,17 @@
     "usernameChanged": "Username changed",
     "@usernameChanged": {
         "description": "Label for username changed"
+    },
+    "changeEmail": "Change your email",
+    "@changeEmail": {
+        "description": "Label for changing email"
+    },
+    "changeEmailDescription": "We will send you an email to change your email address",
+    "@changeEmailDescription": {
+        "description": "Label for change email description"
+    },
+    "getTheLink": "Get the link",
+    "@getTheLink": {
+        "description": "Label for getting the link"
     }
 }

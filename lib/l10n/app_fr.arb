@@ -483,5 +483,17 @@
     "usernameChanged": "Votre nom d'utilisateur a été changé avec succès",
     "@usernameChanged": {
         "description": "Label pour le nom d'utilisateur changé"
+    },
+    "changeEmail": "Changer l'email",
+    "@changeEmail": {
+        "description": "Label pour changer l'email"
+    },
+    "changeEmailDescription": "Nous vous enverrons un lien qui vous permettra de confirmer le changement.",
+    "@changeEmailDescription": {
+        "description": "Label pour la description du changement d'email"
+    },
+    "getTheLink": "Recevoir le lien",
+    "@getTheLink": {
+        "description": "Label pour obtenir le lien"
     }
 }

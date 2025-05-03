@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
-import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/change_username_controller.dart';
@@ -73,6 +73,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                         fontSize: 11,
                       ),
                     ),
+                    const Gap(10),
                     BlocBuilder<ChangeUsernameController, ChangeUsernameState>(
                       builder: (context, state) {
                         if (state is ChangeUsernameLoaded) {
@@ -81,8 +82,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                           });
                         }
 
-                        return FormFieldWithLabel(
-                          label: '',
+                        return CustomTextFormField(
                           hintText: '',
                           controller: _usernameController,
                           validator: (value) =>
@@ -119,7 +119,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                         );
                       },
                     ),
-                    const Gap(90.0),
+                    const Gap(kBottomProfilePadding),
                   ],
                 ),
               ),
@@ -130,3 +130,5 @@ class _ChangeUsernameState extends State<ChangeUsername> {
     );
   }
 }
+
+const kBottomProfilePadding = 90.0;

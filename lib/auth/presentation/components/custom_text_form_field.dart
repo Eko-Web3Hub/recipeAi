@@ -26,6 +26,7 @@ class CustomTextFormField extends StatefulWidget {
     this.keyboardType,
     this.suffixIcon,
     this.initialValue,
+    this.isReadOnly = false,
   });
 
   final String hintText;
@@ -36,6 +37,7 @@ class CustomTextFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final Widget? suffixIcon;
   final String? initialValue;
+  final bool isReadOnly;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -55,6 +57,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return SizedBox(
       width: double.infinity,
       child: TextFormField(
+        readOnly: widget.isReadOnly,
         initialValue: widget.initialValue,
         keyboardType: widget.keyboardType,
         validator: widget.validator,
