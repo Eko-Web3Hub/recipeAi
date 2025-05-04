@@ -11,7 +11,6 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/change_email_controller.dart';
-import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';

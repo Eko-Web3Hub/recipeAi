@@ -515,5 +515,13 @@
     "changePassword": "Changer le mot de passe",
     "@changePassword": {
         "description": "Label pour changer le mot de passe"
+    },
+    "changePasswordDescription": "Nous vous enverrons un lien sur votre adresse électronique pour vous permttre de changer votre mot de passe en toute sécurité.",
+    "@changePasswordDescription": {
+        "description": "Label pour la description du changement de mot de passe"
+    },
+    "checkYourEmail": "Vérifiez votre boite de réception pour le lien de changement de mot de passe",
+    "@checkYourEmail": {
+        "description": "Label pour vérifier l'email"
     }
 }

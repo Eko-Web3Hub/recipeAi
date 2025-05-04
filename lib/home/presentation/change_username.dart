@@ -130,5 +130,3 @@ class _ChangeUsernameState extends State<ChangeUsername> {
     );
   }
 }
-
-const kBottomProfilePadding = 90.0;

@@ -515,5 +515,17 @@
     "changePassword": "Change your password",
     "@changePassword": {
         "description": "Label for changing password"
+    },
+    "changePasswordDescription": "We will send you an email to change your password",
+    "@changePasswordDescription": {
+        "description": "Label for change password description"
+    },
+    "changePasswordEmailSent": "Check your inbox for the email change link",
+    "@changePasswordEmailSent": {
+        "description": "Label for change password email sent"
+    },
+    "checkYourEmail": "Check your email for the link to change your password",
+    "@checkYourEmail": {
+        "description": "Label for checking your email"
     }
 }

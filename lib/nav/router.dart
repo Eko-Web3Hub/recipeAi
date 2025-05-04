@@ -346,6 +346,7 @@ bool hideNavBar(String? path) {
     case '/profil-screen/update-user-preference':
     case '/profil-screen/change-username':
     case '/profil-screen/change-email':
+    case '/profil-screen/change-password':
       return true;
     default:
       return false;
