@@ -511,5 +511,9 @@
     "change": "Changer",
     "@change": {
         "description": "Label pour changer quelque chose"
+    },
+    "changePassword": "Changer le mot de passe",
+    "@changePassword": {
+        "description": "Label pour changer le mot de passe"
     }
 }

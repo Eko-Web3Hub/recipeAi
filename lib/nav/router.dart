@@ -12,6 +12,7 @@ import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/change_email_screen.dart';
+import 'package:recipe_ai/home/presentation/change_password_screen.dart';
 import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/home/presentation/historic/historic_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
@@ -310,6 +311,12 @@ GoRouter createRouter() => GoRouter(
                       path: 'change-email',
                       redirect: _guardAuth,
                       builder: (context, state) => const ChangeEmailScreen(),
+                    ),
+                    GoRoute(
+                      name: 'ChangePasswordScreen',
+                      path: 'change-password',
+                      redirect: _guardAuth,
+                      builder: (context, state) => const ChangePasswordScreen(),
                     ),
                   ],
                 ),

@@ -173,7 +173,7 @@ class AccountScreen extends StatelessWidget {
                   _AccountOption(
                     label: appTexts.password,
                     value: '********',
-                    onTap: null,
+                    onTap: () => context.push('/profil-screen/change-password'),
                   ),
                   const Gap(38.0),
                   _TextButton(
