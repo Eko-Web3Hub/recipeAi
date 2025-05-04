@@ -45,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       context.read<HomeScreenController>().reload();
+
+      await di<TranslationController>().saveLanguageWhenNeeded();
       await showAppUpdatePopup(context);
     });
   }

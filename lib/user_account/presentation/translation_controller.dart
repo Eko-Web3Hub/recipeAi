@@ -35,6 +35,19 @@ class TranslationController extends ChangeNotifier {
     );
   }
 
+  Future<void> saveLanguageWhenNeeded() async {
+    final uid = _authUserService.currentUser!.uid;
+    final userAccountMetaData = await _userAccountMetaDataRepository
+        .getUserAccount(_authUserService.currentUser!.uid);
+
+    if (userAccountMetaData == null) {
+      _userAccountMetaDataRepository.save(
+        uid,
+        UserAccountMetaData(appLanguage: _currentLanguage),
+      );
+    }
+  }
+
   Future<void> changeLanguage(String appLanguageKey) async {
     if (currentLanguageEnum.name == appLanguageKey) {
       return;
