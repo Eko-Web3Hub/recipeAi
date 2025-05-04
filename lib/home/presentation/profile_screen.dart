@@ -33,8 +33,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late AppLanguageItem _currentAppLanguageItem;
-
   Future<void> _openFeedBackLink() async {
     final encodedUid =
         Uri.encodeComponent(di<IAuthUserService>().currentUser!.uid.value);
@@ -54,11 +52,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-
-    _currentAppLanguageItem = appLanguagesItem.firstWhere(
-      (item) =>
-          item.key == di<TranslationController>().currentLanguageEnum.name,
-    );
   }
 
   @override
@@ -107,22 +100,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const Gap(15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _ProfilOption(
-                  icon: 'assets/icon/languagesIcon.svg',
-                  title: appTexts.language,
-                  onPressed: null,
-                ),
-                OptionRightBtn(
-                  value: appLanguagesItem
-                      .firstWhere(
-                          (item) => item.key == _currentAppLanguageItem.key)
-                      .label,
-                  onTap: () {},
-                ),
-              ],
+            GestureDetector(
+              onTap: () => context.push('/profil-screen/change-language'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _ProfilOption(
+                    icon: 'assets/icon/languagesIcon.svg',
+                    title: appTexts.language,
+                    onPressed: null,
+                  ),
+                  OptionRightBtn(
+                    value: appLanguagesItem
+                        .firstWhere((item) =>
+                            item.key ==
+                            (appLanguagesItem.firstWhere(
+                              (item) =>
+                                  item.key ==
+                                  di<TranslationController>()
+                                      .currentLanguageEnum
+                                      .name,
+                            )).key)
+                        .label,
+                    onTap: () {},
+                  ),
+                ],
+              ),
             ),
             const Gap(30),
             Text(
@@ -153,47 +156,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: appTexts.sendABug,
               onPressed: _openFeedBackLink,
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 10),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       Text(
-            //         appTexts.changeLanguage,
-            //         style: GoogleFonts.poppins(
-            //           fontWeight: FontWeight.w600,
-            //           fontSize: 14,
-            //           color: Colors.black,
-            //         ),
-            //       ),
-            //       DropdownButton<AppLanguageItem>(
-            //         value: _currentAppLanguageItem,
-            //         items: appLanguagesItem
-            //             .map((item) => DropdownMenuItem<AppLanguageItem>(
-            //                   value: item,
-            //                   child: Text(
-            //                     item.label,
-            //                     style: GoogleFonts.poppins(
-            //                       fontSize: 14,
-            //                       color: Colors.black,
-            //                     ),
-            //                   ),
-            //                 ))
-            //             .toList(),
-            //         onChanged: (newItem) {
-            //           if (newItem != null) {
-            //             setState(() {
-            //               _currentAppLanguageItem = newItem;
-            //             });
-            //             di<TranslationController>()
-            //                 .changeLanguage(newItem.key);
-            //           }
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
             const Gap(50),
             BlocProvider(
               create: (context) => SignOutBtnControlller(

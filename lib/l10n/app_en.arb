@@ -527,5 +527,9 @@
     "checkYourEmail": "Check your email for the link to change your password",
     "@checkYourEmail": {
         "description": "Label for checking your email"
+    },
+    "selectLanguage": "Select your language",
+    "@selectLanguage": {
+        "description": "Label for selecting language"
     }
 }

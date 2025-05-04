@@ -523,5 +523,9 @@
     "checkYourEmail": "Vérifiez votre boite de réception pour le lien de changement de mot de passe",
     "@checkYourEmail": {
         "description": "Label pour vérifier l'email"
+    },
+    "selectLanguage": "Sélectionnez une langue",
+    "@selectLanguage": {
+        "description": "Label pour sélectionner une langue"
     }
 }

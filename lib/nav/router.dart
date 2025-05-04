@@ -12,6 +12,7 @@ import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/change_email_screen.dart';
+import 'package:recipe_ai/home/presentation/change_language.dart';
 import 'package:recipe_ai/home/presentation/change_password_screen.dart';
 import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/home/presentation/historic/historic_screen.dart';
@@ -318,6 +319,12 @@ GoRouter createRouter() => GoRouter(
                       redirect: _guardAuth,
                       builder: (context, state) => const ChangePasswordScreen(),
                     ),
+                    GoRoute(
+                      name: 'ChangeLanguageScreen',
+                      path: 'change-language',
+                      redirect: _guardAuth,
+                      builder: (context, state) => const ChangeLanguageScreen(),
+                    ),
                   ],
                 ),
               ],
@@ -347,6 +354,7 @@ bool hideNavBar(String? path) {
     case '/profil-screen/change-username':
     case '/profil-screen/change-email':
     case '/profil-screen/change-password':
+    case '/profil-screen/change-language':
       return true;
     default:
       return false;
