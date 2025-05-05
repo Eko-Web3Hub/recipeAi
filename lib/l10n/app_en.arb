@@ -531,5 +531,9 @@
     "selectLanguage": "Select your language",
     "@selectLanguage": {
         "description": "Label for selecting language"
+    },
+    "shareLink": "The recipe link has been copied to your clipboard",
+    "@shareLink": {
+        "description": "Label for sharing the link"
     }
 }

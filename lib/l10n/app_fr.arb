@@ -527,5 +527,9 @@
     "selectLanguage": "Sélectionnez une langue",
     "@selectLanguage": {
         "description": "Label pour sélectionner une langue"
+    },
+    "shareLink": "Le lien de partage a été copié dans le presse-papiers",
+    "@shareLink": {
+        "description": "Label pour le lien de partage"
     }
 }

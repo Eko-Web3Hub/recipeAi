@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -100,6 +102,7 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
     return BlocProvider(
       create: (_) => widget.receipeId != null
           ? ReceipeDetailsController(
@@ -225,9 +228,43 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                   size: 28,
                                 ),
                                 const Gap(14),
-                                SvgPicture.asset(
-                                  'assets/icon/shareIcon.svg',
-                                  height: 40,
+                                GestureDetector(
+                                  onTap: () {
+                                    final uid = di<IAuthUserService>()
+                                        .currentUser!
+                                        .uid
+                                        .value;
+                                    final language = di<TranslationController>()
+                                        .currentLanguageEnum;
+                                    final recipeName =
+                                        language == AppLanguage.fr
+                                            ? receipeDetailsState
+                                                .userReceipeV2!.receipeFr.name
+                                            : receipeDetailsState
+                                                .userReceipeV2!.receipeEn.name;
+
+                                    final urlToShare =
+                                        'https://recipe-ai-5e261.firebaseapp.com/home/recipe-details/${language.name}/$uid/${recipeName.replaceAll(' ', '_')}';
+                                    log(urlToShare);
+                                    Clipboard.setData(
+                                      ClipboardData(
+                                        text: urlToShare,
+                                      ),
+                                    );
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          appTexts.shareLink,
+                                          style: GoogleFonts.poppins(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    'assets/icon/shareIcon.svg',
+                                    height: 40,
+                                  ),
                                 ),
                                 const Gap(25),
                               ],
