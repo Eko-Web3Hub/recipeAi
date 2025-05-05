@@ -61,120 +61,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey.withValues(alpha: 0.4),
-              child: const UserFirstNameCharOnCapitalCase(),
-            ),
-            const Gap(15.0),
-            StreamBuilder<UserPersonnalInfo?>(
-              stream: di<IUserPersonnalInfoService>().watch(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data != null) {
-                  return Text(
-                    capitalizeFirtLetter(snapshot.data!.name),
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  );
-                }
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.grey.withValues(alpha: 0.4),
+                child: const UserFirstNameCharOnCapitalCase(),
+              ),
+              const Gap(15.0),
+              StreamBuilder<UserPersonnalInfo?>(
+                stream: di<IUserPersonnalInfoService>().watch(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return Text(
+                      capitalizeFirtLetter(snapshot.data!.name),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  }
 
-                return SizedBox.shrink();
-              },
-            ),
-            const Gap(20),
-            Text(
-              appTexts.baseSettings,
-              style: settingHeadTitleStyle,
-            ),
-            const Gap(15),
-            _ProfilOption(
-              icon: 'assets/icon/accountIcon.svg',
-              title: appTexts.myAccount,
-              onPressed: () => context.push(
-                '/profil-screen/my-account',
+                  return SizedBox.shrink();
+                },
               ),
-            ),
-            const Gap(15),
-            GestureDetector(
-              onTap: () => context.push('/profil-screen/change-language'),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _ProfilOption(
-                    icon: 'assets/icon/languagesIcon.svg',
-                    title: appTexts.language,
-                    onPressed: null,
-                  ),
-                  OptionRightBtn(
-                    value: appLanguagesItem
-                        .firstWhere((item) =>
-                            item.key ==
-                            (appLanguagesItem.firstWhere(
-                              (item) =>
-                                  item.key ==
-                                  di<TranslationController>()
-                                      .currentLanguageEnum
-                                      .name,
-                            )).key)
-                        .label,
-                    onTap: () {},
-                  ),
-                ],
+              const Gap(20),
+              Text(
+                appTexts.baseSettings,
+                style: settingHeadTitleStyle,
               ),
-            ),
-            const Gap(30),
-            Text(
-              appTexts.kitchenSettings,
-              style: settingHeadTitleStyle,
-            ),
-            const Gap(15),
-            _ProfilOption(
-              icon: 'assets/icon/myPreferencesIcon.svg',
-              title: appTexts.myPreferences,
-              onPressed: () =>
-                  context.push("/profil-screen/update-user-preference"),
-            ),
-            const Gap(15),
-            _ProfilOption(
-              icon: 'assets/icon/notificationBell.svg',
-              title: appTexts.notification,
-              onPressed: null,
-            ),
-            const Gap(30),
-            Text(
-              appTexts.help,
-              style: settingHeadTitleStyle,
-            ),
-            const Gap(15),
-            _ProfilOption(
-              icon: 'assets/icon/solarBugIcon.svg',
-              title: appTexts.sendABug,
-              onPressed: _openFeedBackLink,
-            ),
-            const Gap(50),
-            BlocProvider(
-              create: (context) => SignOutBtnControlller(
-                di<IAuthService>(),
+              _ProfilOption(
+                icon: 'assets/icon/accountIcon.svg',
+                title: appTexts.myAccount,
+                onPressed: () => context.push(
+                  '/profil-screen/my-account',
+                ),
               ),
-              child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                  builder: (context, btnLogOutState) {
-                return Builder(builder: (context) {
-                  return MainBtn(
-                    text: appTexts.signOut,
-                    isLoading: btnLogOutState is SignOutBtnLoading,
-                    onPressed: () {
-                      context.read<SignOutBtnControlller>().signOut();
-                    },
-                  );
-                });
-              }),
-            ),
-          ],
+              _ProfilOption(
+                icon: 'assets/icon/languagesIcon.svg',
+                title: appTexts.language,
+                onPressed: () => context.push(
+                  '/profil-screen/change-language',
+                ),
+                trailing: OptionRightBtn(
+                  value: appLanguagesItem
+                      .firstWhere((item) =>
+                          item.key ==
+                          (appLanguagesItem.firstWhere(
+                            (item) =>
+                                item.key ==
+                                di<TranslationController>()
+                                    .currentLanguageEnum
+                                    .name,
+                          )).key)
+                      .label,
+                  onTap: () {},
+                ),
+              ),
+              const Gap(20),
+              Text(
+                appTexts.kitchenSettings,
+                style: settingHeadTitleStyle,
+              ),
+              _ProfilOption(
+                icon: 'assets/icon/myPreferencesIcon.svg',
+                title: appTexts.myPreferences,
+                onPressed: () =>
+                    context.push("/profil-screen/update-user-preference"),
+              ),
+              _ProfilOption(
+                icon: 'assets/icon/notificationBell.svg',
+                title: appTexts.notification,
+                onPressed: null,
+              ),
+              const Gap(20),
+              Text(
+                appTexts.help,
+                style: settingHeadTitleStyle,
+              ),
+              _ProfilOption(
+                icon: 'assets/icon/solarBugIcon.svg',
+                title: appTexts.sendABug,
+                onPressed: _openFeedBackLink,
+              ),
+              const Gap(10),
+              BlocProvider(
+                create: (context) => SignOutBtnControlller(
+                  di<IAuthService>(),
+                ),
+                child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+                    builder: (context, btnLogOutState) {
+                  return Builder(builder: (context) {
+                    return MainBtn(
+                      text: appTexts.signOut,
+                      isLoading: btnLogOutState is SignOutBtnLoading,
+                      onPressed: () {
+                        context.read<SignOutBtnControlller>().signOut();
+                      },
+                    );
+                  });
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -249,31 +240,29 @@ class _ProfilOption extends StatelessWidget {
   const _ProfilOption({
     required this.icon,
     required this.title,
+    this.trailing,
     required this.onPressed,
   });
 
   final String icon;
   final String title;
   final VoidCallback? onPressed;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ListTile(
       onTap: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          SvgPicture.asset(icon),
-          const Gap(15),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: Colors.black,
-            ),
-          ),
-        ],
+      leading: SvgPicture.asset(icon),
+      trailing: trailing,
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontSize: 14,
+          color: Colors.black,
+        ),
       ),
+      contentPadding: EdgeInsets.zero,
     );
   }
 }
