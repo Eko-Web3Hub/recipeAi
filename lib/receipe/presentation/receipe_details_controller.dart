@@ -16,19 +16,23 @@ import 'package:recipe_ai/utils/safe_emit.dart';
 class ReceipeDetailsState extends Equatable {
   const ReceipeDetailsState(
     this.reciepe,
+    this.userReceipeV2,
   );
 
-  const ReceipeDetailsState.loading() : this(null);
+  const ReceipeDetailsState.loading() : this(null, null);
   const ReceipeDetailsState.loaded(
     Receipe reciepe,
+    UserReceipeV2 userReceipeV2,
   ) : this(
           reciepe,
+          userReceipeV2,
         );
 
   final Receipe? reciepe;
+  final UserReceipeV2? userReceipeV2;
 
   @override
-  List<Object?> get props => [reciepe];
+  List<Object?> get props => [reciepe, userReceipeV2];
 }
 
 class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
@@ -52,7 +56,10 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     this._userAccountMetaDataRepository,
     this._userReceipeRepositoryV2,
   ) : super(
-          ReceipeDetailsState.loaded(receipe.receipeEn),
+          ReceipeDetailsState.loaded(
+            receipe.receipeEn,
+            receipe,
+          ),
         ) {
     _load(
       receipe,
@@ -79,6 +86,7 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
           safeEmit(
             ReceipeDetailsState.loaded(
               userRecipe.receipeFr,
+              userRecipe,
             ),
           );
           return;
@@ -87,12 +95,17 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
         safeEmit(
           ReceipeDetailsState.loaded(
             userRecipe.receipeEn,
+            userRecipe,
           ),
         );
       } else {
         // If user account is null, emit the recipe in English by default
-        ReceipeDetailsState.loaded(
-          userRecipe.receipeEn,
+
+        safeEmit(
+          ReceipeDetailsState.loaded(
+            userRecipe.receipeEn,
+            userRecipe,
+          ),
         );
       }
     });

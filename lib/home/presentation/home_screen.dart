@@ -176,185 +176,201 @@ class ReceipeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
+    return GestureDetector(
+      onTap: () => context.push(
+        redirectionPath,
+        extra: {
+          'receipe': receipe,
+        },
+      ),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Colors.white),
+        child: Column(
+          children: [
+            BlocProvider(
+              create: (context) => RecipeImageLoader(
+                di<FunctionsCaller>(),
+                receipe.receipeEn.name,
+              ),
+              child: Builder(builder: (context) {
+                return BlocBuilder<RecipeImageLoader, RecipeImageState>(
+                  builder: (context, imageLoaderState) {
+                    if (imageLoaderState is RecipeImageLoading) {
+                      return const _ImageRecipeContainer(
+                        child: CustomCircularLoader(),
+                      );
+                    }
+                    final imageUrl =
+                        (imageLoaderState as RecipeImageLoaded).url;
+
+                    if (imageUrl == null) {
+                      return _ImageRecipeContainer(
+                        child: SvgPicture.asset(
+                          "assets/images/receipe_placeholder_icon.svg",
+                          width: 90,
+                          height: 90,
+                        ),
+                      );
+                    }
+
+                    return CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          _ImageRecipeContainer(
+                              child: CustomCircularLoader(
+                        value: progress.progress,
+                      )),
+                      errorWidget: (context, url, error) =>
+                          _ImageRecipeContainer(
+                        child: SvgPicture.asset(
+                          "assets/images/receipe_placeholder_icon.svg",
+                          width: 90,
+                          height: 90,
+                        ),
+                      ),
+                      imageBuilder: (context, imageProvider) => ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        child: Image(
+                          image: imageProvider,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          height: 140,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: BlocProvider(
+                create: (context) => RecipeMetadataCardLoader(
+                  receipe,
+                  di<IUserAccountMetaDataRepository>(),
+                  di<IAuthUserService>(),
+                ),
+                child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
+                    builder: (context, receipeTranslateState) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              receipeTranslateState.name,
+                              style: smallTextStyle,
+                            ),
+                          ),
+                          Text(
+                            '${_getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                              height: 14.52 / 12,
+                              color: Colors.black,
+                            ),
+                          )
+                        ],
+                      ),
+                      const Gap(8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                appTexts.averageTime,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w400,
+                                  color: neutralGreyColor,
+                                  fontSize: 11,
+                                  height: 16.5 / 11,
+                                ),
+                              ),
+                              Text(
+                                receipeTranslateState.averageTime,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 11,
+                                  color: neutralBlackColor,
+                                  height: 16.5 / 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                          RecipeIconFavorite(
+                            receipe: receipe,
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RecipeIconFavorite extends StatelessWidget {
+  const RecipeIconFavorite({
+    super.key,
+    required this.receipe,
+    this.outlinedFavoriteIcon = 'assets/images/favorite_outlined.svg',
+    this.size,
+  });
+
+  final UserReceipeV2 receipe;
+  final String outlinedFavoriteIcon;
+  final double? size;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ReceipeItemController(
+      create: (_) => ReceipeItemController(
         receipe,
         di<IUserRecipeService>(),
         di<IAnalyticsRepository>(),
       ),
-      child: BlocListener<ReceipeItemController, ReceipeItemState>(
-        listener: (context, state) {
-          if (state is ReceipeItemStateError) {
-            showSnackBar(context, state.message, isError: true);
-          }
-        },
-        child: Builder(builder: (context) {
-          return GestureDetector(
-            onTap: () => context.push(
-              redirectionPath,
-              extra: {
-                'receipe': receipe,
-              },
-            ),
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
-              child: Column(
-                children: [
-                  BlocProvider(
-                    create: (context) => RecipeImageLoader(
-                      di<FunctionsCaller>(),
-                      receipe.receipeEn.name,
-                    ),
-                    child: Builder(builder: (context) {
-                      return BlocBuilder<RecipeImageLoader, RecipeImageState>(
-                        builder: (context, imageLoaderState) {
-                          if (imageLoaderState is RecipeImageLoading) {
-                            return const _ImageRecipeContainer(
-                              child: CustomCircularLoader(),
-                            );
-                          }
-                          final imageUrl =
-                              (imageLoaderState as RecipeImageLoaded).url;
-
-                          if (imageUrl == null) {
-                            return _ImageRecipeContainer(
-                              child: SvgPicture.asset(
-                                "assets/images/receipe_placeholder_icon.svg",
-                                width: 90,
-                                height: 90,
-                              ),
-                            );
-                          }
-
-                          return CachedNetworkImage(
-                            imageUrl: imageUrl,
-                            progressIndicatorBuilder:
-                                (context, url, progress) =>
-                                    _ImageRecipeContainer(
-                                        child: CustomCircularLoader(
-                              value: progress.progress,
-                            )),
-                            errorWidget: (context, url, error) =>
-                                _ImageRecipeContainer(
-                              child: SvgPicture.asset(
-                                "assets/images/receipe_placeholder_icon.svg",
-                                width: 90,
-                                height: 90,
-                              ),
-                            ),
-                            imageBuilder: (context, imageProvider) => ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                              child: Image(
-                                image: imageProvider,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                height: 140,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    child: BlocProvider(
-                      create: (context) => RecipeMetadataCardLoader(
-                        receipe,
-                        di<IUserAccountMetaDataRepository>(),
-                        di<IAuthUserService>(),
-                      ),
-                      child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
-                          builder: (context, receipeTranslateState) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    receipeTranslateState.name,
-                                    style: smallTextStyle,
-                                  ),
-                                ),
-                                Text(
-                                  '${_getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
-                                  style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    height: 14.52 / 12,
-                                    color: Colors.black,
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Gap(8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      appTexts.averageTime,
-                                      style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400,
-                                        color: neutralGreyColor,
-                                        fontSize: 11,
-                                        height: 16.5 / 11,
-                                      ),
-                                    ),
-                                    Text(
-                                      receipeTranslateState.averageTime,
-                                      style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 11,
-                                        color: neutralBlackColor,
-                                        height: 16.5 / 11,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                BlocBuilder<ReceipeItemController,
-                                        ReceipeItemState>(
-                                    builder: (context, recipeItemSaved) {
-                                  return GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: context
-                                        .read<ReceipeItemController>()
-                                        .toggleFavorite,
-                                    child: Container(
-                                      padding: EdgeInsets.all(16),
-                                      color: Colors.transparent,
-                                      child: SvgPicture.asset(
-                                        recipeItemSaved is ReceipeItemStateSaved
-                                            ? "assets/images/favorite.svg"
-                                            : "assets/images/favorite_outlined.svg",
-                                      ),
-                                    ),
-                                  );
-                                })
-                              ],
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
-                  )
-                ],
+      child: Builder(builder: (context) {
+        return BlocListener<ReceipeItemController, ReceipeItemState>(
+          listener: (context, state) {
+            if (state is ReceipeItemStateError) {
+              showSnackBar(context, state.message, isError: true);
+            }
+          },
+          child: BlocBuilder<ReceipeItemController, ReceipeItemState>(
+              builder: (context, recipeItemSaved) {
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: context.read<ReceipeItemController>().toggleFavorite,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                color: Colors.transparent,
+                child: SvgPicture.asset(
+                  recipeItemSaved is ReceipeItemStateSaved
+                      ? "assets/images/favorite.svg"
+                      : outlinedFavoriteIcon,
+                  height: size,
+                ),
               ),
-            ),
-          );
-        }),
-      ),
+            );
+          }),
+        );
+      }),
     );
   }
 }

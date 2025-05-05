@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -11,6 +13,7 @@ import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
@@ -187,25 +190,50 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                           );
                         }),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                          top: 50.0,
-                          left: 20.0,
-                        ),
-                        padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: InkWell(
-                          onTap: () => context.pop(),
-                          child: SvgPicture.asset(
-                            'assets/images/arrowLeft.svg',
-                            height: 30,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF858585),
-                              BlendMode.srcATop,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 50.0,
+                              left: 20.0,
+                            ),
+                            padding: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                            child: InkWell(
+                              onTap: () => context.pop(),
+                              child: SvgPicture.asset(
+                                'assets/images/arrowLeft.svg',
+                                height: 30,
+                                colorFilter: const ColorFilter.mode(
+                                  Color(0xFF858585),
+                                  BlendMode.srcATop,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 37.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                RecipeIconFavorite(
+                                  receipe: receipeDetailsState.userReceipeV2!,
+                                  outlinedFavoriteIcon:
+                                      'assets/icon/icon_favorite_white.svg',
+                                  size: 28,
+                                ),
+                                const Gap(14),
+                                SvgPicture.asset(
+                                  'assets/icon/shareIcon.svg',
+                                  height: 40,
+                                ),
+                                const Gap(25),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
