@@ -14,6 +14,7 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/app_update.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
+import 'package:recipe_ai/home/presentation/pulsing_circle_loader.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
@@ -24,7 +25,6 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
@@ -109,30 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 BlocBuilder<HomeScreenController, HomeScreenState>(
                   builder: (context, homeScreenState) {
-                    // return Center(
-                    //   child: Stack(
-                    //     clipBehavior: Clip.none,
-                    //     children: [
-                    //       PulsingCircle(child: SizedBox.shrink()),
-                    //       Container(
-                    //         width: 65,
-                    //         height: 65,
-                    //         decoration: BoxDecoration(
-                    //           color: Color(0xffFFA61A),
-                    //           shape: BoxShape.circle,
-                    //         ),
-                    //       )
-                    //     ],
-                    //   ),
-                    // );
-                    // return ExpandingCircleDemo();
                     if (homeScreenState is HomeScreenStateLoading) {
-                      /// A modifier. Afficher une liste de carte avec un shimmer effect
-                      return const Expanded(
+                      return Expanded(
                         child: Center(
-                          child: CustomProgress(
-                            color: Colors.black,
-                          ),
+                          child: PulsingCircle(),
                         ),
                       );
                     }

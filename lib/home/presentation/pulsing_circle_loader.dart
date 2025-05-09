@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PulsingCircle extends StatefulWidget {
-  const PulsingCircle({super.key, required this.child});
-
-  final Widget child;
+  const PulsingCircle({super.key});
 
   @override
   _PulsingCircleState createState() => _PulsingCircleState();
@@ -13,7 +11,7 @@ class _PulsingCircleState extends State<PulsingCircle>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  late Animation<double> _sizeAnimation;
+  late Animation<double> _radiusAnimation;
 
   @override
   void initState() {
@@ -21,29 +19,49 @@ class _PulsingCircleState extends State<PulsingCircle>
     _controller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
-    )..repeat(reverse: true); // boucle infinie
+    )..repeat(reverse: true);
+    // boucle infinie
 
-    _sizeAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween(begin: 50.0, end: 150.0)
-            .chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 1,
-      ),
-    ]).animate(_controller);
+    _radiusAnimation = Tween<double>(begin: 50, end: 70).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _sizeAnimation,
-      builder: (_, __) => Container(
-        width: _sizeAnimation.value,
-        height: _sizeAnimation.value,
-        decoration: BoxDecoration(
-          color: Color(0xfffece80),
-          shape: BoxShape.circle,
-        ),
-        child: widget.child,
+    return SizedBox(
+      width: 150,
+      height: 150,
+      child: Stack(
+        children: [
+          Center(
+            child: AnimatedBuilder(
+              animation: _radiusAnimation,
+              builder: (_, __) => Container(
+                width: _radiusAnimation.value * 2,
+                height: _radiusAnimation.value * 2,
+                decoration: BoxDecoration(
+                  color: Color(0xffffce80),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Color(0xffffce80),
+                    width: 4,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 65,
+              height: 65,
+              decoration: const BoxDecoration(
+                color: Color(0xffffa61a),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
