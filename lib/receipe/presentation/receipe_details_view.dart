@@ -168,10 +168,8 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                 errorWidget: (context, url, error) =>
                                     _RecipeImageContainer(
                                   image: null,
-                                  child: SvgPicture.asset(
-                                    "assets/images/receipe_placeholder_icon.svg",
-                                    width: 90,
-                                    height: 90,
+                                  child: Image.asset(
+                                    'assets/images/recipePlaceHolder.png',
                                   ),
                                 ),
                                 progressIndicatorBuilder:

@@ -109,6 +109,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 BlocBuilder<HomeScreenController, HomeScreenState>(
                   builder: (context, homeScreenState) {
+                    // return Center(
+                    //   child: Stack(
+                    //     clipBehavior: Clip.none,
+                    //     children: [
+                    //       PulsingCircle(child: SizedBox.shrink()),
+                    //       Container(
+                    //         width: 65,
+                    //         height: 65,
+                    //         decoration: BoxDecoration(
+                    //           color: Color(0xffFFA61A),
+                    //           shape: BoxShape.circle,
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // );
+                    // return ExpandingCircleDemo();
                     if (homeScreenState is HomeScreenStateLoading) {
                       /// A modifier. Afficher une liste de carte avec un shimmer effect
                       return const Expanded(
@@ -207,10 +224,8 @@ class ReceipeItem extends StatelessWidget {
 
                     if (imageUrl == null) {
                       return _ImageRecipeContainer(
-                        child: SvgPicture.asset(
-                          "assets/images/receipe_placeholder_icon.svg",
-                          width: 90,
-                          height: 90,
+                        child: Image.asset(
+                          'assets/images/recipePlaceHolder.png',
                         ),
                       );
                     }
@@ -224,10 +239,8 @@ class ReceipeItem extends StatelessWidget {
                       )),
                       errorWidget: (context, url, error) =>
                           _ImageRecipeContainer(
-                        child: SvgPicture.asset(
-                          "assets/images/receipe_placeholder_icon.svg",
-                          width: 90,
-                          height: 90,
+                        child: Image.asset(
+                          'assets/images/recipePlaceHolder.png',
                         ),
                       ),
                       imageBuilder: (context, imageProvider) => ClipRRect(
@@ -395,7 +408,7 @@ class _ImageRecipeContainer extends StatelessWidget {
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
-        color: greyVariantColor,
+        color: Color(0xffFFCE80),
       ),
       child: Center(child: child),
     );
@@ -470,4 +483,62 @@ class UserFirstNameCharOnCapitalCase extends StatelessWidget {
       },
     );
   }
+}
+
+class ExpandingCircleDemo extends StatefulWidget {
+  @override
+  _ExpandingCircleDemoState createState() => _ExpandingCircleDemoState();
+}
+
+class _ExpandingCircleDemoState extends State<ExpandingCircleDemo>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0.0, end: 2.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final maxRadius = size.height * 1.2;
+
+    return ClipPath(
+      clipper: CircleClipper(_animation.value * maxRadius),
+      child: Container(
+        color: Colors.blueAccent,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+class CircleClipper extends CustomClipper<Path> {
+  final double radius;
+  CircleClipper(this.radius);
+
+  @override
+  Path getClip(Size size) {
+    final center = Offset(size.width - 60, size.height - 60);
+    return Path()..addOval(Rect.fromCircle(center: center, radius: radius));
+  }
+
+  @override
+  bool shouldReclip(CircleClipper oldClipper) => radius != oldClipper.radius;
 }
