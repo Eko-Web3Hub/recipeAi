@@ -26,6 +26,17 @@
       				<string>com.recipeai.app</string>
     			</array>
   			</dict>
+
+			<dict>
+    			<key>CFBundleTypeRole</key>
+    			<string>Editor</string>
+    			<key>CFBundleURLName</key>
+    			<string>eateasy.live</string>
+    			<key>CFBundleURLSchemes</key>
+    			<array>
+      				<string>com.recipeai.app</string>
+    			</array>
+  			</dict>
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
