@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +43,7 @@ class _RecipeImageContainer extends StatelessWidget {
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.5,
       decoration: BoxDecoration(
-        color: const Color(0xffEBEBEB),
+        color: const Color(0xffFFCE80),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(10),
           bottomRight: Radius.circular(10),
@@ -52,19 +51,6 @@ class _RecipeImageContainer extends StatelessWidget {
         image: image,
       ),
       child: Center(child: child),
-    );
-  }
-}
-
-class _RecipeImagePlaceHolder extends StatelessWidget {
-  const _RecipeImagePlaceHolder();
-
-  @override
-  Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      "assets/images/receipe_placeholder_icon.svg",
-      width: 90,
-      height: 90,
     );
   }
 }
@@ -157,9 +143,11 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                   (recipeImageState as RecipeImageLoaded).url;
 
                               if (receipeImageUrl == null) {
-                                return const _RecipeImageContainer(
+                                return _RecipeImageContainer(
                                   image: null,
-                                  child: _RecipeImagePlaceHolder(),
+                                  child: Image.asset(
+                                    'assets/images/recipePlaceHolder.png',
+                                  ),
                                 );
                               }
 
@@ -242,7 +230,7 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                                 .userReceipeV2!.receipeEn.name;
 
                                     final urlToShare =
-                                        'https://recipe-ai-5e261.firebaseapp.com/home/recipe-details/${language.name}/$uid/${recipeName.replaceAll(' ', '_')}';
+                                        'https://eateasy.live/home/recipe-details/${language.name}/$uid/${recipeName.replaceAll(' ', '_')}';
                                     log(urlToShare);
                                     Clipboard.setData(
                                       ClipboardData(
