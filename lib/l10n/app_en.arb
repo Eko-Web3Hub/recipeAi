@@ -547,5 +547,13 @@
     "goToInventory": "Go to inventory",
     "@goToInventory": {
         "description": "Label for going to kitchen inventory"
+    },
+    "userPreferenceNotFound": "Oops 😵‍💫. Looks like you haven't set your preferences yet. Head over to settings to choose them !",
+    "@userPreferenceNotFound": {
+        "description": "Label for user preference not found"
+    },
+    "goToChoosePreferences": "Go to choose preferences",
+    "@goToChoosePreferences": {
+        "description": "Label for going to choose preferences"
     }
 }

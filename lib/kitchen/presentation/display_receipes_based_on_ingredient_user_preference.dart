@@ -59,7 +59,18 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
                       is DisplayReceipesBasedOnIngredientUserPreferenceError) {
                     switch (state.error) {
                       case GenRecipeErrorCode.ingredientNotFound:
-                        return const _NeedToAddIngredientErrorWidget();
+                        return _ErrorDisplayWidget(
+                          errorDescription: appTexts.ingredientNotFound,
+                          btnText: appTexts.goToInventory,
+                          onTap: () => context.go('/inventory-screen'),
+                        );
+
+                      case GenRecipeErrorCode.userPreferenceNotFound:
+                        return _ErrorDisplayWidget(
+                          errorDescription: appTexts.userPreferenceNotFound,
+                          btnText: appTexts.goToChoosePreferences,
+                          onTap: () => context.go('/profil-screen'),
+                        );
 
                       case GenRecipeErrorCode.internalServerError:
                         return const _InternalServerErrorWidget();
@@ -85,13 +96,19 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
   }
 }
 
-class _NeedToAddIngredientErrorWidget extends StatelessWidget {
-  const _NeedToAddIngredientErrorWidget();
+class _ErrorDisplayWidget extends StatelessWidget {
+  const _ErrorDisplayWidget({
+    required this.errorDescription,
+    required this.btnText,
+    required this.onTap,
+  });
+
+  final String errorDescription;
+  final String btnText;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -102,16 +119,18 @@ class _NeedToAddIngredientErrorWidget extends StatelessWidget {
           children: [
             const Gap(60),
             Text(
-              appTexts.ingredientNotFound,
+              errorDescription,
               style: GoogleFonts.poppins(),
               textAlign: TextAlign.center,
             ),
             const Gap(10),
             TextButton(
-              onPressed: () => context.go('/inventory-screen'),
+              onPressed: onTap,
               child: Text(
-                appTexts.goToInventory,
-                style: GoogleFonts.poppins(),
+                btnText,
+                style: GoogleFonts.poppins(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
           ],

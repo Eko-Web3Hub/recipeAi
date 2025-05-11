@@ -543,5 +543,13 @@
     "goToInventory": "Aller à l'inventaire",
     "@goToInventory": {
         "description": "Label pour aller à l'inventaire"
+    },
+    "userPreferenceNotFound": "Oops 😵‍💫. Vous n'avez pas encore sélectionné de préférences. Allez dans les paramètres et sélectionnez vos préférences.",
+    "@userPreferenceNotFound": {
+        "description": "Label pour la préférence utilisateur non trouvée"
+    },
+    "goToChoosePreferences": "Aller choisir les préférences",
+    "@goToChoosePreferences": {
+        "description": "Label pour aller choisir les préférences"
     }
 }

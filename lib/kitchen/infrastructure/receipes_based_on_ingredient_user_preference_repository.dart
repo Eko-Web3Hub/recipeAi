@@ -62,6 +62,7 @@ class FastApiReceipesBasedOnIngredientUserPreferenceRepository
 
 enum GenRecipeErrorCode {
   ingredientNotFound,
+  userPreferenceNotFound,
   internalServerError,
 }
 
@@ -73,6 +74,8 @@ GenRecipeErrorCode? genRecipeErrorCodefromString(String? errorCode) {
   switch (errorCode) {
     case 'ingredient-not-found':
       return GenRecipeErrorCode.ingredientNotFound;
+    case 'user-preference-not-found':
+      return GenRecipeErrorCode.userPreferenceNotFound;
 
     default:
       return GenRecipeErrorCode.internalServerError;
