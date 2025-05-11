@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 
 import 'package:recipe_ai/kitchen/application/retrieve_recipes_based_on_user_ingredient_and_preferences_usecase.dart';
+import 'package:recipe_ai/kitchen/infrastructure/receipes_based_on_ingredient_user_preference_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 
@@ -52,6 +54,18 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
                       is DisplayReceipesBasedOnIngredientUserPreferenceLoading) {
                     return const _LoadingView();
                   }
+
+                  if (state
+                      is DisplayReceipesBasedOnIngredientUserPreferenceError) {
+                    switch (state.error) {
+                      case GenRecipeErrorCode.ingredientNotFound:
+                        return const _NeedToAddIngredientErrorWidget();
+
+                      case GenRecipeErrorCode.internalServerError:
+                        return const _InternalServerErrorWidget();
+                    }
+                  }
+
                   final receipes = (state
                           as DisplayReceipesBasedOnIngredientUserPreferenceLoaded)
                       .receipes;
@@ -65,6 +79,67 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NeedToAddIngredientErrorWidget extends StatelessWidget {
+  const _NeedToAddIngredientErrorWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Gap(60),
+            Text(
+              appTexts.ingredientNotFound,
+              style: GoogleFonts.poppins(),
+              textAlign: TextAlign.center,
+            ),
+            const Gap(10),
+            TextButton(
+              onPressed: () => context.go('/inventory-screen'),
+              child: Text(
+                appTexts.goToInventory,
+                style: GoogleFonts.poppins(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InternalServerErrorWidget extends StatelessWidget {
+  const _InternalServerErrorWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 60.0),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 20.0,
+        ),
+        child: Text(
+          appTexts.internalServerError,
+          style: GoogleFonts.poppins(
+            color: Colors.red,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

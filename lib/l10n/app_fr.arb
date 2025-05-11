@@ -531,5 +531,17 @@
     "shareLink": "Le lien de partage a été copié dans le presse-papiers",
     "@shareLink": {
         "description": "Label pour le lien de partage"
+    },
+    "internalServerError": "Oops 😵‍💫. Une erreur est survenue. Veuillez réessayer.",
+    "@internalServerError": {
+        "description": "Label pour l'erreur interne du serveur"
+    },
+    "ingredientNotFound": "Oops 😵‍💫. Vous ne disposez d'aucun ingrédient dans votre cuisine. Ajoutez-en !",
+    "@ingredientNotFound": {
+        "description": "Label pour l'ingrédient non trouvé"
+    },
+    "goToInventory": "Aller à l'inventaire",
+    "@goToInventory": {
+        "description": "Label pour aller à l'inventaire"
     }
 }

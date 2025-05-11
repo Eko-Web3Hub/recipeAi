@@ -535,5 +535,17 @@
     "shareLink": "The recipe link has been copied to your clipboard",
     "@shareLink": {
         "description": "Label for sharing the link"
+    },
+    "internalServerError": "Oops 😵‍💫. An error occurred. Please try again.",
+    "@internalServerError": {
+        "description": "Label for internal server error"
+    },
+    "ingredientNotFound": "Oops 😵‍💫. Looks like your kitchen is empty. Add some ingredients !",
+    "@ingredientNotFound": {
+        "description": "Label for ingredient not found"
+    },
+    "goToInventory": "Go to inventory",
+    "@goToInventory": {
+        "description": "Label for going to kitchen inventory"
     }
 }
