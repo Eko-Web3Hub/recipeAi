@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/home/presentation/pulsing_circle_loader.dart';
 
 import 'package:recipe_ai/kitchen/application/retrieve_recipes_based_on_user_ingredient_and_preferences_usecase.dart';
 import 'package:recipe_ai/kitchen/infrastructure/receipes_based_on_ingredient_user_preference_repository.dart';
@@ -14,7 +15,6 @@ import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
-import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class DisplayReceipesBasedOnIngredientUserPreferenceScreen
@@ -184,9 +184,7 @@ class _LoadingView extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const Gap(20),
-        const CustomProgress(
-          color: Colors.black,
-        ),
+        PulsingCircle(),
       ],
     ));
   }

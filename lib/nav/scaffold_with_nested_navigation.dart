@@ -8,6 +8,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
@@ -314,10 +316,14 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
 }
 
 class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
-  RecipeIdeasNavigation(this.context);
+  RecipeIdeasNavigation(
+    this.context,
+    this.analyticsRepository,
+  );
 
   @override
   void goToRecipeIdeas(List<UserReceipeV2> recipes) {
+    analyticsRepository.logEvent(RecipesGeneratedWithIngredientPictureEvent());
     context.push('/receipe-idea-with-ingredient-photo', extra: {
       'recipes': recipes,
     });
@@ -325,6 +331,7 @@ class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
   }
 
   final BuildContext context;
+  final IAnalyticsRepository analyticsRepository;
 }
 
 class _GenRecipeFromIngredientPicture extends StatelessWidget {
@@ -356,7 +363,10 @@ class _GenRecipeFromIngredientPicture extends StatelessWidget {
         BlocProvider(
           lazy: false,
           create: (context) => GenerateRecipeWithIngredientPhotoController(
-            RecipeIdeasNavigation(context),
+            RecipeIdeasNavigation(
+              context,
+              di<IAnalyticsRepository>(),
+            ),
             di<IUserReceipeRepositoryV2>(),
             di<IAuthUserService>(),
             file,

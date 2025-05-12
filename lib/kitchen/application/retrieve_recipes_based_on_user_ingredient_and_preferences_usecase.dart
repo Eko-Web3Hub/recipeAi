@@ -1,6 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
+import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/receipes_based_on_ingredient_user_preference_repository.dart';
 import 'package:recipe_ai/kitchen/infrastructure/receipes_based_on_ingredient_user_preference_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -14,7 +17,16 @@ class RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase {
     this._receipesBasedOnIngredientUserPreferenceRepository,
     this._authUserService,
     this._userReceipeRepositoryV2,
+    this._analyticsRepository,
   );
+
+  RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase.inject()
+      : this(
+          di<IReceipesBasedOnIngredientUserPreferenceRepository>(),
+          di<IAuthUserService>(),
+          di<IUserReceipeRepositoryV2>(),
+          di<IAnalyticsRepository>(),
+        );
 
   Future<Either<GenRecipeErrorCode, List<UserReceipeV2>>> retrieve(
       EntityId uid) async {
@@ -43,6 +55,8 @@ class RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase {
           convertRecipesToUserRecipes,
         );
 
+        _analyticsRepository
+            .logEvent(RecipesGeneratedWithIngredientListEvent());
         return Right(userRecipeSaved);
       },
     );
@@ -52,6 +66,7 @@ class RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase {
       _receipesBasedOnIngredientUserPreferenceRepository;
   final IAuthUserService _authUserService;
   final IUserReceipeRepositoryV2 _userReceipeRepositoryV2;
+  final IAnalyticsRepository _analyticsRepository;
 }
 
 UserReceipeV2 convertTranslatedRecipeToUserReciepe({
