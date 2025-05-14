@@ -96,7 +96,19 @@ class ReceiptTicketScanResultController
   }
 
   void addIngredientsToKitchenInventory() async {
-    await Future.wait(ingredients
+    final ingredientsAddedByUser = await _kitchenInventoryRepository
+        .getIngredientsAddedByUser(_authUserService.currentUser!.uid);
+
+    final ingredientsToAdd = ingredients
+        .where(
+          (ingredient) => !ingredientsAddedByUser.any(
+            (added) => added.name
+                .toLowerCase()
+                .contains(ingredient.name.toLowerCase()),
+          ),
+        )
+        .toList();
+    await Future.wait(ingredientsToAdd
         .map(
           (ingredient) => _kitchenInventoryRepository.addIngredient(
             _authUserService.currentUser!.uid,
