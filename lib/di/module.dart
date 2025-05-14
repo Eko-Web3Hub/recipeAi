@@ -3,6 +3,7 @@ import 'package:recipe_ai/auth/di/module.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/kitchen/%20di/module.dart';
+import 'package:recipe_ai/notification/di/module.dart';
 import 'package:recipe_ai/receipe/di/module.dart';
 import 'package:recipe_ai/receipt_ticket_scan/di/module.dart';
 import 'package:recipe_ai/user_account/di/module.dart';
@@ -22,6 +23,9 @@ class AppModule implements IDiModule {
       const AuthModule(),
     );
     di.registerModule(
+      NotificationModule(),
+    );
+    di.registerModule(
       const UserPreferencesModule(),
     );
     di.registerModule(
@@ -30,7 +34,7 @@ class AppModule implements IDiModule {
     di.registerModule(
       const KitchenModule(),
     );
-     di.registerModule(
+    di.registerModule(
       const InventoryModule(),
     );
     di.registerModule(

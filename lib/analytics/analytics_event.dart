@@ -169,3 +169,23 @@ class IngredientManuallyAddedEvent extends AnalyticsEvent {
   @override
   String get name => 'ingredient_manually_added';
 }
+
+class RecipesGeneratedWithIngredientListEvent extends AnalyticsEvent {
+  RecipesGeneratedWithIngredientListEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipes_generated_with_ingredient_list';
+}
+
+class RecipesGeneratedWithIngredientPictureEvent extends AnalyticsEvent {
+  RecipesGeneratedWithIngredientPictureEvent({Map<String, Object>? parameters})
+      : super(
+          parameters,
+        );
+
+  @override
+  String get name => 'recipes_generated_with_ingredient_picture';
+}

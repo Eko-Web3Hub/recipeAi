@@ -100,10 +100,11 @@ GoRouter createRouter() => GoRouter(
             ),
           ],
         ),
+
         GoRoute(
           name: 'Login',
           path: '/login',
-          builder: (BuildContext context, _) => const LoginView(),
+          builder: (BuildContext context, _) => const UserPreferencesView(),
           routes: <RouteBase>[
             GoRoute(
               name: 'ResetPasswordScreen',
@@ -112,16 +113,19 @@ GoRouter createRouter() => GoRouter(
             ),
           ],
         ),
+
         GoRoute(
           name: 'Register',
           path: '/register',
           builder: (context, state) => const RegisterView(),
         ),
+
         GoRoute(
           name: 'UserPreferences',
           path: '/user-preferences',
           builder: (context, state) => const UserPreferencesView(),
         ),
+
         GoRoute(
           name: 'ReceipeIdeaWithIngredientPhotoScreen',
           path: '/receipe-idea-with-ingredient-photo',
@@ -134,6 +138,7 @@ GoRouter createRouter() => GoRouter(
             );
           },
         ),
+
         GoRoute(
           name: 'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
           path: '/display-receipes-based-on-ingredient-user-preference',
@@ -141,6 +146,7 @@ GoRouter createRouter() => GoRouter(
           builder: (context, state) =>
               const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
         ),
+
         GoRoute(
           name: 'RecipeDetailss',
           path: '/recipe-details',
