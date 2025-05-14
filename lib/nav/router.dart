@@ -101,10 +101,12 @@ GoRouter createRouter() => GoRouter(
           ],
         ),
 
+        // UserPreferencesView()
+
         GoRoute(
           name: 'Login',
           path: '/login',
-          builder: (BuildContext context, _) => const UserPreferencesView(),
+          builder: (BuildContext context, _) => const LoginView(),
           routes: <RouteBase>[
             GoRoute(
               name: 'ResetPasswordScreen',
