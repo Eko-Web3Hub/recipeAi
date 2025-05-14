@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_circul
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class _RecipeImageContainer extends StatelessWidget {
   const _RecipeImageContainer({
@@ -117,95 +119,160 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
             }
             final receipe = receipeDetailsState.reciepe!;
 
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BlocProvider(
-                        create: (context) => RecipeImageLoader(
-                          di<FunctionsCaller>(),
-                          receipe.name,
-                        ),
-                        child: Builder(builder: (context) {
-                          return BlocBuilder<RecipeImageLoader,
-                              RecipeImageState>(
-                            builder: (context, recipeImageState) {
-                              if (recipeImageState is RecipeImageLoading) {
-                                return const _RecipeImageContainer(
-                                  image: null,
-                                  child: CustomCircularLoader(),
-                                );
-                              }
-
-                              final receipeImageUrl =
-                                  (recipeImageState as RecipeImageLoaded).url;
-
-                              if (receipeImageUrl == null) {
-                                return _RecipeImageContainer(
-                                  image: null,
-                                  child: Image.asset(
-                                    'assets/images/recipePlaceHolder.png',
-                                  ),
-                                );
-                              }
-
-                              return CachedNetworkImage(
-                                imageUrl: receipeImageUrl,
-                                errorWidget: (context, url, error) =>
-                                    _RecipeImageContainer(
-                                  image: null,
-                                  child: Image.asset(
-                                    'assets/images/recipePlaceHolder.png',
-                                  ),
-                                ),
-                                progressIndicatorBuilder:
-                                    (context, url, progress) => Center(
-                                  child: CircularProgressIndicator(
-                                    value: progress.progress,
-                                  ),
-                                ),
-                                imageBuilder: (context, imageProvider) =>
-                                    _RecipeImageContainer(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  child: null,
-                                ),
-                              );
-                            },
-                          );
-                        }),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Stack(
                         children: [
-                          Container(
-                            margin: const EdgeInsets.only(
-                              top: 50.0,
-                              left: 20.0,
+                          BlocProvider(
+                            create: (context) => RecipeImageLoader(
+                              di<FunctionsCaller>(),
+                              receipe.name,
                             ),
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child: InkWell(
+                            child: Builder(builder: (context) {
+                              return BlocBuilder<RecipeImageLoader,
+                                  RecipeImageState>(
+                                builder: (context, recipeImageState) {
+                                  if (recipeImageState is RecipeImageLoading) {
+                                    return const _RecipeImageContainer(
+                                      image: null,
+                                      child: CustomCircularLoader(),
+                                    );
+                                  }
+
+                                  final receipeImageUrl =
+                                      (recipeImageState as RecipeImageLoaded)
+                                          .url;
+
+                                  if (receipeImageUrl == null) {
+                                    return _RecipeImageContainer(
+                                      image: null,
+                                      child: Image.asset(
+                                        'assets/images/recipePlaceHolder.png',
+                                      ),
+                                    );
+                                  }
+
+                                  return CachedNetworkImage(
+                                    imageUrl: receipeImageUrl,
+                                    errorWidget: (context, url, error) =>
+                                        _RecipeImageContainer(
+                                      image: null,
+                                      child: Image.asset(
+                                        'assets/images/recipePlaceHolder.png',
+                                      ),
+                                    ),
+                                    progressIndicatorBuilder:
+                                        (context, url, progress) => Center(
+                                      child: CircularProgressIndicator(
+                                        value: progress.progress,
+                                      ),
+                                    ),
+                                    imageBuilder: (context, imageProvider) =>
+                                        _RecipeImageContainer(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      child: null,
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
+                          ),
+                        ],
+                      ),
+                      const Gap(7.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          receipe.name,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20.0,
+                            height: 30 / 20,
+                            color: blackVariantColor,
+                          ),
+                        ),
+                      ),
+                      const Gap(10.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: ExpansionTile(
+                          initiallyExpanded: true,
+                          title: TranslatedText(
+                              textSelector: (lang) => lang.ingredients,
+                              style: normalTextStyle),
+                          children: [
+                            const Gap(15.0),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                              ),
+                              child: Column(
+                                children: receipe.ingredients
+                                    .map(
+                                      (ingredient) => Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 15.0,
+                                        ),
+                                        child: _DisplayIngredients(
+                                          ingredient: ingredient.name,
+                                          quantity: ingredient.quantity ?? '',
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 38),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 38.0),
+                        child: _StepsSection(
+                          receipe.steps,
+                        ),
+                      ),
+                      const Gap(51.0),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: ClipRRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+                      child: Container(
+                        height: 110,
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 10),
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.25)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            InkWell(
                               onTap: () => context.pop(),
                               child: SvgPicture.asset(
                                 'assets/images/arrowLeft.svg',
                                 height: 30,
                                 colorFilter: const ColorFilter.mode(
-                                  Color(0xFF858585),
+                                  Colors.white,
                                   BlendMode.srcATop,
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 37.0),
-                            child: Row(
+                            Row(
                               mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 RecipeIconFavorite(
                                   receipe: receipeDetailsState.userReceipeV2!,
@@ -252,70 +319,16 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                     height: 40,
                                   ),
                                 ),
-                                const Gap(25),
+                                //  const Gap(25),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Gap(7.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      receipe.name,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.0,
-                        height: 30 / 20,
-                        color: blackVariantColor,
-                      ),
-                    ),
-                  ),
-                  const Gap(10.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      title: TranslatedText(
-                          textSelector: (lang) => lang.ingredients,
-                          style: normalTextStyle),
-                      children: [
-                        const Gap(15.0),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                          ),
-                          child: Column(
-                            children: receipe.ingredients
-                                .map(
-                                  (ingredient) => Padding(
-                                    padding: const EdgeInsets.only(
-                                      bottom: 15.0,
-                                    ),
-                                    child: _DisplayIngredients(
-                                      ingredient: ingredient.name,
-                                      quantity: ingredient.quantity ?? '',
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 38),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 38.0),
-                    child: _StepsSection(
-                      receipe.steps,
-                    ),
-                  ),
-                  const Gap(51.0),
-                ],
-              ),
+                ),
+              ],
             );
           }),
         );
