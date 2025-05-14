@@ -83,10 +83,10 @@ class InventoryController extends Cubit<InventoryState> {
     this._analyticsRepository,
     this._userAccountMetaDataRepository,
   ) : super(InventoryState()) {
+    watchAccountMetaData();
     listenToQuerySearch();
     loadCategories();
     loadIngredientsAdded();
-    watchAccountMetaData();
   }
 
   final _searchController = StreamController<String>.broadcast();
@@ -110,6 +110,7 @@ class InventoryController extends Cubit<InventoryState> {
           emit(state.copyWith(ingredientsSuggested: []));
           return;
         }
+        emit(state.copyWith(isBusy: true));
         final results = await _inventoryRepository.searchIngredients(query);
         log("Results: $results");
         if (results.isEmpty && query.isNotEmpty) {
@@ -119,9 +120,9 @@ class InventoryController extends Cubit<InventoryState> {
                 quantity: '1',
                 date: DateTime.now(),
                 id: EntityId(query))
-          ]));
+          ], isBusy: false));
         } else {
-          emit(state.copyWith(ingredientsSuggested: results));
+          emit(state.copyWith(ingredientsSuggested: results, isBusy: false));
         }
       },
     );
@@ -186,12 +187,18 @@ class InventoryController extends Cubit<InventoryState> {
     _searchController.add(query);
   }
 
+  void clearSearch() {
+    _searchController.add('');
+  }
+
   void refreshIngredients(List<Ingredient> ingredients) {
     List<Ingredient> filteredIngredients =
         state.ingredients.where((ingredient) {
       return !ingredients.any((addedIngredient) =>
           addedIngredient.name.toLowerCase() == ingredient.name.toLowerCase());
     }).toList();
+
+    filteredIngredients = sortIngredients(filteredIngredients);
     emit(state.copyWith(ingredients: filteredIngredients));
   }
 
@@ -212,13 +219,44 @@ class InventoryController extends Cubit<InventoryState> {
     _inventoryRepository.getCategories().listen(
       (categoriesFetched) {
         if (categoriesFetched.isNotEmpty) {
+          final results = sortCategories(categoriesFetched);
           emit(state.copyWith(
-              categories: categoriesFetched,
-              categoryIdSelected: categoriesFetched.first.id?.value));
-          loadIngredients(categoriesFetched.first.id?.value ?? '');
+              categories: results,
+              categoryIdSelected: results.first.id?.value));
+          loadIngredients(results.first.id?.value ?? '');
         }
       },
     );
+  }
+
+  List<Ingredient> sortIngredients(List<Ingredient> ingredients) {
+    final results = ingredients;
+    if (state.appLanguage == AppLanguage.fr) {
+      results.sort(
+        (a, b) => (a.nameFr ?? '')
+            .toLowerCase()
+            .compareTo((b.nameFr ?? '').toLowerCase()),
+      );
+    } else {
+      results.sort(
+        (a, b) => (a.name).toLowerCase().compareTo((b.name).toLowerCase()),
+      );
+    }
+    return results;
+  }
+
+  List<Category> sortCategories(List<Category> categories) {
+    final results = categories;
+    if (state.appLanguage == AppLanguage.fr) {
+      results.sort(
+        (a, b) => (a.nameFr).toLowerCase().compareTo((b.nameFr).toLowerCase()),
+      );
+    } else {
+      results.sort(
+        (a, b) => (a.name).toLowerCase().compareTo((b.name).toLowerCase()),
+      );
+    }
+    return results;
   }
 
   Future<void> loadIngredients(String categoryId) async {
@@ -231,6 +269,9 @@ class InventoryController extends Cubit<InventoryState> {
               addedIngredient.name.toLowerCase() ==
               ingredient.name.toLowerCase());
         }).toList();
+
+        filteredIngredients = sortIngredients(filteredIngredients);
+
         emit(state.copyWith(ingredients: filteredIngredients));
       },
     );

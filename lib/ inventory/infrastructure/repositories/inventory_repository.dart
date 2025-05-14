@@ -81,11 +81,13 @@ class InventoryRepository implements IInventoryRepository {
         .get()
         .then(
       (snapshot) {
-        return snapshot.docs
+        final data = snapshot.docs
             .map<Ingredient>(
               (doc) => IngredientSerialization.fromJson(doc.data()),
             )
             .toList();
+       
+        return data;
       },
     );
   }

@@ -92,15 +92,16 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               );
             }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       bottomNavigationBar: hideNavBar
           ? null
           : BottomAppBar(
-              elevation: 0,
+              elevation: 10,
               height: 70,
               color: Colors.white,
               shape: const CircularNotchedRectangle(),
               surfaceTintColor: Colors.transparent,
-              notchMargin: 8,
+              notchMargin: 10,
               child: Row(
                 children: [
                   for (int i = 0; i < 2; i++)
