@@ -14,6 +14,7 @@ import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/firebase_options.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/nav/router.dart';
+import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
@@ -69,6 +70,9 @@ class _MyAppState extends State<MyApp> {
             di<RetrieveReceipeFromApiOneTimePerDayUsecase>(),
             di<IUserRecipeService>(),
           ),
+        ),
+        BlocProvider(
+          create: (_) => NotificationUserController.inject(),
         ),
       ],
       child: ResponsiveSizer(builder: (context, orientation, screenType) {

@@ -8,6 +8,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/notification/presentation/notification_dialog.dart';
+import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
@@ -160,6 +161,13 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                                             final enableNotif =
                                                 await showNotificationDialog();
                                             log('enableNotif: $enableNotif');
+                                            if (enableNotif != null &&
+                                                enableNotif) {
+                                              context
+                                                  .read<
+                                                      NotificationUserController>()
+                                                  .requestPermission();
+                                            }
 
                                             userPreferenceSubmitBtnController
                                                 .submit(questions);

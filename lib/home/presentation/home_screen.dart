@@ -19,6 +19,7 @@ import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
+import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
@@ -48,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       await di<TranslationController>().saveLanguageWhenNeeded();
       await showAppUpdatePopup(context);
+      context.read<NotificationUserController>().requestPermission();
     });
   }
 
