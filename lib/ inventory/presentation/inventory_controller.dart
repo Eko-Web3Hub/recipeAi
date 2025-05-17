@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
@@ -75,6 +76,7 @@ class InventoryController extends Cubit<InventoryState> {
   final IAuthUserService _authUserService;
   final IAnalyticsRepository _analyticsRepository;
   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
+  final categoriesScrollController = ScrollController();
 
   InventoryController(
     this._inventoryRepository,
@@ -94,7 +96,50 @@ class InventoryController extends Cubit<InventoryState> {
   void onSelectCategory(String categoryId) {
     emit(state.copyWith(categoryIdSelected: categoryId));
     loadIngredients(categoryId);
+    _scrollToCategory(categoryId);
   }
+
+  void _scrollToCategory(String categoryId) {
+    final index = state.categories.indexWhere((c) => c.id?.value == categoryId);
+    if (index < 0) return;
+
+    final key = tabKeys[categoryId];
+    if (key == null) return;
+
+    final context = key.currentContext;
+    if (context == null) return;
+
+    final box = context.findRenderObject() as RenderBox?;
+    if (box == null) return;
+
+    final position = box.localToGlobal(Offset.zero);
+    final tabWidth = box.size.width;
+
+    final currentOffset = categoriesScrollController.offset;
+    final viewportWidth = categoriesScrollController.position.viewportDimension;
+
+    var targetOffset = currentOffset;
+
+    // Tab partiellement ou complètement à droite
+    if (position.dx + tabWidth > viewportWidth) {
+      final overflowRight = (position.dx + tabWidth) - viewportWidth;
+      targetOffset = (currentOffset + overflowRight + 16)
+          .clamp(0, categoriesScrollController.position.maxScrollExtent);
+    }
+    // Tab partiellement ou complètement à gauche
+    else if (position.dx < 0) {
+      targetOffset = (currentOffset + position.dx - 16)
+          .clamp(0, categoriesScrollController.position.maxScrollExtent);
+    }
+
+    categoriesScrollController.animateTo(
+      targetOffset,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
+  final Map<String, GlobalKey> tabKeys = {};
 
   void closeIngredientsSuggested() {
     emit(state.copyWith(ingredientsSuggested: []));

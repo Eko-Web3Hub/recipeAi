@@ -95,35 +95,36 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
             }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      bottomNavigationBar: hideNavBar
-          ? null
-          : BottomAppBar(
-              elevation: 10,
-              height: 70,
-              color: Colors.white,
-              shape: const CircularNotchedRectangle(),
-              surfaceTintColor: Colors.transparent,
-              notchMargin: 10,
-              child: Row(
-                children: [
-                  for (int i = 0; i < 2; i++)
-                    _NavBarItem(
-                      index: i,
-                      item: _navigationsItems[i],
-                      currentIndex: navigationShell.currentIndex,
-                      onTap: _goBranch,
-                    ),
-                  const SizedBox(width: 64),
-                  for (int i = 2; i < 4; i++)
-                    _NavBarItem(
-                      index: i,
-                      item: _navigationsItems[i],
-                      currentIndex: navigationShell.currentIndex,
-                      onTap: _goBranch,
-                    ),
-                ],
-              ),
-            ),
+      bottomNavigationBar:
+          (hideNavBar || MediaQuery.of(context).viewInsets.bottom != 0)
+              ? null
+              : BottomAppBar(
+                  elevation: 10,
+                  height: 70,
+                  color: Colors.white,
+                  shape: const CircularNotchedRectangle(),
+                  surfaceTintColor: Colors.transparent,
+                  notchMargin: 10,
+                  child: Row(
+                    children: [
+                      for (int i = 0; i < 2; i++)
+                        _NavBarItem(
+                          index: i,
+                          item: _navigationsItems[i],
+                          currentIndex: navigationShell.currentIndex,
+                          onTap: _goBranch,
+                        ),
+                      const SizedBox(width: 64),
+                      for (int i = 2; i < 4; i++)
+                        _NavBarItem(
+                          index: i,
+                          item: _navigationsItems[i],
+                          currentIndex: navigationShell.currentIndex,
+                          onTap: _goBranch,
+                        ),
+                    ],
+                  ),
+                ),
 
       // NavigationBar(
       //     height: 70,
