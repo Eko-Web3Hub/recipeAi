@@ -346,36 +346,61 @@ class InventoryScreen extends StatelessWidget {
                           height: 20,
                         ),
                         Container(
+                            height: 150,
                             padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: SizedBox(
-                              height: 150,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Wrap(
-                                  direction: Axis.vertical,
-                                  //  direction: Axis.horizontal,
-                                  spacing: 8,
-                                  // alignment: WrapAlignment.start,
-                                  // crossAxisAlignment: WrapCrossAlignment.start,
-                                  runSpacing: 8,
-                                  children: List.generate(
-                                    state.ingredients.length,
-                                    (index) {
-                                      return IngredientCategoryItem(
-                                        onTap: () {
-                                          if (!controller.isIngredientSelected(
-                                              state.ingredients[index])) {
-                                            controller.addIngredient(
-                                                state.ingredients[index]);
-                                          }
-                                        },
-                                        ingredient: state.ingredients[index],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            )),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      crossAxisSpacing: 10,
+                                      childAspectRatio: 0.3,
+                                      mainAxisSpacing: 10),
+                              itemCount: state.ingredients.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return IngredientCategoryItem(
+                                  onTap: () {
+                                    if (!controller.isIngredientSelected(
+                                        state.ingredients[index])) {
+                                      controller.addIngredient(
+                                          state.ingredients[index]);
+                                    }
+                                  },
+                                  ingredient: state.ingredients[index],
+                                );
+                              },
+                            )
+
+                            // SizedBox(
+                            //   height: 150,
+                            //   child: SingleChildScrollView(
+                            //     scrollDirection: Axis.horizontal,
+                            //     child: Wrap(
+                            //       direction: Axis.vertical,
+                            //       spacing: 8,
+                            //       crossAxisAlignment: WrapCrossAlignment.start,
+                            //       runSpacing: 5,
+                            //       runAlignment: WrapAlignment.end,
+                            //       children: List.generate(
+                            //         state.ingredients.length,
+                            //         (index) {
+                            //           return IngredientCategoryItem(
+                            //             onTap: () {
+                            //               if (!controller.isIngredientSelected(
+                            //                   state.ingredients[index])) {
+                            //                 controller.addIngredient(
+                            //                     state.ingredients[index]);
+                            //               }
+                            //             },
+                            //             ingredient: state.ingredients[index],
+                            //           );
+                            //         },
+                            //       ),
+                            //     ),
+                            //   ),
+                            // )
+
+                            ),
                         const Gap(20),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10),
