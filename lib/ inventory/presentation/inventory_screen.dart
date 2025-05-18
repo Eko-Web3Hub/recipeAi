@@ -117,19 +117,16 @@ class InventoryScreen extends StatelessWidget {
                   style: mediumTextStyle,
                 ),
               ),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: horizontalScreenPadding,
-                  //  vertical: verticalScreenPadding
-                ),
-                child: ListView(
-                  //  padding: const EdgeInsets.only(bottom: 30),
-                  children: [
-                    Builder(builder: (context) {
-                      return ListenableBuilder(
-                          listenable: di<TranslationController>(),
-                          builder: (context, _) {
-                            return Row(
+              body: Column(
+                children: [
+                  Builder(builder: (context) {
+                    return ListenableBuilder(
+                        listenable: di<TranslationController>(),
+                        builder: (context, _) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: horizontalScreenPadding),
+                            child: Row(
                               children: [
                                 Expanded(
                                   child: RawAutocomplete<Ingredient>(
@@ -267,159 +264,177 @@ class InventoryScreen extends StatelessWidget {
                                   ),
                                 )
                               ],
-                            );
-                          });
-                    }),
-                    const Gap(20),
-                    if (state.isBusy) ...[
-                      Center(
-                        child: CustomProgress(
-                          color: Colors.black,
-                        ),
-                      )
-                    ] else if (state.ingredientsSuggested.isNotEmpty) ...[
-                      Container(
-                        constraints: BoxConstraints(maxHeight: 80),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          // padding:
-                          //     const EdgeInsets.only(left: 5, right: 5, top: 5),
-                          itemBuilder: (context, index) {
-                            final ingredient =
-                                state.ingredientsSuggested[index];
-                            return IngredientSelectedItem(
-                                isSelected:
-                                    controller.isIngredientSelected(ingredient),
-                                onTap: () {
-                                  if (!controller
-                                      .isIngredientSelected(ingredient)) {
-                                    queryController.clear();
-                                    controller.addIngredient(ingredient);
-                                    controller.closeIngredientsSuggested();
-
-                                    FocusScope.of(context).unfocus();
-                                  }
-                                },
-                                ingredient: ingredient);
-                          },
-                          itemCount: state.ingredientsSuggested.length,
-                        ),
-                      )
-                    ],
-                    Gap(20),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: TranslatedText(
-                        textSelector: (lang) => lang.ingredients,
-                        style: normalTextStyle,
-                      ),
-                    ),
-                    state.ingredientsAddedByUser.isEmpty
-                        ? Center(
-                            child: Column(
-                              children: [
-                                const Gap(20),
-                                Image.asset(
-                                  'assets/images/placeholder_inventory.png',
-                                  width: 200,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                                const Gap(10),
-                                TranslatedText(
-                                  textSelector: (lang) => lang.fillKitchen,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const Gap(30),
-                              ],
+                            ),
+                          );
+                        });
+                  }),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: horizontalScreenPadding),
+                      //  padding: const EdgeInsets.only(bottom: 30),
+                      children: [
+                        const Gap(20),
+                        if (state.isBusy) ...[
+                          Center(
+                            child: CustomProgress(
+                              color: Colors.black,
                             ),
                           )
-                        : SizedBox(
-                            height: state.ingredientsAddedByUser.length < 9
-                                ? 100
-                                : 150,
-                            child: GridView.builder(
-                              // padding: const EdgeInsets.only(bottom: 20),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      crossAxisSpacing: 10,
-                                      childAspectRatio: 3,
-                                      mainAxisSpacing: 10),
+                        ] else if (state.ingredientsSuggested.isNotEmpty) ...[
+                          Container(
+                            constraints: BoxConstraints(maxHeight: 150),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: ListView.builder(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
                               itemBuilder: (context, index) {
                                 final ingredient =
-                                    state.ingredientsAddedByUser[index];
-                                return IngredientSelectedItem(
-                                    isSelected: true,
-                                    onTap: () {
-                                      controller.removeIngredient(ingredient);
-                                    },
-                                    ingredient: ingredient);
+                                    state.ingredientsSuggested[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: IngredientSelectedItem(
+                                      isSelected: controller
+                                          .isIngredientSelected(ingredient),
+                                      onTap: () {
+                                        if (!controller
+                                            .isIngredientSelected(ingredient)) {
+                                          queryController.clear();
+                                          controller.addIngredient(ingredient);
+                                          controller
+                                              .closeIngredientsSuggested();
+
+                                          FocusScope.of(context).unfocus();
+                                        }
+                                      },
+                                      ingredient: ingredient),
+                                );
                               },
-                              itemCount:
-                                  state.ingredientsAddedByUser.reversed.length,
+                              itemCount: state.ingredientsSuggested.length,
                             ),
-                          ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          final category = state.categories[index];
-                          return CategoryItem(
-                            isSelected:
-                                state.categoryIdSelected == category.id?.value,
-                            onTap: () {
-                              controller
-                                  .onSelectCategory(category.id?.value ?? '');
-                            },
-                            category: state.categories[index],
-                          );
-                        },
-                        itemCount: state.categories.length,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Wrap(
-                          direction: Axis.horizontal,
-                          spacing: 10,
-                          alignment: WrapAlignment.start,
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          runSpacing: 20,
-                          children: List.generate(
-                            state.ingredients.length,
-                            (index) {
-                              return IngredientCategoryItem(
+                          )
+                        ],
+                        Gap(20),
+                        SizedBox(
+                          height: 40,
+                          child: ListView.builder(
+                            controller: controller.categoriesScrollController,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final category = state.categories[index];
+                              return CategoryItem(
+                                key: controller.tabKeys.putIfAbsent(
+                                  category.id?.value ?? '',
+                                  GlobalKey.new,
+                                ),
+                                isSelected: state.categoryIdSelected ==
+                                    category.id?.value,
                                 onTap: () {
-                                  if (!controller.isIngredientSelected(
-                                      state.ingredients[index])) {
-                                    controller.addIngredient(
-                                        state.ingredients[index]);
-                                  }
+                                  controller.onSelectCategory(
+                                      category.id?.value ?? '');
                                 },
-                                ingredient: state.ingredients[index],
+                                category: state.categories[index],
                               );
                             },
+                            itemCount: state.categories.length,
                           ),
-                        )),
-                    const Gap(20),
-                  ],
-                ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: SizedBox(
+                              height: 150,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Wrap(
+                                  direction: Axis.vertical,
+                                  //  direction: Axis.horizontal,
+                                  spacing: 8,
+                                  // alignment: WrapAlignment.start,
+                                  // crossAxisAlignment: WrapCrossAlignment.start,
+                                  runSpacing: 8,
+                                  children: List.generate(
+                                    state.ingredients.length,
+                                    (index) {
+                                      return IngredientCategoryItem(
+                                        onTap: () {
+                                          if (!controller.isIngredientSelected(
+                                              state.ingredients[index])) {
+                                            controller.addIngredient(
+                                                state.ingredients[index]);
+                                          }
+                                        },
+                                        ingredient: state.ingredients[index],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            )),
+                        const Gap(20),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: TranslatedText(
+                            textSelector: (lang) => lang.ingredients,
+                            style: normalTextStyle,
+                          ),
+                        ),
+                        state.ingredientsAddedByUser.isEmpty
+                            ? Center(
+                                child: Column(
+                                  children: [
+                                    const Gap(20),
+                                    Image.asset(
+                                      'assets/images/placeholder_inventory.png',
+                                      width: 200,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    const Gap(10),
+                                    TranslatedText(
+                                      textSelector: (lang) => lang.fillKitchen,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    const Gap(30),
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                // padding: const EdgeInsets.only(bottom: 20),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  final ingredient =
+                                      state.ingredientsAddedByUser[index];
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 5),
+                                    child: IngredientSelectedItem(
+                                        isSelected: true,
+                                        onTap: () {
+                                          controller
+                                              .removeIngredient(ingredient);
+                                        },
+                                        ingredient: ingredient),
+                                  );
+                                },
+                                itemCount: state
+                                    .ingredientsAddedByUser.reversed.length,
+                              ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           );
