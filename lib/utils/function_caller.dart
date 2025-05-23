@@ -23,14 +23,6 @@ class FunctionsCaller {
           .httpsCallable(name, options: HttpsCallableOptions())
           .call<dynamic>(input);
 
-      log('input: $input');
-
-      if (response.data! is Map) {
-        log('response: ${response.data}');
-
-        return {};
-      }
-
       log('response: ${response.data}');
       return response.data is Map
           ? Map<String, dynamic>.from(response.data as Map)
