@@ -26,10 +26,12 @@ void main() {
     firebaseAuth = FirebaseAuthMock();
   });
 
-  DeleteAccountAfterAnLoginController buildSut() {
+  DeleteAccountAfterAnLoginController buildSut(
+      {Future<void> Function()? onMainBtnPressed}) {
     return DeleteAccountAfterAnLoginController(
       firebaseAuth,
       authUserService,
+      onMainBtnPressed ?? () async {},
     );
   }
 
@@ -65,6 +67,31 @@ void main() {
       DeleteAccountAfterAnLoginInitial(),
       DeleteAccountAfterAnLoginSuccess(),
     ],
+  );
+
+  int triggerCount = 0;
+
+  blocTest<DeleteAccountAfterAnLoginController, DeleteAccountAfterAnLoginState>(
+    'should trigger the main btn function when delete account after a re-login',
+    build: () => buildSut(
+      onMainBtnPressed: () {
+        triggerCount++;
+        return Future.value();
+      },
+    ),
+    act: (bloc) => bloc.deleteAccountAfterAReLogin(password),
+    setUp: () {
+      when(() => authUserService.currentUser).thenReturn(authUser);
+      when(() => firebaseAuth.signInWithEmailAndPassword(
+            email: authUser.email!,
+            password: password,
+          )).thenAnswer((_) => Future.value());
+      when(() => firebaseAuth.deleteAccount())
+          .thenAnswer((_) => Future.value());
+    },
+    verify: (bloc) {
+      expect(triggerCount, 1);
+    },
   );
 
   blocTest<DeleteAccountAfterAnLoginController, DeleteAccountAfterAnLoginState>(
