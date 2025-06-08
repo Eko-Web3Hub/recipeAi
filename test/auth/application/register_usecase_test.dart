@@ -108,7 +108,6 @@ void main() {
       );
       const userPersonnalInfo = UserPersonnalInfo(
         uid: EntityId('uid'),
-        email: email,
         name: name,
       );
 

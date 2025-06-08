@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:recipe_ai/l10n/app_localizations.dart';
 
 String? nonEmptyStringValidator(String? value, AppLocalizations appTexts) {
   if (value == null || value.isEmpty) {

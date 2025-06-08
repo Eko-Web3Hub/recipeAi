@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/user_account/domain/models/user_account_meta_data.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';

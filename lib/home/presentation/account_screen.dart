@@ -17,7 +17,7 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:recipe_ai/l10n/app_localizations.dart';
 
 TextStyle _noTextStyle = GoogleFonts.poppins(
   color: Colors.black,

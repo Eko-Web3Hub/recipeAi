@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:recipe_ai/l10n/app_localizations.dart';
 
 class TranslatedText extends StatelessWidget {
   final String Function(AppLocalizations language) textSelector;

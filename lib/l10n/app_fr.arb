@@ -551,5 +551,9 @@
     "goToChoosePreferences": "Aller choisir les préférences",
     "@goToChoosePreferences": {
         "description": "Label pour aller choisir les préférences"
+    },
+    "changePasswordEmailSent": "Un e-mail a été envoyé à votre adresse pour changer votre mot de passe",
+    "@changePasswordEmailSent": {
+        "description": "Label pour l'email de changement de mot de passe envoyé"
     }
 }
