@@ -13,6 +13,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
+import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/device_info.dart';
@@ -56,8 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -88,63 +87,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               const Gap(20),
-              Text(
-                appTexts.baseSettings,
+              TranslatedText(
+                textSelector: (lang) => lang.baseSettings,
                 style: settingHeadTitleStyle,
               ),
               _ProfilOption(
                 icon: 'assets/icon/accountIcon.svg',
-                title: appTexts.myAccount,
                 onPressed: () => context.push(
                   '/profil-screen/my-account',
                 ),
-              ),
-              _ProfilOption(
-                icon: 'assets/icon/languagesIcon.svg',
-                title: appTexts.language,
-                onPressed: () => context.push(
-                  '/profil-screen/change-language',
+                child: TranslatedText(
+                  textSelector: (lang) => lang.myAccount,
+                  style: _optionStyle,
                 ),
-                trailing: OptionRightBtn(
-                  value: appLanguagesItem
-                      .firstWhere((item) =>
-                          item.key ==
-                          (appLanguagesItem.firstWhere(
-                            (item) =>
+              ),
+              ListenableBuilder(
+                  listenable: di<TranslationController>(),
+                  builder: (context, _) {
+                    return _ProfilOption(
+                      icon: 'assets/icon/languagesIcon.svg',
+                      onPressed: () => context.push(
+                        '/profil-screen/change-language',
+                      ),
+                      trailing: OptionRightBtn(
+                        value: appLanguagesItem
+                            .firstWhere((item) =>
                                 item.key ==
-                                di<TranslationController>()
-                                    .currentLanguageEnum
-                                    .name,
-                          )).key)
-                      .label,
-                  onTap: () {},
-                ),
-              ),
+                                (appLanguagesItem.firstWhere(
+                                  (item) =>
+                                      item.key ==
+                                      di<TranslationController>()
+                                          .currentLanguageEnum
+                                          .name,
+                                )).key)
+                            .label,
+                        onTap: () {},
+                      ),
+                      child: TranslatedText(
+                        textSelector: (lang) => lang.language,
+                        style: _optionStyle,
+                      ),
+                    );
+                  }),
               const Gap(20),
-              Text(
-                appTexts.kitchenSettings,
-                style: settingHeadTitleStyle,
+              TranslatedText(
+                textSelector: (lang) => lang.kitchenSettings,
+                style: _optionStyle,
               ),
               _ProfilOption(
                 icon: 'assets/icon/myPreferencesIcon.svg',
-                title: appTexts.myPreferences,
                 onPressed: () =>
                     context.push("/profil-screen/update-user-preference"),
+                child: TranslatedText(
+                  textSelector: (lang) => lang.myPreferences,
+                  style: _optionStyle,
+                ),
               ),
               _ProfilOption(
                 icon: 'assets/icon/notificationBell.svg',
-                title: appTexts.notification,
                 onPressed: null,
+                child: TranslatedText(
+                  textSelector: (lang) => lang.notification,
+                  style: _optionStyle,
+                ),
               ),
               const Gap(20),
-              Text(
-                appTexts.help,
+              TranslatedText(
+                textSelector: (lang) => lang.help,
                 style: settingHeadTitleStyle,
               ),
               _ProfilOption(
                 icon: 'assets/icon/solarBugIcon.svg',
-                title: appTexts.sendABug,
                 onPressed: _openFeedBackLink,
+                child: TranslatedText(
+                  textSelector: (lang) => lang.sendABug,
+                  style: _optionStyle,
+                ),
               ),
               const Gap(10),
               BlocProvider(
@@ -154,13 +172,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
                     builder: (context, btnLogOutState) {
                   return Builder(builder: (context) {
-                    return MainBtn(
-                      text: appTexts.signOut,
-                      isLoading: btnLogOutState is SignOutBtnLoading,
-                      onPressed: () {
-                        context.read<SignOutBtnControlller>().signOut();
-                      },
-                    );
+                    return ListenableBuilder(
+                        listenable: di<TranslationController>(),
+                        builder: (context, _) {
+                          return MainBtn(
+                            text: di<TranslationController>()
+                                .currentLanguage
+                                .signOut,
+                            isLoading: btnLogOutState is SignOutBtnLoading,
+                            onPressed: () {
+                              context.read<SignOutBtnControlller>().signOut();
+                            },
+                          );
+                        });
                   });
                 }),
               ),
@@ -239,15 +263,16 @@ final appLanguagesItem = [
 class _ProfilOption extends StatelessWidget {
   const _ProfilOption({
     required this.icon,
-    required this.title,
     this.trailing,
     required this.onPressed,
+    required this.child,
   });
 
   final String icon;
-  final String title;
+
   final VoidCallback? onPressed;
   final Widget? trailing;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -255,14 +280,13 @@ class _ProfilOption extends StatelessWidget {
       onTap: onPressed,
       leading: SvgPicture.asset(icon),
       trailing: trailing,
-      title: Text(
-        title,
-        style: GoogleFonts.poppins(
-          fontSize: 14,
-          color: Colors.black,
-        ),
-      ),
+      title: child,
       contentPadding: EdgeInsets.zero,
     );
   }
 }
+
+TextStyle _optionStyle = GoogleFonts.poppins(
+  fontSize: 14,
+  color: Colors.black,
+);

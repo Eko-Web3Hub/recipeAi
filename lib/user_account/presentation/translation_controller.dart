@@ -45,7 +45,11 @@ class TranslationController extends ChangeNotifier {
         uid,
         UserAccountMetaData(appLanguage: _currentLanguage),
       );
+    } else {
+      _currentLanguage = userAccountMetaData.appLanguage;
     }
+
+    notifyListeners();
   }
 
   Future<void> changeLanguage(String appLanguageKey) async {
