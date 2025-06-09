@@ -555,5 +555,9 @@
     "goToChoosePreferences": "Go to choose preferences",
     "@goToChoosePreferences": {
         "description": "Label for going to choose preferences"
+    },
+    "profil": "Profile",
+    "@profil": {
+        "description": "Label for profile"
     }
 }

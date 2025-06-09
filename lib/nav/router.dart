@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
@@ -33,6 +34,7 @@ import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_account/presentation/reset_password_screen.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -168,15 +170,18 @@ GoRouter createRouter() => GoRouter(
         ),
 
         StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) =>
-              ScaffoldWithNestedNavigation(
-            appBarTitle: genAppBarTitle(
-              state.fullPath,
-              AppLocalizations.of(context)!,
-            ),
-            navigationShell: navigationShell,
-            hideNavBar: hideNavBar(state.fullPath),
-          ),
+          builder: (context, state, navigationShell) => ListenableBuilder(
+              listenable: di<TranslationController>(),
+              builder: (context, _) {
+                return ScaffoldWithNestedNavigation(
+                  appBarTitle: genAppBarTitle(
+                    state.fullPath,
+                    di<TranslationController>().currentLanguage,
+                  ),
+                  navigationShell: navigationShell,
+                  hideNavBar: hideNavBar(state.fullPath),
+                );
+              }),
           branches: <StatefulShellBranch>[
             StatefulShellBranch(
               routes: <RouteBase>[
@@ -350,7 +355,7 @@ String? genAppBarTitle(String? path, AppLocalizations appTexts) {
     case '/notification-screen':
       return 'Notifications';
     case '/profil-screen':
-      return 'Profile';
+      return appTexts.profil;
     default:
       return null;
   }

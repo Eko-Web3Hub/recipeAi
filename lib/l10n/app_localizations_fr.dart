@@ -462,4 +462,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get goToChoosePreferences => 'Aller choisir les préférences';
+
+  @override
+  String get profil => 'Profil';
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
-import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 
 import 'package:recipe_ai/utils/constant.dart';
@@ -16,8 +16,6 @@ class SavedReceipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
     return BlocProvider(
       create: (context) => SavedReceipeController(
         di<IUserRecipeService>(),
@@ -47,12 +45,13 @@ class SavedReceipeScreen extends StatelessWidget {
                     ),
                   );
                 }
+                ;
 
                 if (state is SavedReceipeStateLoaded) {
                   return state.savedReceipes.isEmpty
                       ? Center(
-                          child: Text(
-                            appTexts.noSavedReceipes,
+                          child: TranslatedText(
+                            textSelector: (lang) => lang.noSavedReceipes,
                             style: descriptionPlaceHolderStyle,
                             textAlign: TextAlign.center,
                           ),

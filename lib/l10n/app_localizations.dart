@@ -931,6 +931,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go to choose preferences'**
   String get goToChoosePreferences;
+
+  /// Label for profile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profil;
 }
 
 class _AppLocalizationsDelegate

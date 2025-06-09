@@ -450,4 +450,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goToChoosePreferences => 'Go to choose preferences';
+
+  @override
+  String get profil => 'Profile';
 }
