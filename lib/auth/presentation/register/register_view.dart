@@ -379,25 +379,13 @@ class HeadTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: headTitleStyle,
-        ),
-        const Gap(5),
-        Text(
-          subTitle,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w400,
-            fontSize: 11,
-            height: 16.5 / 11,
-            color: const Color(0xff121212),
-          ),
-        ),
-      ],
+    return Text(
+      subTitle,
+      style: GoogleFonts.poppins(
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+        color: const Color(0xff121212),
+      ),
     );
   }
 }
