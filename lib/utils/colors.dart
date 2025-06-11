@@ -4,6 +4,8 @@ const orangeVariantColor = Color(0xffFF9C00);
 // const secondaryColor = Color(0xffFFCE80);
 const secondaryColor = Color(0xFFFFF2DF);
 
+const secondOrangePrimaryColor = Color(0xffFFCE80);
+
 const blackVariantColor = Color(0xff181818);
 
 const neutralBlackColor = Color(0xff484848);

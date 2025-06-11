@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
+import 'package:recipe_ai/utils/colors.dart';
 
 class UserPreferenceQuestionWidget extends StatelessWidget {
   const UserPreferenceQuestionWidget({
@@ -54,21 +55,18 @@ class _MultipleChoiceQuestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    return Wrap(
+      spacing: 14,
+      runSpacing: 16,
+      direction: Axis.horizontal,
       children: question.options
           .map(
-            (option) => Padding(
-              padding: const EdgeInsets.only(
-                bottom: 15.0,
-              ),
-              child: CheckBoxOption(
-                option: option.label,
-                isSelected: question.isOptionSelected(option.key),
-                onChanged: (isSelected) {
-                  question.answer(option.key);
-                },
-              ),
+            (option) => CheckBoxOption(
+              option: option.label,
+              isSelected: question.isOptionSelected(option.key),
+              onChanged: (isSelected) {
+                question.answer(option.key);
+              },
             ),
           )
           .toList(),
@@ -110,56 +108,27 @@ class _CheckBoxOptionState extends State<CheckBoxOption> {
         });
         widget.onChanged(isSelected);
       },
-      child: Row(
-        children: [
-          _CustomCheckBox(
-            isSelected: isSelected,
+      child: Chip(
+        side: BorderSide.none,
+        backgroundColor: isSelected ? secondOrangePrimaryColor : Colors.white,
+        avatar: Container(
+          width: 25,
+          height: 25,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: neutralGreyColor,
           ),
-          const Gap(22),
-          Expanded(
-            child: Text(
-              widget.option,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                height: 24 / 16,
-                color: const Color(0xff1E1E1E),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CustomCheckBox extends StatelessWidget {
-  const _CustomCheckBox({
-    this.isSelected = false,
-  });
-
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20.0,
-      height: 20.0,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: isSelected ? Colors.transparent : Colors.black,
-          width: 2.0,
         ),
-        color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+        label: Text(
+          widget.option,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            height: 24 / 16,
+            color: const Color(0xff1E1E1E),
+          ),
+        ),
       ),
-      child: isSelected
-          ? Icon(
-              Icons.check,
-              color: isSelected ? Colors.white : Colors.black,
-              size: 15,
-            )
-          : Container(),
     );
   }
 }
