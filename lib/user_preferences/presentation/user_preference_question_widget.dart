@@ -36,7 +36,7 @@ class UserPreferenceQuestionWidget extends StatelessWidget {
           title: question.title,
           subTitle: question.description,
         ),
-        const Gap(23),
+        const Gap(25),
         Padding(
           padding: const EdgeInsets.only(left: 1.0),
           child: _questionBuilder(),
@@ -123,9 +123,8 @@ class _CheckBoxOptionState extends State<CheckBoxOption> {
           widget.option,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
-            fontSize: 16,
-            height: 24 / 16,
-            color: const Color(0xff1E1E1E),
+            fontSize: 14,
+            color: Colors.black,
           ),
         ),
       ),

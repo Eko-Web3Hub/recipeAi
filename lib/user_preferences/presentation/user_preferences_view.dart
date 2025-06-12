@@ -28,7 +28,6 @@ class UserPreferencesView extends StatefulWidget {
 class _UserPreferencesViewState extends State<UserPreferencesView>
     with AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController();
-  int _currentPageIndex = 0;
   final appTexts = di<TranslationController>().currentLanguage;
 
   @override
@@ -51,13 +50,6 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
           backgroundColor: Colors.white,
         );
       },
-    );
-  }
-
-  void _nextPage() {
-    _pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeIn,
     );
   }
 
@@ -97,92 +89,51 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                           child: UserPreferenceQuestionList(
                             questions: questions,
                             controller: _pageController,
-                            onPageChanged: (index) {
-                              setState(() {
-                                _currentPageIndex = index;
-                              });
-                            },
                           ),
                         ),
-                        Row(
-                          children: [
-                            Visibility(
-                              visible: _currentPageIndex != 0,
-                              child: Expanded(
-                                child: MainBtn(
-                                  text: appTexts.previous,
-                                  onPressed: () {
-                                    _pageController.previousPage(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            const Gap(10.0),
-                            Expanded(
-                              child: Center(
-                                child: BlocProvider(
-                                  create: (context) =>
-                                      UserPreferenceSubmitBtnController(
-                                    di<UserPreferenceService>(),
-                                    di<IAuthUserService>(),
-                                  ),
-                                  child: BlocBuilder<
-                                          UserPreferenceSubmitBtnController,
-                                          UserPreferenceSubmitBtnState>(
-                                      builder: (context,
-                                          userPreferenceSubmitBtnState) {
-                                    return BlocListener<
-                                        UserPreferenceSubmitBtnController,
-                                        UserPreferenceSubmitBtnState>(
-                                      listener: (context, state) {
-                                        if (state
-                                            is UserPreferenceSubmitBtnSuccess) {
-                                          context.go('/home');
-                                        }
-                                      },
-                                      child: MainBtn(
-                                        isLoading: userPreferenceSubmitBtnState
-                                            is UserPreferenceSubmitBtnLoading,
-                                        text: _currentPageIndex ==
-                                                questions.length - 1
-                                            ? appTexts.finish
-                                            : appTexts.next,
-                                        showRightIcon: _currentPageIndex == 0,
-                                        onPressed: () async {
-                                          final userPreferenceSubmitBtnController =
-                                              context.read<
-                                                  UserPreferenceSubmitBtnController>();
-                                          if (_currentPageIndex ==
-                                              questions.length - 1) {
-                                            final enableNotif =
-                                                await showNotificationDialog();
-                                            log('enableNotif: $enableNotif');
-                                            if (enableNotif != null &&
-                                                enableNotif) {
-                                              context
-                                                  .read<
-                                                      NotificationUserController>()
-                                                  .requestPermission();
-                                            }
+                        BlocProvider(
+                          create: (context) =>
+                              UserPreferenceSubmitBtnController(
+                            di<UserPreferenceService>(),
+                            di<IAuthUserService>(),
+                          ),
+                          child: BlocBuilder<UserPreferenceSubmitBtnController,
+                                  UserPreferenceSubmitBtnState>(
+                              builder: (context, userPreferenceSubmitBtnState) {
+                            return BlocListener<
+                                UserPreferenceSubmitBtnController,
+                                UserPreferenceSubmitBtnState>(
+                              listener: (context, state) {
+                                if (state is UserPreferenceSubmitBtnSuccess) {
+                                  context.go('/home');
+                                }
+                              },
+                              child: MainBtn(
+                                isLoading: userPreferenceSubmitBtnState
+                                    is UserPreferenceSubmitBtnLoading,
+                                text: appTexts.finish,
+                                showRightIcon: false,
+                                onPressed: () async {
+                                  final userPreferenceSubmitBtnController =
+                                      context.read<
+                                          UserPreferenceSubmitBtnController>();
 
-                                            userPreferenceSubmitBtnController
-                                                .submit(questions);
-                                            return;
-                                          }
+                                  final enableNotif =
+                                      await showNotificationDialog();
+                                  log('enableNotif: $enableNotif');
 
-                                          _nextPage();
-                                        },
-                                      ),
-                                    );
-                                  }),
-                                ),
+                                  if (enableNotif != null && enableNotif) {
+                                    context
+                                        .read<NotificationUserController>()
+                                        .requestPermission();
+                                  }
+
+                                  userPreferenceSubmitBtnController
+                                      .submit(questions);
+                                },
                               ),
-                            ),
-                          ],
+                            );
+                          }),
                         ),
                         const Gap(31.0),
                       ],

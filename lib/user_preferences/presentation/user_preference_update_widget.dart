@@ -17,7 +17,6 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_progre
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_btn_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_controller.dart';
-import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserPreferenceUpdateWidget extends StatelessWidget {
@@ -71,7 +70,6 @@ class _DisplayUserPreferenceQuiz extends StatefulWidget {
 class _DisplayUserPreferenceQuizState
     extends State<_DisplayUserPreferenceQuiz> {
   final PageController _pageController = PageController();
-  int _currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -114,69 +112,34 @@ class _DisplayUserPreferenceQuizState
                   child: UserPreferenceQuestionList(
                     questions: widget.questions,
                     controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentPageIndex = index;
-                      });
-                    },
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _UpdatePreferenceQuizButton(
-                    text: appTexts.previous,
-                    onPressed: _currentPageIndex != 0
-                        ? () {
-                            _pageController.previousPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeIn,
-                            );
-                          }
-                        : null,
+              BlocBuilder<UserPreferenceUpdateBtnController,
+                  UserPreferenceUpdateBtnState>(builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: horizontalScreenPadding,
                   ),
-                  const Gap(10.0),
-                  Expanded(
-                    flex: 2,
-                    child: BlocBuilder<UserPreferenceUpdateBtnController,
-                            UserPreferenceUpdateBtnState>(
-                        builder: (context, state) {
-                      return MainBtn(
-                        text: appTexts.update,
-                        isLoading: state is UserPreferenceUpdateBtnLoading,
-                        onPressed: () {
-                          var userPreference = <String, dynamic>{};
-                          for (final question in widget.questions) {
-                            userPreference = {
-                              ...userPreference,
-                              ...question.toJson(),
-                            };
-                          }
-                          context
-                              .read<UserPreferenceUpdateBtnController>()
-                              .update(
-                                UserPreference(userPreference),
-                                DateTime.now(),
-                              );
-                        },
-                      );
-                    }),
+                  child: MainBtn(
+                    text: appTexts.update,
+                    isLoading: state is UserPreferenceUpdateBtnLoading,
+                    onPressed: () {
+                      var userPreference = <String, dynamic>{};
+                      for (final question in widget.questions) {
+                        userPreference = {
+                          ...userPreference,
+                          ...question.toJson(),
+                        };
+                      }
+                      context.read<UserPreferenceUpdateBtnController>().update(
+                            UserPreference(userPreference),
+                            DateTime.now(),
+                          );
+                    },
                   ),
-                  const Gap(10.0),
-                  _UpdatePreferenceQuizButton(
-                    onPressed: _currentPageIndex == widget.questions.length - 1
-                        ? null
-                        : () {
-                            _pageController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeIn,
-                            );
-                          },
-                    text: appTexts.next,
-                  ),
-                ],
-              ),
+                );
+              }),
               const Gap(30.0),
             ],
           ),
@@ -189,34 +152,5 @@ class _DisplayUserPreferenceQuizState
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  }
-}
-
-class _UpdatePreferenceQuizButton extends StatelessWidget {
-  const _UpdatePreferenceQuizButton({
-    required this.text,
-    required this.onPressed,
-  });
-
-  final String text;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      child: TextButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: onPressed == null
-                ? greyVariantColor
-                : Theme.of(context).primaryColor,
-            fontSize: 16.0,
-          ),
-        ),
-      ),
-    );
   }
 }
