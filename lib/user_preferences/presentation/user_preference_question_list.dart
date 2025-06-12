@@ -6,11 +6,9 @@ class UserPreferenceQuestionList extends StatelessWidget {
   const UserPreferenceQuestionList({
     super.key,
     required this.questions,
-    required this.controller,
   });
 
   final List<UserPreferenceQuestion> questions;
-  final PageController? controller;
 
   @override
   Widget build(BuildContext context) {

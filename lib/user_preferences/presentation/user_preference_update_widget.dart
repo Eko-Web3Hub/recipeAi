@@ -108,10 +108,12 @@ class _DisplayUserPreferenceQuizState
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: horizontalScreenPadding),
-                  child: UserPreferenceQuestionList(
-                    questions: widget.questions,
-                    controller: _pageController,
+                    horizontal: horizontalScreenPadding,
+                  ),
+                  child: SingleChildScrollView(
+                    child: UserPreferenceQuestionList(
+                      questions: widget.questions,
+                    ),
                   ),
                 ),
               ),

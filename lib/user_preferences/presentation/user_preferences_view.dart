@@ -84,11 +84,9 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Gap(10),
                         Expanded(
                           child: UserPreferenceQuestionList(
                             questions: questions,
-                            controller: _pageController,
                           ),
                         ),
                         BlocProvider(
