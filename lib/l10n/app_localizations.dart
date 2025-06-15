@@ -937,6 +937,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get profil;
+
+  /// Label for chat initialization message for finding a recipe with an image
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for a recipe based on a photo?\nSend us a picture of a dish you’re craving, and we’ll show you how to make it! 🍽️'**
+  String get chatInitMessageFindRecipeWithImg;
+
+  /// Label for importing a picture
+  ///
+  /// In en, this message translates to:
+  /// **'📁 Upload a picture'**
+  String get importAPicture;
 }
 
 class _AppLocalizationsDelegate

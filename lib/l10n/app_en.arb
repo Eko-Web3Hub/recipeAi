@@ -559,5 +559,13 @@
     "profil": "Profile",
     "@profil": {
         "description": "Label for profile"
+    },
+    "chatInitMessageFindRecipeWithImg": "Looking for a recipe based on a photo?\nSend us a picture of a dish you’re craving, and we’ll show you how to make it! 🍽️",
+    "@chatInitMessageFindRecipeWithImg": {
+        "description": "Label for chat initialization message for finding a recipe with an image"
+    },
+    "importAPicture": "📁 Upload a picture",
+    "@importAPicture": {
+        "description": "Label for importing a picture"
     }
 }
