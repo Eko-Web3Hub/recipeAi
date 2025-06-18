@@ -14,18 +14,32 @@ class ChatMessage extends Equatable {
       ];
 }
 
-abstract class ChatMessageType {}
+abstract class Visitor {
+  void visitTextMessage(TextMessage message);
+  void visitImageMessage(ImageMessage message);
+  void visitCTAMessage(CTAMessage message);
+}
+
+abstract class ChatMessageType {
+  void accept(Visitor visitor);
+}
 
 class TextMessage extends ChatMessageType {
   final String text;
 
   TextMessage(this.text);
+
+  @override
+  void accept(Visitor visitor) => visitor.visitTextMessage(this);
 }
 
 class ImageMessage extends ChatMessageType {
   final String imageUrl;
 
   ImageMessage(this.imageUrl);
+
+  @override
+  void accept(Visitor visitor) => visitor.visitImageMessage(this);
 }
 
 enum CtaAction {
@@ -41,4 +55,7 @@ class CTAMessage extends ChatMessageType {
     this.text,
     this.action,
   );
+
+  @override
+  void accept(Visitor visitor) => visitor.visitCTAMessage(this);
 }
