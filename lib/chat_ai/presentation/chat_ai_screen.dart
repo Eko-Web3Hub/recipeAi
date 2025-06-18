@@ -8,7 +8,6 @@ import 'package:recipe_ai/chat_ai/presentation/chat_ai_controller.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
-import 'package:recipe_ai/utils/constant.dart';
 
 class _ChatAiBubble extends StatelessWidget {
   const _ChatAiBubble({
@@ -43,53 +42,9 @@ class _ChatAiBubble extends StatelessWidget {
   }
 }
 
-final _chatWidgets = <_ChatItem>[
-  _ChatItem(
-    role: ChatRole.ai,
-    widget: _ChatInitWidget(),
-  ),
-];
-
 enum ChatRole {
   user,
   ai,
-}
-
-class _ChatItem {
-  const _ChatItem({
-    required this.role,
-    required this.widget,
-  });
-
-  final ChatRole role;
-  final Widget widget;
-}
-
-class _ChatInitWidget extends StatelessWidget {
-  const _ChatInitWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _ChatAiBubble(
-          text: appTexts.chatInitMessageFindRecipeWithImg,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10.0,
-          ),
-          child: MainBtn(
-            text: appTexts.importAPicture,
-            onPressed: () {},
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 class ChatAiScreen extends StatelessWidget {
@@ -123,13 +78,15 @@ class ChatAiScreen extends StatelessWidget {
                         alignment: chatMessages[index].role == ChatRole.user
                             ? Alignment.centerRight
                             : Alignment.centerLeft,
-                        child: _chatWidgets[index].widget,
+                        child: _AiChatMessageBuild.buildMessageWidget(
+                          chatMessages[index],
+                        ),
                       );
                     },
                     separatorBuilder: (_, __) => const SizedBox(
                       height: 10,
                     ),
-                    itemCount: _chatWidgets.length,
+                    itemCount: chatMessages.length,
                   );
                 }
 
@@ -162,9 +119,14 @@ class _AiChatMessageBuild implements Visitor {
 
   @override
   void visitCTAMessage(CTAMessage message) {
-    messageWidget = MainBtn(
-      text: message.text,
-      onPressed: () {},
+    messageWidget = Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+      ),
+      child: MainBtn(
+        text: message.text,
+        onPressed: () {},
+      ),
     );
   }
 

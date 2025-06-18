@@ -48,5 +48,19 @@ class ChatAiController extends Cubit<ChatAiState> {
     );
   }
 
+  void addMessage(ChatMessage message) {
+    assert(state is ChatAiLoadedState);
+    final currentState = state as ChatAiLoadedState;
+
+    emit(
+      ChatAiLoadedState(
+        [
+          ...currentState.chatMessages,
+          message,
+        ],
+      ),
+    );
+  }
+
   final TranslationController translationController;
 }
