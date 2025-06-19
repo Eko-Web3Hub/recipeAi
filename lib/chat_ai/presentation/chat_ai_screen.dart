@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/chat_ai/domain/model/chat_message.dart';
 import 'package:recipe_ai/chat_ai/presentation/chat_ai_controller.dart';
@@ -9,14 +12,14 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 
-class _ChatAiBubble extends StatelessWidget {
-  const _ChatAiBubble({
-    this.isRight = false,
-    required this.text,
+class _BubleMessageChatContainer extends StatelessWidget {
+  const _BubleMessageChatContainer({
+    required this.child,
+    required this.isRight,
   });
 
+  final Widget? child;
   final bool isRight;
-  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +35,49 @@ class _ChatAiBubble extends StatelessWidget {
           bottomRight: isRight ? Radius.circular(0) : Radius.circular(16),
         ),
       ),
+      child: child,
+    );
+  }
+}
+
+class _ChatAiBubble extends StatelessWidget {
+  const _ChatAiBubble({
+    this.isRight = false,
+    required this.text,
+  });
+
+  final bool isRight;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return _BubleMessageChatContainer(
+      isRight: isRight,
       child: Text(
         text,
         style: GoogleFonts.poppins(
           color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+class _PictureDisplay extends StatelessWidget {
+  const _PictureDisplay(this.imagePath, this.isRight);
+
+  final bool isRight;
+  final String imagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return _BubleMessageChatContainer(
+      isRight: isRight,
+      child: SizedBox(
+        width: 200,
+        height: 200,
+        child: Image.file(
+          File(imagePath),
         ),
       ),
     );
@@ -123,17 +165,17 @@ class _AiChatMessageBuild implements Visitor {
       padding: const EdgeInsets.symmetric(
         horizontal: 8.0,
       ),
-      child: MainBtn(
-        text: message.text,
-        onPressed: () {},
+      child: _UploadFileCTA(
+        message.text,
       ),
     );
   }
 
   @override
   void visitImageMessage(ImageMessage message) {
-    throw UnimplementedError(
-      'Image messages are not implemented yet.',
+    messageWidget = _PictureDisplay(
+      message.imageUrl,
+      chatMessage.role == ChatRole.user,
     );
   }
 
@@ -142,6 +184,36 @@ class _AiChatMessageBuild implements Visitor {
     messageWidget = _ChatAiBubble(
       isRight: chatMessage.role == ChatRole.user,
       text: message.text,
+    );
+  }
+}
+
+class _UploadFileCTA extends StatelessWidget {
+  const _UploadFileCTA(
+    this.text,
+  );
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return MainBtn(
+      text: text,
+      onPressed: () async {
+        final ImagePicker picker = ImagePicker();
+        final XFile? photo = await picker.pickImage(
+          source: ImageSource.gallery,
+        );
+
+        if (photo != null) {
+          context.read<ChatAiController>().addMessage(
+                ChatMessage(
+                  ImageMessage(photo.path),
+                  ChatRole.user,
+                ),
+              );
+        }
+      },
     );
   }
 }
