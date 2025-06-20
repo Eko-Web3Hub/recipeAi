@@ -567,5 +567,9 @@
     "importAPicture": "📁 Importer une image",
     "@importAPicture": {
         "description": "Label pour importer une image"
+    },
+    "findRecipeWithImageLoader": "🔍 On analyse ta photo... On y voit des trucs délicieux !\nUn instant, on devine le plat...",
+    "@findRecipeWithImageLoader": {
+        "description": "Label pour le chargeur de recherche de recette avec une image"
     }
 }

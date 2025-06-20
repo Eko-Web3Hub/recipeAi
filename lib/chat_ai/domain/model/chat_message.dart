@@ -18,6 +18,7 @@ abstract class Visitor {
   void visitTextMessage(TextMessage message);
   void visitImageMessage(ImageMessage message);
   void visitCTAMessage(CTAMessage message);
+  void visitLoaderMessage(LoaderMessage message);
 }
 
 abstract class ChatMessageType {
@@ -58,4 +59,17 @@ class CTAMessage extends ChatMessageType {
 
   @override
   void accept(Visitor visitor) => visitor.visitCTAMessage(this);
+}
+
+class LoaderMessage extends ChatMessageType {
+  final String text;
+
+  LoaderMessage(
+    this.text,
+  );
+
+  @override
+  void accept(Visitor visitor) => visitor.visitLoaderMessage(
+        this,
+      );
 }

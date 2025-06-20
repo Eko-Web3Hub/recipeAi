@@ -186,6 +186,28 @@ class _AiChatMessageBuild implements Visitor {
       text: message.text,
     );
   }
+
+  @override
+  void visitLoaderMessage(LoaderMessage message) {
+    messageWidget = _BubleMessageChatContainer(
+      isRight: chatMessage.role == ChatRole.user,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            message.text,
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const CircularProgressIndicator.adaptive(
+            backgroundColor: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _UploadFileCTA extends StatelessWidget {
@@ -197,6 +219,8 @@ class _UploadFileCTA extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
     return MainBtn(
       text: text,
       onPressed: () async {
@@ -212,6 +236,18 @@ class _UploadFileCTA extends StatelessWidget {
                   ChatRole.user,
                 ),
               );
+          Future.delayed(
+            const Duration(milliseconds: 500),
+          ).then(
+            (_) => context.read<ChatAiController>().addMessage(
+                  ChatMessage(
+                    LoaderMessage(
+                      appTexts.findRecipeWithImageLoader,
+                    ),
+                    ChatRole.ai,
+                  ),
+                ),
+          );
         }
       },
     );

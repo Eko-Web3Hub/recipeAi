@@ -949,6 +949,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'📁 Upload a picture'**
   String get importAPicture;
+
+  /// Label pour le chargeur de recherche de recette avec une image
+  ///
+  /// In en, this message translates to:
+  /// **'🔍 We\'re analyzing your photo... Looks like something delicious!\nHang tight, we\'re figuring out the dish...'**
+  String get findRecipeWithImageLoader;
 }
 
 class _AppLocalizationsDelegate

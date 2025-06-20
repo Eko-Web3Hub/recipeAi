@@ -472,4 +472,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get importAPicture => '📁 Importer une image';
+
+  @override
+  String get findRecipeWithImageLoader =>
+      '🔍 On analyse ta photo... On y voit des trucs délicieux !\nUn instant, on devine le plat...';
 }
