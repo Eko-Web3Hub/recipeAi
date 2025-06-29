@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,14 +9,10 @@ import 'package:recipe_ai/chat_ai/application/find_recipe_with_image_usecase.dar
 import 'package:recipe_ai/chat_ai/domain/model/chat_message.dart';
 import 'package:recipe_ai/chat_ai/presentation/chat_ai_controller.dart';
 import 'package:recipe_ai/chat_ai/presentation/find_recipe_with_image_controller.dart';
-import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
-import 'package:recipe_ai/utils/colors.dart';
 
 class _BubleMessageChatContainer extends StatelessWidget {
   const _BubleMessageChatContainer({
@@ -326,8 +320,6 @@ class _RecipeDisplay extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _RecipeImageContainer(),
-        const SizedBox(height: 8),
         Text(
           recipe.name,
           style: GoogleFonts.poppins(
@@ -339,35 +331,14 @@ class _RecipeDisplay extends StatelessWidget {
         const SizedBox(height: 8),
         MainBtn(
           text: appTexts.seeMore,
-          onPressed: () {},
+          onPressed: () {
+            context.push(
+              '/recipe-details',
+              extra: {'receipe': userRecipe},
+            );
+          },
         ),
       ],
-    );
-  }
-}
-
-class _RecipeImageContainer extends StatelessWidget {
-  const _RecipeImageContainer({
-    this.image,
-  });
-
-  final ImageProvider<Object>? image;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: greyVariantColor,
-        image: image == null
-            ? null
-            : DecorationImage(
-                fit: BoxFit.cover,
-                image: image!,
-              ),
-      ),
     );
   }
 }

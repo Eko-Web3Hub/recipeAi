@@ -576,7 +576,7 @@
     "@recipeFound": {
         "description": "Label pour la recette trouvée"
     },
-    "seeMore": "Voir plus",
+    "seeMore": "Voir la recette complète",
     "@seeMore": {
         "description": "Label pour voir plus de détails"
     }

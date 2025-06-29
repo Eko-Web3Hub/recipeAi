@@ -965,7 +965,7 @@ abstract class AppLocalizations {
   /// Label for see more
   ///
   /// In en, this message translates to:
-  /// **'See more'**
+  /// **'See the full recipe'**
   String get seeMore;
 }
 

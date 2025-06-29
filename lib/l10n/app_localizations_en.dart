@@ -469,5 +469,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipeFound => '🍝 Yum! This dish looks like a...';
 
   @override
-  String get seeMore => 'See more';
+  String get seeMore => 'See the full recipe';
 }
