@@ -571,5 +571,13 @@
     "findRecipeWithImageLoader": "🔍 On analyse ta photo... On y voit des trucs délicieux !\nUn instant, on devine le plat...",
     "@findRecipeWithImageLoader": {
         "description": "Label pour le chargeur de recherche de recette avec une image"
+    },
+    "recipeFound": "🍝 Miam ! Ce plat ressemble à un(e) :",
+    "@recipeFound": {
+        "description": "Label pour la recette trouvée"
+    },
+    "seeMore": "Voir plus",
+    "@seeMore": {
+        "description": "Label pour voir plus de détails"
     }
 }

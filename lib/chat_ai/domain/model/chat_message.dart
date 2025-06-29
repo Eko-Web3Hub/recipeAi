@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:recipe_ai/chat_ai/presentation/chat_ai_screen.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
 class ChatMessage extends Equatable {
   final ChatMessageType message;
@@ -19,6 +20,7 @@ abstract class Visitor {
   void visitImageMessage(ImageMessage message);
   void visitCTAMessage(CTAMessage message);
   void visitLoaderMessage(LoaderMessage message);
+  void visitRecipeDisplayMessage(RecipeDisplayMessage message);
 }
 
 abstract class ChatMessageType {
@@ -70,6 +72,17 @@ class LoaderMessage extends ChatMessageType {
 
   @override
   void accept(Visitor visitor) => visitor.visitLoaderMessage(
+        this,
+      );
+}
+
+class RecipeDisplayMessage extends ChatMessageType {
+  final UserReceipeV2 recipe;
+
+  RecipeDisplayMessage(this.recipe);
+
+  @override
+  void accept(Visitor visitor) => visitor.visitRecipeDisplayMessage(
         this,
       );
 }

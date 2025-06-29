@@ -476,4 +476,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get findRecipeWithImageLoader =>
       '🔍 On analyse ta photo... On y voit des trucs délicieux !\nUn instant, on devine le plat...';
+
+  @override
+  String get recipeFound => '🍝 Miam ! Ce plat ressemble à un(e) :';
+
+  @override
+  String get seeMore => 'Voir plus';
 }

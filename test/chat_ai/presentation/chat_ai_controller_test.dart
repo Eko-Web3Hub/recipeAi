@@ -58,4 +58,23 @@ void main() {
       );
     },
   );
+
+  group(
+    'removeMessage method',
+    () {
+      blocTest<ChatAiController, ChatAiState>(
+        'should remove a message from the chat',
+        build: () => sut(),
+        act: (bloc) => bloc.removeMessage(1),
+        verify: (sut) {
+          expect(sut.state, isA<ChatAiLoadedState>());
+          final loadedState = sut.state as ChatAiLoadedState;
+          expect(
+            loadedState.chatMessages.length,
+            equals(1),
+          );
+        },
+      );
+    },
+  );
 }

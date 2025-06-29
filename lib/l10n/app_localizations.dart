@@ -955,6 +955,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'🔍 We\'re analyzing your photo... Looks like something delicious!\nHang tight, we\'re figuring out the dish...'**
   String get findRecipeWithImageLoader;
+
+  /// Label for recipe found
+  ///
+  /// In en, this message translates to:
+  /// **'🍝 Yum! This dish looks like a...'**
+  String get recipeFound;
+
+  /// Label for see more
+  ///
+  /// In en, this message translates to:
+  /// **'See more'**
+  String get seeMore;
 }
 
 class _AppLocalizationsDelegate
