@@ -2,7 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
+import 'package:recipe_ai/receipe/infrastructure/serialization/ingredient_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_api_serialization.dart';
+import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_step_serialization.dart';
 
 class Receipe extends Equatable {
   final String name;
@@ -76,4 +78,51 @@ class TranslatedRecipe {
 
   final List<Receipe> recipesEn;
   final List<Receipe> recipesFr;
+}
+
+class RecipeFindWithImage {
+  const RecipeFindWithImage(
+    this.name,
+    this.ingredients,
+    this.steps,
+    this.averageTime,
+    this.totalCalories,
+  );
+
+  final String name;
+  final List<Ingredient> ingredients;
+  final List<ReceipeStep> steps;
+  final String averageTime;
+  final String totalCalories;
+
+  factory RecipeFindWithImage.fromJson(Map<String, dynamic> json) {
+    return RecipeFindWithImage(
+      json['name'] as String,
+      (json['ingredients'] as List)
+          .map((ingredient) => IngredientSerialization.fromJson(ingredient))
+          .toList(),
+      (json['steps'] as List)
+          .map((step) => ReceipeStepSerialization.fromJson(step))
+          .toList(),
+      json['average_time'] as String,
+      (json['total_calories'] as int).toString(),
+    );
+  }
+}
+
+class RawRecipeFindWithImage {
+  final RecipeFindWithImage recipeEn;
+  final RecipeFindWithImage recipeFr;
+
+  const RawRecipeFindWithImage({
+    required this.recipeEn,
+    required this.recipeFr,
+  });
+
+  factory RawRecipeFindWithImage.fromJson(Map<String, dynamic> json) {
+    return RawRecipeFindWithImage(
+      recipeEn: RecipeFindWithImage.fromJson(json['recipeEn']),
+      recipeFr: RecipeFindWithImage.fromJson(json['recipeFr']),
+    );
+  }
 }

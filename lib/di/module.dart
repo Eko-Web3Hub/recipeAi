@@ -1,5 +1,6 @@
 import 'package:recipe_ai/%20inventory/di/module.dart';
 import 'package:recipe_ai/auth/di/module.dart';
+import 'package:recipe_ai/chat_ai/di/module.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/kitchen/%20di/module.dart';
@@ -42,6 +43,9 @@ class AppModule implements IDiModule {
     );
     di.registerModule(
       const UserAccountModule(),
+    );
+    di.registerModule(
+      const ChatAiModule(),
     );
   }
 }

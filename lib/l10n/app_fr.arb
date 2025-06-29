@@ -559,5 +559,25 @@
     "profil": "Profil",
     "@profil": {
         "description": "Label pour le profil"
+    },
+    "chatInitMessageFindRecipeWithImg": "Tu cherches la recette d’un plat à partir d’une image ?\nEnvoie celle d’un plat qui te donne envie, et on t’explique comment le cuisiner ! 🍽️",
+    "@chatInitMessageFindRecipeWithImg": {
+        "description": "Label pour le message d'initialisation du chat pour trouver une recette avec une image"
+    },
+    "importAPicture": "📁 Importer une image",
+    "@importAPicture": {
+        "description": "Label pour importer une image"
+    },
+    "findRecipeWithImageLoader": "🔍 On analyse ta photo... On y voit des trucs délicieux !\nUn instant, on devine le plat...",
+    "@findRecipeWithImageLoader": {
+        "description": "Label pour le chargeur de recherche de recette avec une image"
+    },
+    "recipeFound": "🍝 Miam ! Ce plat ressemble à un(e) :",
+    "@recipeFound": {
+        "description": "Label pour la recette trouvée"
+    },
+    "seeMore": "Voir la recette complète",
+    "@seeMore": {
+        "description": "Label pour voir plus de détails"
     }
 }

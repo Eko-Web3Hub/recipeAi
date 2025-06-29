@@ -87,6 +87,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               const Gap(20),
+              _ProfilOption(
+                icon: 'assets/images/chatIconApp.svg',
+                onPressed: () => context.push('/chat-ai-app'),
+                child: Text('Chat Ai (Beta)'),
+              ),
               TranslatedText(
                 textSelector: (lang) => lang.baseSettings,
                 style: settingHeadTitleStyle,

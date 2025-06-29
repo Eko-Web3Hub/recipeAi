@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/chat_ai/presentation/chat_ai_screen.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -53,16 +54,6 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
   }
 }
 
-// FutureOr<String?> _guardOnboarding(
-//     BuildContext context, GoRouterState state) async {
-//   final onboardingState = context.read<OnboardingController>().state;
-
-//   if (onboardingState is OnboardingCompleted) {
-//     return '/onboarding/start';
-//   }
-//   return null;
-// }
-
 GoRouter createRouter() => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
@@ -102,8 +93,6 @@ GoRouter createRouter() => GoRouter(
             ),
           ],
         ),
-
-        // UserPreferencesView()
 
         GoRoute(
           name: 'Login',
@@ -167,6 +156,13 @@ GoRouter createRouter() => GoRouter(
               userSharingUid: null,
             );
           },
+        ),
+
+        GoRoute(
+          name: 'ChatAiAppScreen',
+          path: '/chat-ai-app',
+          redirect: _guardAuth,
+          builder: (context, state) => const ChatAiScreen(),
         ),
 
         StatefulShellRoute.indexedStack(

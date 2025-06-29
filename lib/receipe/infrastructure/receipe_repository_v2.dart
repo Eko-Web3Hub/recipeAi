@@ -282,4 +282,24 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     final userRecipe = docs.first;
     return UserReceipeV2.fromJson(userRecipe.data());
   }
+
+  @override
+  Future<RawRecipeFindWithImage> findRecipeWithImage(
+      String recipePathImage) async {
+    final apiRoute = "$baseApiUrl/find-recipe-with-picture";
+    final file = File(recipePathImage);
+
+    final fileToSend = await MultipartFile.fromFile(
+      file.path,
+      filename: file.path.split("/").last,
+    );
+    final formData = FormData.fromMap({
+      "file": fileToSend,
+    });
+    final response = await _dio.post(apiRoute, data: formData);
+
+    final json = response.data as Map<String, dynamic>;
+
+    return RawRecipeFindWithImage.fromJson(json);
+  }
 }

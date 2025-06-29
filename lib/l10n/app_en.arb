@@ -559,5 +559,25 @@
     "profil": "Profile",
     "@profil": {
         "description": "Label for profile"
+    },
+    "chatInitMessageFindRecipeWithImg": "Looking for a recipe based on a photo?\nSend us a picture of a dish you’re craving, and we’ll show you how to make it! 🍽️",
+    "@chatInitMessageFindRecipeWithImg": {
+        "description": "Label for chat initialization message for finding a recipe with an image"
+    },
+    "importAPicture": "📁 Upload a picture",
+    "@importAPicture": {
+        "description": "Label for importing a picture"
+    },
+    "findRecipeWithImageLoader": "🔍 We're analyzing your photo... Looks like something delicious!\nHang tight, we're figuring out the dish...",
+    "@findRecipeWithImageLoader": {
+        "description": "Label pour le chargeur de recherche de recette avec une image"
+    },
+    "recipeFound": "🍝 Yum! This dish looks like a...",
+    "@recipeFound": {
+        "description": "Label for recipe found"
+    },
+    "seeMore": "See the full recipe",
+    "@seeMore": {
+        "description": "Label for see more"
     }
 }

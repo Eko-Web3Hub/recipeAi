@@ -453,4 +453,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profil => 'Profile';
+
+  @override
+  String get chatInitMessageFindRecipeWithImg =>
+      'Looking for a recipe based on a photo?\nSend us a picture of a dish you’re craving, and we’ll show you how to make it! 🍽️';
+
+  @override
+  String get importAPicture => '📁 Upload a picture';
+
+  @override
+  String get findRecipeWithImageLoader =>
+      '🔍 We\'re analyzing your photo... Looks like something delicious!\nHang tight, we\'re figuring out the dish...';
+
+  @override
+  String get recipeFound => '🍝 Yum! This dish looks like a...';
+
+  @override
+  String get seeMore => 'See the full recipe';
 }
