@@ -23,6 +23,7 @@ import 'package:recipe_ai/notification/presentation/notification_user_controller
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/user_account/application/user_account_metadata_service.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
@@ -48,6 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
       context.read<HomeScreenController>().reload();
 
       await di<TranslationController>().saveLanguageWhenNeeded();
+      await di<IUserAccountMetaDataService>().saveRecentLoginDate(
+        DateTime.now(),
+      );
       await showAppUpdatePopup(context);
       context.read<NotificationUserController>().requestPermission();
     });

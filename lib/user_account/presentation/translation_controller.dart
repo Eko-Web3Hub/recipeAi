@@ -31,7 +31,10 @@ class TranslationController extends ChangeNotifier {
 
     _userAccountMetaDataRepository.save(
       uid,
-      UserAccountMetaData(appLanguage: _currentLanguage),
+      UserAccountMetaData(
+        appLanguage: _currentLanguage,
+        lastLogin: null,
+      ),
     );
   }
 
@@ -43,7 +46,10 @@ class TranslationController extends ChangeNotifier {
     if (userAccountMetaData == null) {
       _userAccountMetaDataRepository.save(
         uid,
-        UserAccountMetaData(appLanguage: _currentLanguage),
+        UserAccountMetaData(
+          appLanguage: _currentLanguage,
+          lastLogin: null,
+        ),
       );
     } else {
       _currentLanguage = userAccountMetaData.appLanguage;

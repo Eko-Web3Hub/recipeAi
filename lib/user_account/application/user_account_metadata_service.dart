@@ -4,6 +4,10 @@ import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_dat
 
 abstract class IUserAccountMetaDataService {
   Future<UserAccountMetaData?> getAccountMetadata();
+
+  Future<void> saveRecentLoginDate(
+    DateTime now,
+  );
 }
 
 class UserAccountMetaDataService implements IUserAccountMetaDataService {
@@ -22,4 +26,24 @@ class UserAccountMetaDataService implements IUserAccountMetaDataService {
   }
 
   final IAuthUserService _authUserService;
+
+  @override
+  Future<void> saveRecentLoginDate(DateTime now) async {
+    final uid = _authUserService.currentUser!.uid;
+    final currentUserAccountMetaData =
+        await _userAccountMetaDataRepository.getUserAccount(uid);
+    assert(
+      currentUserAccountMetaData != null,
+      'User account metadata should not be null when saving recent login date.',
+    );
+    final updatedUserAccountMetaData =
+        currentUserAccountMetaData!.updateLastLogin(
+      now,
+    );
+
+    return _userAccountMetaDataRepository.save(
+      uid,
+      updatedUserAccountMetaData,
+    );
+  }
 }
