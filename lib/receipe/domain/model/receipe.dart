@@ -105,7 +105,9 @@ class RecipeFindWithImage {
           .map((step) => ReceipeStepSerialization.fromJson(step))
           .toList(),
       json['average_time'] as String,
-      (json['total_calories'] as int).toString(),
+      json['total_calories'] is String
+          ? json['total_calories']
+          : (json['total_calories'] as int).toString(),
     );
   }
 }
