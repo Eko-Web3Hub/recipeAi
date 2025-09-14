@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
@@ -36,6 +38,7 @@ class FCMTokenService {
   }
 
   void _init() {
+    _logNotificationOpenEvent();
     _userSubscription = _authService.authStateChanges.listen(_onUserChanged);
   }
 
@@ -56,6 +59,7 @@ class FCMTokenService {
       return;
     }
     final currentToken = await _messaging.getToken();
+    log('FCM Token: $currentToken');
     if (currentToken != null) {
       await _sendToken(user.uid.value, currentToken);
     }
@@ -90,5 +94,13 @@ class FCMTokenService {
         'deviceType': Platform.isIOS ? 'iOS' : 'Android',
       },
     );
+  }
+
+  void _logNotificationOpenEvent() {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      FirebaseAnalytics.instance.logEvent(
+        name: 'notification_open',
+      );
+    });
   }
 }

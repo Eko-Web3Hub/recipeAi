@@ -29,7 +29,10 @@ class UserAccountMetaDataService implements IUserAccountMetaDataService {
 
   @override
   Future<void> saveRecentLoginDate(DateTime now) async {
-    final uid = _authUserService.currentUser!.uid;
+    final uid = _authUserService.currentUser?.uid;
+    if (uid == null) {
+      return;
+    }
     final currentUserAccountMetaData =
         await _userAccountMetaDataRepository.getUserAccount(uid);
     assert(
