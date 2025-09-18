@@ -19,6 +19,7 @@ import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
+import 'package:recipe_ai/notification/presentation/notification_icon.dart';
 import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -83,8 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Gap(20.0),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _HeadLeftSection(),
+                    NotificationIcon(),
                   ],
                 ),
                 const Gap(15),
