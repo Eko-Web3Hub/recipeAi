@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,6 +12,7 @@ import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
+import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
@@ -22,6 +24,7 @@ import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/device_info.dart';
+import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/styles.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -329,14 +332,36 @@ class _RecipeCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: double.infinity,
-            height: 88,
-            decoration: BoxDecoration(
-              color: Color(
-                0xffCCD4DE,
-              ),
-              borderRadius: BorderRadius.circular(16),
+          BlocProvider(
+            create: (context) => RecipeImageLoader(
+              di<FunctionsCaller>(),
+              recipe.receipeEn.name,
+            ),
+            child: BlocBuilder<RecipeImageLoader, RecipeImageState>(
+              builder: (context, imageLoaderState) {
+                if (imageLoaderState is RecipeImageLoaded) {
+                  final imageUrl = imageLoaderState.url;
+                  if (imageUrl == null) {
+                    return _SubRecipeCardContainer(
+                      imageProvider: null,
+                      child: Image.asset(
+                        'assets/images/recipePlaceHolder.png',
+                      ),
+                    );
+                  }
+
+                  return CachedNetworkImage(
+                    imageUrl: imageLoaderState.url!,
+                    imageBuilder: (context, imageProvider) =>
+                        _SubRecipeCardContainer(
+                      imageProvider: imageProvider,
+                      child: null,
+                    ),
+                  );
+                }
+
+                return SizedBox.shrink();
+              },
             ),
           ),
           const Gap(12),
@@ -351,6 +376,37 @@ class _RecipeCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SubRecipeCardContainer extends StatelessWidget {
+  const _SubRecipeCardContainer({
+    required this.imageProvider,
+    required this.child,
+  });
+
+  final ImageProvider<Object>? imageProvider;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 88,
+      decoration: BoxDecoration(
+        color: Color(
+          0xffCCD4DE,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        image: imageProvider == null
+            ? null
+            : DecorationImage(
+                image: imageProvider!,
+                fit: BoxFit.cover,
+              ),
+      ),
+      child: child,
     );
   }
 }
