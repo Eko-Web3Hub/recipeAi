@@ -13,10 +13,17 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
+import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/device_info.dart';
+import 'package:recipe_ai/utils/styles.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 TextStyle settingHeadTitleStyle = GoogleFonts.poppins(
@@ -56,149 +63,181 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              StreamBuilder<UserPersonnalInfo?>(
-                stream: di<IUserPersonnalInfoService>().watch(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return _UserProfilCard(
-                      email: '${di<IAuthUserService>().currentUser!.email}',
-                      name: snapshot.data!.name,
-                    );
-                  }
+    return BlocProvider(
+      create: (_) => SavedReceipeController(
+        di<IUserRecipeService>(),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                StreamBuilder<UserPersonnalInfo?>(
+                  stream: di<IUserPersonnalInfoService>().watch(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return _UserProfilCard(
+                        email: '${di<IAuthUserService>().currentUser!.email}',
+                        name: snapshot.data!.name,
+                      );
+                    }
 
-                  return SizedBox.shrink();
-                },
-              ),
-              const Gap(24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TranslatedText(
-                    textSelector: (lang) => lang.myFavorites,
-                    style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        height: 1.30,
-                        color: newNeutralBlackColor),
-                  ),
-                  TranslatedText(
-                    textSelector: (lang) => lang.seeAll,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      height: 1.30,
-                      color: greenBrandColor,
+                    return SizedBox.shrink();
+                  },
+                ),
+                const Gap(24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TranslatedText(
+                      textSelector: (lang) => lang.myFavorites,
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          height: 1.30,
+                          color: newNeutralBlackColor),
                     ),
-                  ),
-                ],
-              ),
-              const Gap(12.0),
-              const _FavoriteRecipeGridDisplay(),
-              // _ProfilOption(
-              //   icon: 'assets/icon/accountIcon.svg',
-              //   onPressed: () => context.push(
-              //     '/profil-screen/my-account',
-              //   ),
-              //   child: TranslatedText(
-              //     textSelector: (lang) => lang.myAccount,
-              //     style: _optionStyle,
-              //   ),
-              // ),
-              // ListenableBuilder(
-              //     listenable: di<TranslationController>(),
-              //     builder: (context, _) {
-              //       return _ProfilOption(
-              //         icon: 'assets/icon/languagesIcon.svg',
-              //         onPressed: () => context.push(
-              //           '/profil-screen/change-language',
-              //         ),
-              //         trailing: OptionRightBtn(
-              //           value: appLanguagesItem
-              //               .firstWhere((item) =>
-              //                   item.key ==
-              //                   (appLanguagesItem.firstWhere(
-              //                     (item) =>
-              //                         item.key ==
-              //                         di<TranslationController>()
-              //                             .currentLanguageEnum
-              //                             .name,
-              //                   )).key)
-              //               .label,
-              //           onTap: () {},
-              //         ),
-              //         child: TranslatedText(
-              //           textSelector: (lang) => lang.language,
-              //           style: _optionStyle,
-              //         ),
-              //       );
-              //     }),
+                    TranslatedText(
+                      textSelector: (lang) => lang.seeAll,
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        height: 1.30,
+                        color: greenBrandColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12.0),
+                BlocBuilder<SavedReceipeController, SavedReceipeState>(
+                  builder: (context, state) {
+                    if (state is SavedReceipeStateLoading) {
+                      return _FavoriteRecipeGridLoading();
+                    }
 
-              // TranslatedText(
-              //   textSelector: (lang) => lang.kitchenSettings,
-              //   style: _optionStyle,
-              // ),
-              // _ProfilOption(
-              //   icon: 'assets/icon/myPreferencesIcon.svg',
-              //   onPressed: () =>
-              //       context.push("/profil-screen/update-user-preference"),
-              //   child: TranslatedText(
-              //     textSelector: (lang) => lang.myPreferences,
-              //     style: _optionStyle,
-              //   ),
-              // ),
-              // _ProfilOption(
-              //   icon: 'assets/icon/notificationBell.svg',
-              //   onPressed: null,
-              //   child: TranslatedText(
-              //     textSelector: (lang) => lang.notification,
-              //     style: _optionStyle,
-              //   ),
-              // ),
-              // const Gap(20),
-              // TranslatedText(
-              //   textSelector: (lang) => lang.help,
-              //   style: settingHeadTitleStyle,
-              // ),
-              // _ProfilOption(
-              //   icon: 'assets/icon/solarBugIcon.svg',
-              //   onPressed: _openFeedBackLink,
-              //   child: TranslatedText(
-              //     textSelector: (lang) => lang.sendABug,
-              //     style: _optionStyle,
-              //   ),
-              // ),
-              // const Gap(10),
-              // BlocProvider(
-              //   create: (context) => SignOutBtnControlller(
-              //     di<IAuthService>(),
-              //   ),
-              //   child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-              //       builder: (context, btnLogOutState) {
-              //     return Builder(builder: (context) {
-              //       return ListenableBuilder(
-              //           listenable: di<TranslationController>(),
-              //           builder: (context, _) {
-              //             return MainBtn(
-              //               text: di<TranslationController>()
-              //                   .currentLanguage
-              //                   .signOut,
-              //               isLoading: btnLogOutState is SignOutBtnLoading,
-              //               onPressed: () {
-              //                 context.read<SignOutBtnControlller>().signOut();
-              //               },
-              //             );
-              //           });
-              //     });
-              //   }),
-              // ),
-            ],
+                    if (state is SavedReceipeStateError) {
+                      return Center(
+                        child: Text(
+                          state.message,
+                          style: descriptionPlaceHolderStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }
+
+                    if (state is SavedReceipeStateLoaded) {
+                      return state.savedReceipes.isEmpty
+                          ? const NoFavoriteRecipeSaved()
+                          : _FavoriteRecipeGridDisplay(
+                              favoriteRecipes: state.savedReceipes,
+                            );
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
+
+                // _ProfilOption(
+                //   icon: 'assets/icon/accountIcon.svg',
+                //   onPressed: () => context.push(
+                //     '/profil-screen/my-account',
+                //   ),
+                //   child: TranslatedText(
+                //     textSelector: (lang) => lang.myAccount,
+                //     style: _optionStyle,
+                //   ),
+                // ),
+                // ListenableBuilder(
+                //     listenable: di<TranslationController>(),
+                //     builder: (context, _) {
+                //       return _ProfilOption(
+                //         icon: 'assets/icon/languagesIcon.svg',
+                //         onPressed: () => context.push(
+                //           '/profil-screen/change-language',
+                //         ),
+                //         trailing: OptionRightBtn(
+                //           value: appLanguagesItem
+                //               .firstWhere((item) =>
+                //                   item.key ==
+                //                   (appLanguagesItem.firstWhere(
+                //                     (item) =>
+                //                         item.key ==
+                //                         di<TranslationController>()
+                //                             .currentLanguageEnum
+                //                             .name,
+                //                   )).key)
+                //               .label,
+                //           onTap: () {},
+                //         ),
+                //         child: TranslatedText(
+                //           textSelector: (lang) => lang.language,
+                //           style: _optionStyle,
+                //         ),
+                //       );
+                //     }),
+
+                // TranslatedText(
+                //   textSelector: (lang) => lang.kitchenSettings,
+                //   style: _optionStyle,
+                // ),
+                // _ProfilOption(
+                //   icon: 'assets/icon/myPreferencesIcon.svg',
+                //   onPressed: () =>
+                //       context.push("/profil-screen/update-user-preference"),
+                //   child: TranslatedText(
+                //     textSelector: (lang) => lang.myPreferences,
+                //     style: _optionStyle,
+                //   ),
+                // ),
+                // _ProfilOption(
+                //   icon: 'assets/icon/notificationBell.svg',
+                //   onPressed: null,
+                //   child: TranslatedText(
+                //     textSelector: (lang) => lang.notification,
+                //     style: _optionStyle,
+                //   ),
+                // ),
+                // const Gap(20),
+                // TranslatedText(
+                //   textSelector: (lang) => lang.help,
+                //   style: settingHeadTitleStyle,
+                // ),
+                // _ProfilOption(
+                //   icon: 'assets/icon/solarBugIcon.svg',
+                //   onPressed: _openFeedBackLink,
+                //   child: TranslatedText(
+                //     textSelector: (lang) => lang.sendABug,
+                //     style: _optionStyle,
+                //   ),
+                // ),
+                // const Gap(10),
+                // BlocProvider(
+                //   create: (context) => SignOutBtnControlller(
+                //     di<IAuthService>(),
+                //   ),
+                //   child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+                //       builder: (context, btnLogOutState) {
+                //     return Builder(builder: (context) {
+                //       return ListenableBuilder(
+                //           listenable: di<TranslationController>(),
+                //           builder: (context, _) {
+                //             return MainBtn(
+                //               text: di<TranslationController>()
+                //                   .currentLanguage
+                //                   .signOut,
+                //               isLoading: btnLogOutState is SignOutBtnLoading,
+                //               onPressed: () {
+                //                 context.read<SignOutBtnControlller>().signOut();
+                //               },
+                //             );
+                //           });
+                //     });
+                //   }),
+                // ),
+              ],
+            ),
           ),
         ),
       ),
@@ -206,8 +245,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+class _FavoriteRecipeGridLoading extends StatelessWidget {
+  const _FavoriteRecipeGridLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    return _GridViewBase(
+      itemCount: 4,
+      itemBuilder: (context, index) => Shimmer(
+        direction: ShimmerDirection.fromLeftToRight(),
+        colorOpacity: 0.2,
+        color: yellowBrandColor,
+        child: _RecipeCardContainer(
+          child: Container(),
+        ),
+      ),
+    );
+  }
+}
+
 class _FavoriteRecipeGridDisplay extends StatelessWidget {
-  const _FavoriteRecipeGridDisplay();
+  const _FavoriteRecipeGridDisplay({
+    required this.favoriteRecipes,
+  });
+
+  final List<UserReceipeV2> favoriteRecipes;
+
+  @override
+  Widget build(BuildContext context) {
+    return _GridViewBase(
+      itemCount: favoriteRecipes.length > 4 ? 4 : favoriteRecipes.length,
+      itemBuilder: (context, index) {
+        return _RecipeCard(
+          recipe: favoriteRecipes[index],
+        );
+      },
+    );
+  }
+}
+
+class _GridViewBase extends StatelessWidget {
+  const _GridViewBase({
+    required this.itemCount,
+    required this.itemBuilder,
+  });
+
+  final int itemCount;
+  final Widget? Function(BuildContext, int) itemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -215,35 +299,33 @@ class _FavoriteRecipeGridDisplay extends StatelessWidget {
       primary: false,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 4,
+      itemCount: itemCount,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.8,
         crossAxisSpacing: 16.0,
         mainAxisSpacing: 16.0,
       ),
-      itemBuilder: (context, index) {
-        return _RecipeCard();
-      },
+      itemBuilder: itemBuilder,
     );
   }
 }
 
 class _RecipeCard extends StatelessWidget {
-  const _RecipeCard();
+  const _RecipeCard({
+    required this.recipe,
+  });
+
+  final UserReceipeV2 recipe;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Color(0xffFBFBFB),
-        ),
-      ),
+    final currentLanguage = di<TranslationController>().currentLanguageEnum;
+    final recipeTile = currentLanguage == AppLanguage.en
+        ? recipe.receipeEn.name
+        : recipe.receipeFr.name;
+
+    return _RecipeCardContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -259,7 +341,7 @@ class _RecipeCard extends StatelessWidget {
           ),
           const Gap(12),
           Text(
-            'Pasta',
+            recipeTile,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w700,
               fontSize: 16,
@@ -269,6 +351,30 @@ class _RecipeCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _RecipeCardContainer extends StatelessWidget {
+  const _RecipeCardContainer({
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Color(0xffFBFBFB),
+        ),
+      ),
+      child: child,
     );
   }
 }

@@ -45,17 +45,10 @@ class SavedReceipeScreen extends StatelessWidget {
                     ),
                   );
                 }
-                ;
 
                 if (state is SavedReceipeStateLoaded) {
                   return state.savedReceipes.isEmpty
-                      ? Center(
-                          child: TranslatedText(
-                            textSelector: (lang) => lang.noSavedReceipes,
-                            style: descriptionPlaceHolderStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                        )
+                      ? const NoFavoriteRecipeSaved()
                       : ListView.builder(
                           padding: const EdgeInsets.only(bottom: 20, top: 15),
                           itemBuilder: (context, index) {
@@ -74,6 +67,21 @@ class SavedReceipeScreen extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class NoFavoriteRecipeSaved extends StatelessWidget {
+  const NoFavoriteRecipeSaved({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: TranslatedText(
+        textSelector: (lang) => lang.noSavedReceipes,
+        style: descriptionPlaceHolderStyle,
+        textAlign: TextAlign.center,
       ),
     );
   }
