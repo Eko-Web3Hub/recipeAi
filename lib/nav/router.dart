@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/chat_ai/presentation/chat_ai_screen.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/setting/setting_screen.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
@@ -298,6 +299,12 @@ GoRouter createRouter() => GoRouter(
                   redirect: _guardAuth,
                   builder: (context, state) => const ProfileScreen(),
                   routes: <RouteBase>[
+                    GoRoute(
+                      name: 'SettingsScreen',
+                      path: 'settings',
+                      redirect: _guardAuth,
+                      builder: (context, state) => const SettingScreen(),
+                    ),
                     GoRoute(
                       name: 'MyAccountScreen',
                       path: 'my-account',

@@ -211,76 +211,79 @@ class _UserProfilCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 80,
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xff063336).withOpacity(0.1),
-            spreadRadius: 0,
-            blurRadius: 16,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Color(0xffCCD4DE),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: greenBrandColor,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    name[0].toUpperCase(),
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                ),
-              ),
-              const Gap(16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    name,
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: newNeutralBlackColor,
+    return GestureDetector(
+      onTap: () => context.push('/profil-screen/settings'),
+      child: Container(
+        width: double.infinity,
+        height: 80,
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xff063336).withOpacity(0.1),
+              spreadRadius: 0,
+              blurRadius: 16,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Color(0xffCCD4DE),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: greenBrandColor,
                     ),
                   ),
-                  SizedBox(
-                    width: 122,
+                  child: Center(
                     child: Text(
-                      email,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: newNeutralGreyColor,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+                      name[0].toUpperCase(),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
-          _ArrowRight(),
-        ],
+                ),
+                const Gap(16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      name,
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: newNeutralBlackColor,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 122,
+                      child: Text(
+                        email,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: newNeutralGreyColor,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            _ArrowRight(),
+          ],
+        ),
       ),
     );
   }

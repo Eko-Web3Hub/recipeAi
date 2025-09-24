@@ -482,4 +482,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get seeMore => 'Voir la recette complète';
+
+  @override
+  String get settings => 'Paramètres';
 }

@@ -579,5 +579,9 @@
     "seeMore": "Voir la recette complète",
     "@seeMore": {
         "description": "Label pour voir plus de détails"
+    },
+    "settings": "Paramètres",
+    "@settings": {
+        "description": "Label pour les paramètres"
     }
 }
