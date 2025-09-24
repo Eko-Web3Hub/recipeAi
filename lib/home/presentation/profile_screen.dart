@@ -16,6 +16,7 @@ import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/app_version.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/device_info.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -64,22 +65,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.grey.withValues(alpha: 0.4),
-                child: const UserFirstNameCharOnCapitalCase(),
-              ),
-              const Gap(15.0),
               StreamBuilder<UserPersonnalInfo?>(
                 stream: di<IUserPersonnalInfoService>().watch(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data != null) {
-                    return Text(
-                      capitalizeFirtLetter(snapshot.data!.name),
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    return _UserProfilCard(
+                      email: '${di<IAuthUserService>().currentUser!.email}',
+                      name: snapshot.data!.name,
                     );
                   }
 
@@ -196,6 +188,112 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _UserProfilCard extends StatelessWidget {
+  const _UserProfilCard({
+    required this.email,
+    required this.name,
+  });
+
+  final String email;
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 80,
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.0),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff063336).withOpacity(0.1),
+            spreadRadius: 0,
+            blurRadius: 16,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Color(0xffCCD4DE),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: greenBrandColor,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    name[0].toUpperCase(),
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                ),
+              ),
+              const Gap(16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    name,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: newNeutralBlackColor,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 122,
+                    child: Text(
+                      email,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: newNeutralGreyColor,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _ArrowRight(),
+        ],
+      ),
+    );
+  }
+}
+
+class _ArrowRight extends StatelessWidget {
+  const _ArrowRight();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsetsGeometry.all(8),
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        color: Color(0xff353535),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: SvgPicture.asset(
+        'assets/images/arrowWhiteIcon.svg',
       ),
     );
   }

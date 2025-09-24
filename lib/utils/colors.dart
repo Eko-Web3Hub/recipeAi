@@ -15,3 +15,8 @@ const neutralGreyColor = Color(0xffA9A9A9);
 const greenPrimaryColor = Color(0xFF57b031);
 const greyVariantColor = Color(0xffD9D9D9);
 const greenPrimary80Color = Color(0xFF90D274);
+
+const newNeutralBlackColor = Color(0xff0A2533);
+const newNeutralGreyColor = Color(0xff48525F);
+
+const greenBrandColor = Color(0xff57B031);
