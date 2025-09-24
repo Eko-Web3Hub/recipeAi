@@ -583,5 +583,13 @@
     "settings": "Paramètres",
     "@settings": {
         "description": "Label pour les paramètres"
+    },
+    "myFavorites": "Mes Favoris",
+    "@myFavorites": {
+        "description": "Label pour mes favoris"
+    },
+    "seeAll": "Voir tout",
+    "@seeAll": {
+        "description": "Label pour voir tout"
     }
 }

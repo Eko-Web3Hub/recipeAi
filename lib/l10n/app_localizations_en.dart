@@ -473,4 +473,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings => 'Settings';
+
+  @override
+  String get myFavorites => 'My Favorites';
+
+  @override
+  String get seeAll => 'See All';
 }

@@ -973,6 +973,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings;
+
+  /// Label for my favorites
+  ///
+  /// In en, this message translates to:
+  /// **'My Favorites'**
+  String get myFavorites;
+
+  /// Label for see all
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
 }
 
 class _AppLocalizationsDelegate

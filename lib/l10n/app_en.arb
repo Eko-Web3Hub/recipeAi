@@ -583,5 +583,13 @@
     "settings": "Settings",
     "@settings": {
         "description": "Label for settings"
+    },
+    "myFavorites": "My Favorites",
+    "@myFavorites": {
+        "description": "Label for my favorites"
+    },
+    "seeAll": "See All",
+    "@seeAll": {
+        "description": "Label for see all"
     }
 }

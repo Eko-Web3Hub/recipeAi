@@ -76,111 +76,198 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return SizedBox.shrink();
                 },
               ),
-              const Gap(20),
-              TranslatedText(
-                textSelector: (lang) => lang.baseSettings,
-                style: settingHeadTitleStyle,
+              const Gap(24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TranslatedText(
+                    textSelector: (lang) => lang.myFavorites,
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        height: 1.30,
+                        color: newNeutralBlackColor),
+                  ),
+                  TranslatedText(
+                    textSelector: (lang) => lang.seeAll,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      height: 1.30,
+                      color: greenBrandColor,
+                    ),
+                  ),
+                ],
               ),
-              _ProfilOption(
-                icon: 'assets/icon/accountIcon.svg',
-                onPressed: () => context.push(
-                  '/profil-screen/my-account',
-                ),
-                child: TranslatedText(
-                  textSelector: (lang) => lang.myAccount,
-                  style: _optionStyle,
-                ),
-              ),
-              ListenableBuilder(
-                  listenable: di<TranslationController>(),
-                  builder: (context, _) {
-                    return _ProfilOption(
-                      icon: 'assets/icon/languagesIcon.svg',
-                      onPressed: () => context.push(
-                        '/profil-screen/change-language',
-                      ),
-                      trailing: OptionRightBtn(
-                        value: appLanguagesItem
-                            .firstWhere((item) =>
-                                item.key ==
-                                (appLanguagesItem.firstWhere(
-                                  (item) =>
-                                      item.key ==
-                                      di<TranslationController>()
-                                          .currentLanguageEnum
-                                          .name,
-                                )).key)
-                            .label,
-                        onTap: () {},
-                      ),
-                      child: TranslatedText(
-                        textSelector: (lang) => lang.language,
-                        style: _optionStyle,
-                      ),
-                    );
-                  }),
-              const Gap(20),
-              TranslatedText(
-                textSelector: (lang) => lang.kitchenSettings,
-                style: _optionStyle,
-              ),
-              _ProfilOption(
-                icon: 'assets/icon/myPreferencesIcon.svg',
-                onPressed: () =>
-                    context.push("/profil-screen/update-user-preference"),
-                child: TranslatedText(
-                  textSelector: (lang) => lang.myPreferences,
-                  style: _optionStyle,
-                ),
-              ),
-              _ProfilOption(
-                icon: 'assets/icon/notificationBell.svg',
-                onPressed: null,
-                child: TranslatedText(
-                  textSelector: (lang) => lang.notification,
-                  style: _optionStyle,
-                ),
-              ),
-              const Gap(20),
-              TranslatedText(
-                textSelector: (lang) => lang.help,
-                style: settingHeadTitleStyle,
-              ),
-              _ProfilOption(
-                icon: 'assets/icon/solarBugIcon.svg',
-                onPressed: _openFeedBackLink,
-                child: TranslatedText(
-                  textSelector: (lang) => lang.sendABug,
-                  style: _optionStyle,
-                ),
-              ),
-              const Gap(10),
-              BlocProvider(
-                create: (context) => SignOutBtnControlller(
-                  di<IAuthService>(),
-                ),
-                child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                    builder: (context, btnLogOutState) {
-                  return Builder(builder: (context) {
-                    return ListenableBuilder(
-                        listenable: di<TranslationController>(),
-                        builder: (context, _) {
-                          return MainBtn(
-                            text: di<TranslationController>()
-                                .currentLanguage
-                                .signOut,
-                            isLoading: btnLogOutState is SignOutBtnLoading,
-                            onPressed: () {
-                              context.read<SignOutBtnControlller>().signOut();
-                            },
-                          );
-                        });
-                  });
-                }),
-              ),
+              const Gap(12.0),
+              const _FavoriteRecipeGridDisplay(),
+              // _ProfilOption(
+              //   icon: 'assets/icon/accountIcon.svg',
+              //   onPressed: () => context.push(
+              //     '/profil-screen/my-account',
+              //   ),
+              //   child: TranslatedText(
+              //     textSelector: (lang) => lang.myAccount,
+              //     style: _optionStyle,
+              //   ),
+              // ),
+              // ListenableBuilder(
+              //     listenable: di<TranslationController>(),
+              //     builder: (context, _) {
+              //       return _ProfilOption(
+              //         icon: 'assets/icon/languagesIcon.svg',
+              //         onPressed: () => context.push(
+              //           '/profil-screen/change-language',
+              //         ),
+              //         trailing: OptionRightBtn(
+              //           value: appLanguagesItem
+              //               .firstWhere((item) =>
+              //                   item.key ==
+              //                   (appLanguagesItem.firstWhere(
+              //                     (item) =>
+              //                         item.key ==
+              //                         di<TranslationController>()
+              //                             .currentLanguageEnum
+              //                             .name,
+              //                   )).key)
+              //               .label,
+              //           onTap: () {},
+              //         ),
+              //         child: TranslatedText(
+              //           textSelector: (lang) => lang.language,
+              //           style: _optionStyle,
+              //         ),
+              //       );
+              //     }),
+
+              // TranslatedText(
+              //   textSelector: (lang) => lang.kitchenSettings,
+              //   style: _optionStyle,
+              // ),
+              // _ProfilOption(
+              //   icon: 'assets/icon/myPreferencesIcon.svg',
+              //   onPressed: () =>
+              //       context.push("/profil-screen/update-user-preference"),
+              //   child: TranslatedText(
+              //     textSelector: (lang) => lang.myPreferences,
+              //     style: _optionStyle,
+              //   ),
+              // ),
+              // _ProfilOption(
+              //   icon: 'assets/icon/notificationBell.svg',
+              //   onPressed: null,
+              //   child: TranslatedText(
+              //     textSelector: (lang) => lang.notification,
+              //     style: _optionStyle,
+              //   ),
+              // ),
+              // const Gap(20),
+              // TranslatedText(
+              //   textSelector: (lang) => lang.help,
+              //   style: settingHeadTitleStyle,
+              // ),
+              // _ProfilOption(
+              //   icon: 'assets/icon/solarBugIcon.svg',
+              //   onPressed: _openFeedBackLink,
+              //   child: TranslatedText(
+              //     textSelector: (lang) => lang.sendABug,
+              //     style: _optionStyle,
+              //   ),
+              // ),
+              // const Gap(10),
+              // BlocProvider(
+              //   create: (context) => SignOutBtnControlller(
+              //     di<IAuthService>(),
+              //   ),
+              //   child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+              //       builder: (context, btnLogOutState) {
+              //     return Builder(builder: (context) {
+              //       return ListenableBuilder(
+              //           listenable: di<TranslationController>(),
+              //           builder: (context, _) {
+              //             return MainBtn(
+              //               text: di<TranslationController>()
+              //                   .currentLanguage
+              //                   .signOut,
+              //               isLoading: btnLogOutState is SignOutBtnLoading,
+              //               onPressed: () {
+              //                 context.read<SignOutBtnControlller>().signOut();
+              //               },
+              //             );
+              //           });
+              //     });
+              //   }),
+              // ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _FavoriteRecipeGridDisplay extends StatelessWidget {
+  const _FavoriteRecipeGridDisplay();
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      primary: false,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: 4,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.8,
+        crossAxisSpacing: 16.0,
+        mainAxisSpacing: 16.0,
+      ),
+      itemBuilder: (context, index) {
+        return _RecipeCard();
+      },
+    );
+  }
+}
+
+class _RecipeCard extends StatelessWidget {
+  const _RecipeCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Color(0xffFBFBFB),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 88,
+            decoration: BoxDecoration(
+              color: Color(
+                0xffCCD4DE,
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          const Gap(12),
+          Text(
+            'Pasta',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              height: 1.35,
+              color: newNeutralBlackColor,
+            ),
+          ),
+        ],
       ),
     );
   }

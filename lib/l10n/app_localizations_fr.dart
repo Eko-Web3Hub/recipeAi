@@ -485,4 +485,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settings => 'Paramètres';
+
+  @override
+  String get myFavorites => 'Mes Favoris';
+
+  @override
+  String get seeAll => 'Voir tout';
 }
