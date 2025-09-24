@@ -195,7 +195,10 @@ class ProfilActionAppBar extends StatelessWidget {
       padding: const EdgeInsets.only(
         right: 20.0,
       ),
-      child: SvgPicture.asset('assets/images/settingProfilIcon.svg'),
+      child: GestureDetector(
+        onTap: () => context.push('/profil-screen/settings'),
+        child: SvgPicture.asset('assets/images/settingProfilIcon.svg'),
+      ),
     );
   }
 }
@@ -212,7 +215,7 @@ class _UserProfilCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push('/profil-screen/settings'),
+      onTap: () {},
       child: Container(
         width: double.infinity,
         height: 80,

@@ -20,3 +20,4 @@ const newNeutralBlackColor = Color(0xff0A2533);
 const newNeutralGreyColor = Color(0xff48525F);
 
 const greenBrandColor = Color(0xff57B031);
+const yellowBrandColor = Color(0xffFFBA4D);
