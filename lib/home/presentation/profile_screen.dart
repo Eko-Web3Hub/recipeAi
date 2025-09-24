@@ -11,14 +11,12 @@ import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
-import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/device_info.dart';
-import 'package:recipe_ai/utils/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 TextStyle settingHeadTitleStyle = GoogleFonts.poppins(
@@ -79,11 +77,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               const Gap(20),
-              _ProfilOption(
-                icon: 'assets/images/chatIconApp.svg',
-                onPressed: () => context.push('/chat-ai-app'),
-                child: Text('Chat Ai (Beta)'),
-              ),
               TranslatedText(
                 textSelector: (lang) => lang.baseSettings,
                 style: settingHeadTitleStyle,
@@ -189,6 +182,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ProfilActionAppBar extends StatelessWidget {
+  const ProfilActionAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: 20.0,
+      ),
+      child: SvgPicture.asset('assets/images/settingProfilIcon.svg'),
     );
   }
 }

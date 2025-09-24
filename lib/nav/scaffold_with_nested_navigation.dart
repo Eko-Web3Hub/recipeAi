@@ -43,6 +43,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
     Key? key,
     required this.navigationShell,
     required this.hideNavBar,
+    this.actions,
     this.appBarTitle,
   }) : super(
           key: key ?? const ValueKey<String>("ScaffoldWithNestedNavigation"),
@@ -50,6 +51,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
   final bool hideNavBar;
   final String? appBarTitle;
+  final List<Widget>? actions;
 
   void _goBranch(int index) {
     navigationShell.goBranch(
@@ -72,6 +74,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
                     .displayLarge
                     ?.copyWith(fontSize: 17),
               ),
+              actions: actions,
             )
           : null,
       resizeToAvoidBottomInset: false,

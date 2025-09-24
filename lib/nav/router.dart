@@ -174,6 +174,7 @@ GoRouter createRouter() => GoRouter(
                     state.fullPath,
                     di<TranslationController>().currentLanguage,
                   ),
+                  actions: genActions(state.fullPath),
                   navigationShell: navigationShell,
                   hideNavBar: hideNavBar(state.fullPath),
                 );
@@ -352,6 +353,15 @@ String? genAppBarTitle(String? path, AppLocalizations appTexts) {
       return 'Notifications';
     case '/profil-screen':
       return appTexts.profil;
+    default:
+      return null;
+  }
+}
+
+List<Widget>? genActions(String? path) {
+  switch (path) {
+    case '/profil-screen':
+      return [ProfilActionAppBar()];
     default:
       return null;
   }
