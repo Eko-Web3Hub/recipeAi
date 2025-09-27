@@ -92,154 +92,155 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 const Gap(24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TranslatedText(
-                      textSelector: (lang) => lang.myFavorites,
-                      style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                          height: 1.30,
-                          color: newNeutralBlackColor),
-                    ),
-                    TranslatedText(
-                      textSelector: (lang) => lang.seeAll,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        height: 1.30,
-                        color: greenBrandColor,
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(12.0),
                 BlocBuilder<SavedReceipeController, SavedReceipeState>(
                   builder: (context, state) {
-                    if (state is SavedReceipeStateLoading) {
-                      return _FavoriteRecipeGridLoading();
-                    }
+                    final showSeeMore = state is SavedReceipeStateLoaded &&
+                        state.savedReceipes.length > 4;
 
-                    if (state is SavedReceipeStateError) {
-                      return Center(
-                        child: Text(
-                          state.message,
-                          style: descriptionPlaceHolderStyle,
-                          textAlign: TextAlign.center,
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TranslatedText(
+                              textSelector: (lang) => lang.myFavorites,
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  height: 1.30,
+                                  color: newNeutralBlackColor),
+                            ),
+                            Visibility(
+                              visible: showSeeMore,
+                              child: TranslatedText(
+                                textSelector: (lang) => lang.seeAll,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  height: 1.30,
+                                  color: greenBrandColor,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    }
-
-                    if (state is SavedReceipeStateLoaded) {
-                      return state.savedReceipes.isEmpty
-                          ? const NoFavoriteRecipeSaved()
-                          : _FavoriteRecipeGridDisplay(
-                              favoriteRecipes: state.savedReceipes,
-                            );
-                    }
-
-                    return const SizedBox();
+                        const Gap(12.0),
+                        if (state is SavedReceipeStateLoading)
+                          _FavoriteRecipeGridLoading(),
+                        if (state is SavedReceipeStateError)
+                          Center(
+                            child: Text(
+                              state.message,
+                              style: descriptionPlaceHolderStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        if (state is SavedReceipeStateLoaded)
+                          state.savedReceipes.isEmpty
+                              ? const NoFavoriteRecipeSaved()
+                              : _FavoriteRecipeGridDisplay(
+                                  favoriteRecipes: state.savedReceipes,
+                                )
+                      ],
+                    );
                   },
                 ),
-
-                // _ProfilOption(
-                //   icon: 'assets/icon/accountIcon.svg',
-                //   onPressed: () => context.push(
-                //     '/profil-screen/my-account',
-                //   ),
-                //   child: TranslatedText(
-                //     textSelector: (lang) => lang.myAccount,
-                //     style: _optionStyle,
-                //   ),
-                // ),
-                // ListenableBuilder(
-                //     listenable: di<TranslationController>(),
-                //     builder: (context, _) {
-                //       return _ProfilOption(
-                //         icon: 'assets/icon/languagesIcon.svg',
-                //         onPressed: () => context.push(
-                //           '/profil-screen/change-language',
-                //         ),
-                //         trailing: OptionRightBtn(
-                //           value: appLanguagesItem
-                //               .firstWhere((item) =>
-                //                   item.key ==
-                //                   (appLanguagesItem.firstWhere(
-                //                     (item) =>
-                //                         item.key ==
-                //                         di<TranslationController>()
-                //                             .currentLanguageEnum
-                //                             .name,
-                //                   )).key)
-                //               .label,
-                //           onTap: () {},
-                //         ),
-                //         child: TranslatedText(
-                //           textSelector: (lang) => lang.language,
-                //           style: _optionStyle,
-                //         ),
-                //       );
-                //     }),
-
-                // TranslatedText(
-                //   textSelector: (lang) => lang.kitchenSettings,
-                //   style: _optionStyle,
-                // ),
-                // _ProfilOption(
-                //   icon: 'assets/icon/myPreferencesIcon.svg',
-                //   onPressed: () =>
-                //       context.push("/profil-screen/update-user-preference"),
-                //   child: TranslatedText(
-                //     textSelector: (lang) => lang.myPreferences,
-                //     style: _optionStyle,
-                //   ),
-                // ),
-                // _ProfilOption(
-                //   icon: 'assets/icon/notificationBell.svg',
-                //   onPressed: null,
-                //   child: TranslatedText(
-                //     textSelector: (lang) => lang.notification,
-                //     style: _optionStyle,
-                //   ),
-                // ),
-                // const Gap(20),
-                // TranslatedText(
-                //   textSelector: (lang) => lang.help,
-                //   style: settingHeadTitleStyle,
-                // ),
-                // _ProfilOption(
-                //   icon: 'assets/icon/solarBugIcon.svg',
-                //   onPressed: _openFeedBackLink,
-                //   child: TranslatedText(
-                //     textSelector: (lang) => lang.sendABug,
-                //     style: _optionStyle,
-                //   ),
-                // ),
-                // const Gap(10),
-                // BlocProvider(
-                //   create: (context) => SignOutBtnControlller(
-                //     di<IAuthService>(),
-                //   ),
-                //   child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                //       builder: (context, btnLogOutState) {
-                //     return Builder(builder: (context) {
-                //       return ListenableBuilder(
-                //           listenable: di<TranslationController>(),
-                //           builder: (context, _) {
-                //             return MainBtn(
-                //               text: di<TranslationController>()
-                //                   .currentLanguage
-                //                   .signOut,
-                //               isLoading: btnLogOutState is SignOutBtnLoading,
-                //               onPressed: () {
-                //                 context.read<SignOutBtnControlller>().signOut();
-                //               },
-                //             );
-                //           });
-                //     });
-                //   }),
-                // ),
+                _ProfilOption(
+                  icon: 'assets/icon/accountIcon.svg',
+                  onPressed: () => context.push(
+                    '/profil-screen/my-account',
+                  ),
+                  child: TranslatedText(
+                    textSelector: (lang) => lang.myAccount,
+                    style: _optionStyle,
+                  ),
+                ),
+                ListenableBuilder(
+                    listenable: di<TranslationController>(),
+                    builder: (context, _) {
+                      return _ProfilOption(
+                        icon: 'assets/icon/languagesIcon.svg',
+                        onPressed: () => context.push(
+                          '/profil-screen/change-language',
+                        ),
+                        trailing: OptionRightBtn(
+                          value: appLanguagesItem
+                              .firstWhere((item) =>
+                                  item.key ==
+                                  (appLanguagesItem.firstWhere(
+                                    (item) =>
+                                        item.key ==
+                                        di<TranslationController>()
+                                            .currentLanguageEnum
+                                            .name,
+                                  )).key)
+                              .label,
+                          onTap: () {},
+                        ),
+                        child: TranslatedText(
+                          textSelector: (lang) => lang.language,
+                          style: _optionStyle,
+                        ),
+                      );
+                    }),
+                TranslatedText(
+                  textSelector: (lang) => lang.kitchenSettings,
+                  style: _optionStyle,
+                ),
+                _ProfilOption(
+                  icon: 'assets/icon/myPreferencesIcon.svg',
+                  onPressed: () =>
+                      context.push("/profil-screen/update-user-preference"),
+                  child: TranslatedText(
+                    textSelector: (lang) => lang.myPreferences,
+                    style: _optionStyle,
+                  ),
+                ),
+                _ProfilOption(
+                  icon: 'assets/icon/notificationBell.svg',
+                  onPressed: null,
+                  child: TranslatedText(
+                    textSelector: (lang) => lang.notification,
+                    style: _optionStyle,
+                  ),
+                ),
+                const Gap(20),
+                TranslatedText(
+                  textSelector: (lang) => lang.help,
+                  style: settingHeadTitleStyle,
+                ),
+                _ProfilOption(
+                  icon: 'assets/icon/solarBugIcon.svg',
+                  onPressed: _openFeedBackLink,
+                  child: TranslatedText(
+                    textSelector: (lang) => lang.sendABug,
+                    style: _optionStyle,
+                  ),
+                ),
+                const Gap(10),
+                BlocProvider(
+                  create: (context) => SignOutBtnControlller(
+                    di<IAuthService>(),
+                  ),
+                  child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+                      builder: (context, btnLogOutState) {
+                    return Builder(builder: (context) {
+                      return ListenableBuilder(
+                          listenable: di<TranslationController>(),
+                          builder: (context, _) {
+                            return MainBtn(
+                              text: di<TranslationController>()
+                                  .currentLanguage
+                                  .signOut,
+                              isLoading: btnLogOutState is SignOutBtnLoading,
+                              onPressed: () {
+                                context.read<SignOutBtnControlller>().signOut();
+                              },
+                            );
+                          });
+                    });
+                  }),
+                ),
               ],
             ),
           ),
