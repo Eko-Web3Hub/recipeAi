@@ -20,6 +20,7 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -352,6 +353,12 @@ class _RecipeCard extends StatelessWidget {
 
                   return CachedNetworkImage(
                     imageUrl: imageLoaderState.url!,
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        _ImageRecipeLoader(
+                      progress: progress.progress,
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const _ImageRecipeWithError(),
                     imageBuilder: (context, imageProvider) =>
                         _SubRecipeCardContainer(
                       imageProvider: imageProvider,
@@ -375,6 +382,36 @@ class _RecipeCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ImageRecipeWithError extends StatelessWidget {
+  const _ImageRecipeWithError();
+
+  @override
+  Widget build(BuildContext context) {
+    return _SubRecipeCardContainer(
+      child: null,
+      imageProvider: AssetImage('assets/images/recipePlaceHolder.png'),
+    );
+  }
+}
+
+class _ImageRecipeLoader extends StatelessWidget {
+  const _ImageRecipeLoader({
+    required this.progress,
+  });
+
+  final double? progress;
+
+  @override
+  Widget build(BuildContext context) {
+    return _SubRecipeCardContainer(
+      imageProvider: null,
+      child: CustomCircularLoader(
+        value: progress,
       ),
     );
   }
