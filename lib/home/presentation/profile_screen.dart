@@ -112,13 +112,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Visibility(
                               visible: showSeeMore,
-                              child: TranslatedText(
-                                textSelector: (lang) => lang.seeAll,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                  height: 1.30,
-                                  color: greenBrandColor,
+                              child: GestureDetector(
+                                onTap: () =>
+                                    context.push('/profil-screen/save-recipes'),
+                                child: TranslatedText(
+                                  textSelector: (lang) => lang.seeAll,
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    height: 1.30,
+                                    color: greenBrandColor,
+                                  ),
                                 ),
                               ),
                             ),

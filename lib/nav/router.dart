@@ -300,6 +300,12 @@ GoRouter createRouter() => GoRouter(
                   builder: (context, state) => const ProfileScreen(),
                   routes: <RouteBase>[
                     GoRoute(
+                      name: 'SavedReceipeScreen',
+                      path: 'save-recipes',
+                      redirect: _guardAuth,
+                      builder: (context, state) => const NewSavedRecipeScreen(),
+                    ),
+                    GoRoute(
                       name: 'SettingsScreen',
                       path: 'settings',
                       redirect: _guardAuth,
