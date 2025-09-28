@@ -32,8 +32,11 @@ class SettingScreen extends StatelessWidget {
                 children: [
                   const Gap(10),
                   _NotificationSetting(
+                    iconPath: 'assets/images/notificationSettingIcon.svg',
                     title: appTexts.notification,
                   ),
+                  const Gap(16),
+                  _LanguageSetting(),
                 ],
               ),
             ),
@@ -43,14 +46,18 @@ class SettingScreen extends StatelessWidget {
 }
 
 class _NotificationSetting extends StatelessWidget {
-  const _NotificationSetting({required this.title});
+  const _NotificationSetting({
+    required this.title,
+    required this.iconPath,
+  });
 
+  final String iconPath;
   final String title;
 
   @override
   Widget build(BuildContext context) {
     return _SettingOptionCard(
-      iconPath: 'assets/images/notificationSettingIcon.svg',
+      iconPath: iconPath,
       title: title,
       rightSectionChild: Switch(
         activeColor: yellowBrandColor,
@@ -58,6 +65,27 @@ class _NotificationSetting extends StatelessWidget {
         value: true,
         onChanged: (newValue) {},
       ),
+    );
+  }
+}
+
+class _LanguageSetting extends StatelessWidget {
+  const _LanguageSetting();
+
+  @override
+  Widget build(BuildContext context) {
+    final translationController = di<TranslationController>();
+    final appTexts = translationController.currentLanguage;
+
+    return ListenableBuilder(
+      listenable: translationController,
+      builder: (context, _) {
+        return _SettingOptionCard(
+          iconPath: 'assets/icon/languagesIcon.svg',
+          title: appTexts.language,
+          rightSectionChild: Container(),
+        );
+      },
     );
   }
 }
@@ -77,6 +105,7 @@ class _SettingOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: 64,
       padding: EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 20,
