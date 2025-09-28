@@ -12,6 +12,7 @@ import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
+import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
@@ -286,6 +287,7 @@ class _FavoriteRecipeGridDisplay extends StatelessWidget {
       itemCount: favoriteRecipes.length > 4 ? 4 : favoriteRecipes.length,
       itemBuilder: (context, index) {
         return _RecipeCard(
+          key: ValueKey(favoriteRecipes[index].id),
           recipe: favoriteRecipes[index],
         );
       },
@@ -322,8 +324,9 @@ class _GridViewBase extends StatelessWidget {
 
 class _RecipeCard extends StatelessWidget {
   const _RecipeCard({
+    Key? key,
     required this.recipe,
-  });
+  }) : super(key: key);
 
   final UserReceipeV2 recipe;
 
@@ -343,37 +346,48 @@ class _RecipeCard extends StatelessWidget {
               di<FunctionsCaller>(),
               recipe.receipeEn.name,
             ),
-            child: BlocBuilder<RecipeImageLoader, RecipeImageState>(
-              builder: (context, imageLoaderState) {
-                if (imageLoaderState is RecipeImageLoaded) {
-                  final imageUrl = imageLoaderState.url;
-                  if (imageUrl == null) {
-                    return _SubRecipeCardContainer(
-                      imageProvider: null,
-                      child: Image.asset(
-                        'assets/images/recipePlaceHolder.png',
-                      ),
-                    );
-                  }
+            child: Stack(
+              children: [
+                BlocBuilder<RecipeImageLoader, RecipeImageState>(
+                  builder: (context, imageLoaderState) {
+                    if (imageLoaderState is RecipeImageLoaded) {
+                      final imageUrl = imageLoaderState.url;
+                      if (imageUrl == null) {
+                        return _SubRecipeCardContainer(
+                          imageProvider: null,
+                          child: Image.asset(
+                            'assets/images/recipePlaceHolder.png',
+                          ),
+                        );
+                      }
 
-                  return CachedNetworkImage(
-                    imageUrl: imageLoaderState.url!,
-                    progressIndicatorBuilder: (context, url, progress) =>
-                        _ImageRecipeLoader(
-                      progress: progress.progress,
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const _ImageRecipeWithError(),
-                    imageBuilder: (context, imageProvider) =>
-                        _SubRecipeCardContainer(
-                      imageProvider: imageProvider,
-                      child: null,
-                    ),
-                  );
-                }
+                      return CachedNetworkImage(
+                        imageUrl: imageLoaderState.url!,
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            _ImageRecipeLoader(
+                          progress: progress.progress,
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const _ImageRecipeWithError(),
+                        imageBuilder: (context, imageProvider) =>
+                            _SubRecipeCardContainer(
+                          imageProvider: imageProvider,
+                          child: null,
+                        ),
+                      );
+                    }
 
-                return SizedBox.shrink();
-              },
+                    return SizedBox.shrink();
+                  },
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: _ToggleFavoriteBtn(
+                    receipe: recipe,
+                  ),
+                ),
+              ],
             ),
           ),
           const Gap(12),
@@ -387,6 +401,39 @@ class _RecipeCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ToggleFavoriteBtn extends StatelessWidget {
+  const _ToggleFavoriteBtn({required this.receipe});
+
+  final UserReceipeV2 receipe;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 28,
+      height: 28,
+      padding: EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff063336).withOpacity(0.1),
+            spreadRadius: 0,
+            blurRadius: 16,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: RecipeIconFavorite(
+        receipe: receipe,
+        fillFavoriteIcon: 'assets/images/NewLoveIcon.svg',
+        outlinedFavoriteIcon: 'assets/images/unfillHeartImage.svg',
+        padding: 0,
       ),
     );
   }

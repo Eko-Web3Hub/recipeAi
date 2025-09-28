@@ -331,12 +331,16 @@ class RecipeIconFavorite extends StatelessWidget {
   const RecipeIconFavorite({
     super.key,
     required this.receipe,
+    this.fillFavoriteIcon = 'assets/images/favorite.svg',
     this.outlinedFavoriteIcon = 'assets/images/favorite_outlined.svg',
+    this.padding = 16,
     this.size,
   });
 
   final UserReceipeV2 receipe;
+  final String fillFavoriteIcon;
   final String outlinedFavoriteIcon;
+  final double padding;
   final double? size;
 
   @override
@@ -360,11 +364,11 @@ class RecipeIconFavorite extends StatelessWidget {
               behavior: HitTestBehavior.opaque,
               onTap: context.read<ReceipeItemController>().toggleFavorite,
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(padding),
                 color: Colors.transparent,
                 child: SvgPicture.asset(
                   recipeItemSaved is ReceipeItemStateSaved
-                      ? "assets/images/favorite.svg"
+                      ? fillFavoriteIcon
                       : outlinedFavoriteIcon,
                   height: size,
                 ),
