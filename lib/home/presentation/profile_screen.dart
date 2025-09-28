@@ -150,16 +150,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                _ProfilOption(
-                  icon: 'assets/icon/accountIcon.svg',
-                  onPressed: () => context.push(
-                    '/profil-screen/my-account',
-                  ),
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.myAccount,
-                    style: _optionStyle,
-                  ),
-                ),
                 ListenableBuilder(
                     listenable: di<TranslationController>(),
                     builder: (context, _) {
