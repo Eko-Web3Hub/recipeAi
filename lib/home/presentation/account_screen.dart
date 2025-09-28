@@ -189,19 +189,41 @@ class _AccountScreenState extends State<AccountScreen> {
                       );
                     },
                   ),
-                  _AccountOption(
-                    label: appTexts.email,
-                    value: di<IAuthUserService>().currentUser!.email!,
-                    onTap: () => context.push(
-                      '/profil-screen/change-email',
+                  const Gap(12.0),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 20.0,
+                    ),
+                    child: GestureDetector(
+                      onTap: () => context.push(
+                        '/profil-screen/change-email',
+                      ),
+                      child: NewFormField(
+                        label: appTexts.email,
+                        initialValue:
+                            di<IAuthUserService>().currentUser!.email!,
+                        enabled: false,
+                        controller: null,
+                      ),
                     ),
                   ),
-                  _AccountOption(
-                    label: appTexts.password,
-                    value: '********',
-                    onTap: () => context.push('/profil-screen/change-password'),
+                  const Gap(12.0),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 20.0,
+                    ),
+                    child: GestureDetector(
+                      onTap: () =>
+                          context.push('/profil-screen/change-password'),
+                      child: NewFormField(
+                        label: appTexts.password,
+                        initialValue: '********',
+                        enabled: false,
+                        controller: null,
+                      ),
+                    ),
                   ),
-                  const Gap(38.0),
+                  const Gap(12.0),
                   _TextButton(
                     text: appTexts.deleteAccount,
                     onPressed: () async {
