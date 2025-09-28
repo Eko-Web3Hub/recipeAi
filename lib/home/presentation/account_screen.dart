@@ -14,6 +14,7 @@ import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
@@ -78,8 +79,15 @@ class AccountDeleteMetadata implements ILoginAgainDialogMetadata {
   Future<void> onMainBtnPressed() => firebaseAuth.deleteAccount();
 }
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
+
+  @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  final TextEditingController _nameController = TextEditingController();
 
   Future<bool?> _showConfirmationDialog(BuildContext context) {
     return showDialog<bool>(
@@ -131,7 +139,7 @@ class AccountScreen extends StatelessWidget {
           },
           child: Scaffold(
             appBar: KitchenInventoryAppBar(
-              title: appTexts.myAccount,
+              title: appTexts.editProfile,
               arrowLeftOnPressed: () => context.pop(),
             ),
             body: Padding(
@@ -145,22 +153,40 @@ class AccountScreen extends StatelessWidget {
                   StreamBuilder<UserPersonnalInfo?>(
                     stream: di<IUserPersonnalInfoService>().watch(),
                     builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data != null) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _AccountOption(
-                              label: appTexts.nameUser,
-                              value: snapshot.data!.name,
+                      final name = snapshot.hasData && snapshot.data != null
+                          ? snapshot.data!.name
+                          : null;
+                      _nameController.text = name ?? '';
+
+                      print(name);
+
+                      return Column(
+                        children: [
+                          Center(
+                            child: UserProfilePicture(
+                              size: 120,
+                              name: name,
+                            ),
+                          ),
+                          const Gap(32.0),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              right: 20.0,
+                            ),
+                            child: GestureDetector(
                               onTap: () => context.push(
                                 '/profil-screen/change-username',
                               ),
+                              child: NewFormField(
+                                label: appTexts.name,
+                                initialValue: null,
+                                enabled: false,
+                                controller: _nameController,
+                              ),
                             ),
-                          ],
-                        );
-                      }
-
-                      return SizedBox.shrink();
+                          ),
+                        ],
+                      );
                     },
                   ),
                   _AccountOption(
@@ -471,6 +497,71 @@ class ConfirmationDeleteAccountWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+final _formBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(
+    16.0,
+  ),
+  borderSide: BorderSide(
+    width: 1.5,
+    color: newNeutralBlackColor,
+  ),
+);
+
+class NewFormField extends StatelessWidget {
+  const NewFormField({
+    super.key,
+    required this.label,
+    this.prefixIcon,
+    this.initialValue,
+    this.controller,
+    this.enabled = true,
+    this.onTap,
+  });
+
+  final String label;
+  final String? initialValue;
+  final TextEditingController? controller;
+  final Widget? prefixIcon;
+  final bool enabled;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            height: 1.35,
+            color: newNeutralBlackColor,
+          ),
+        ),
+        const Gap(12.0),
+        TextFormField(
+          onTap: onTap,
+          controller: controller,
+          initialValue: initialValue,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            color: newNeutralBlackColor,
+            height: 1.45,
+          ),
+          decoration: InputDecoration(
+            enabled: enabled,
+            prefixIcon: prefixIcon,
+            disabledBorder: _formBorder,
+            border: _formBorder,
+          ),
+        ),
+      ],
     );
   }
 }

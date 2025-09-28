@@ -491,4 +491,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get seeAll => 'Voir tout';
+
+  @override
+  String get editProfile => 'Modifier le profil';
 }

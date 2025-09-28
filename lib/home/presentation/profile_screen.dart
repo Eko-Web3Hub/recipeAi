@@ -553,7 +553,7 @@ class _UserProfilCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => context.push('/profil-screen/my-account'),
       child: Container(
         width: double.infinity,
         height: 80,
@@ -576,22 +576,9 @@ class _UserProfilCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Color(0xffCCD4DE),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: greenBrandColor,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      name[0].toUpperCase(),
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                  ),
+                UserProfilePicture(
+                  name: name,
+                  size: 48,
                 ),
                 const Gap(16),
                 Column(
@@ -626,6 +613,40 @@ class _UserProfilCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class UserProfilePicture extends StatelessWidget {
+  const UserProfilePicture({
+    super.key,
+    required this.size,
+    required this.name,
+  });
+
+  final double size;
+  final String? name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Color(0xffCCD4DE),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: greenBrandColor,
+        ),
+      ),
+      child: name == null
+          ? null
+          : Center(
+              child: Text(
+                name![0].toUpperCase(),
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),
     );
   }
 }

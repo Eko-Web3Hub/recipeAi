@@ -591,5 +591,9 @@
     "seeAll": "Voir tout",
     "@seeAll": {
         "description": "Label pour voir tout"
+    },
+    "editProfile": "Modifier le profil",
+    "@editProfile": {
+        "description": "Label pour modifier le profil"
     }
 }
