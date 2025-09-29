@@ -10,7 +10,6 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/delete_account_after_an_login.dart';
-import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -29,16 +28,6 @@ TextStyle _deleteTextStyle = GoogleFonts.poppins(
   color: Colors.red,
   fontWeight: FontWeight.w600,
 );
-
-void _delectionSuccess(BuildContext context) {
-  final appTexts = di<TranslationController>().currentLanguage;
-
-  context.go('/onboarding/start');
-  showSnackBar(
-    context,
-    appTexts.deleteAccountSuccess,
-  );
-}
 
 class AccountDeleteMetadata implements ILoginAgainDialogMetadata {
   AccountDeleteMetadata({
@@ -89,158 +78,97 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   final TextEditingController _nameController = TextEditingController();
 
-  Future<bool?> _showConfirmationDialog(BuildContext context) {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return ConfirmationDeleteAccountWidget(
-          noPressed: () => Navigator.of(context).pop(false),
-          yesPressed: () => Navigator.of(context).pop(true),
-        );
-      },
-    );
-  }
-
-  Future<bool?> _showLoginAgainDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => LoginAgainDialog(
-        metadata: AccountDeleteMetadata(
-          context: context,
-          appTexts: di<TranslationController>().currentLanguage,
-          firebaseAuth: di<IFirebaseAuth>(),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
-    return BlocProvider(
-      create: (_) => DeleteAccountController(
-        di<IFirebaseAuth>(),
+    return Scaffold(
+      appBar: KitchenInventoryAppBar(
+        title: appTexts.editProfile,
+        arrowLeftOnPressed: () => context.pop(),
       ),
-      child: Builder(builder: (context) {
-        return BlocListener<DeleteAccountController, DeleteAccountState>(
-          listener: (context, state) {
-            if (state is DeleteAccountSuccess) {
-              _delectionSuccess(context);
-            } else if (state is DeleteAccountRequiredRecentLogin) {
-              _showLoginAgainDialog(context);
-            } else if (state is DeleteAccountErrorOcuured) {
-              showSnackBar(
-                context,
-                appTexts.deleteAccountError,
-                isError: true,
-              );
-            }
-          },
-          child: Scaffold(
-            appBar: KitchenInventoryAppBar(
-              title: appTexts.editProfile,
-              arrowLeftOnPressed: () => context.pop(),
+      body: Padding(
+        padding: EdgeInsets.only(
+          left: 20,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Gap(10.0),
+            StreamBuilder<UserPersonnalInfo?>(
+              stream: di<IUserPersonnalInfoService>().watch(),
+              builder: (context, snapshot) {
+                final name = snapshot.hasData && snapshot.data != null
+                    ? snapshot.data!.name
+                    : null;
+                _nameController.text = name ?? '';
+
+                print(name);
+
+                return Column(
+                  children: [
+                    Center(
+                      child: UserProfilePicture(
+                        size: 120,
+                        name: name,
+                      ),
+                    ),
+                    const Gap(32.0),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: 20.0,
+                      ),
+                      child: GestureDetector(
+                        onTap: () => context.push(
+                          '/profil-screen/change-username',
+                        ),
+                        child: NewFormField(
+                          label: appTexts.name,
+                          initialValue: null,
+                          enabled: false,
+                          controller: _nameController,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
-            body: Padding(
-              padding: EdgeInsets.only(
-                left: 20,
+            const Gap(12.0),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 20.0,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(10.0),
-                  StreamBuilder<UserPersonnalInfo?>(
-                    stream: di<IUserPersonnalInfoService>().watch(),
-                    builder: (context, snapshot) {
-                      final name = snapshot.hasData && snapshot.data != null
-                          ? snapshot.data!.name
-                          : null;
-                      _nameController.text = name ?? '';
-
-                      print(name);
-
-                      return Column(
-                        children: [
-                          Center(
-                            child: UserProfilePicture(
-                              size: 120,
-                              name: name,
-                            ),
-                          ),
-                          const Gap(32.0),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 20.0,
-                            ),
-                            child: GestureDetector(
-                              onTap: () => context.push(
-                                '/profil-screen/change-username',
-                              ),
-                              child: NewFormField(
-                                label: appTexts.name,
-                                initialValue: null,
-                                enabled: false,
-                                controller: _nameController,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                  const Gap(12.0),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: 20.0,
-                    ),
-                    child: GestureDetector(
-                      onTap: () => context.push(
-                        '/profil-screen/change-email',
-                      ),
-                      child: NewFormField(
-                        label: appTexts.email,
-                        initialValue:
-                            di<IAuthUserService>().currentUser!.email!,
-                        enabled: false,
-                        controller: null,
-                      ),
-                    ),
-                  ),
-                  const Gap(12.0),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: 20.0,
-                    ),
-                    child: GestureDetector(
-                      onTap: () =>
-                          context.push('/profil-screen/change-password'),
-                      child: NewFormField(
-                        label: appTexts.password,
-                        initialValue: '********',
-                        enabled: false,
-                        controller: null,
-                      ),
-                    ),
-                  ),
-                  const Gap(12.0),
-                  _TextButton(
-                    text: appTexts.deleteAccount,
-                    onPressed: () async {
-                      final response = await _showConfirmationDialog(context);
-
-                      if (response == true) {
-                        context.read<DeleteAccountController>().deleteAccount();
-                      }
-                    },
-                    textColor: Colors.red,
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: () => context.push(
+                  '/profil-screen/change-email',
+                ),
+                child: NewFormField(
+                  label: appTexts.email,
+                  initialValue: di<IAuthUserService>().currentUser!.email!,
+                  enabled: false,
+                  controller: null,
+                ),
               ),
             ),
-          ),
-        );
-      }),
+            const Gap(12.0),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 20.0,
+              ),
+              child: GestureDetector(
+                onTap: () => context.push('/profil-screen/change-password'),
+                child: NewFormField(
+                  label: appTexts.password,
+                  initialValue: '********',
+                  enabled: false,
+                  controller: null,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -248,42 +176,6 @@ class _AccountScreenState extends State<AccountScreen> {
 const _kGreyColor = Color(
   0xff797979,
 );
-
-class _AccountOption extends StatelessWidget {
-  const _AccountOption({
-    required this.label,
-    required this.value,
-    required this.onTap,
-  });
-
-  final String label;
-  final String value;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Colors.black,
-            ),
-          ),
-          OptionRightBtn(
-            value: value,
-            onTap: onTap,
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class OptionRightBtn extends StatelessWidget {
   const OptionRightBtn({
@@ -443,33 +335,6 @@ class _LoginAgainDialogState extends State<LoginAgainDialog> {
               ),
             );
           }),
-        ),
-      ),
-    );
-  }
-}
-
-class _TextButton extends StatelessWidget {
-  const _TextButton({
-    required this.text,
-    required this.textColor,
-    required this.onPressed,
-  });
-
-  final String text;
-  final Color? textColor;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Text(
-        text,
-        style: GoogleFonts.poppins(
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-          color: textColor ?? Colors.black,
         ),
       ),
     );
