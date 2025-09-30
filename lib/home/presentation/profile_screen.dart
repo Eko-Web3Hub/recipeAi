@@ -340,6 +340,12 @@ class _RecipeCard extends StatelessWidget {
               children: [
                 BlocBuilder<RecipeImageLoader, RecipeImageState>(
                   builder: (context, imageLoaderState) {
+                    if (imageLoaderState is RecipeImageLoading) {
+                      return _ImageRecipeLoader(
+                        progress: null,
+                      );
+                    }
+
                     if (imageLoaderState is RecipeImageLoaded) {
                       final imageUrl = imageLoaderState.url;
                       if (imageUrl == null) {
