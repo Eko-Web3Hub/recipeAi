@@ -135,9 +135,9 @@ class _LanguageSetting extends StatelessWidget {
       listenable: translationController,
       builder: (context, _) {
         return _SettingOptionCard(
-          iconPath: 'assets/icon/languagesIcon.svg',
+          iconPath: 'assets/icon/languageNewIcon.svg',
           title: appTexts.language,
-          rightSectionChild: Container(),
+          rightSectionChild: _RedirectionIcon(),
         );
       },
     );
@@ -249,6 +249,34 @@ class _SettingOptionCard extends StatelessWidget {
               child: rightSectionChild,
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RedirectionIcon extends StatelessWidget {
+  const _RedirectionIcon({
+    this.onTap,
+  });
+
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 24,
+        height: 24,
+        decoration: BoxDecoration(
+          color: yellowBrandColor,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Center(
+          child: SvgPicture.asset(
+            'assets/images/arrowWhiteRightIcon.svg',
+          ),
         ),
       ),
     );
