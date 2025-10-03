@@ -150,34 +150,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                ListenableBuilder(
-                    listenable: di<TranslationController>(),
-                    builder: (context, _) {
-                      return _ProfilOption(
-                        icon: 'assets/icon/languagesIcon.svg',
-                        onPressed: () => context.push(
-                          '/profil-screen/change-language',
-                        ),
-                        trailing: OptionRightBtn(
-                          value: appLanguagesItem
-                              .firstWhere((item) =>
-                                  item.key ==
-                                  (appLanguagesItem.firstWhere(
-                                    (item) =>
-                                        item.key ==
-                                        di<TranslationController>()
-                                            .currentLanguageEnum
-                                            .name,
-                                  )).key)
-                              .label,
-                          onTap: () {},
-                        ),
-                        child: TranslatedText(
-                          textSelector: (lang) => lang.language,
-                          style: _optionStyle,
-                        ),
-                      );
-                    }),
                 TranslatedText(
                   textSelector: (lang) => lang.kitchenSettings,
                   style: _optionStyle,

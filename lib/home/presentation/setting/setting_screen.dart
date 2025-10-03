@@ -9,6 +9,7 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
+import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -135,9 +136,39 @@ class _LanguageSetting extends StatelessWidget {
       listenable: translationController,
       builder: (context, _) {
         return _SettingOptionCard(
+          onTap: () => context.push(
+            '/profil-screen/change-language',
+          ),
           iconPath: 'assets/icon/languageNewIcon.svg',
           title: appTexts.language,
-          rightSectionChild: _RedirectionIcon(),
+          rightSectionChild: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                appLanguagesItem
+                    .firstWhere((item) =>
+                        item.key ==
+                        (appLanguagesItem.firstWhere(
+                          (item) =>
+                              item.key ==
+                              di<TranslationController>()
+                                  .currentLanguageEnum
+                                  .name,
+                        )).key)
+                    .label,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  height: 1.45,
+                  color: Color(
+                    0xffCCD4DE,
+                  ),
+                ),
+              ),
+              const Gap(13),
+              _RedirectionIcon(),
+            ],
+          ),
         );
       },
     );
