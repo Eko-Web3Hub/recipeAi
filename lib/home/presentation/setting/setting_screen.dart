@@ -72,7 +72,7 @@ class SettingScreen extends StatelessWidget {
                     title: appTexts.settings,
                     arrowLeftOnPressed: () => context.pop(),
                   ),
-                  body: SingleChildScrollView(
+                  body: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 20,
                     ),
@@ -90,9 +90,14 @@ class SettingScreen extends StatelessWidget {
                           title: appTexts.myPreferences,
                         ),
                         const Gap(16),
+                        _FeedBackSetting(
+                          title: appTexts.sendABug,
+                        ),
+                        const Spacer(),
                         _DeleteAccountBtn(
                           title: appTexts.deleteAccount,
                         ),
+                        const Gap(20),
                       ],
                     ),
                   ),
@@ -231,6 +236,23 @@ class _DeleteAccountBtn extends StatelessWidget {
         }
       },
       rightSectionChild: Container(),
+    );
+  }
+}
+
+class _FeedBackSetting extends StatelessWidget {
+  const _FeedBackSetting({
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return _SettingOptionCard(
+      iconPath: 'assets/icon/solarBugIcon.svg',
+      title: title,
+      rightSectionChild: _RedirectionIcon(),
     );
   }
 }

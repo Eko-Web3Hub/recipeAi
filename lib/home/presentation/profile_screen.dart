@@ -149,15 +149,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                _ProfilOption(
-                  icon: 'assets/icon/solarBugIcon.svg',
-                  onPressed: _openFeedBackLink,
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.sendABug,
-                    style: _optionStyle,
-                  ),
-                ),
-                const Gap(10),
                 BlocProvider(
                   create: (context) => SignOutBtnControlller(
                     di<IAuthService>(),
