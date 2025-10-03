@@ -86,6 +86,10 @@ class SettingScreen extends StatelessWidget {
                         const Gap(16),
                         _LanguageSetting(),
                         const Gap(16),
+                        _MyPreferencesSetting(
+                          title: appTexts.myPreferences,
+                        ),
+                        const Gap(16),
                         _DeleteAccountBtn(
                           title: appTexts.deleteAccount,
                         ),
@@ -96,6 +100,25 @@ class SettingScreen extends StatelessWidget {
               );
             });
       }),
+    );
+  }
+}
+
+class _MyPreferencesSetting extends StatelessWidget {
+  const _MyPreferencesSetting({
+    required this.title,
+  });
+
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return _SettingOptionCard(
+      onTap: () => context.push(
+        "/profil-screen/update-user-preference",
+      ),
+      iconPath: 'assets/icon/myPreferencesIcon.svg',
+      title: title,
+      rightSectionChild: _RedirectionIcon(),
     );
   }
 }

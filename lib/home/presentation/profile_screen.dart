@@ -149,24 +149,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                TranslatedText(
-                  textSelector: (lang) => lang.kitchenSettings,
-                  style: _optionStyle,
-                ),
-                _ProfilOption(
-                  icon: 'assets/icon/myPreferencesIcon.svg',
-                  onPressed: () =>
-                      context.push("/profil-screen/update-user-preference"),
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.myPreferences,
-                    style: _optionStyle,
-                  ),
-                ),
-                const Gap(20),
-                TranslatedText(
-                  textSelector: (lang) => lang.help,
-                  style: settingHeadTitleStyle,
-                ),
                 _ProfilOption(
                   icon: 'assets/icon/solarBugIcon.svg',
                   onPressed: _openFeedBackLink,
