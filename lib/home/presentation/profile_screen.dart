@@ -11,7 +11,6 @@ import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
@@ -160,14 +159,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       context.push("/profil-screen/update-user-preference"),
                   child: TranslatedText(
                     textSelector: (lang) => lang.myPreferences,
-                    style: _optionStyle,
-                  ),
-                ),
-                _ProfilOption(
-                  icon: 'assets/icon/notificationBell.svg',
-                  onPressed: null,
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.notification,
                     style: _optionStyle,
                   ),
                 ),
