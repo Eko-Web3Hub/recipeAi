@@ -103,8 +103,6 @@ class _AccountScreenState extends State<AccountScreen> {
                     : null;
                 _nameController.text = name ?? '';
 
-                print(name);
-
                 return Column(
                   children: [
                     Center(

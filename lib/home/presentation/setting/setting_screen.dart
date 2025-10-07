@@ -4,12 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/account_screen.dart';
 import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
+import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -93,17 +95,47 @@ class SettingScreen extends StatelessWidget {
                         _FeedBackSetting(
                           title: appTexts.sendABug,
                         ),
+                        const Gap(16),
+                        _LogOutBtn(
+                          title: appTexts.signOut,
+                        ),
                         const Spacer(),
                         _DeleteAccountBtn(
                           title: appTexts.deleteAccount,
                         ),
-                        const Gap(20),
+                        const Gap(80),
                       ],
                     ),
                   ),
                 ),
               );
             });
+      }),
+    );
+  }
+}
+
+class _LogOutBtn extends StatelessWidget {
+  const _LogOutBtn({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SignOutBtnControlller(
+        di<IAuthService>(),
+      ),
+      child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
+          builder: (context, btnLogOutState) {
+        return Builder(builder: (context) {
+          return _SettingOptionCard(
+            iconPath: 'assets/images/notificationSettingIcon.svg',
+            title: title,
+            rightSectionChild: _RedirectionIcon(),
+            onTap: () => context.read<SignOutBtnControlller>().signOut(),
+          );
+        });
       }),
     );
   }
@@ -332,27 +364,20 @@ class _SettingOptionCard extends StatelessWidget {
 }
 
 class _RedirectionIcon extends StatelessWidget {
-  const _RedirectionIcon({
-    this.onTap,
-  });
-
-  final Function()? onTap;
+  const _RedirectionIcon();
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 24,
-        height: 24,
-        decoration: BoxDecoration(
-          color: yellowBrandColor,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Center(
-          child: SvgPicture.asset(
-            'assets/images/arrowWhiteRightIcon.svg',
-          ),
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        color: yellowBrandColor,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Center(
+        child: SvgPicture.asset(
+          'assets/images/arrowWhiteRightIcon.svg',
         ),
       ),
     );

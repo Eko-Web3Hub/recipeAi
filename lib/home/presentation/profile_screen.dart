@@ -149,29 +149,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                BlocProvider(
-                  create: (context) => SignOutBtnControlller(
-                    di<IAuthService>(),
-                  ),
-                  child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                      builder: (context, btnLogOutState) {
-                    return Builder(builder: (context) {
-                      return ListenableBuilder(
-                          listenable: di<TranslationController>(),
-                          builder: (context, _) {
-                            return MainBtn(
-                              text: di<TranslationController>()
-                                  .currentLanguage
-                                  .signOut,
-                              isLoading: btnLogOutState is SignOutBtnLoading,
-                              onPressed: () {
-                                context.read<SignOutBtnControlller>().signOut();
-                              },
-                            );
-                          });
-                    });
-                  }),
-                ),
               ],
             ),
           ),
