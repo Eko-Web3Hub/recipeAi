@@ -5,15 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
-import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
-import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
@@ -21,14 +18,11 @@ import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.da
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
-import 'package:recipe_ai/utils/device_info.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/styles.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 TextStyle settingHeadTitleStyle = GoogleFonts.poppins(
   fontSize: 14,
@@ -44,22 +38,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Future<void> _openFeedBackLink() async {
-    final encodedUid =
-        Uri.encodeComponent(di<IAuthUserService>().currentUser!.uid.value);
-    final device = await deviceInfo();
-    final appVersion = await getAppVersion();
-
-    final encodedDevice = Uri.encodeComponent(device);
-    final encodedAppVersion = Uri.encodeComponent(appVersion);
-
-    final url =
-        'https://tally.so/r/nGblKQ?uid=$encodedUid&device=$encodedDevice&version=$encodedAppVersion';
-    final uri = Uri.parse(url);
-
-    await launchUrl(uri);
-  }
-
   @override
   void initState() {
     super.initState();

@@ -14,7 +14,10 @@ import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/device_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void _delectionSuccess(BuildContext context) {
   final appTexts = di<TranslationController>().currentLanguage;
@@ -279,9 +282,26 @@ class _FeedBackSetting extends StatelessWidget {
 
   final String title;
 
+  Future<void> _openFeedBackLink() async {
+    final encodedUid =
+        Uri.encodeComponent(di<IAuthUserService>().currentUser!.uid.value);
+    final device = await deviceInfo();
+    final appVersion = await getAppVersion();
+
+    final encodedDevice = Uri.encodeComponent(device);
+    final encodedAppVersion = Uri.encodeComponent(appVersion);
+
+    final url =
+        'https://tally.so/r/nGblKQ?uid=$encodedUid&device=$encodedDevice&version=$encodedAppVersion';
+    final uri = Uri.parse(url);
+
+    await launchUrl(uri);
+  }
+
   @override
   Widget build(BuildContext context) {
     return _SettingOptionCard(
+      onTap: _openFeedBackLink,
       iconPath: 'assets/icon/solarBugIcon.svg',
       title: title,
       rightSectionChild: _RedirectionIcon(),
