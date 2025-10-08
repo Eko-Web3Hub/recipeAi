@@ -621,34 +621,3 @@ final appLanguagesItem = [
   AppLanguageItem(label: 'English', key: 'en'),
   AppLanguageItem(label: 'Français', key: 'fr'),
 ];
-
-class _ProfilOption extends StatelessWidget {
-  const _ProfilOption({
-    required this.icon,
-    this.trailing,
-    required this.onPressed,
-    required this.child,
-  });
-
-  final String icon;
-
-  final VoidCallback? onPressed;
-  final Widget? trailing;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onPressed,
-      leading: SvgPicture.asset(icon),
-      trailing: trailing,
-      title: child,
-      contentPadding: EdgeInsets.zero,
-    );
-  }
-}
-
-TextStyle _optionStyle = GoogleFonts.poppins(
-  fontSize: 14,
-  color: Colors.black,
-);
