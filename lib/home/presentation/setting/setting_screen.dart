@@ -133,6 +133,7 @@ class _LogOutBtn extends StatelessWidget {
           builder: (context, btnLogOutState) {
         return Builder(builder: (context) {
           return _SettingOptionCard(
+            showLeftIcon: false,
             iconPath: 'assets/images/notificationSettingIcon.svg',
             title: title,
             rightSectionChild: _RedirectionIcon(),
@@ -260,6 +261,7 @@ class _DeleteAccountBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SettingOptionCard(
+      showLeftIcon: false,
       iconPath: 'assets/icon/languagesIcon.svg',
       title: title,
       titleColor: Colors.red,
@@ -316,8 +318,9 @@ class _SettingOptionCard extends StatelessWidget {
     required this.title,
     this.titleColor,
     required this.rightSectionChild,
+    this.showLeftIcon = true,
   });
-
+  final bool showLeftIcon;
   final String iconPath;
   final String title;
   final Color? titleColor;
@@ -355,8 +358,11 @@ class _SettingOptionCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset(
-                  iconPath,
+                Visibility(
+                  visible: showLeftIcon,
+                  child: SvgPicture.asset(
+                    iconPath,
+                  ),
                 ),
                 const Gap(12),
                 Text(
