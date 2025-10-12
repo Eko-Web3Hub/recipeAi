@@ -109,21 +109,39 @@ class _CheckBoxOptionState extends State<CheckBoxOption> {
         widget.onChanged(isSelected);
       },
       child: Chip(
-        side: BorderSide.none,
-        backgroundColor: isSelected ? secondOrangePrimaryColor : Colors.white,
-        avatar: Container(
-          width: 25,
-          height: 25,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: neutralGreyColor,
-          ),
-        ),
+        elevation: 5,
+        shadowColor: Color.fromRGBO(6, 51, 54, 0.1),
+        side: isSelected
+            ? BorderSide(color: greenPrimaryColor, width: 1.5)
+            : BorderSide.none,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.all(8),
+        backgroundColor: isSelected ? Colors.white : neutralGrey4Color,
+        avatar: isSelected
+            ? Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                    color: greenPrimaryColor,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+              )
+            : Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color(0xFFC4C4C4),
+                ),
+              ),
         label: Text(
           widget.option,
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            fontSize: 16,
             color: Colors.black,
           ),
         ),

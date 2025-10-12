@@ -515,31 +515,37 @@ abstract class AppLocalizations {
   /// Title for the first onboarding step about filling the kitchen inventory
   ///
   /// In en, this message translates to:
-  /// **'Fill your kitchen inventory easily'**
+  /// **'Discover all the best recipes you needed'**
   String get onboardingTitle1;
 
   /// Description for the first onboarding step about uploading kitchen inventory or invoices
   ///
   /// In en, this message translates to:
-  /// **'Upload your kitchen inventory or invoices, and we\'ll generate recipes just for you.'**
+  /// **'5000+ healthy recipes made by people for your healthy life'**
   String get onboardingDesc1;
 
   /// Title for the third onboarding step about personalized preferences
   ///
   /// In en, this message translates to:
-  /// **'Personalized Preferences'**
+  /// **'Let\'s cook with the recipe you found'**
   String get onboardingTitle3;
+
+  /// Description for third onboarding step
+  ///
+  /// In en, this message translates to:
+  /// **'Cooking based on the food recipes you find and the food you love'**
+  String get onboardingDesc3;
 
   /// Title for the second onboarding step about smart recipe generation
   ///
   /// In en, this message translates to:
-  /// **'Smart Recipe Generation'**
+  /// **'Order directly the ingredients'**
   String get onboardingTitle2;
 
   /// Description for the second onboarding step about generating recipes from ingredients
   ///
   /// In en, this message translates to:
-  /// **'From ingredients to quick \nrecipes you can save.'**
+  /// **'Order the ingredients you need quickly with a fast process'**
   String get onboardingDesc2;
 
   /// Label for the button to skip a step
@@ -985,6 +991,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'See All'**
   String get seeAll;
+
+  /// No description provided for @startDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Help your path to health goals with happiness'**
+  String get startDesc;
 }
 
 class _AppLocalizationsDelegate

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -70,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: RefreshIndicator(
             color: Theme.of(context).primaryColor,
-            backgroundColor: Colors.white,
+            //backgroundColor: Colors.white,
             onRefresh: () async {
               context.read<HomeScreenController>().regenerateUserReceipe();
 
@@ -190,10 +192,11 @@ class ReceipeItem extends StatelessWidget {
         },
       ),
       child: Container(
+        height: 219,
         margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10), color: Colors.white),
-        child: Column(
+        child: Stack(
           children: [
             BlocProvider(
               create: (context) => RecipeImageLoader(
@@ -219,29 +222,33 @@ class ReceipeItem extends StatelessWidget {
                       );
                     }
 
-                    return CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      progressIndicatorBuilder: (context, url, progress) =>
-                          _ImageRecipeContainer(
-                              child: CustomCircularLoader(
-                        value: progress.progress,
-                      )),
-                      errorWidget: (context, url, error) =>
-                          _ImageRecipeContainer(
-                        child: Image.asset(
-                          'assets/images/recipePlaceHolder.png',
+                    return ClipRRect(
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            _ImageRecipeContainer(
+                                child: CustomCircularLoader(
+                          value: progress.progress,
+                        )),
+                        errorWidget: (context, url, error) =>
+                            _ImageRecipeContainer(
+                          child: Image.asset(
+                            'assets/images/recipePlaceHolder.png',
+                          ),
                         ),
-                      ),
-                      imageBuilder: (context, imageProvider) => ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        child: Image(
-                          image: imageProvider,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          height: 140,
+                        imageBuilder: (context, imageProvider) => ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          child: Image(
+                            image: imageProvider,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            height: 219,
+                          ),
                         ),
                       ),
                     );
@@ -249,77 +256,94 @@ class ReceipeItem extends StatelessWidget {
                 );
               }),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: BlocProvider(
-                create: (context) => RecipeMetadataCardLoader(
-                  receipe,
-                  di<IUserAccountMetaDataRepository>(),
-                  di<IAuthUserService>(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.6),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        )),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    child: BlocProvider(
+                      create: (context) => RecipeMetadataCardLoader(
+                        receipe,
+                        di<IUserAccountMetaDataRepository>(),
+                        di<IAuthUserService>(),
+                      ),
+                      child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
+                          builder: (context, receipeTranslateState) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    receipeTranslateState.name,
+                                    style: smallTextStyle.copyWith(
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Text(
+                                  '${_getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    height: 14.52 / 12,
+                                    color: secondaryColor,
+                                  ),
+                                )
+                              ],
+                            ),
+                            const Gap(8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      appTexts.averageTime,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w400,
+                                        color: greenPrimaryColor,
+                                        fontSize: 11,
+                                        height: 16.5 / 11,
+                                      ),
+                                    ),
+                                    Text(
+                                      receipeTranslateState.averageTime,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 11,
+                                        color: secondaryColor,
+                                        height: 16.5 / 11,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                RecipeIconFavorite(
+                                  receipe: receipe,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
                 ),
-                child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
-                    builder: (context, receipeTranslateState) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              receipeTranslateState.name,
-                              style: smallTextStyle,
-                            ),
-                          ),
-                          Text(
-                            '${_getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
-                            style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              height: 14.52 / 12,
-                              color: Colors.black,
-                            ),
-                          )
-                        ],
-                      ),
-                      const Gap(8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                appTexts.averageTime,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w400,
-                                  color: neutralGreyColor,
-                                  fontSize: 11,
-                                  height: 16.5 / 11,
-                                ),
-                              ),
-                              Text(
-                                receipeTranslateState.averageTime,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 11,
-                                  color: neutralBlackColor,
-                                  height: 16.5 / 11,
-                                ),
-                              ),
-                            ],
-                          ),
-                          RecipeIconFavorite(
-                            receipe: receipe,
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                }),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -360,13 +384,16 @@ class RecipeIconFavorite extends StatelessWidget {
               behavior: HitTestBehavior.opaque,
               onTap: context.read<ReceipeItemController>().toggleFavorite,
               child: Container(
-                padding: EdgeInsets.all(16),
+                //padding: EdgeInsets.all(16),
                 color: Colors.transparent,
                 child: SvgPicture.asset(
                   recipeItemSaved is ReceipeItemStateSaved
                       ? "assets/images/favorite.svg"
                       : outlinedFavoriteIcon,
                   height: size,
+                  fit: BoxFit.cover,
+                  colorFilter:
+                      ColorFilter.mode(Colors.white, BlendMode.srcATop),
                 ),
               ),
             );

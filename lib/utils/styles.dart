@@ -16,6 +16,12 @@ TextStyle normalSmallTextStyle = GoogleFonts.poppins(
   color: Colors.white,
 );
 
+TextStyle appBarTextStyle = GoogleFonts.poppins(
+  fontWeight: FontWeight.w600,
+  fontSize: 24,
+  color: const Color(0xFF0A2533)
+);
+
 TextStyle titleDialogStyle = GoogleFonts.poppins(
   fontSize: 17,
   fontWeight: FontWeight.w500,

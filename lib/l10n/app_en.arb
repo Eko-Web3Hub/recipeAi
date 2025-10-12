@@ -279,23 +279,27 @@
     "@onboardingTitle1": {
         "description": "Title for the first onboarding step about filling the kitchen inventory"
     },
-    "onboardingTitle1": "Fill your kitchen inventory easily",
+    "onboardingTitle1": "Discover all the best recipes you needed",
     "@onboardingDesc1": {
         "description": "Description for the first onboarding step about uploading kitchen inventory or invoices"
     },
-    "onboardingDesc1": "Upload your kitchen inventory or invoices, and we'll generate recipes just for you.",
+    "onboardingDesc1": "5000+ healthy recipes made by people for your healthy life",
     "@onboardingTitle3": {
         "description": "Title for the third onboarding step about personalized preferences"
     },
-    "onboardingTitle3": "Personalized Preferences",
+    "onboardingTitle3": "Let's cook with the recipe you found",
+    "onboardingDesc3":"Cooking based on the food recipes you find and the food you love",
+    "@onboardingDesc3": {
+        "description": "Description for third onboarding step"
+    },
     "@onboardingTitle2": {
         "description": "Title for the second onboarding step about smart recipe generation"
     },
-    "onboardingTitle2": "Smart Recipe Generation",
+    "onboardingTitle2": "Order directly the ingredients",
     "@onboardingDesc2": {
         "description": "Description for the second onboarding step about generating recipes from ingredients"
     },
-    "onboardingDesc2": "From ingredients to quick \nrecipes you can save.",
+    "onboardingDesc2": "Order the ingredients you need quickly with a fast process",
     "@skip": {
         "description": "Label for the button to skip a step"
     },
@@ -591,5 +595,8 @@
     "seeAll": "See All",
     "@seeAll": {
         "description": "Label for see all"
-    }
+    },
+
+    "startDesc":"Help your path to health goals with happiness",
+    "@startDesc": {}
 }

@@ -227,21 +227,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationEmptyTitle => 'No notifications for \nyou yet 😉!';
 
   @override
-  String get onboardingTitle1 => 'Fill your kitchen inventory easily';
+  String get onboardingTitle1 => 'Discover all the best recipes you needed';
 
   @override
   String get onboardingDesc1 =>
-      'Upload your kitchen inventory or invoices, and we\'ll generate recipes just for you.';
+      '5000+ healthy recipes made by people for your healthy life';
 
   @override
-  String get onboardingTitle3 => 'Personalized Preferences';
+  String get onboardingTitle3 => 'Let\'s cook with the recipe you found';
 
   @override
-  String get onboardingTitle2 => 'Smart Recipe Generation';
+  String get onboardingDesc3 =>
+      'Cooking based on the food recipes you find and the food you love';
+
+  @override
+  String get onboardingTitle2 => 'Order directly the ingredients';
 
   @override
   String get onboardingDesc2 =>
-      'From ingredients to quick \nrecipes you can save.';
+      'Order the ingredients you need quickly with a fast process';
 
   @override
   String get skip => 'Skip';
@@ -479,4 +483,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seeAll => 'See All';
+
+  @override
+  String get startDesc => 'Help your path to health goals with happiness';
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class OnboardingModel extends Equatable {
   final String title;
   final Widget child;
-  final String? description;
+  final String description;
   final Color? textColor;
   final String? bgImage;
   final double horizontalPadding;
@@ -13,7 +13,7 @@ class OnboardingModel extends Equatable {
   const OnboardingModel({
     required this.title,
     required this.child,
-    this.description,
+    required this.description,
     this.textColor,
     this.bgImage,
     this.horizontalPadding = 0,
