@@ -494,7 +494,7 @@
 				DEVELOPMENT_TEAM = 4876U3X92F;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.7;
-				FLUTTER_BUILD_NUMBER = 3;
+				FLUTTER_BUILD_NUMBER = 4;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Eat'Easy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
@@ -683,7 +683,7 @@
 				DEVELOPMENT_TEAM = 4876U3X92F;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.7;
-				FLUTTER_BUILD_NUMBER = 3;
+				FLUTTER_BUILD_NUMBER = 4;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Eat'Easy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
@@ -712,7 +712,7 @@
 				DEVELOPMENT_TEAM = 4876U3X92F;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.7;
-				FLUTTER_BUILD_NUMBER = 3;
+				FLUTTER_BUILD_NUMBER = 4;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Eat'Easy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";

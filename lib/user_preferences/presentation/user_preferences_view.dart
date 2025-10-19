@@ -123,7 +123,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                                   if (enableNotif != null && enableNotif) {
                                     context
                                         .read<NotificationUserController>()
-                                        .requestPermission();
+                                        .requestPermission(true);
                                   }
 
                                   userPreferenceSubmitBtnController

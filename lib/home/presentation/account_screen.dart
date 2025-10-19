@@ -392,7 +392,9 @@ final _formBorder = OutlineInputBorder(
   ),
   borderSide: BorderSide(
     width: 1.5,
-    color: newNeutralBlackColor,
+    color: Color(
+      0xffE6EBF2,
+    ),
   ),
 );
 
@@ -405,31 +407,39 @@ class NewFormField extends StatelessWidget {
     this.controller,
     this.enabled = true,
     this.onTap,
+    this.validator,
   });
 
-  final String label;
+  final String? label;
   final String? initialValue;
   final TextEditingController? controller;
   final Widget? prefixIcon;
   final bool enabled;
   final void Function()? onTap;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w400,
-            fontSize: 16,
-            height: 1.35,
-            color: newNeutralBlackColor,
+        if (label != null)
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 12.0,
+            ),
+            child: Text(
+              label!,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                height: 1.35,
+                color: newNeutralBlackColor,
+              ),
+            ),
           ),
-        ),
-        const Gap(12.0),
         TextFormField(
+          validator: validator,
           onTap: onTap,
           controller: controller,
           initialValue: initialValue,
@@ -444,6 +454,8 @@ class NewFormField extends StatelessWidget {
             prefixIcon: prefixIcon,
             disabledBorder: _formBorder,
             border: _formBorder,
+            focusedBorder: _formBorder,
+            enabledBorder: _formBorder,
           ),
         ),
       ],

@@ -214,80 +214,108 @@ class _RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentLanguage = di<TranslationController>().currentLanguageEnum;
-    final recipeTile = currentLanguage == AppLanguage.en
-        ? recipe.receipeEn.name
-        : recipe.receipeFr.name;
+    final currentRecipe =
+        currentLanguage == AppLanguage.en ? recipe.receipeEn : recipe.receipeFr;
 
-    return _RecipeCardContainer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BlocProvider(
-            create: (context) => RecipeImageLoader(
-              di<FunctionsCaller>(),
-              recipe.receipeEn.name,
-            ),
-            child: Stack(
-              children: [
-                BlocBuilder<RecipeImageLoader, RecipeImageState>(
-                  builder: (context, imageLoaderState) {
-                    if (imageLoaderState is RecipeImageLoading) {
-                      return _ImageRecipeLoader(
-                        progress: null,
-                      );
-                    }
+    return GestureDetector(
+      onTap: () => context.push(
+        '/home/recipe-details',
+        extra: {
+          'receipe': recipe,
+        },
+      ),
+      child: _RecipeCardContainer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BlocProvider(
+              create: (context) => RecipeImageLoader(
+                di<FunctionsCaller>(),
+                recipe.receipeEn.name,
+              ),
+              child: Stack(
+                children: [
+                  BlocBuilder<RecipeImageLoader, RecipeImageState>(
+                    builder: (context, imageLoaderState) {
+                      if (imageLoaderState is RecipeImageLoading) {
+                        return _ImageRecipeLoader(
+                          progress: null,
+                        );
+                      }
 
-                    if (imageLoaderState is RecipeImageLoaded) {
-                      final imageUrl = imageLoaderState.url;
-                      if (imageUrl == null) {
-                        return _SubRecipeCardContainer(
-                          imageProvider: null,
-                          child: Image.asset(
-                            'assets/images/recipePlaceHolder.png',
+                      if (imageLoaderState is RecipeImageLoaded) {
+                        final imageUrl = imageLoaderState.url;
+                        if (imageUrl == null) {
+                          return _SubRecipeCardContainer(
+                            imageProvider: null,
+                            child: Image.asset(
+                              'assets/images/recipePlaceHolder.png',
+                            ),
+                          );
+                        }
+
+                        return CachedNetworkImage(
+                          imageUrl: imageLoaderState.url!,
+                          progressIndicatorBuilder: (context, url, progress) =>
+                              _ImageRecipeLoader(
+                            progress: progress.progress,
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const _ImageRecipeWithError(),
+                          imageBuilder: (context, imageProvider) =>
+                              _SubRecipeCardContainer(
+                            imageProvider: imageProvider,
+                            child: null,
                           ),
                         );
                       }
 
-                      return CachedNetworkImage(
-                        imageUrl: imageLoaderState.url!,
-                        progressIndicatorBuilder: (context, url, progress) =>
-                            _ImageRecipeLoader(
-                          progress: progress.progress,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const _ImageRecipeWithError(),
-                        imageBuilder: (context, imageProvider) =>
-                            _SubRecipeCardContainer(
-                          imageProvider: imageProvider,
-                          child: null,
-                        ),
-                      );
-                    }
-
-                    return SizedBox.shrink();
-                  },
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: _ToggleFavoriteBtn(
-                    receipe: recipe,
+                      return SizedBox.shrink();
+                    },
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: _ToggleFavoriteBtn(
+                      receipe: recipe,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Gap(12),
+            Text(
+              currentRecipe.name,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+                height: 1.35,
+                color: newNeutralBlackColor,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const Gap(11.0),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset('assets/images/calorie_icon.svg'),
+                const Gap(6.39),
+                Text(
+                  '${recipe.receipeEn.totalCalories} Kcal',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    height: 1.5,
+                    color: Color(
+                      0xff97A2B0,
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-          const Gap(12),
-          Text(
-            recipeTile,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-              height: 1.35,
-              color: newNeutralBlackColor,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

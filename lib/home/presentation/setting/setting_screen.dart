@@ -13,6 +13,8 @@ import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
+import 'package:recipe_ai/notification/domain/models/notification_user.dart';
+import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -175,15 +177,22 @@ class _NotificationSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SettingOptionCard(
-      iconPath: iconPath,
-      title: title,
-      rightSectionChild: Switch(
-        activeColor: yellowBrandColor,
-        thumbColor: WidgetStateProperty.all(Colors.white),
-        value: true,
-        onChanged: (newValue) {},
-      ),
+    return BlocBuilder<NotificationUserController, NotificationUser?>(
+      builder: (context, notificationSettingState) {
+        return _SettingOptionCard(
+          iconPath: iconPath,
+          title: title,
+          rightSectionChild: Switch(
+            activeColor: yellowBrandColor,
+            thumbColor: WidgetStateProperty.all(Colors.white),
+            value: notificationSettingState?.status ==
+                NotificationUserStatus.authorized,
+            onChanged: (newValue) => context
+                .read<NotificationUserController>()
+                .toggleNotification(newValue),
+          ),
+        );
+      },
     );
   }
 }
