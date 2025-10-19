@@ -29,4 +29,31 @@ class FirestoreNotificationUserRepository
         .doc(uid.value)
         .set(userNotification.toJson());
   }
+
+  @override
+  Future<NotificationUser?> get(EntityId uid) async {
+    final doc =
+        await _firestore.collection(_notificationUser).doc(uid.value).get();
+
+    if (doc.exists) {
+      return NotificationUser.fromJson(doc.data()!);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Stream<NotificationUser?> watch(EntityId uid) {
+    return _firestore
+        .collection(_notificationUser)
+        .doc(uid.value)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        return NotificationUser.fromJson(snapshot.data()!);
+      } else {
+        return null;
+      }
+    });
+  }
 }

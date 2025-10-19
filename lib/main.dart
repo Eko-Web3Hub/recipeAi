@@ -66,7 +66,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (_) => OnboardingController(
-              di<ILocalStorageRepository>(), di<IAnalyticsRepository>()),
+            di<ILocalStorageRepository>(),
+            di<IAnalyticsRepository>(),
+          ),
         ),
         BlocProvider(
           create: (_) => HomeScreenController(

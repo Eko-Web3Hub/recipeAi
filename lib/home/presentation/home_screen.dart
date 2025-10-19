@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         DateTime.now(),
       );
       await showAppUpdatePopup(context);
-      context.read<NotificationUserController>().requestPermission();
+      context.read<NotificationUserController>().requestPermission(false);
     });
   }
 
