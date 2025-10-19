@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_bottom_nav.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
@@ -63,6 +64,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: appBarTitle != null
           ? AppBar(
               surfaceTintColor: secondaryColor,
@@ -81,53 +83,72 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       body: navigationShell,
       floatingActionButton: hideNavBar
           ? null
-          : Builder(builder: (context) {
-              return FloatingActionButton(
-                elevation: 0,
-                onPressed: () {
-                  /// reditect to camera screen
-                  // context.go("/home/kitchen-inventory");
-                  _showAiActionRecipeBottomSheet(context);
-                },
-                backgroundColor: greenPrimaryColor,
-                shape: const CircleBorder(),
-                child: Center(
-                  child: SvgPicture.asset('assets/images/aiFillWhite.svg'),
-                ),
-              );
-            }),
+          : ChefFab(
+              iconAsset: 'assets/icon/chef_hat.svg', // le pictogramme blanc
+              onPressed: () {
+                // ton action existante
+                _showAiActionRecipeBottomSheet(context);
+              },
+            ),
+
+      // Builder(builder: (context) {
+      //     return FloatingActionButton(
+      //       elevation: 0,
+      //       onPressed: () {
+      //         /// reditect to camera screen
+      //         // context.go("/home/kitchen-inventory");
+      //         _showAiActionRecipeBottomSheet(context);
+      //       },
+      //       backgroundColor: greenPrimaryColor,
+      //       shape: const CircleBorder(),
+      //       child: Center(
+      //         child: SvgPicture.asset('assets/images/aiFillWhite.svg'),
+      //       ),
+      //     );
+      //   }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       bottomNavigationBar:
           (hideNavBar || MediaQuery.of(context).viewInsets.bottom != 0)
               ? null
-              : BottomAppBar(
-                  elevation: 10,
-                  height: 70,
-                  color: Colors.white,
-                  shape: const CircularNotchedRectangle(),
-                  surfaceTintColor: Colors.transparent,
-                  notchMargin: 10,
-                  child: Row(
-                    children: [
-                      for (int i = 0; i < 2; i++)
-                        _NavBarItem(
-                          index: i,
-                          item: _navigationsItems[i],
-                          currentIndex: navigationShell.currentIndex,
-                          onTap: _goBranch,
-                        ),
-                      const SizedBox(width: 64),
-                      for (int i = 2; i < 4; i++)
-                        _NavBarItem(
-                          index: i,
-                          item: _navigationsItems[i],
-                          currentIndex: navigationShell.currentIndex,
-                          onTap: _goBranch,
-                        ),
-                    ],
-                  ),
+              : FancyBottomBar(
+                  items: const [
+                    BarItemData('assets/images/home.svg'),
+                    BarItemData('assets/images/favorite_outlined.svg'),
+                    BarItemData('assets/images/list_add.svg'),
+                    BarItemData('assets/images/profile.svg'),
+                  ],
+                  currentIndex: navigationShell.currentIndex,
+                  onTap: (i) => _goBranch(i),
                 ),
+
+      // BottomAppBar(
+      //     elevation: 10,
+      //     height: 70,
+      //     color: Colors.white,
+      //     shape: const CircularNotchedRectangle(),
+      //     surfaceTintColor: Colors.transparent,
+      //     notchMargin: 10,
+      //     child: Row(
+      //       children: [
+      //         for (int i = 0; i < 2; i++)
+      //           _NavBarItem(
+      //             index: i,
+      //             item: _navigationsItems[i],
+      //             currentIndex: navigationShell.currentIndex,
+      //             onTap: _goBranch,
+      //           ),
+      //         const SizedBox(width: 64),
+      //         for (int i = 2; i < 4; i++)
+      //           _NavBarItem(
+      //             index: i,
+      //             item: _navigationsItems[i],
+      //             currentIndex: navigationShell.currentIndex,
+      //             onTap: _goBranch,
+      //           ),
+      //       ],
+      //     ),
+      //   ),
 
       // NavigationBar(
       //     height: 70,
