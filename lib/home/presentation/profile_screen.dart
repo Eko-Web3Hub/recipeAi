@@ -286,6 +286,27 @@ class _RecipeCard extends StatelessWidget {
               height: 1.35,
               color: newNeutralBlackColor,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Gap(11.0),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset('assets/images/calorie_icon.svg'),
+              const Gap(6.39),
+              Text(
+                '${recipe.receipeEn.totalCalories} Kcal',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  height: 1.5,
+                  color: Color(
+                    0xff97A2B0,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
