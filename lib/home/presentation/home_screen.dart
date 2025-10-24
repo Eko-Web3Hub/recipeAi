@@ -45,16 +45,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    final notificationUserController =
+        context.read<NotificationUserController>();
+    final homeScreenController = context.read<HomeScreenController>();
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      context.read<HomeScreenController>().reload();
+      homeScreenController.reload();
 
       await di<TranslationController>().saveLanguageWhenNeeded();
       await di<IUserAccountMetaDataService>().saveRecentLoginDate(
         DateTime.now(),
       );
       await showAppUpdatePopup(context);
-      context.read<NotificationUserController>().requestPermission(false);
+      notificationUserController.requestPermission(false);
     });
   }
 
