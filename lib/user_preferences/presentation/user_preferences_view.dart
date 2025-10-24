@@ -85,8 +85,10 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: UserPreferenceQuestionList(
-                            questions: questions,
+                          child: SingleChildScrollView(
+                            child: UserPreferenceQuestionList(
+                              questions: questions,
+                            ),
                           ),
                         ),
                         BlocProvider(
