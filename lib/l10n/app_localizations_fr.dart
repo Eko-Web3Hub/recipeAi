@@ -500,4 +500,5 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get startDesc =>
       'Aidez votre chemin vers vos objectifs de santé avec bonheur';
+  String get editProfile => 'Modifier le profil';
 }

@@ -14,6 +14,12 @@ class UserPersonnalInfo extends Equatable {
     return _copyWith(name: username);
   }
 
+  static UserPersonnalInfo defaultInfo(EntityId uid, String name) =>
+      UserPersonnalInfo(
+        uid: uid,
+        name: name,
+      );
+
   UserPersonnalInfo _copyWith({
     EntityId? uid,
     String? name,

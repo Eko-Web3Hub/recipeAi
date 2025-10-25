@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/notification/application/fcm_token_service.dart';
@@ -9,7 +11,9 @@ class NotificationUserController extends Cubit<NotificationUser?> {
   NotificationUserController(
     this._fcmTokenService,
     this._notificationUserService,
-  ) : super(null);
+  ) : super(null) {
+    _load();
+  }
 
   NotificationUserController.inject()
       : this(
@@ -17,7 +21,17 @@ class NotificationUserController extends Cubit<NotificationUser?> {
           di<INotificationUserService>(),
         );
 
-  void requestPermission() async {
+  void requestPermission(bool hasJustEnabled) async {
+    final currentNotificationUser = await _notificationUserService.get();
+
+    if (!hasJustEnabled &&
+        currentNotificationUser != null &&
+        (currentNotificationUser.status == NotificationUserStatus.disabled ||
+            currentNotificationUser.status ==
+                NotificationUserStatus.unauthorized)) {
+      return;
+    }
+
     final status = await _fcmTokenService.requestPermission();
     final notificationUser = NotificationUser(
       status: status
@@ -32,6 +46,32 @@ class NotificationUserController extends Cubit<NotificationUser?> {
     safeEmit(notificationUser);
   }
 
+  void toggleNotification(bool toggleNotifValue) async {
+    if (state != null && state!.status == NotificationUserStatus.authorized) {
+      final newState = await _notificationUserService.disable();
+      safeEmit(newState);
+
+      return;
+    }
+
+    requestPermission(toggleNotifValue);
+  }
+
+  void _load() {
+    _subscription = _notificationUserService.watchUserNotification
+        .listen((notificationUser) {
+      safeEmit(notificationUser);
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
+
   final FCMTokenService _fcmTokenService;
   final INotificationUserService _notificationUserService;
+
+  StreamSubscription<NotificationUser?>? _subscription;
 }

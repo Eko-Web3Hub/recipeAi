@@ -5,15 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
-import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/home/presentation/account_screen.dart';
+import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
-import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
@@ -21,14 +18,11 @@ import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.da
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
-import 'package:recipe_ai/utils/device_info.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/styles.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 TextStyle settingHeadTitleStyle = GoogleFonts.poppins(
   fontSize: 14,
@@ -44,22 +38,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Future<void> _openFeedBackLink() async {
-    final encodedUid =
-        Uri.encodeComponent(di<IAuthUserService>().currentUser!.uid.value);
-    final device = await deviceInfo();
-    final appVersion = await getAppVersion();
-
-    final encodedDevice = Uri.encodeComponent(device);
-    final encodedAppVersion = Uri.encodeComponent(appVersion);
-
-    final url =
-        'https://tally.so/r/nGblKQ?uid=$encodedUid&device=$encodedDevice&version=$encodedAppVersion';
-    final uri = Uri.parse(url);
-
-    await launchUrl(uri);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -112,13 +90,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Visibility(
                               visible: showSeeMore,
-                              child: TranslatedText(
-                                textSelector: (lang) => lang.seeAll,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                  height: 1.30,
-                                  color: greenBrandColor,
+                              child: GestureDetector(
+                                onTap: () =>
+                                    context.push('/profil-screen/save-recipes'),
+                                child: TranslatedText(
+                                  textSelector: (lang) => lang.seeAll,
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    height: 1.30,
+                                    color: greenBrandColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -144,102 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     );
                   },
-                ),
-                _ProfilOption(
-                  icon: 'assets/icon/accountIcon.svg',
-                  onPressed: () => context.push(
-                    '/profil-screen/my-account',
-                  ),
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.myAccount,
-                    style: _optionStyle,
-                  ),
-                ),
-                ListenableBuilder(
-                    listenable: di<TranslationController>(),
-                    builder: (context, _) {
-                      return _ProfilOption(
-                        icon: 'assets/icon/languagesIcon.svg',
-                        onPressed: () => context.push(
-                          '/profil-screen/change-language',
-                        ),
-                        trailing: OptionRightBtn(
-                          value: appLanguagesItem
-                              .firstWhere((item) =>
-                                  item.key ==
-                                  (appLanguagesItem.firstWhere(
-                                    (item) =>
-                                        item.key ==
-                                        di<TranslationController>()
-                                            .currentLanguageEnum
-                                            .name,
-                                  )).key)
-                              .label,
-                          onTap: () {},
-                        ),
-                        child: TranslatedText(
-                          textSelector: (lang) => lang.language,
-                          style: _optionStyle,
-                        ),
-                      );
-                    }),
-                TranslatedText(
-                  textSelector: (lang) => lang.kitchenSettings,
-                  style: _optionStyle,
-                ),
-                _ProfilOption(
-                  icon: 'assets/icon/myPreferencesIcon.svg',
-                  onPressed: () =>
-                      context.push("/profil-screen/update-user-preference"),
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.myPreferences,
-                    style: _optionStyle,
-                  ),
-                ),
-                _ProfilOption(
-                  icon: 'assets/icon/notificationBell.svg',
-                  onPressed: null,
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.notification,
-                    style: _optionStyle,
-                  ),
-                ),
-                const Gap(20),
-                TranslatedText(
-                  textSelector: (lang) => lang.help,
-                  style: settingHeadTitleStyle,
-                ),
-                _ProfilOption(
-                  icon: 'assets/icon/solarBugIcon.svg',
-                  onPressed: _openFeedBackLink,
-                  child: TranslatedText(
-                    textSelector: (lang) => lang.sendABug,
-                    style: _optionStyle,
-                  ),
-                ),
-                const Gap(10),
-                BlocProvider(
-                  create: (context) => SignOutBtnControlller(
-                    di<IAuthService>(),
-                  ),
-                  child: BlocBuilder<SignOutBtnControlller, SignOutBtnState>(
-                      builder: (context, btnLogOutState) {
-                    return Builder(builder: (context) {
-                      return ListenableBuilder(
-                          listenable: di<TranslationController>(),
-                          builder: (context, _) {
-                            return MainBtn(
-                              text: di<TranslationController>()
-                                  .currentLanguage
-                                  .signOut,
-                              isLoading: btnLogOutState is SignOutBtnLoading,
-                              onPressed: () {
-                                context.read<SignOutBtnControlller>().signOut();
-                              },
-                            );
-                          });
-                    });
-                  }),
                 ),
               ],
             ),
@@ -282,6 +168,7 @@ class _FavoriteRecipeGridDisplay extends StatelessWidget {
       itemCount: favoriteRecipes.length > 4 ? 4 : favoriteRecipes.length,
       itemBuilder: (context, index) {
         return _RecipeCard(
+          key: ValueKey(favoriteRecipes[index].id),
           recipe: favoriteRecipes[index],
         );
       },
@@ -318,71 +205,150 @@ class _GridViewBase extends StatelessWidget {
 
 class _RecipeCard extends StatelessWidget {
   const _RecipeCard({
+    Key? key,
     required this.recipe,
-  });
+  }) : super(key: key);
 
   final UserReceipeV2 recipe;
 
   @override
   Widget build(BuildContext context) {
     final currentLanguage = di<TranslationController>().currentLanguageEnum;
-    final recipeTile = currentLanguage == AppLanguage.en
-        ? recipe.receipeEn.name
-        : recipe.receipeFr.name;
+    final currentRecipe =
+        currentLanguage == AppLanguage.en ? recipe.receipeEn : recipe.receipeFr;
 
-    return _RecipeCardContainer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BlocProvider(
-            create: (context) => RecipeImageLoader(
-              di<FunctionsCaller>(),
-              recipe.receipeEn.name,
-            ),
-            child: BlocBuilder<RecipeImageLoader, RecipeImageState>(
-              builder: (context, imageLoaderState) {
-                if (imageLoaderState is RecipeImageLoaded) {
-                  final imageUrl = imageLoaderState.url;
-                  if (imageUrl == null) {
-                    return _SubRecipeCardContainer(
-                      imageProvider: null,
-                      child: Image.asset(
-                        'assets/images/recipePlaceHolder.png',
-                      ),
-                    );
-                  }
+    return GestureDetector(
+      onTap: () => context.push(
+        '/home/recipe-details',
+        extra: {
+          'receipe': recipe,
+        },
+      ),
+      child: _RecipeCardContainer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BlocProvider(
+              create: (context) => RecipeImageLoader(
+                di<FunctionsCaller>(),
+                recipe.receipeEn.name,
+              ),
+              child: Stack(
+                children: [
+                  BlocBuilder<RecipeImageLoader, RecipeImageState>(
+                    builder: (context, imageLoaderState) {
+                      if (imageLoaderState is RecipeImageLoading) {
+                        return _ImageRecipeLoader(
+                          progress: null,
+                        );
+                      }
 
-                  return CachedNetworkImage(
-                    imageUrl: imageLoaderState.url!,
-                    progressIndicatorBuilder: (context, url, progress) =>
-                        _ImageRecipeLoader(
-                      progress: progress.progress,
+                      if (imageLoaderState is RecipeImageLoaded) {
+                        final imageUrl = imageLoaderState.url;
+                        if (imageUrl == null) {
+                          return _SubRecipeCardContainer(
+                            imageProvider: null,
+                            child: Image.asset(
+                              'assets/images/recipePlaceHolder.png',
+                            ),
+                          );
+                        }
+
+                        return CachedNetworkImage(
+                          imageUrl: imageLoaderState.url!,
+                          progressIndicatorBuilder: (context, url, progress) =>
+                              _ImageRecipeLoader(
+                            progress: progress.progress,
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const _ImageRecipeWithError(),
+                          imageBuilder: (context, imageProvider) =>
+                              _SubRecipeCardContainer(
+                            imageProvider: imageProvider,
+                            child: null,
+                          ),
+                        );
+                      }
+
+                      return SizedBox.shrink();
+                    },
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: _ToggleFavoriteBtn(
+                      receipe: recipe,
                     ),
-                    errorWidget: (context, url, error) =>
-                        const _ImageRecipeWithError(),
-                    imageBuilder: (context, imageProvider) =>
-                        _SubRecipeCardContainer(
-                      imageProvider: imageProvider,
-                      child: null,
+                  ),
+                ],
+              ),
+            ),
+            const Gap(12),
+            Text(
+              currentRecipe.name,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+                height: 1.35,
+                color: newNeutralBlackColor,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const Gap(11.0),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset('assets/images/calorie_icon.svg'),
+                const Gap(6.39),
+                Text(
+                  '${recipe.receipeEn.totalCalories} Kcal',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    height: 1.5,
+                    color: Color(
+                      0xff97A2B0,
                     ),
-                  );
-                }
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                return SizedBox.shrink();
-              },
-            ),
-          ),
-          const Gap(12),
-          Text(
-            recipeTile,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-              height: 1.35,
-              color: newNeutralBlackColor,
-            ),
+class _ToggleFavoriteBtn extends StatelessWidget {
+  const _ToggleFavoriteBtn({required this.receipe});
+
+  final UserReceipeV2 receipe;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 28,
+      height: 28,
+      padding: EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff063336).withOpacity(0.1),
+            spreadRadius: 0,
+            blurRadius: 16,
+            offset: const Offset(0, 2),
           ),
         ],
+      ),
+      child: RecipeIconFavorite(
+        receipe: receipe,
+        fillFavoriteIcon: 'assets/images/NewLoveIcon.svg',
+        outlinedFavoriteIcon: 'assets/images/unfillHeartImage.svg',
+        padding: 0,
       ),
     );
   }
@@ -502,7 +468,7 @@ class _UserProfilCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => context.push('/profil-screen/my-account'),
       child: Container(
         width: double.infinity,
         height: 80,
@@ -525,22 +491,9 @@ class _UserProfilCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Color(0xffCCD4DE),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: greenBrandColor,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      name[0].toUpperCase(),
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                  ),
+                UserProfilePicture(
+                  name: name,
+                  size: 48,
                 ),
                 const Gap(16),
                 Column(
@@ -575,6 +528,40 @@ class _UserProfilCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class UserProfilePicture extends StatelessWidget {
+  const UserProfilePicture({
+    super.key,
+    required this.size,
+    required this.name,
+  });
+
+  final double size;
+  final String? name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Color(0xffCCD4DE),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: greenBrandColor,
+        ),
+      ),
+      child: name == null
+          ? null
+          : Center(
+              child: Text(
+                name![0].toUpperCase(),
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),
     );
   }
 }
@@ -662,34 +649,3 @@ final appLanguagesItem = [
   AppLanguageItem(label: 'English', key: 'en'),
   AppLanguageItem(label: 'Français', key: 'fr'),
 ];
-
-class _ProfilOption extends StatelessWidget {
-  const _ProfilOption({
-    required this.icon,
-    this.trailing,
-    required this.onPressed,
-    required this.child,
-  });
-
-  final String icon;
-
-  final VoidCallback? onPressed;
-  final Widget? trailing;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onPressed,
-      leading: SvgPicture.asset(icon),
-      trailing: trailing,
-      title: child,
-      contentPadding: EdgeInsets.zero,
-    );
-  }
-}
-
-TextStyle _optionStyle = GoogleFonts.poppins(
-  fontSize: 14,
-  color: Colors.black,
-);

@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 
 import 'package:recipe_ai/utils/constant.dart';
 
 import '../../utils/styles.dart';
+
+class NewSavedRecipeScreen extends StatelessWidget {
+  const NewSavedRecipeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final translationController = di<TranslationController>();
+
+    return ListenableBuilder(
+      listenable: translationController,
+      builder: (context, _) => Scaffold(
+        appBar: KitchenInventoryAppBar(
+          arrowLeftOnPressed: () => context.pop(),
+          title: translationController.currentLanguage.favorite,
+        ),
+        body: SavedReceipeScreen(),
+      ),
+    );
+  }
+}
 
 class SavedReceipeScreen extends StatelessWidget {
   const SavedReceipeScreen({super.key});

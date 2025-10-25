@@ -11,16 +11,32 @@ abstract class IUserPersonnalInfoService {
 class UserPersonnalInfoService implements IUserPersonnalInfoService {
   final IUserPersonnalInfoRepository _userPersonnalInfoRepository;
   final IAuthUserService _authUserService;
-  const UserPersonnalInfoService(
+  UserPersonnalInfoService(
     this._userPersonnalInfoRepository,
     this._authUserService,
-  );
+  ) {
+    _initUserInfo();
+  }
 
   @override
   Future<UserPersonnalInfo?> get() async {
     final uid = _authUserService.currentUser!.uid;
+    final storedData = await _userPersonnalInfoRepository.get(uid);
+    if (storedData == null) {
+      final defaultUserInfo = UserPersonnalInfo.defaultInfo(
+        uid,
+        _authUserService.currentUser!.email!.split('@').first,
+      );
+
+      _userPersonnalInfoRepository.save(defaultUserInfo);
+      return defaultUserInfo;
+    }
 
     return _userPersonnalInfoRepository.get(uid);
+  }
+
+  void _initUserInfo() {
+    get();
   }
 
   @override

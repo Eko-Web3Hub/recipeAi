@@ -598,5 +598,9 @@
     },
 
     "startDesc":"Help your path to health goals with happiness",
-    "@startDesc": {}
+    "@startDesc": {},
+    "editProfile": "Edit Profile",
+    "@editProfile": {
+        "description": "Label for edit profile"
+    }
 }

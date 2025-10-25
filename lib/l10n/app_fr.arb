@@ -598,5 +598,9 @@
     },
 
      "startDesc":"Aidez votre chemin vers vos objectifs de santé avec bonheur",
-    "@startDesc": {}
+    "@startDesc": {},
+    "editProfile": "Modifier le profil",
+    "@editProfile": {
+        "description": "Label pour modifier le profil"
+    }
 }

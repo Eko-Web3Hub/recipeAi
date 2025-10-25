@@ -47,16 +47,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    final notificationUserController =
+        context.read<NotificationUserController>();
+    final homeScreenController = context.read<HomeScreenController>();
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      context.read<HomeScreenController>().reload();
+      homeScreenController.reload();
 
       await di<TranslationController>().saveLanguageWhenNeeded();
       await di<IUserAccountMetaDataService>().saveRecentLoginDate(
         DateTime.now(),
       );
       await showAppUpdatePopup(context);
-      context.read<NotificationUserController>().requestPermission();
+      notificationUserController.requestPermission(false);
     });
   }
 
@@ -355,12 +358,16 @@ class RecipeIconFavorite extends StatelessWidget {
   const RecipeIconFavorite({
     super.key,
     required this.receipe,
+    this.fillFavoriteIcon = 'assets/images/favorite.svg',
     this.outlinedFavoriteIcon = 'assets/images/favorite_outlined.svg',
+    this.padding = 16,
     this.size,
   });
 
   final UserReceipeV2 receipe;
+  final String fillFavoriteIcon;
   final String outlinedFavoriteIcon;
+  final double padding;
   final double? size;
 
   @override
@@ -388,7 +395,7 @@ class RecipeIconFavorite extends StatelessWidget {
                 color: Colors.transparent,
                 child: SvgPicture.asset(
                   recipeItemSaved is ReceipeItemStateSaved
-                      ? "assets/images/favorite.svg"
+                      ? fillFavoriteIcon
                       : outlinedFavoriteIcon,
                   height: size,
                   fit: BoxFit.cover,

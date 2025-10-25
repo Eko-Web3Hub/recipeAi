@@ -300,6 +300,12 @@ GoRouter createRouter() => GoRouter(
                   builder: (context, state) => const ProfileScreen(),
                   routes: <RouteBase>[
                     GoRoute(
+                      name: 'SavedReceipeScreen',
+                      path: 'save-recipes',
+                      redirect: _guardAuth,
+                      builder: (context, state) => const NewSavedRecipeScreen(),
+                    ),
+                    GoRoute(
                       name: 'SettingsScreen',
                       path: 'settings',
                       redirect: _guardAuth,
@@ -381,6 +387,7 @@ bool hideNavBar(String? path) {
     case '/profil-screen/change-email':
     case '/profil-screen/change-password':
     case '/profil-screen/change-language':
+    case '/profil-screen/settings':
       return true;
     default:
       return false;

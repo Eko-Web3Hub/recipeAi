@@ -86,8 +86,10 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: UserPreferenceQuestionList(
-                            questions: questions,
+                          child: SingleChildScrollView(
+                            child: UserPreferenceQuestionList(
+                              questions: questions,
+                            ),
                           ),
                         ),
                         BlocProvider(
@@ -124,7 +126,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
                                   if (enableNotif != null && enableNotif) {
                                     context
                                         .read<NotificationUserController>()
-                                        .requestPermission();
+                                        .requestPermission(true);
                                   }
 
                                   userPreferenceSubmitBtnController
