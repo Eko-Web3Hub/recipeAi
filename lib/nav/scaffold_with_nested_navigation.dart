@@ -67,8 +67,8 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       extendBody: true,
       appBar: appBarTitle != null
           ? AppBar(
-              surfaceTintColor: secondaryColor,
-              backgroundColor: secondaryColor,
+              surfaceTintColor: Colors.white,
+              backgroundColor: Colors.white,
               title: Text(
                 appBarTitle!,
                 style: Theme.of(context)
