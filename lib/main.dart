@@ -19,7 +19,6 @@ import 'package:recipe_ai/notification/presentation/notification_user_controller
 import 'package:recipe_ai/onboarding/presentation/onboarding_view_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
-import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/local_storage_repo.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -95,7 +94,7 @@ class _MyAppState extends State<MyApp> {
               title: "Eat'Easy",
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                scaffoldBackgroundColor: secondaryColor,
+                scaffoldBackgroundColor: Colors.white,
                 primaryColor: const Color(0xff57b031),
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                 textTheme: TextTheme(

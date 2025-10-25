@@ -200,19 +200,21 @@ class InventoryController extends Cubit<InventoryState> {
   Future<void> removeIngredient(Ingredient ingredient) async {
     try {
       final uid = _authUserService.currentUser!.uid;
-      _kitchenInventoryRepository.removeIngredient(
-          uid: uid, ingredientId: ingredient.id!);
+      if (ingredient.id != null) {
+        _kitchenInventoryRepository.removeIngredient(
+            uid: uid, ingredientId: ingredient.id!);
 
-      //refresh ingredients list
-      final ingredients = await _inventoryRepository
-          .getIngredients(state.categoryIdSelected ?? '');
+        //refresh ingredients list
+        final ingredients = await _inventoryRepository
+            .getIngredients(state.categoryIdSelected ?? '');
 
-      List<Ingredient> filteredIngredients = ingredients.where((ingredient) {
-        return !state.ingredientsAddedByUser.any((addedIngredient) =>
-            addedIngredient.name.toLowerCase() ==
-            ingredient.name.toLowerCase());
-      }).toList();
-      emit(state.copyWith(ingredients: filteredIngredients));
+        List<Ingredient> filteredIngredients = ingredients.where((ingredient) {
+          return !state.ingredientsAddedByUser.any((addedIngredient) =>
+              addedIngredient.name.toLowerCase() ==
+              ingredient.name.toLowerCase());
+        }).toList();
+        emit(state.copyWith(ingredients: filteredIngredients));
+      }
     } catch (e) {
       //
     }

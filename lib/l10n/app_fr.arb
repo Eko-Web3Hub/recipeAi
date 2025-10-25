@@ -279,23 +279,27 @@
     "@onboardingTitle1": {
         "description": "Titre de la première étape de l'onboarding sur le remplissage de l'inventaire de la cuisine"
     },
-    "onboardingTitle1": "Remplissez facilement votre inventaire de cuisine",
+    "onboardingTitle1": "Découvrez toutes les meilleures recettes dont vous avez besoin",
     "@onboardingDesc1": {
         "description": "Description de la première étape de l'onboarding sur le téléchargement de l'inventaire de cuisine ou des factures"
     },
-    "onboardingDesc1": "Téléchargez votre inventaire de cuisine ou vos factures, et nous générerons des recettes rien que pour vous.",
+    "onboardingDesc1": "Plus de 5000 recettes saines créées par des personnes pour votre vie saine",
     "@onboardingTitle3": {
         "description": "Titre de la troisième étape de l'onboarding sur les préférences personnalisées"
     },
-    "onboardingTitle3": "Préférences personnalisées",
+    "onboardingTitle3": "Cuisinons avec la recette que vous avez trouvée",
+    "onboardingDesc3": "Cuisiner à partir des recettes que vous trouvez et des aliments que vous aimez",
+    "@onboardingDesc3": {
+    "description": "Description pour la troisième étape d'intégration"
+},
     "@onboardingTitle2": {
         "description": "Titre de la deuxième étape de l'onboarding sur la génération intelligente de recettes"
     },
-    "onboardingTitle2": "Génération intelligente \nde recettes",
+    "onboardingTitle2": "Commandez directement les ingrédients",
     "@onboardingDesc2": {
         "description": "Description de la deuxième étape de l'onboarding sur la génération de recettes à partir des ingrédients"
     },
-    "onboardingDesc2": "Des ingrédients aux recettes rapides \nque vous pouvez enregistrer.",
+    "onboardingDesc2": "Commandez rapidement les ingrédients dont vous avez besoin avec un processus rapide",
     "@skip": {
         "description": "Libellé pour le bouton permettant d’ignorer une étape"
     },
@@ -592,6 +596,9 @@
     "@seeAll": {
         "description": "Label pour voir tout"
     },
+
+     "startDesc":"Aidez votre chemin vers vos objectifs de santé avec bonheur",
+    "@startDesc": {},
     "editProfile": "Modifier le profil",
     "@editProfile": {
         "description": "Label pour modifier le profil"

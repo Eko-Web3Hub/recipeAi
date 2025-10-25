@@ -9,7 +9,6 @@ import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
-
 import 'package:recipe_ai/utils/constant.dart';
 
 import '../../utils/styles.dart';

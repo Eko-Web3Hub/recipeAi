@@ -9,14 +9,15 @@ import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/register_usecase.dart';
 import 'package:recipe_ai/auth/presentation/components/auth_bottom_action.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
-import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
+import 'package:recipe_ai/auth/presentation/components/outlined_form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/register/register_controller.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
+import 'package:recipe_ai/utils/styles.dart';
 
 import '../../../user_account/presentation/translation_controller.dart';
 
@@ -92,6 +93,15 @@ class _RegisterViewState extends State<RegisterView> {
           }
         },
         child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            title: Text(
+              appTexts.createAnAccount,
+              style: appBarTextStyle,
+            ),
+            leading: BackButton(),
+          ),
           body: Builder(builder: (contextBuilder) {
             return SafeArea(
               child: Stack(
@@ -107,13 +117,8 @@ class _RegisterViewState extends State<RegisterView> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Gap(10),
-                            HeadTitle(
-                              title: appTexts.createAnAccount,
-                              subTitle: appTexts.registerDetails,
-                            ),
                             const Gap(20),
-                            FormFieldWithLabel(
+                            OutlinedFormFieldWithLabel(
                               label: appTexts.name,
                               hintText: appTexts.enterName,
                               controller: _nameController,
@@ -122,7 +127,7 @@ class _RegisterViewState extends State<RegisterView> {
                               keyboardType: TextInputType.name,
                             ),
                             const Gap(10),
-                            FormFieldWithLabel(
+                            OutlinedFormFieldWithLabel(
                               label: appTexts.email,
                               hintText: appTexts.enterEmail,
                               controller: _emailController,
@@ -131,7 +136,7 @@ class _RegisterViewState extends State<RegisterView> {
                               keyboardType: TextInputType.emailAddress,
                             ),
                             const Gap(10),
-                            FormFieldWithLabel(
+                            OutlinedFormFieldWithLabel(
                               label: appTexts.password,
                               hintText: appTexts.enterPassword,
                               controller: _passwordController,
@@ -191,6 +196,7 @@ class _RegisterViewState extends State<RegisterView> {
                             const Gap(10),
                             MainBtn(
                               text: appTexts.signUp,
+                              backgroundColor: orangePrimaryColor,
                               showRightIcon: true,
                               onPressed: _acceptTerms
                                   ? () => _handleRegister(contextBuilder)

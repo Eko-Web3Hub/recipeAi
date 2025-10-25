@@ -13,9 +13,9 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/user_preferences/presentation/user_preference_submit_btn_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_quizz_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/user_preference_submit_btn_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserPreferencesView extends StatefulWidget {
@@ -64,6 +64,7 @@ class _UserPreferencesViewState extends State<UserPreferencesView>
       child: Builder(
         builder: (context) {
           return Scaffold(
+            backgroundColor: Colors.white,
             body: SafeArea(
               child: BlocBuilder<UserPreferenceQuizzController,
                   UserPreferenceQuizzState>(

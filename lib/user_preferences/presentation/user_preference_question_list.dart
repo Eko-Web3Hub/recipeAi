@@ -12,18 +12,20 @@ class UserPreferenceQuestionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: questions
-          .map<Widget>(
-            (question) => Padding(
-              padding: const EdgeInsets.only(bottom: 35.0),
-              child: UserPreferenceQuestionWidget(
-                question: question,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: questions
+            .map<Widget>(
+              (question) => Padding(
+                padding: const EdgeInsets.only(bottom: 35.0),
+                child: UserPreferenceQuestionWidget(
+                  question: question,
+                ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 }

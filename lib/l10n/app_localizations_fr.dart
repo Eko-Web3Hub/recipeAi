@@ -232,21 +232,26 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingTitle1 =>
-      'Remplissez facilement votre inventaire de cuisine';
+      'Découvrez toutes les meilleures recettes dont vous avez besoin';
 
   @override
   String get onboardingDesc1 =>
-      'Téléchargez votre inventaire de cuisine ou vos factures, et nous générerons des recettes rien que pour vous.';
+      'Plus de 5000 recettes saines créées par des personnes pour votre vie saine';
 
   @override
-  String get onboardingTitle3 => 'Préférences personnalisées';
+  String get onboardingTitle3 =>
+      'Cuisinons avec la recette que vous avez trouvée';
 
   @override
-  String get onboardingTitle2 => 'Génération intelligente \nde recettes';
+  String get onboardingDesc3 =>
+      'Cuisiner à partir des recettes que vous trouvez et des aliments que vous aimez';
+
+  @override
+  String get onboardingTitle2 => 'Commandez directement les ingrédients';
 
   @override
   String get onboardingDesc2 =>
-      'Des ingrédients aux recettes rapides \nque vous pouvez enregistrer.';
+      'Commandez rapidement les ingrédients dont vous avez besoin avec un processus rapide';
 
   @override
   String get skip => 'Ignorer';
@@ -491,6 +496,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get seeAll => 'Voir tout';
+
+  @override
+  String get startDesc =>
+      'Aidez votre chemin vers vos objectifs de santé avec bonheur';
 
   @override
   String get editProfile => 'Modifier le profil';

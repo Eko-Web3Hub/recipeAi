@@ -40,6 +40,7 @@ class UserPreferenceUpdateController extends Cubit<UserPreferenceUpdateState> {
     final uid = _authUserService.currentUser!.uid;
     final newQuizz = <UserPreferenceQuestion>[];
     final userPreference = await _userPreferenceRepository.retrieve(uid);
+    
     final userPreferenceQuizz = await _userPreferenceQuizzRepository.retrieve(
       currentUserLanguage,
     );
