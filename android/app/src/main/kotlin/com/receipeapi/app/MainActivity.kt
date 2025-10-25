@@ -1,4 +1,4 @@
-package com.recipeai.app
+package com.receipeapi.app
 
 import io.flutter.embedding.android.FlutterActivity
 
