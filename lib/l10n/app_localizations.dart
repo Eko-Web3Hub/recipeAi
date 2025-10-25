@@ -997,6 +997,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help your path to health goals with happiness'**
   String get startDesc;
+
   /// Label for edit profile
   ///
   /// In en, this message translates to:

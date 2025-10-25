@@ -486,5 +486,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get startDesc => 'Help your path to health goals with happiness';
+
+  @override
   String get editProfile => 'Edit Profile';
 }
