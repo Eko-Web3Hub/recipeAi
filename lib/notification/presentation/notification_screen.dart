@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
@@ -9,11 +10,17 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _EmptyNotificationScreen(),
-      ],
+    final appTexts = di<TranslationController>().currentLanguage;
+    return Scaffold(
+      appBar: KitchenInventoryAppBar(
+        title: appTexts.notification,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _EmptyNotificationScreen(),
+        ],
+      ),
     );
   }
 }
@@ -39,6 +46,21 @@ class _EmptyNotificationScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ],
+    );
+  }
+}
+
+class _NotificationCard extends StatelessWidget {
+  const _NotificationCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 80,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+      ),
     );
   }
 }
