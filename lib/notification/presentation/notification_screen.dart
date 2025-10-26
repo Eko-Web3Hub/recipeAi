@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -14,6 +15,7 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       appBar: KitchenInventoryAppBar(
         title: appTexts.notification,
+        arrowLeftOnPressed: () => context.pop(),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -45,6 +47,7 @@ class _EmptyNotificationScreen extends StatelessWidget {
           style: descriptionPlaceHolderStyle,
           textAlign: TextAlign.center,
         ),
+        _NotificationCard(),
       ],
     );
   }
@@ -60,6 +63,16 @@ class _NotificationCard extends StatelessWidget {
       height: 80,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(
+              0,
+              2,
+            ),
+            blurRadius: 16,
+            color: Color(0xff063336).withOpacity(0.1),
+          ),
+        ],
       ),
     );
   }
