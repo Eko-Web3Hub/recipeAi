@@ -75,6 +75,8 @@ class _NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
+
     return Container(
       width: double.infinity,
       height: 80,
@@ -126,16 +128,19 @@ class _NotificationCard extends StatelessWidget {
                 ),
               ),
               const Gap(4.0),
-              Text(
-                notification.body,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  height: 1.45,
-                  color: neutralGrey2ColorNight,
+              SizedBox(
+                width: width * 0.65,
+                child: Text(
+                  notification.body,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    height: 1.45,
+                    color: neutralGrey2ColorNight,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
