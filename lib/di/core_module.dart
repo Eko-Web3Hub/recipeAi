@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -23,9 +22,7 @@ class CoreModule implements IDiModule {
     di.registerSingleton<FirebaseAuth>(
       FirebaseAuth.instance,
     );
-    di.registerSingleton<FirebaseFirestore>(
-      FirebaseFirestore.instance,
-    );
+
     di.registerSingleton<FirebaseRemoteConfig>(
       FirebaseRemoteConfig.instance,
     );
@@ -48,4 +45,3 @@ class CoreModule implements IDiModule {
     );
   }
 }
-
