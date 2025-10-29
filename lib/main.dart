@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -34,12 +33,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
-  _defaultServiceToInitialize();
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   FlutterNativeSplash.remove();
   di.registerModule(AppModule());
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  FirebaseMessaging.onMessageOpenedApp
+      .listen(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -49,22 +49,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (notification == null) {
     return;
   }
+  final uid = di<IAuthUserService>().currentUser?.uid;
+  if (uid == null) {
+    log("Not connected, store it later.");
+    return;
+  }
 
   await di<IGeneralNotification>().store(
+    uid,
     NotificationData(
       title: notification.title!,
       body: notification.body!,
     ),
-  );
-}
-
-void _defaultServiceToInitialize() {
-  di.registerSingleton<FirebaseFirestore>(
-    FirebaseFirestore.instance,
-  );
-
-  di.registerLazySingleton<IGeneralNotification>(
-    () => GeneralNotification.inject(),
   );
 }
 
