@@ -310,7 +310,7 @@ class _RegisterViewState extends State<RegisterView> {
                               firstText: '${appTexts.alreadyAMember} ',
                               secondText: appTexts.signIn,
                               onPressed: () {
-                                context.go('/login');
+                                context.go('/onboarding/start/login');
                               },
                             ),
                           ),

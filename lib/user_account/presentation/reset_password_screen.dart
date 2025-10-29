@@ -5,10 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
-import 'package:recipe_ai/auth/presentation/components/form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
+import 'package:recipe_ai/auth/presentation/components/outlined_form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/reset_password_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -44,7 +45,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   context,
                   appTexts.resetPasswordSuccess,
                 );
-                context.go('/login');
+                context.go('/onboarding/start/login');
               } else if (resetPasswordState is ResetPasswordFailure) {
                 var msg = '';
                 if (resetPasswordState.message == AuthError.userNotFound.name) {
@@ -75,27 +76,35 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   children: [
                     const Gap(80),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
-                          child: SvgPicture.asset(
-                            'assets/images/arrow-black-left.svg',
+                        AppBackIcon(
+                          arrowLeftOnPressed: () => context.go(
+                            '/onboarding/start/login',
                           ),
-                          onTap: () => context.go('/onboarding/start/login'),
                         ),
-                        const Gap(10),
+                        const Spacer(),
                         Text(
                           appTexts.forgotternPassword,
                           style: headTitleStyle,
+                          textAlign: TextAlign.center,
                         ),
+                        const Spacer(),
                       ],
                     ),
                     const Gap(70),
-                    FormFieldWithLabel(
+                    OutlinedFormFieldWithLabel(
+                      keyboardType: TextInputType.emailAddress,
                       label: appTexts.email,
                       hintText: appTexts.enterEmail,
+                      prefixIcon: SvgPicture.asset(
+                        'assets/icon/message.svg',
+                        width: 20,
+                        height: 20,
+                        fit: BoxFit.cover,
+                      ),
                       controller: _emailController,
                       validator: (value) => emailValidator(value, appTexts),
-                      keyboardType: TextInputType.emailAddress,
                     ),
                     const Spacer(),
                     BlocBuilder<ResetPasswordController, ResetPasswordState>(
