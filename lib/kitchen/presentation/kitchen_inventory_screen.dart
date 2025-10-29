@@ -121,6 +121,26 @@ class KitchenInventoryScreen extends StatelessWidget {
   }
 }
 
+class AppBackIcon extends StatelessWidget {
+  const AppBackIcon({
+    super.key,
+    required this.arrowLeftOnPressed,
+  });
+
+  final VoidCallback? arrowLeftOnPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: arrowLeftOnPressed,
+      child: const Icon(
+        Icons.arrow_back_ios,
+        color: Colors.black,
+      ),
+    );
+  }
+}
+
 /// The appBar for every screen in the kitchen inventory section
 class KitchenInventoryAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -152,12 +172,8 @@ class KitchenInventoryAppBar extends StatelessWidget
       centerTitle: true,
       surfaceTintColor: Colors.transparent,
       leading: showBackBtn
-          ? InkWell(
-              onTap: arrowLeftOnPressed,
-              child: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
+          ? AppBackIcon(
+              arrowLeftOnPressed: arrowLeftOnPressed,
             )
           : null,
     );

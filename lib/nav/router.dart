@@ -91,27 +91,27 @@ GoRouter createRouter() => GoRouter(
               name: 'start',
               path: 'start',
               builder: (context, state) => const StartScreen(),
+              routes: [
+                GoRoute(
+                  name: 'Login',
+                  path: '/login',
+                  builder: (BuildContext context, _) => const LoginView(),
+                  routes: <RouteBase>[
+                    GoRoute(
+                      name: 'ResetPasswordScreen',
+                      path: 'reset-password',
+                      builder: (context, state) => const ResetPasswordScreen(),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
-
-        GoRoute(
-          name: 'Login',
-          path: '/login',
-          builder: (BuildContext context, _) => const LoginView(),
-          routes: <RouteBase>[
             GoRoute(
-              name: 'ResetPasswordScreen',
-              path: 'reset-password',
-              builder: (context, state) => const ResetPasswordScreen(),
+              name: 'Register',
+              path: '/register',
+              builder: (context, state) => const RegisterView(),
             ),
           ],
-        ),
-
-        GoRoute(
-          name: 'Register',
-          path: '/register',
-          builder: (context, state) => const RegisterView(),
         ),
 
         GoRoute(

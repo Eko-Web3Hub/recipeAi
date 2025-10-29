@@ -15,7 +15,7 @@ import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/components/outlined_form_field_with_label.dart';
 import 'package:recipe_ai/auth/presentation/login_view_controller.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/home/presentation/translated_text.dart';
+import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
               listener: (context, state) {
                 if (state is LoginViewSuccess) {
                   context.go('/home');
-                } else if(state is EmptyUserPrefs) {
+                } else if (state is EmptyUserPrefs) {
                   context.go('/user-preferences');
                 } else if (state is LoginViewError) {
                   showSnackBar(
@@ -82,7 +82,9 @@ class _LoginViewState extends State<LoginView> {
                     appTexts.signIn,
                     style: appBarTextStyle,
                   ),
-                  leading: BackButton(),
+                  leading: AppBackIcon(
+                    arrowLeftOnPressed: () => context.go('/onboarding/start'),
+                  ),
                 ),
                 body: SafeArea(
                   child: Stack(
@@ -149,8 +151,8 @@ class _LoginViewState extends State<LoginView> {
                                 const Gap(10),
                                 Center(
                                   child: TextButton(
-                                    onPressed: () =>
-                                        context.go('/login/reset-password'),
+                                    onPressed: () => context.go(
+                                        '/onboarding/start/login/reset-password'),
                                     child: Text(
                                       appTexts.forgotPassword,
                                       style: GoogleFonts.poppins(
@@ -278,35 +280,5 @@ class _LoginViewState extends State<LoginView> {
             ),
           );
         });
-  }
-}
-
-class _HeadTitle extends StatelessWidget {
-  const _HeadTitle();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        TranslatedText(
-          textSelector: (lang) => lang.hello,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            fontSize: 30,
-            height: 45 / 30,
-          ),
-        ),
-        TranslatedText(
-          textSelector: (lang) => lang.welcomeBack,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-            height: 30 / 20,
-          ),
-        ),
-      ],
-    );
   }
 }

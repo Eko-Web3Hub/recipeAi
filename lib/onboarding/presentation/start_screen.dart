@@ -48,7 +48,6 @@ class StartScreen extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: BlocBuilder<StartViewController, StartViewState?>(
                   builder: (context, state) {
-                    final controller = context.read<StartViewController>();
                     return Padding(
                       padding: const EdgeInsets.only(
                           left: 30, right: 30, bottom: 50),
@@ -72,7 +71,7 @@ class StartScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             onPressed: () {
-                              context.push('/login');
+                              context.push('/onboarding/start/login');
                             },
                             child: Text(
                               appTexts.signIn,
@@ -85,7 +84,7 @@ class StartScreen extends StatelessWidget {
                           const Gap(10),
                           TextButton(
                               onPressed: () {
-                                context.push('/register');
+                                context.push('/onboarding/register');
                               },
                               child: Text(
                                 appTexts.createAnAccount,

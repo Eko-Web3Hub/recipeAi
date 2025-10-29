@@ -80,7 +80,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           child: SvgPicture.asset(
                             'assets/images/arrow-black-left.svg',
                           ),
-                          onTap: () => context.go('/login'),
+                          onTap: () => context.go('/onboarding/start/login'),
                         ),
                         const Gap(10),
                         Text(
