@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/notification/domain/models/notification.dart';
+import 'package:recipe_ai/notification/presentation/notification_screen_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
@@ -21,21 +24,43 @@ class NotificationScreen extends StatelessWidget {
         title: appTexts.notification,
         arrowLeftOnPressed: () => context.pop(),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Gap(20),
-            // _EmptyNotificationScreen(),
-            _NotificationCard(
-              NotificationData(
-                title: 'Recipe Recomendation',
-                body: 'Your order has delivered successfully',
-                timestamp: null,
+      body: BlocProvider(
+        create: (_) => NotificationScreenController.inject(),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Gap(20),
+              BlocBuilder<NotificationScreenController,
+                  NotificationScreenState>(
+                builder: (context, state) {
+                  if (state is NotificationScreenLoading) {
+                    return Center(
+                      child: CustomCircularLoader(),
+                    );
+                  } else if (state is NotificationScreenLoaded) {
+                    final notifications = state.notifications;
+                    if (notifications.isEmpty) {
+                      return _EmptyNotificationScreen();
+                    }
+                    return Column(
+                      children: notifications
+                          .map(
+                            (notification) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: _NotificationCard(notification),
+                            ),
+                          )
+                          .toList(),
+                    );
+                  }
+
+                  return SizedBox.shrink();
+                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
