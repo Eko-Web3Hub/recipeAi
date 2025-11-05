@@ -60,6 +60,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     NotificationData(
       title: notification.title!,
       body: notification.body!,
+      timestamp: null,
     ),
   );
 }

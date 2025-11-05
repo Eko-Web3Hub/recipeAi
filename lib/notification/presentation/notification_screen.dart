@@ -32,6 +32,7 @@ class NotificationScreen extends StatelessWidget {
               NotificationData(
                 title: 'Recipe Recomendation',
                 body: 'Your order has delivered successfully',
+                timestamp: null,
               ),
             ),
           ],

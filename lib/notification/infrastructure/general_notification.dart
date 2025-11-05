@@ -8,6 +8,8 @@ abstract class IGeneralNotification {
     EntityId uid,
     NotificationData notification,
   );
+
+  Stream<List<NotificationData>> watchAll(EntityId uid);
 }
 
 class GeneralNotification implements IGeneralNotification {
@@ -35,4 +37,23 @@ class GeneralNotification implements IGeneralNotification {
           );
 
   final FirebaseFirestore _firestore;
+
+  @override
+  Stream<List<NotificationData>> watchAll(EntityId uid) {
+    return _firestore
+        .collection(notificationsCollection)
+        .doc(uid.value)
+        .collection(generalCollection)
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map(
+                (doc) => NotificationData.fromJson(
+                  doc.data(),
+                ),
+              )
+              .toList(),
+        );
+  }
 }
