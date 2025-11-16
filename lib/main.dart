@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -16,8 +15,6 @@ import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/firebase_options.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/nav/router.dart';
-import 'package:recipe_ai/notification/domain/models/notification.dart';
-import 'package:recipe_ai/notification/infrastructure/general_notification.dart';
 import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
@@ -36,33 +33,8 @@ void main() async {
 
   FlutterNativeSplash.remove();
   di.registerModule(AppModule());
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  FirebaseMessaging.onMessageOpenedApp
-      .listen(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
-}
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  final notification = message.notification;
-
-  if (notification == null) {
-    return;
-  }
-  final uid = di<IAuthUserService>().currentUser?.uid;
-  if (uid == null) {
-    log("Not connected, store it later.");
-    return;
-  }
-
-  await di<IGeneralNotification>().store(
-    uid,
-    NotificationData(
-      title: notification.title!,
-      body: notification.body!,
-      timestamp: null,
-    ),
-  );
 }
 
 class MyApp extends StatefulWidget {
