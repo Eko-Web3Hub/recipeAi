@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -7,6 +6,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
+import 'package:recipe_ai/notification/infrastructure/general_notification.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/local_storage_repo.dart';
@@ -23,9 +23,7 @@ class CoreModule implements IDiModule {
     di.registerSingleton<FirebaseAuth>(
       FirebaseAuth.instance,
     );
-    di.registerSingleton<FirebaseFirestore>(
-      FirebaseFirestore.instance,
-    );
+
     di.registerSingleton<FirebaseRemoteConfig>(
       FirebaseRemoteConfig.instance,
     );
@@ -46,6 +44,13 @@ class CoreModule implements IDiModule {
     di.registerSingletonAsync<ILocalStorageRepository>(
       () async => LocalStorageRepository(),
     );
+
+    di.registerSingleton<FirebaseFirestore>(
+      FirebaseFirestore.instance,
+    );
+
+    di.registerLazySingleton<IGeneralNotification>(
+      () => GeneralNotification.inject(),
+    );
   }
 }
-

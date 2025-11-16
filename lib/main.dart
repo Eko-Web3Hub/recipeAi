@@ -33,6 +33,7 @@ void main() async {
 
   FlutterNativeSplash.remove();
   di.registerModule(AppModule());
+
   runApp(const MyApp());
 }
 

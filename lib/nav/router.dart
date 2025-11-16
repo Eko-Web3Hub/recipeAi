@@ -28,6 +28,7 @@ import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredi
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
+import 'package:recipe_ai/notification/presentation/notification_screen.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
@@ -266,6 +267,12 @@ GoRouter createRouter() => GoRouter(
                         ),
                       ],
                     ),
+                    GoRoute(
+                      name: 'NotificationScreen',
+                      path: 'notification',
+                      redirect: _guardAuth,
+                      builder: (context, state) => const NotificationScreen(),
+                    ),
                   ],
                   builder: (context, state) => const HomeScreen(),
                 ),
@@ -388,6 +395,7 @@ bool hideNavBar(String? path) {
     case '/profil-screen/change-password':
     case '/profil-screen/change-language':
     case '/profil-screen/settings':
+    case '/home/notification':
       return true;
     default:
       return false;
