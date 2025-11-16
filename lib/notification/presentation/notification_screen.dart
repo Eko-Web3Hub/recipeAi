@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -138,6 +139,12 @@ class _NotificationCard extends StatelessWidget {
               color: neutralGrey4Color,
               borderRadius: BorderRadius.circular(8),
             ),
+            child: SvgPicture.asset(
+              'assets/images/notification_icon_recipe.svg',
+              width: 24,
+              height: 24,
+              fit: BoxFit.scaleDown,
+            ),
           ),
           const Gap(12.0),
           Column(
@@ -156,23 +163,48 @@ class _NotificationCard extends StatelessWidget {
                 ),
               ),
               const Gap(4.0),
-              SizedBox(
-                width: width * 0.65,
-                child: Text(
-                  notification.body,
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    height: 1.45,
-                    color: neutralGrey2ColorNight,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: width * 0.65,
+                    child: Text(
+                      notification.body,
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        height: 1.45,
+                        color: neutralGrey2ColorNight,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                  Visibility(
+                    visible: !notification.isRead,
+                    child: _CircleNotificationBadge(),
+                  )
+                ],
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _CircleNotificationBadge extends StatelessWidget {
+  const _CircleNotificationBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 8,
+      height: 8,
+      decoration: BoxDecoration(
+        color: Color(0xffFF685F),
+        shape: BoxShape.circle,
       ),
     );
   }
