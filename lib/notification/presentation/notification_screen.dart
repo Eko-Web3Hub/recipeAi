@@ -74,20 +74,22 @@ class _EmptyNotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(
-          'assets/icon/notificationPlaceHolder.png',
-        ),
-        const Gap(20),
-        Text(
-          appTexts.notificationEmptyTitle,
-          style: descriptionPlaceHolderStyle,
-          textAlign: TextAlign.center,
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            'assets/icon/notificationPlaceHolder.png',
+          ),
+          const Gap(20),
+          Text(
+            appTexts.notificationEmptyTitle,
+            style: descriptionPlaceHolderStyle,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }

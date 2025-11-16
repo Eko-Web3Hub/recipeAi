@@ -28,7 +28,7 @@ class NotificationData {
       title: json['title'] as String,
       body: json['body'] as String,
       timestamp: (json['updated_at'] as Timestamp).toDate(),
-      isRead: json['isRead'] as bool,
+      isRead: json['is_read'] as bool,
       data: json['data'] as Map<String, dynamic>,
     );
   }
