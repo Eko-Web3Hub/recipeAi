@@ -46,12 +46,21 @@ class MyApp extends StatefulWidget {
 }
 
 void _handleBackgroundNotificationTap(GoRouter router) {
+  _handleOnTapNotificationWhenAppTerminated(router);
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     return _handleNotificationReceived(message, router);
   });
 }
 
 final _appRedirectionPathKey = 'app_redirection_path';
+
+void _handleOnTapNotificationWhenAppTerminated(GoRouter router) async {
+  final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+  if (initialMessage != null) {
+    _handleNotificationReceived(initialMessage, router);
+  }
+}
 
 void _handleNotificationReceived(RemoteMessage notification, GoRouter router) {
   log('Notification received: ${notification.toMap()}');
