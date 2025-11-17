@@ -45,12 +45,21 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-void _handleBackgroundNotificationTap() {
-  FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationReceived);
+void _handleBackgroundNotificationTap(GoRouter router) {
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    return _handleNotificationReceived(message, router);
+  });
 }
 
-void _handleNotificationReceived(RemoteMessage notification) {
-  log('Notification received: ${notification.toString()}');
+final _appRedirectionPathKey = 'app_redirection_path';
+
+void _handleNotificationReceived(RemoteMessage notification, GoRouter router) {
+  log('Notification received: ${notification.toMap()}');
+  final hasRedirectionPath =
+      notification.data.containsKey(_appRedirectionPathKey);
+  if (!hasRedirectionPath) return;
+  final pagePath = notification.data[_appRedirectionPathKey];
+  router.go(pagePath);
 }
 
 class _MyAppState extends State<MyApp> {
@@ -61,7 +70,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     _router = createRouter();
-    _handleBackgroundNotificationTap();
+    _handleBackgroundNotificationTap(_router);
   }
 
   @override

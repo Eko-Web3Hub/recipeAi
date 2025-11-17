@@ -32,7 +32,7 @@ class NotificationScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Gap(20),
+              const Gap(10),
               BlocBuilder<NotificationScreenController,
                   NotificationScreenState>(
                 builder: (context, state) {
@@ -60,6 +60,7 @@ class NotificationScreen extends StatelessWidget {
                   return SizedBox.shrink();
                 },
               ),
+              const Gap(30),
             ],
           ),
         ),
