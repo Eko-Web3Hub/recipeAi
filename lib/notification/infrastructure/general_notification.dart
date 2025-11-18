@@ -5,6 +5,7 @@ import 'package:recipe_ai/notification/domain/models/notification.dart';
 
 abstract class IGeneralNotification {
   Stream<List<NotificationData>> watchAll(EntityId uid);
+  Future<void> markAsRead(EntityId notificationId);
 }
 
 class GeneralNotification implements IGeneralNotification {
@@ -39,4 +40,12 @@ class GeneralNotification implements IGeneralNotification {
               .toList(),
         );
   }
+
+  @override
+  Future<void> markAsRead(EntityId notificationId) => _firestore
+          .collection(notificationsCollection)
+          .doc(notificationId.value)
+          .update({
+        'is_read': true,
+      });
 }
