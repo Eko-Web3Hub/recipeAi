@@ -185,7 +185,7 @@ class _NotificationCard extends StatelessWidget {
                     ),
                     Visibility(
                       visible: !notification.isRead,
-                      child: _CircleNotificationBadge(),
+                      child: CircleNotificationBadge(),
                     )
                   ],
                 ),
@@ -226,8 +226,8 @@ class _NotificationLogo extends StatelessWidget {
   }
 }
 
-class _CircleNotificationBadge extends StatelessWidget {
-  const _CircleNotificationBadge();
+class CircleNotificationBadge extends StatelessWidget {
+  const CircleNotificationBadge({super.key});
 
   @override
   Widget build(BuildContext context) {

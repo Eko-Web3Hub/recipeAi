@@ -7,7 +7,7 @@ import 'package:recipe_ai/notification/infrastructure/general_notification.dart'
 abstract class IGeneralNotificationService {
   Stream<List<NotificationData>> watchAll();
   Future<void> markAsRead(EntityId notificationId);
-  Future<bool> hasUnreadNotification(EntityId uid);
+  Stream<bool> hasUnreadNotification();
 }
 
 class GeneralNotificationService implements IGeneralNotificationService {
@@ -36,6 +36,6 @@ class GeneralNotificationService implements IGeneralNotificationService {
       _generalNotificationRepository.markAsRead(notificationId);
 
   @override
-  Future<bool> hasUnreadNotification(EntityId uid) =>
-      _generalNotificationRepository.hasUnreadNotification(uid);
+  Stream<bool> hasUnreadNotification() => _generalNotificationRepository
+      .hasUnreadNotification(_authUserService.currentUser!.uid);
 }
