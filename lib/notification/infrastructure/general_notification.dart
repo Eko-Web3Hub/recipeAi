@@ -6,12 +6,15 @@ import 'package:recipe_ai/notification/domain/models/notification.dart';
 abstract class IGeneralNotification {
   Stream<List<NotificationData>> watchAll(EntityId uid);
   Future<void> markAsRead(EntityId notificationId);
+  Future<bool> hasUnreadNotification(EntityId uid);
 }
 
 class GeneralNotification implements IGeneralNotification {
   const GeneralNotification(this._firestore);
 
   static const String notificationsCollection = 'Notifications';
+
+  static const String isReadField = 'is_read';
 
   GeneralNotification.inject()
       : this(
@@ -47,6 +50,18 @@ class GeneralNotification implements IGeneralNotification {
           .collection(notificationsCollection)
           .doc(notificationId.value)
           .update({
-        'is_read': true,
+        isReadField: true,
       });
+
+  @override
+  Future<bool> hasUnreadNotification(EntityId uid) async {
+    final docs = await _firestore
+        .collection(notificationsCollection)
+        .where('uid', isEqualTo: uid.value)
+        .where(isReadField, isEqualTo: false)
+        .limit(1)
+        .get();
+
+    return docs.docs.isNotEmpty;
+  }
 }
