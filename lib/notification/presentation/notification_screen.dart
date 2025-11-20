@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
+import 'package:recipe_ai/notification/application/general_notification_service.dart';
 import 'package:recipe_ai/notification/domain/models/notification.dart';
 import 'package:recipe_ai/notification/presentation/notification_screen_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -104,15 +105,20 @@ class _NotificationCard extends StatelessWidget {
 
   final NotificationData notification;
 
+  void onNotificationTap(BuildContext context) {
+    _showNotificationDetails(
+      context,
+      notification,
+    );
+    di<IGeneralNotificationService>().markAsRead(notification.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
 
     return GestureDetector(
-      onTap: () => _showNotificationDetails(
-        context,
-        notification,
-      ),
+      onTap: () => onNotificationTap(context),
       child: Container(
         width: double.infinity,
         height: 80,

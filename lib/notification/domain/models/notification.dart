@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipe_ai/ddd/entity.dart';
 
 class NotificationData {
+  final EntityId id;
   final String title;
   final String body;
   final DateTime? timestamp;
@@ -8,6 +10,7 @@ class NotificationData {
   final Map<String, dynamic> data;
 
   NotificationData({
+    required this.id,
     required this.title,
     required this.body,
     required this.timestamp,
@@ -23,8 +26,9 @@ class NotificationData {
     };
   }
 
-  factory NotificationData.fromJson(Map<String, dynamic> json) {
+  factory NotificationData.fromJson(EntityId id, Map<String, dynamic> json) {
     return NotificationData(
+      id: id,
       title: json['title'] as String,
       body: json['body'] as String,
       timestamp: (json['updated_at'] as Timestamp).toDate(),
@@ -34,6 +38,7 @@ class NotificationData {
   }
 
   NotificationData _copyWith({
+    EntityId? id,
     String? title,
     String? body,
     DateTime? timestamp,
@@ -41,6 +46,7 @@ class NotificationData {
     Map<String, dynamic>? data,
   }) {
     return NotificationData(
+      id: id ?? this.id,
       title: title ?? this.title,
       body: body ?? this.body,
       timestamp: timestamp ?? this.timestamp,

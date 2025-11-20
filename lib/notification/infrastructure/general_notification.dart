@@ -34,6 +34,7 @@ class GeneralNotification implements IGeneralNotification {
           (snapshot) => snapshot.docs
               .map(
                 (doc) => NotificationData.fromJson(
+                  EntityId(doc.id),
                   doc.data(),
                 ),
               )
