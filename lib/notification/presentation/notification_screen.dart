@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/notification/domain/models/notification.dart';
 import 'package:recipe_ai/notification/presentation/notification_screen_controller.dart';
@@ -107,89 +108,113 @@ class _NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
 
-    return Container(
-      width: double.infinity,
-      height: 80,
-      padding: EdgeInsets.only(
-        top: 16,
-        right: 13,
-        bottom: 16,
-        left: 16,
+    return GestureDetector(
+      onTap: () => _showNotificationDetails(
+        context,
+        notification,
       ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(
-              1,
-              2,
-            ),
-            blurRadius: 16,
-            spreadRadius: 0,
-            color: Color(0xff063336).withOpacity(0.1),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: neutralGrey4Color,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: SvgPicture.asset(
-              'assets/images/notification_icon_recipe.svg',
-              width: 24,
-              height: 24,
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          const Gap(12.0),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                notification.title,
-                style: TextStyle(
-                  fontFamily: 'SofiaPro',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  height: 1.30,
-                  color: Color(0xff97A2B0),
-                ),
+      child: Container(
+        width: double.infinity,
+        height: 80,
+        padding: EdgeInsets.only(
+          top: 16,
+          right: 13,
+          bottom: 16,
+          left: 16,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(
+                1,
+                2,
               ),
-              const Gap(4.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: width * 0.65,
-                    child: Text(
-                      notification.body,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        height: 1.45,
-                        color: neutralGrey2ColorNight,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+              blurRadius: 16,
+              spreadRadius: 0,
+              color: Color(0xff063336).withOpacity(0.1),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            _NotificationLogo(
+              width: 48,
+              height: 48,
+            ),
+            const Gap(12.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  notification.title,
+                  style: TextStyle(
+                    fontFamily: 'SofiaPro',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    height: 1.30,
+                    color: Color(0xff97A2B0),
                   ),
-                  Visibility(
-                    visible: !notification.isRead,
-                    child: _CircleNotificationBadge(),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ],
+                ),
+                const Gap(4.0),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: width * 0.65,
+                      child: Text(
+                        notification.body,
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          height: 1.45,
+                          color: neutralGrey2ColorNight,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Visibility(
+                      visible: !notification.isRead,
+                      child: _CircleNotificationBadge(),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NotificationLogo extends StatelessWidget {
+  const _NotificationLogo({
+    required this.width,
+    required this.height,
+  });
+
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: neutralGrey4Color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: SvgPicture.asset(
+        'assets/images/notification_icon_recipe.svg',
+        width: 24,
+        height: 24,
+        fit: BoxFit.scaleDown,
       ),
     );
   }
@@ -207,6 +232,58 @@ class _CircleNotificationBadge extends StatelessWidget {
         color: Color(0xffFF685F),
         shape: BoxShape.circle,
       ),
+    );
+  }
+}
+
+void _showNotificationDetails(
+  BuildContext context,
+  NotificationData notification,
+) =>
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => DialogLayout(
+        child: _NotificationDetails(
+          notification: notification,
+        ),
+      ),
+    );
+
+class _NotificationDetails extends StatelessWidget {
+  const _NotificationDetails({
+    required this.notification,
+  });
+
+  final NotificationData notification;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _NotificationLogo(
+          width: double.infinity,
+          height: 70,
+        ),
+        const Gap(20),
+        Text(
+          notification.title,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+        const Gap(4.0),
+        Text(
+          notification.body,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            height: 1.5,
+          ),
+        ),
+      ],
     );
   }
 }
