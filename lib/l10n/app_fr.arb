@@ -290,8 +290,8 @@
     "onboardingTitle3": "Cuisinons avec la recette que vous avez trouvée",
     "onboardingDesc3": "Cuisiner à partir des recettes que vous trouvez et des aliments que vous aimez",
     "@onboardingDesc3": {
-    "description": "Description pour la troisième étape d'intégration"
-},
+        "description": "Description pour la troisième étape d'intégration"
+    },
     "@onboardingTitle2": {
         "description": "Titre de la deuxième étape de l'onboarding sur la génération intelligente de recettes"
     },
@@ -411,6 +411,10 @@
     "generateRecipeWithGroceriePhoto": "À partir d'une photo d'ingredients",
     "@generateRecipeWithGroceriePhoto": {
         "description": "Label pour générer des recettes avec une photo d'ingrédients"
+    },
+    "generateRecipeWithLiveGroceriePhoto": "À partir d'une photo en direct",
+    "@generateRecipeWithLiveGroceriePhoto": {
+        "description": "Label pour générer des recettes avec une photo d'ingrédients en direct"
     },
     "generateRecipeWithGrocerieList": "À partir de votre liste d'ingrédients",
     "@generateRecipeWithGrocerieList": {
@@ -596,8 +600,7 @@
     "@seeAll": {
         "description": "Label pour voir tout"
     },
-
-     "startDesc":"Aidez votre chemin vers vos objectifs de santé avec bonheur",
+    "startDesc": "Aidez votre chemin vers vos objectifs de santé avec bonheur",
     "@startDesc": {},
     "editProfile": "Modifier le profil",
     "@editProfile": {

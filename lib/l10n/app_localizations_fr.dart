@@ -344,6 +344,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'À partir d\'une photo d\'ingredients';
 
   @override
+  String get generateRecipeWithLiveGroceriePhoto =>
+      'À partir d\'une photo en direct';
+
+  @override
   String get generateRecipeWithGrocerieList =>
       'À partir de votre liste d\'ingrédients';
 

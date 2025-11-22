@@ -91,21 +91,6 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               },
             ),
 
-      // Builder(builder: (context) {
-      //     return FloatingActionButton(
-      //       elevation: 0,
-      //       onPressed: () {
-      //         /// reditect to camera screen
-      //         // context.go("/home/kitchen-inventory");
-      //         _showAiActionRecipeBottomSheet(context);
-      //       },
-      //       backgroundColor: greenPrimaryColor,
-      //       shape: const CircleBorder(),
-      //       child: Center(
-      //         child: SvgPicture.asset('assets/images/aiFillWhite.svg'),
-      //       ),
-      //     );
-      //   }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       bottomNavigationBar:
@@ -263,6 +248,19 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
     }
   }
 
+  void _takeLivePicture() async {
+    final ImagePicker picker = ImagePicker();
+    // change to ImageSource.camera
+    final XFile? photo = await picker.pickImage(
+      source: ImageSource.camera,
+    );
+    if (photo != null) {
+      setState(() {
+        _ingredientsImage = File(photo.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appText = di<TranslationController>().currentLanguage;
@@ -314,6 +312,14 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                     appText.generateRecipeWithGroceriePhoto,
                     onTap: () {
                       _takeCameraPicture();
+                    },
+                  ),
+                  const Gap(12),
+                  _ActionBtn(
+                    'assets/images/grocery_icon.svg',
+                    appText.generateRecipeWithLiveGroceriePhoto,
+                    onTap: () {
+                      _takeLivePicture();
                     },
                   ),
                   const Gap(12),

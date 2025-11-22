@@ -288,7 +288,7 @@
         "description": "Title for the third onboarding step about personalized preferences"
     },
     "onboardingTitle3": "Let's cook with the recipe you found",
-    "onboardingDesc3":"Cooking based on the food recipes you find and the food you love",
+    "onboardingDesc3": "Cooking based on the food recipes you find and the food you love",
     "@onboardingDesc3": {
         "description": "Description for third onboarding step"
     },
@@ -411,6 +411,10 @@
     "generateRecipeWithGroceriePhoto": "From groceries photo",
     "@generateRecipeWithGroceriePhoto": {
         "description": "Label for generating recipes from a photo of groceries"
+    },
+    "generateRecipeWithLiveGroceriePhoto": "From live groceries photo",
+    "@generateRecipeWithLiveGroceriePhoto": {
+        "description": "Label for generating recipes from a live photo of groceries"
     },
     "generateRecipeWithGrocerieList": "From your groceries list",
     "@generateRecipeWithGrocerieList": {
@@ -596,8 +600,7 @@
     "@seeAll": {
         "description": "Label for see all"
     },
-
-    "startDesc":"Help your path to health goals with happiness",
+    "startDesc": "Help your path to health goals with happiness",
     "@startDesc": {},
     "editProfile": "Edit Profile",
     "@editProfile": {

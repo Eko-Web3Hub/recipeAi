@@ -716,6 +716,12 @@ abstract class AppLocalizations {
   /// **'From groceries photo'**
   String get generateRecipeWithGroceriePhoto;
 
+  /// Label for generating recipes from a live photo of groceries
+  ///
+  /// In en, this message translates to:
+  /// **'From live groceries photo'**
+  String get generateRecipeWithLiveGroceriePhoto;
+
   /// Label for generating recipes from a list of groceries
   ///
   /// In en, this message translates to:
