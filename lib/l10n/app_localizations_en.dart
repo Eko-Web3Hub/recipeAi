@@ -336,6 +336,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generateRecipeWithGroceriePhoto => 'From groceries photo';
 
   @override
+  String get generateRecipeWithLiveGroceriePhoto => 'From live groceries photo';
+
+  @override
   String get generateRecipeWithGrocerieList => 'From your groceries list';
 
   @override
