@@ -297,7 +297,7 @@ class ReceipeItem extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${_getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
+                                  '${getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
                                   style: GoogleFonts.inter(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 12,
@@ -411,7 +411,7 @@ class RecipeIconFavorite extends StatelessWidget {
   }
 }
 
-String _getOnlyNumber(String text) {
+String getOnlyNumber(String text) {
   return text.replaceAll(RegExp(r'[^0-9]'), '');
 }
 

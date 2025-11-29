@@ -302,7 +302,7 @@ class _RecipeCard extends StatelessWidget {
                 SvgPicture.asset('assets/images/calorie_icon.svg'),
                 const Gap(6.39),
                 Text(
-                  '${recipe.receipeEn.totalCalories} Kcal',
+                  '${getOnlyNumber(recipe.receipeEn.totalCalories)} cal*',
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
