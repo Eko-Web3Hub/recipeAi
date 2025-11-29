@@ -3,7 +3,6 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/kitchen/application/retrieve_recipes_based_on_user_ingredient_and_preferences_usecase.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 
 class RetrieveReceipeException implements Exception {
@@ -11,13 +10,11 @@ class RetrieveReceipeException implements Exception {
 }
 
 class RetrieveReceipeFromApiOneTimePerDayUsecase {
-  final IUserReceipeRepository _userReceipeRepository;
   final IAuthUserService _authUserService;
   final IUserReceipeRepositoryV2 _userReceipeRepositoryV2;
   final IUserRecipeService _userRecipeService;
 
   const RetrieveReceipeFromApiOneTimePerDayUsecase(
-    this._userReceipeRepository,
     this._authUserService,
     this._userReceipeRepositoryV2,
     this._userRecipeService,
@@ -60,7 +57,7 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
   Future<List<UserReceipeV2>> _retrieveAndSave(DateTime now) async {
     final uid = _authUserService.currentUser!.uid;
 
-    final recipes = await _userReceipeRepository
+    final recipes = await _userReceipeRepositoryV2
         .getReceipesBasedOnUserPreferencesFromApi(uid);
 
     final convertRecipesToUserRecipes = recipes.recipesEn
