@@ -37,7 +37,10 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   Future<TranslatedRecipe> getReceipesBasedOnUserPreferencesFromApi(
       EntityId uid) async {
     final apiRoute = "$baseUrl/${uid.value}";
-    final response = await _dio.get(apiRoute);
+    final response = await _dio.get(
+      apiRoute,
+      options: timeOutOptions,
+    );
     log(response.toString());
     final json = response.data as Map<String, dynamic>;
 
@@ -154,7 +157,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Future<UserRecipeMetadata?> getUserReceipeMetadata(
+  Future<UserRecipeMetadata?> getUserRecipeMetadata(
     EntityId uid,
   ) async {
     final snapshot = await _firestore
@@ -183,13 +186,6 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Future<void> translateUserReceipe(EntityId uid, String language) {
-    final url = "$baseApiUrl/translate-recipes/${uid.value}/French";
-
-    return _dio.post(url);
-  }
-
-  @override
   Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(
       File file) async {
     try {
@@ -201,7 +197,11 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
       final formData = FormData.fromMap({
         "file": fileToSend,
       });
-      final response = await _dio.post(apiRoute, data: formData);
+      final response = await _dio.post(
+        apiRoute,
+        data: formData,
+        options: timeOutOptions,
+      );
 
       final json = response.data as Map<String, dynamic>;
 
@@ -296,7 +296,11 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     final formData = FormData.fromMap({
       "file": fileToSend,
     });
-    final response = await _dio.post(apiRoute, data: formData);
+    final response = await _dio.post(
+      apiRoute,
+      data: formData,
+      options: timeOutOptions,
+    );
 
     final json = response.data as Map<String, dynamic>;
 

@@ -47,12 +47,10 @@ abstract class IUserReceipeRepositoryV2 {
 
   Stream<bool> isReceiptSaved(EntityId uid, EntityId receipeId);
 
-  Future<UserRecipeMetadata?> getUserReceipeMetadata(
+  Future<UserRecipeMetadata?> getUserRecipeMetadata(
     EntityId uid,
   );
 
   Future<void> saveUserReceipeMetadata(
       EntityId uid, UserRecipeMetadata metadata);
-
-  Future<void> translateUserReceipe(EntityId uid, String language);
 }

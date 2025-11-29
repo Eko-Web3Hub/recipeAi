@@ -48,14 +48,14 @@ class UserRecipeService implements IUserRecipeService {
 
   @override
   Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid) =>
-      _userReceipeRepositoryV2.getUserReceipeMetadata(uid);
+      _userReceipeRepositoryV2.getUserRecipeMetadata(uid);
 
   @override
   Future<void> saveUserReceipeMetadata(
     EntityId uid,
     DateTime lastUpdatedDate,
   ) async {
-    final metadata = await _userReceipeRepositoryV2.getUserReceipeMetadata(uid);
+    final metadata = await _userReceipeRepositoryV2.getUserRecipeMetadata(uid);
     if (metadata == null) {
       return _userReceipeRepositoryV2.saveUserReceipeMetadata(
         uid,
@@ -77,7 +77,7 @@ class UserRecipeService implements IUserRecipeService {
     final uid = _authUserService.currentUser!.uid;
 
     final metadata =
-        (await _userReceipeRepositoryV2.getUserReceipeMetadata(uid)) ??
+        (await _userReceipeRepositoryV2.getUserRecipeMetadata(uid)) ??
             UserRecipeMetadata.initial();
 
     return _userReceipeRepositoryV2.saveUserReceipeMetadata(

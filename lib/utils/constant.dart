@@ -125,3 +125,6 @@ enum AuthError { userNotFound, somethingWentWrong }
 const logoPath = 'assets/images/newLogo.png';
 const hasSeenOnboardingKey = 'has_already_seen_onboarding';
 const kBottomProfilePadding = 90.0;
+final timeOutOptions = Options(
+  receiveTimeout: Duration(seconds: 30),
+);

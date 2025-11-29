@@ -25,7 +25,10 @@ class FastApiReceipesBasedOnIngredientUserPreferenceRepository
     EntityId uid,
   ) async {
     try {
-      final response = await _dio.get('$path/${uid.value}');
+      final response = await _dio.get(
+        '$path/${uid.value}',
+        options: timeOutOptions,
+      );
 
       return Right(TranslatedRecipe.fromJson(
         response.data,

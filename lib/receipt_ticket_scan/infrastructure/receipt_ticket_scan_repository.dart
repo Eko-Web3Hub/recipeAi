@@ -29,7 +29,11 @@ class FastApiReceiptTicketScanRepository
           filename: file.path.split("/").last,
         ),
       });
-      final response = await _dio.post(path, data: formData);
+      final response = await _dio.post(
+        path,
+        data: formData,
+        options: timeOutOptions,
+      );
       final receiptTicket = response.data['receiptTicket'];
 
       return ReceiptTicketScanSerialization.fromJson(receiptTicket);
