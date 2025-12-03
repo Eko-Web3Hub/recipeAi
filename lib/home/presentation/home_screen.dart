@@ -262,6 +262,10 @@ class ReceipeItem extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                   child: Container(
