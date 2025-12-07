@@ -58,6 +58,7 @@ dependencies:
   dartz: ^0.10.1
   firebase_messaging: ^15.2.5
   shimmer_animation: ^2.2.2
+  firebase_crashlytics: ^4.3.6
  
   
   
