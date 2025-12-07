@@ -6,10 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
+
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/home/presentation/account_screen.dart';
-import 'package:recipe_ai/home/presentation/delete_account_controller.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -21,102 +19,56 @@ import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/device_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void _delectionSuccess(BuildContext context) {
-  final appTexts = di<TranslationController>().currentLanguage;
-
-  context.go('/onboarding/start');
-  showSnackBar(
-    context,
-    appTexts.deleteAccountSuccess,
-  );
-}
-
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
-
-  Future<bool?> _showLoginAgainDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => LoginAgainDialog(
-        metadata: AccountDeleteMetadata(
-          context: context,
-          appTexts: di<TranslationController>().currentLanguage,
-          firebaseAuth: di<IFirebaseAuth>(),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     final translationController = di<TranslationController>();
     final appTexts = translationController.currentLanguage;
 
-    return BlocProvider(
-      create: (context) => DeleteAccountController(
-        di<IFirebaseAuth>(),
-      ),
-      child: Builder(builder: (context) {
-        return ListenableBuilder(
-            listenable: translationController,
-            builder: (context, _) {
-              return BlocListener<DeleteAccountController, DeleteAccountState>(
-                listener: (context, state) {
-                  if (state is DeleteAccountSuccess) {
-                    _delectionSuccess(context);
-                  } else if (state is DeleteAccountRequiredRecentLogin) {
-                    _showLoginAgainDialog(context);
-                  } else if (state is DeleteAccountErrorOcuured) {
-                    showSnackBar(
-                      context,
-                      appTexts.deleteAccountError,
-                      isError: true,
-                    );
-                  }
-                },
-                child: Scaffold(
-                  appBar: KitchenInventoryAppBar(
-                    title: appTexts.settings,
-                    arrowLeftOnPressed: () => context.pop(),
-                  ),
-                  body: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: Column(
-                      children: [
-                        const Gap(10),
-                        _NotificationSetting(
-                          iconPath: 'assets/images/notificationSettingIcon.svg',
-                          title: appTexts.notification,
-                        ),
-                        const Gap(16),
-                        _LanguageSetting(),
-                        const Gap(16),
-                        _MyPreferencesSetting(
-                          title: appTexts.myPreferences,
-                        ),
-                        const Gap(16),
-                        _FeedBackSetting(
-                          title: appTexts.sendABug,
-                        ),
-                        const Gap(16),
-                        _LogOutBtn(
-                          title: appTexts.signOut,
-                        ),
-                        const Spacer(),
-                        _DeleteAccountBtn(
-                          title: appTexts.deleteAccount,
-                        ),
-                        const Gap(80),
-                      ],
-                    ),
-                  ),
+    return Builder(builder: (context) {
+      return ListenableBuilder(
+          listenable: translationController,
+          builder: (context, _) {
+            return Scaffold(
+              appBar: KitchenInventoryAppBar(
+                title: appTexts.settings,
+                arrowLeftOnPressed: () => context.pop(),
+              ),
+              body: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20,
                 ),
-              );
-            });
-      }),
-    );
+                child: Column(
+                  children: [
+                    const Gap(10),
+                    _NotificationSetting(
+                      iconPath: 'assets/images/notificationSettingIcon.svg',
+                      title: appTexts.notification,
+                    ),
+                    const Gap(16),
+                    _LanguageSetting(),
+                    const Gap(16),
+                    _MyPreferencesSetting(
+                      title: appTexts.myPreferences,
+                    ),
+                    const Gap(16),
+                    _FeedBackSetting(
+                      title: appTexts.sendABug,
+                    ),
+                    const Gap(16),
+                    _LogOutBtn(
+                      title: appTexts.signOut,
+                    ),
+                    const Spacer(),
+                    const Gap(80),
+                  ],
+                ),
+              ),
+            );
+          });
+    });
   }
 }
 
@@ -248,44 +200,6 @@ class _LanguageSetting extends StatelessWidget {
   }
 }
 
-class _DeleteAccountBtn extends StatelessWidget {
-  const _DeleteAccountBtn({
-    required this.title,
-  });
-
-  final String title;
-
-  Future<bool?> _showConfirmationDialog(BuildContext context) {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return ConfirmationDeleteAccountWidget(
-          noPressed: () => Navigator.of(context).pop(false),
-          yesPressed: () => Navigator.of(context).pop(true),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _SettingOptionCard(
-      showLeftIcon: false,
-      iconPath: 'assets/icon/languagesIcon.svg',
-      title: title,
-      titleColor: Colors.red,
-      onTap: () async {
-        final response = await _showConfirmationDialog(context);
-
-        if (response == true) {
-          context.read<DeleteAccountController>().deleteAccount();
-        }
-      },
-      rightSectionChild: Container(),
-    );
-  }
-}
-
 class _FeedBackSetting extends StatelessWidget {
   const _FeedBackSetting({
     required this.title,
@@ -325,14 +239,13 @@ class _SettingOptionCard extends StatelessWidget {
     this.onTap,
     required this.iconPath,
     required this.title,
-    this.titleColor,
     required this.rightSectionChild,
     this.showLeftIcon = true,
   });
   final bool showLeftIcon;
   final String iconPath;
   final String title;
-  final Color? titleColor;
+
   final Widget rightSectionChild;
   final void Function()? onTap;
 
@@ -380,7 +293,7 @@ class _SettingOptionCard extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     fontSize: 16.0,
                     height: 1.35,
-                    color: titleColor ?? newNeutralBlackColor,
+                    color: newNeutralBlackColor,
                   ),
                 ),
               ],
