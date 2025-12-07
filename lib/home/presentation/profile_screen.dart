@@ -348,6 +348,7 @@ class _ToggleFavoriteBtn extends StatelessWidget {
         receipe: receipe,
         fillFavoriteIcon: 'assets/images/NewLoveIcon.svg',
         outlinedFavoriteIcon: 'assets/images/unfillHeartImage.svg',
+        colorFilter: null,
         padding: 0,
       ),
     );

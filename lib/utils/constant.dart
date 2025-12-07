@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +19,11 @@ final appLanguages = <AppLanguage, AppLocalizations>{
   AppLanguage.fr: AppLocalizationsFr(),
   AppLanguage.en: AppLocalizationsEn(),
 };
+
+final recipeCardColorFilter = ColorFilter.mode(
+  Colors.white,
+  BlendMode.srcATop,
+);
 
 const horizontalScreenPadding = 30.0;
 const verticalScreenPadding = 20.0;

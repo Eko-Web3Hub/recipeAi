@@ -32,12 +32,12 @@ class NavigationItem extends Equatable {
   List<Object?> get props => [icon];
 }
 
-const List<NavigationItem> _navigationsItems = [
-  NavigationItem(icon: "home"),
-  NavigationItem(icon: "favorite_outlined"),
-  NavigationItem(icon: "list_add"),
-  NavigationItem(icon: "profile"),
-];
+// const List<NavigationItem> _navigationsItems = [
+//   NavigationItem(icon: "home"),
+//   NavigationItem(icon: "favorite_outlined"),
+//   NavigationItem(icon: "list_add"),
+//   NavigationItem(icon: "profile"),
+// ];
 
 class ScaffoldWithNestedNavigation extends StatelessWidget {
   const ScaffoldWithNestedNavigation({

@@ -398,6 +398,7 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                 outlinedFavoriteIcon:
                                     'assets/icon/icon_favorite_white.svg',
                                 size: 25,
+                                colorFilter: recipeCardColorFilter,
                               ),
                             ),
                             const Gap(14),

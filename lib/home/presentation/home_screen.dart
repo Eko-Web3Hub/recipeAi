@@ -340,6 +340,7 @@ class ReceipeItem extends StatelessWidget {
                                 ),
                                 RecipeIconFavorite(
                                   receipe: receipe,
+                                  colorFilter: recipeCardColorFilter,
                                 ),
                               ],
                             ),
@@ -366,6 +367,7 @@ class RecipeIconFavorite extends StatelessWidget {
     this.outlinedFavoriteIcon = 'assets/images/favorite_outlined.svg',
     this.padding = 16,
     this.size,
+    required this.colorFilter,
   });
 
   final UserReceipeV2 receipe;
@@ -373,7 +375,7 @@ class RecipeIconFavorite extends StatelessWidget {
   final String outlinedFavoriteIcon;
   final double padding;
   final double? size;
-
+  final ColorFilter? colorFilter;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -403,8 +405,7 @@ class RecipeIconFavorite extends StatelessWidget {
                       : outlinedFavoriteIcon,
                   height: size,
                   fit: BoxFit.cover,
-                  colorFilter:
-                      ColorFilter.mode(Colors.white, BlendMode.srcATop),
+                  colorFilter: colorFilter,
                 ),
               ),
             );
