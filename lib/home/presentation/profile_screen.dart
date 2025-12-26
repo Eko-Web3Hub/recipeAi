@@ -440,6 +440,7 @@ class _RecipeCardContainer extends StatelessWidget {
             offset: Offset(0, 2),
             blurRadius: 16,
             spreadRadius: 0,
+            blurStyle: BlurStyle.inner,
           ),
         ],
       ),
