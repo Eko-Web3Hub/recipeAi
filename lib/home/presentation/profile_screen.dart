@@ -434,6 +434,14 @@ class _RecipeCardContainer extends StatelessWidget {
         border: Border.all(
           color: Color(0xffFBFBFB),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff063336).withOpacity(0.1),
+            offset: Offset(0, 2),
+            blurRadius: 16,
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: child,
     );
