@@ -325,6 +325,7 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                 receipe.steps,
                               ),
                             ),
+                            const Gap(90.0),
                           ],
                           // Padding(
                           //   padding:
