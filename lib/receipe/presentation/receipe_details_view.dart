@@ -269,51 +269,27 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        appTexts.ingredients,
-                                        style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 17),
-                                      ),
-                                      TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            'Add all to list',
-                                            style: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                color: greenPrimaryColor),
-                                          ))
-                                    ],
+                                  Text(
+                                    appTexts.ingredients,
+                                    style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 17),
                                   ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '${receipe.ingredients.length} Items',
-                                        style: GoogleFonts.poppins(
-                                            color: const Color(0xFF748189),
-                                            fontSize: 14),
-                                      ),
-                                    ],
+                                  Text(
+                                    '${receipe.ingredients.length} Items',
+                                    style: GoogleFonts.poppins(
+                                        color: const Color(0xFF748189),
+                                        fontSize: 14),
                                   ),
-                                  ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: receipe.ingredients.length,
-                                    itemBuilder: (context, index) {
-                                      final ingredient =
-                                          receipe.ingredients[index];
-                                      return _DisplayIngredients(
-                                          ingredient: ingredient.name,
-                                          quantity: ingredient.quantity ?? '');
-                                    },
-                                  )
+                                  const Gap(15.0),
+                                  ...receipe.ingredients.map<Widget>(
+                                    (ingredient) => _DisplayIngredients(
+                                        ingredient: ingredient.name,
+                                        quantity: ingredient.quantity ?? ''),
+                                  ),
+                                  const Gap(90.0),
                                 ],
                               ),
                             )
