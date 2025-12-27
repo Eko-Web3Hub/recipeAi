@@ -78,7 +78,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             horizontal: 20,
           ),
           border: _inputBorder,
-          enabledBorder: _inputBorder.copyWith(borderSide: BorderSide.none),
+          enabledBorder: _inputBorder,
           focusedBorder: _inputBorder,
           suffixIcon: widget.inputType == InputType.password
               ? IconButton(
