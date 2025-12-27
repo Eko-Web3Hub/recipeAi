@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -18,6 +17,8 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
+import 'package:recipe_ai/nav/hide_nav_bar.dart';
+import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
@@ -50,6 +51,9 @@ class InventoryScreen extends StatelessWidget {
 
   void _showBottomSheet(BuildContext context) {
     final controller = context.read<ReceiptTicketScanController>();
+    final hideNavBarProvider = context.read<HideNavBar>();
+    hideNavBarProvider.setHideNavBar(true);
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -85,11 +89,15 @@ class InventoryScreen extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
+              const Gap(30),
             ],
           ),
         );
       },
-    );
+      shape: modalBottomSheetShape,
+    ).then((_) {
+      hideNavBarProvider.setHideNavBar(false);
+    });
   }
 
   final queryController = TextEditingController();
