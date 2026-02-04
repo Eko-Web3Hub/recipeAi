@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/chat_ai/application/find_recipe_with_image_usecase.dart';
@@ -13,6 +12,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class _BubleMessageChatContainer extends StatelessWidget {
   const _BubleMessageChatContainer({
@@ -57,8 +57,10 @@ class _ChatAiBubble extends StatelessWidget {
       isRight: isRight,
       child: Text(
         text,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
+          fontWeight: FontWeight.w400,
           color: Colors.white,
+          fontFamily: poppinsFontFamily,
         ),
       ),
     );
@@ -203,7 +205,9 @@ class _AiChatMessageBuild implements Visitor {
         children: [
           Text(
             message.text,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: poppinsFontFamily,
+              fontWeight: FontWeight.w400,
               color: Colors.white,
             ),
           ),
@@ -322,7 +326,8 @@ class _RecipeDisplay extends StatelessWidget {
       children: [
         Text(
           recipe.name,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.white,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
@@ -77,7 +76,9 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
         SnackBar(
           content: Text(
             text,
-            style: GoogleFonts.poppins(),
+            style: TextStyle(
+              fontFamily: poppinsFontFamily,
+            ),
           ),
         ),
       );
@@ -127,7 +128,8 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
               const Gap(25.0),
               Text(
                 appTexts.changeEmailDescription,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
+                  fontFamily: poppinsFontFamily,
                   fontSize: 11,
                   fontWeight: FontWeight.w400,
                   color: Colors.black,

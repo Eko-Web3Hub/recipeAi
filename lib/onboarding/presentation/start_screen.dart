@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
@@ -11,6 +10,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/onboarding/presentation/start_view_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -57,7 +57,8 @@ class StartScreen extends StatelessWidget {
                           Text(
                             appTexts.startDesc,
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
+                                fontFamily: poppinsFontFamily,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 28),
@@ -75,7 +76,8 @@ class StartScreen extends StatelessWidget {
                             },
                             child: Text(
                               appTexts.signIn,
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
+                                  fontFamily: poppinsFontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
                                   color: Colors.white),
@@ -88,10 +90,11 @@ class StartScreen extends StatelessWidget {
                               },
                               child: Text(
                                 appTexts.createAnAccount,
-                                style: GoogleFonts.poppins(
+                                style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 16),
+                                    fontSize: 16,
+                                    fontFamily: poppinsFontFamily),
                               )),
                           const Gap(15),
                         ],

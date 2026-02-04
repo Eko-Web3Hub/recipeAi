@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
@@ -20,6 +19,7 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class NavigationItem extends Equatable {
   const NavigationItem({
@@ -186,7 +186,8 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                   _ingredientsImage != null
                       ? appText.generateRecipeWithGroceriePhoto
                       : appText.generateRecipe,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     color: Colors.black,
@@ -348,7 +349,8 @@ class _ActionBtn extends StatelessWidget {
             const Gap(10),
             Text(
               title,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
                 color: Color(0xff333333),

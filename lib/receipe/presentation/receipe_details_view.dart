@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -217,7 +216,8 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               receipe.name,
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
+                                fontFamily: poppinsFontFamily,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20.0,
                                 color: newNeutralBlackColor,
@@ -253,13 +253,15 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                 children: [
                                   Text(
                                     appTexts.ingredients,
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 17),
                                   ),
                                   Text(
                                     '${receipe.ingredients.length} Items',
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
                                         color: const Color(0xFF748189),
                                         fontSize: 14),
                                   ),
@@ -386,7 +388,9 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                   SnackBar(
                                     content: Text(
                                       appTexts.shareLink,
-                                      style: GoogleFonts.poppins(),
+                                      style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -436,7 +440,8 @@ class _NutrientItem extends StatelessWidget {
         const Gap(17),
         Text(
           title,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+              fontFamily: poppinsFontFamily,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: newNeutralBlackColor),
@@ -476,7 +481,8 @@ class _DisplayIngredients extends StatelessWidget {
           Flexible(
             child: Text(
               ingredient,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
                 height: 24 / 16,
@@ -487,7 +493,8 @@ class _DisplayIngredients extends StatelessWidget {
           Flexible(
             child: Text(
               quantity,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
                 height: 21 / 14,
@@ -518,14 +525,16 @@ class _StepsSection extends StatelessWidget {
           children: [
             Text(
               appTexts.steps,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                  fontFamily: poppinsFontFamily,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: newNeutralBlackColor),
             ),
             Text(
               '${steps.length} ${appTexts.steps}',
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 color: const Color(0xFF748189),
                 fontSize: 14,
               ),
@@ -578,16 +587,6 @@ class _StepView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TranslatedText(
-          //   textSelector: (lang) => '${lang.step} $index',
-          //   style: GoogleFonts.poppins(
-          //     fontWeight: FontWeight.w600,
-          //     fontSize: 16,
-          //     height: 24 / 16,
-          //     color: Colors.black,
-          //   ),
-          // ),
-
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -600,7 +599,8 @@ class _StepView extends StatelessWidget {
                 child: Center(
                   child: Text(
                     '$index',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
+                        fontFamily: poppinsFontFamily,
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                         color: greenPrimaryColor),
@@ -611,7 +611,8 @@ class _StepView extends StatelessWidget {
               Expanded(
                 child: Text(
                   step.description,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
                     height: 21 / 14,
@@ -645,7 +646,8 @@ class _StepView extends StatelessWidget {
                   const Gap(8.0),
                   Text(
                     '${step.duration}',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
+                      fontFamily: poppinsFontFamily,
                       fontWeight: FontWeight.w400,
                       fontSize: 14,
                       height: 21 / 14,

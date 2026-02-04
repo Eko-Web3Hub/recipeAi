@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
@@ -24,7 +23,8 @@ import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/styles.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-TextStyle settingHeadTitleStyle = GoogleFonts.poppins(
+TextStyle settingHeadTitleStyle = TextStyle(
+  fontFamily: poppinsFontFamily,
   fontSize: 14,
   fontWeight: FontWeight.w600,
   color: Colors.black,
@@ -82,7 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             TranslatedText(
                               textSelector: (lang) => lang.myFavorites,
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
+                                  fontFamily: poppinsFontFamily,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 20,
                                   height: 1.30,
@@ -95,7 +96,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context.push('/profil-screen/save-recipes'),
                                 child: TranslatedText(
                                   textSelector: (lang) => lang.seeAll,
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
+                                    fontFamily: poppinsFontFamily,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
                                     height: 1.30,
@@ -286,7 +288,8 @@ class _RecipeCard extends StatelessWidget {
             const Gap(12),
             Text(
               currentRecipe.name,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
                 height: 1.35,
@@ -303,7 +306,8 @@ class _RecipeCard extends StatelessWidget {
                 const Gap(6.39),
                 Text(
                   '${getOnlyNumber(recipe.receipeEn.totalCalories)} cal*',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
                     height: 1.5,
@@ -512,7 +516,8 @@ class _UserProfilCard extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
+                        fontFamily: poppinsFontFamily,
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: newNeutralBlackColor,
@@ -522,7 +527,8 @@ class _UserProfilCard extends StatelessWidget {
                       width: 122,
                       child: Text(
                         email,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
+                          fontFamily: poppinsFontFamily,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           color: newNeutralGreyColor,
@@ -636,7 +642,8 @@ class PopupTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: GoogleFonts.poppins(
+      style: TextStyle(
+        fontFamily: poppinsFontFamily,
         fontSize: 17,
         fontWeight: FontWeight.w500,
       ),

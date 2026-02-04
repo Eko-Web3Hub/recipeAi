@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -248,9 +247,10 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
             children: [
               Text(
                 appTexts.addItem,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: poppinsFontFamily,
                 ),
               ),
               GestureDetector(
@@ -279,7 +279,8 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
           const Gap(20),
           Text(
             appTexts.myItems,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: poppinsFontFamily,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -289,7 +290,8 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                 ? Center(
                     child: Text(
                       "No ingredients",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
+                        fontFamily: poppinsFontFamily,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
@@ -380,8 +382,10 @@ class _IngredientItemState extends State<IngredientItem> {
                       height: 30,
                       child: TextFormField(
                         readOnly: widget.readOnly,
-                        style: GoogleFonts.poppins(
-                            fontSize: 11, fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            fontFamily: poppinsFontFamily,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w400),
                         controller: _nameController,
                         onChanged: (String name) {
                           if (widget.getIngredientName != null) {

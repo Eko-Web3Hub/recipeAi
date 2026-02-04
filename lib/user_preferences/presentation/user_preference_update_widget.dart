@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
@@ -96,7 +95,9 @@ class _DisplayUserPreferenceQuizState
                 SnackBar(
                   content: Text(
                     appTexts.noChangeInUserPreference,
-                    style: GoogleFonts.poppins(),
+                    style: TextStyle(
+                      fontFamily: poppinsFontFamily,
+                    ),
                   ),
                 ),
               );

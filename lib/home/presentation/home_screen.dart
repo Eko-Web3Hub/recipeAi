@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
@@ -110,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () => context.go('/home/historic'),
                       child: TranslatedText(
                         textSelector: (lang) => lang.historic,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
+                          fontFamily: poppinsFontFamily,
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
                           height: 16.5 / 12,
@@ -302,7 +302,8 @@ class ReceipeItem extends StatelessWidget {
                                 ),
                                 Text(
                                   '${getOnlyNumber(receipeTranslateState.totalCalories)} cal*',
-                                  style: GoogleFonts.inter(
+                                  style: TextStyle(
+                                    fontFamily: poppinsFontFamily,
                                     fontWeight: FontWeight.w400,
                                     fontSize: 12,
                                     height: 14.52 / 12,
@@ -320,7 +321,8 @@ class ReceipeItem extends StatelessWidget {
                                   children: [
                                     Text(
                                       appTexts.averageTime,
-                                      style: GoogleFonts.poppins(
+                                      style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
                                         fontWeight: FontWeight.w400,
                                         color: greenPrimaryColor,
                                         fontSize: 11,
@@ -329,7 +331,8 @@ class ReceipeItem extends StatelessWidget {
                                     ),
                                     Text(
                                       receipeTranslateState.averageTime,
-                                      style: GoogleFonts.poppins(
+                                      style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 11,
                                         color: secondaryColor,
@@ -456,7 +459,8 @@ class _HeadLeftSection extends StatelessWidget {
         const Gap(5.0),
         TranslatedText(
           textSelector: (lang) => lang.letCreateMealToday,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 12,
             color: Color(0xff333333),

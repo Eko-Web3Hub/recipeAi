@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
@@ -13,6 +12,7 @@ import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
 class IngredientDismissedWidget extends StatelessWidget {
@@ -104,7 +104,8 @@ class ReceiptTicketScanResultScreen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'Add to inventory',
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
+                              fontFamily: poppinsFontFamily,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 11),

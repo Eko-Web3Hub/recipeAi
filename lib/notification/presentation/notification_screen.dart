@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -13,6 +12,7 @@ import 'package:recipe_ai/notification/presentation/notification_screen_controll
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/styles.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -173,7 +173,8 @@ class _NotificationCard extends StatelessWidget {
                       width: width * 0.65,
                       child: Text(
                         notification.body,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
+                          fontFamily: poppinsFontFamily,
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
                           height: 1.45,
@@ -275,7 +276,8 @@ class _NotificationDetails extends StatelessWidget {
         const Gap(20),
         Text(
           notification.title,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w600,
             fontSize: 16,
           ),
@@ -283,7 +285,8 @@ class _NotificationDetails extends StatelessWidget {
         const Gap(4.0),
         Text(
           notification.body,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 14,
             height: 1.5,
