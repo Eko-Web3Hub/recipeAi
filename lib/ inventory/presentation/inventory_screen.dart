@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/%20inventory/domain/repositories/inventory_repository.dart';
 import 'package:recipe_ai/%20inventory/presentation/components/category_item.dart';
@@ -431,7 +430,8 @@ class InventoryScreen extends StatelessWidget {
                                     const Gap(10),
                                     TranslatedText(
                                       textSelector: (lang) => lang.fillKitchen,
-                                      style: GoogleFonts.poppins(
+                                      style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
                                         fontSize: 11,
                                         fontWeight: FontWeight.w400,
                                       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class AuthBottomAction extends StatelessWidget {
   const AuthBottomAction({
@@ -21,16 +21,18 @@ class AuthBottomAction extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           text: firstText,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 11,
             height: 16.5 / 11,
             color: Colors.black,
+            fontFamily: poppinsFontFamily,
           ),
           children: [
             TextSpan(
               text: secondText,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 color: orangeVariantColor,
               ),
             ),

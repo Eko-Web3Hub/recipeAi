@@ -224,18 +224,13 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                               ),
                             ),
                           ),
-
                           const Gap(30.0),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              children: [
-                                _NutrientItem(
-                                    asset: 'calories',
-                                    title:
-                                        '${getOnlyNumber(receipe.totalCalories)} calories'),
-                              ],
-                            ),
+                            child: _NutrientItem(
+                                asset: 'calories',
+                                title:
+                                    '${getOnlyNumber(receipe.totalCalories)} calories'),
                           ),
                           const Gap(30.0),
                           Padding(

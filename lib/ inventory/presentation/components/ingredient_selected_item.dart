@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -32,8 +31,11 @@ class IngredientSelectedItem extends StatelessWidget {
           appLanguage == AppLanguage.fr
               ? ingredient.nameFr ?? ingredient.name
               : ingredient.name,
-          style: GoogleFonts.poppins(
-              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 11),
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+              fontSize: 11,
+              fontFamily: poppinsFontFamily),
         ),
       ),
     );

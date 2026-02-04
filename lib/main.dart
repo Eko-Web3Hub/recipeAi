@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -159,13 +158,15 @@ class _MyAppState extends State<MyApp> {
                   colorScheme:
                       ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                   textTheme: TextTheme(
-                    displayLarge: GoogleFonts.poppins(
+                    displayLarge: TextStyle(
+                      fontFamily: poppinsFontFamily,
                       fontWeight: FontWeight.w600,
                       fontSize: 20.0,
                       height: 30 / 20,
                       color: Colors.black,
                     ),
-                    labelSmall: GoogleFonts.poppins(
+                    labelSmall: TextStyle(
+                      fontFamily: poppinsFontFamily,
                       fontWeight: FontWeight.w400,
                       fontSize: 11.0,
                       height: 16.5 / 11,

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
@@ -155,11 +154,12 @@ class _LoginViewState extends State<LoginView> {
                                         '/onboarding/start/login/reset-password'),
                                     child: Text(
                                       appTexts.forgotPassword,
-                                      style: GoogleFonts.poppins(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16,
                                         height: 16.5 / 11,
                                         color: newNeutralBlackColor,
+                                        fontFamily: poppinsFontFamily,
                                       ),
                                     ),
                                   ),
@@ -189,8 +189,10 @@ class _LoginViewState extends State<LoginView> {
                             children: [
                               Text(
                                 'Or continue with',
-                                style: GoogleFonts.poppins(
-                                    color: neutralGrey2Color, fontSize: 14),
+                                style: TextStyle(
+                                    color: neutralGrey2Color,
+                                    fontSize: 14,
+                                    fontFamily: poppinsFontFamily),
                               ),
                               const Gap(18),
                               Builder(builder: (context) {
@@ -219,9 +221,10 @@ class _LoginViewState extends State<LoginView> {
                                       const Gap(8),
                                       Text(
                                         appTexts.continueWithGoogle,
-                                        style: GoogleFonts.poppins(
+                                        style: TextStyle(
                                             color: Colors.white,
-                                            fontWeight: FontWeight.w700),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: poppinsFontFamily),
                                       ),
                                     ],
                                   ),
@@ -258,9 +261,10 @@ class _LoginViewState extends State<LoginView> {
                                           const Gap(10),
                                           Text(
                                             appTexts.continueWithApple,
-                                            style: GoogleFonts.poppins(
+                                            style: TextStyle(
                                                 color: Colors.white,
-                                                fontWeight: FontWeight.w700),
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: poppinsFontFamily),
                                           ),
                                         ],
                                       ),

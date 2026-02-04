@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
@@ -134,3 +133,4 @@ const kBottomProfilePadding = 90.0;
 final timeOutOptions = Options(
   receiveTimeout: Duration(seconds: 30),
 );
+const poppinsFontFamily = 'Poppins';

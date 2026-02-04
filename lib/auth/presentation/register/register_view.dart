@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/register_usecase.dart';
@@ -158,7 +157,8 @@ class _RegisterViewState extends State<RegisterView> {
                                 children: [
                                   Text(
                                     appTexts.passwordRequirement,
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
+                                      fontFamily: poppinsFontFamily,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       height: 16.5 / 12,
@@ -214,7 +214,8 @@ class _RegisterViewState extends State<RegisterView> {
                                 ),
                                 const Gap(7),
                                 Text(appTexts.signInWith,
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 11,
                                         color: const Color(0xFFD9D9D9))),
@@ -353,7 +354,8 @@ class _PasswordCheck extends StatelessWidget {
           const Gap(5),
           Text(
             label,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: poppinsFontFamily,
               fontWeight: FontWeight.w400,
               fontSize: 12,
               height: 16.5 / 12,
@@ -366,7 +368,8 @@ class _PasswordCheck extends StatelessWidget {
   }
 }
 
-final headTitleStyle = GoogleFonts.poppins(
+final headTitleStyle = TextStyle(
+  fontFamily: poppinsFontFamily,
   fontWeight: FontWeight.w600,
   fontSize: 20,
   height: 30 / 20,
@@ -391,7 +394,8 @@ class HeadTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w600,
             fontSize: 20,
             color: Color(
@@ -402,7 +406,8 @@ class HeadTitle extends StatelessWidget {
         const SizedBox(height: 5),
         Text(
           subTitle,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 14,
             color: const Color(0xff121212),
@@ -458,7 +463,8 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
           onTap: () => launchUrlFunc(termsAndConditionsUrl),
           child: Text(
             appTexts.acceptTermsAndConditions,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: poppinsFontFamily,
               fontWeight: FontWeight.w400,
               fontSize: 11,
               height: 16.5 / 11,
