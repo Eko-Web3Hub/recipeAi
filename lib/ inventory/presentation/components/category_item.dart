@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/%20inventory/domain/model/category.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -36,9 +35,10 @@ class CategoryItem extends StatelessWidget {
         child: Center(
           child: Text(
             appLanguage == AppLanguage.fr ? category.nameFr : category.name,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
               fontSize: 11,
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+              fontFamily: poppinsFontFamily,
             ),
           ),
         ),

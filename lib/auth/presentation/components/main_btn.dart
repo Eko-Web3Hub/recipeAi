@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class MainBtn extends StatelessWidget {
   const MainBtn({
@@ -46,7 +46,8 @@ class MainBtn extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     height: 24 / 16,

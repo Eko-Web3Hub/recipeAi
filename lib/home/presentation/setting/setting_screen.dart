@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 
@@ -16,6 +15,7 @@ import 'package:recipe_ai/notification/presentation/notification_user_controller
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/device_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -181,7 +181,8 @@ class _LanguageSetting extends StatelessWidget {
                                   .name,
                         )).key)
                     .label,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
+                  fontFamily: poppinsFontFamily,
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
                   height: 1.45,
@@ -289,7 +290,8 @@ class _SettingOptionCard extends StatelessWidget {
                 const Gap(12),
                 Text(
                   title,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     fontWeight: FontWeight.w400,
                     fontSize: 16.0,
                     height: 1.35,

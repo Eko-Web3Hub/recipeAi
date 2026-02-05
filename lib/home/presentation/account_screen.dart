@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
@@ -20,12 +19,14 @@ import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/styles.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 
-TextStyle _noTextStyle = GoogleFonts.poppins(
+TextStyle _noTextStyle = TextStyle(
+  fontFamily: poppinsFontFamily,
   color: Colors.black,
   fontWeight: FontWeight.w600,
 );
 
-TextStyle _deleteTextStyle = GoogleFonts.poppins(
+TextStyle _deleteTextStyle = TextStyle(
+  fontFamily: poppinsFontFamily,
   color: Colors.red,
   fontWeight: FontWeight.w600,
 );
@@ -225,6 +226,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
 class DeleteAccountBtn extends StatelessWidget {
   const DeleteAccountBtn({
+    super.key,
     required this.title,
   });
 
@@ -254,7 +256,8 @@ class DeleteAccountBtn extends StatelessWidget {
       },
       child: Text(
         title,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
+          fontFamily: poppinsFontFamily,
           fontWeight: FontWeight.w400,
           fontSize: 16.0,
           height: 1.35,
@@ -286,7 +289,8 @@ class OptionRightBtn extends StatelessWidget {
       children: [
         Text(
           value,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 11,
             color: _kGreyColor,
@@ -384,7 +388,9 @@ class _LoginAgainDialogState extends State<LoginAgainDialog> {
                           ),
                           child: Text(
                             widget.metadata.popupTitle,
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
+                              fontFamily: poppinsFontFamily,
+                              fontWeight: FontWeight.w400,
                               color: Colors.red,
                               fontSize: 12,
                             ),
@@ -524,7 +530,8 @@ class NewFormField extends StatelessWidget {
             ),
             child: Text(
               label!,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
                 height: 1.35,
@@ -537,7 +544,8 @@ class NewFormField extends StatelessWidget {
           onTap: onTap,
           controller: controller,
           initialValue: initialValue,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 14,
             color: newNeutralBlackColor,

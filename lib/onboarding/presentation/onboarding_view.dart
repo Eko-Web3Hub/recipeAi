@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
@@ -18,6 +17,7 @@ import 'package:recipe_ai/onboarding/presentation/personalized_preference_widget
 import 'package:recipe_ai/onboarding/presentation/smart_receipe_generation_widget.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 List<OnboardingModel> _buildOnboarding(AppLocalizations appTexts) => [
@@ -164,7 +164,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                           },
                           child: Text(
                             appTexts.skip,
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
+                                fontFamily: poppinsFontFamily,
                                 fontWeight: FontWeight.w700,
                                 color: orangePrimaryColor,
                                 fontSize: 20),
@@ -240,12 +241,6 @@ class _OnboardingViewState extends State<OnboardingView> {
                           },
                         ),
                       ),
-
-                      // _OnboardingDotPageIndicator(
-                      //   controller: controller,
-                      //   count: _onBoardingFr.length,
-                      //   dotColor: Color(0xFFFFBA4D).withValues(alpha: 0.4),
-                      // ),
                       const Gap(20),
                       _OnboardingTitle(
                         _onBoardingFr[_currentIndex].title,
@@ -255,7 +250,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Text(
                           _onBoardingFr[_currentIndex].description,
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
+                              fontFamily: poppinsFontFamily,
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
                               height: 24 / 16,
@@ -286,23 +282,6 @@ class _OnboardingViewState extends State<OnboardingView> {
                           },
                         ),
                       ),
-                      // const Gap(13),
-                      // InkWell(
-                      //   onTap: () {
-                      //     context
-                      //         .read<OnboardingController>()
-                      //         .completeOnboarding();
-                      //   },
-                      //   child: Text(
-                      //     appTexts.skip,
-                      //     style: GoogleFonts.poppins(
-                      //       fontWeight: FontWeight.w600,
-                      //       fontSize: 16,
-                      //       height: 24 / 16,
-                      //       color: Theme.of(context).primaryColor,
-                      //     ),
-                      //   ),
-                      // ),
                       const Gap(40),
                     ],
                   ),
@@ -329,7 +308,8 @@ class _OnboardingTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Text(
         title,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w700,
             fontSize: 28,
             color: const Color(0xFF030319)),

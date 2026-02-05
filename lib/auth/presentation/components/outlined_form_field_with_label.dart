@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/components/outlined_text_form_field.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -37,7 +36,8 @@ class OutlinedFormFieldWithLabel extends StatelessWidget {
       children: [
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 16,
             height: 21 / 14,

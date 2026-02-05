@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -19,6 +18,7 @@ import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_reposito
 import 'package:recipe_ai/kitchen/presentation/ingredient_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_controller.dart';
 import 'package:recipe_ai/kitchen/presentation/receipt_ticket_scan_controller.dart';
+import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipt_ticket_scan/application/repositories/receipt_ticket_scan_repository.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
@@ -247,9 +247,10 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
             children: [
               Text(
                 appTexts.addItem,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: poppinsFontFamily,
                 ),
               ),
               GestureDetector(
@@ -278,7 +279,8 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
           const Gap(20),
           Text(
             appTexts.myItems,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: poppinsFontFamily,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -288,7 +290,8 @@ class _InventoryContentViewState extends State<_InventoryContentView> {
                 ? Center(
                     child: Text(
                       "No ingredients",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
+                        fontFamily: poppinsFontFamily,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
@@ -372,12 +375,6 @@ class _IngredientItemState extends State<IngredientItem> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 11.5),
-              // padding: const EdgeInsets.only(
-              //   left: 10,
-              //   right: 10,
-              //   top: 20,
-              //   bottom: 20,
-              // ),
               child: Row(
                 children: [
                   Expanded(
@@ -385,8 +382,10 @@ class _IngredientItemState extends State<IngredientItem> {
                       height: 30,
                       child: TextFormField(
                         readOnly: widget.readOnly,
-                        style: GoogleFonts.poppins(
-                            fontSize: 11, fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            fontFamily: poppinsFontFamily,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w400),
                         controller: _nameController,
                         onChanged: (String name) {
                           if (widget.getIngredientName != null) {
@@ -408,49 +407,6 @@ class _IngredientItemState extends State<IngredientItem> {
                       ),
                     ),
                   ),
-                  // Text(
-                  //   widget.ingredient.name,
-                  //   style: GoogleFonts.poppins(
-                  //     fontWeight: FontWeight.w600,
-                  //     fontSize: 14,
-                  //   ),
-                  // ),
-
-                  // SizedBox(
-                  //   width: 50,
-                  //   height: 30,
-                  //   child: TextFormField(
-                  //     readOnly: widget.readOnly,
-                  //     controller: _quantityController,
-                  //     onChanged: (String quantity) {
-                  //       if (widget.getIngredientQuantity != null) {
-                  //         widget.getIngredientQuantity!(quantity);
-                  //       }
-                  //       if (widget.ingredient.id != null) {
-                  //         context
-                  //             .read<IngredientController>()
-                  //             .updateIngredient(quantity);
-                  //       }
-                  //     },
-                  //     textAlign: TextAlign.center,
-                  //     inputFormatters: [
-                  //       FilteringTextInputFormatter.allow(
-                  //         RegExp(r'[0-9]'),
-                  //       ),
-                  //     ],
-                  //     decoration: InputDecoration(
-                  //       contentPadding: const EdgeInsets.symmetric(
-                  //         horizontal: 2,
-                  //       ),
-                  //       filled: true,
-                  //       fillColor: const Color(0xffEEEEEE),
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(5),
-                  //         borderSide: BorderSide.none,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -498,47 +454,47 @@ class _EmptyKitchenInventoryViewState
     }
   }
 
+  // EdgeInsets.all(16.0)
+
   void _showBottomSheet() {
     final appTexts = di<TranslationController>().currentLanguage;
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: Text(
-                  appTexts.selectPicture,
-                  style: smallTextStyle.copyWith(
-                    color: Colors.black,
-                  ),
+        return Column(
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: Text(
+                appTexts.selectPicture,
+                style: smallTextStyle.copyWith(
+                  color: Colors.black,
                 ),
-                onTap: () {
-                  _uploadReceiptPicture();
-                  Navigator.pop(context);
-                },
               ),
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: Text(
-                  appTexts.takePhoto,
-                  style: smallTextStyle.copyWith(
-                    color: Colors.black,
-                  ),
+              onTap: () {
+                _uploadReceiptPicture();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: Text(
+                appTexts.takePhoto,
+                style: smallTextStyle.copyWith(
+                  color: Colors.black,
                 ),
-                onTap: () {
-                  _takeCameraPicture();
-                  Navigator.pop(context);
-                },
               ),
-            ],
-          ),
+              onTap: () {
+                _takeCameraPicture();
+                Navigator.pop(context);
+              },
+            ),
+          ],
         );
       },
+      shape: modalBottomSheetShape,
     );
   }
 
@@ -632,7 +588,7 @@ class _EmptyKitchenInventoryViewState
                     ),
                     const Gap(3),
                     GestureDetector(
-                      onTap: _showBottomSheet,
+                      onTap: () => _showBottomSheet(),
                       child: Text(
                         appTexts.takeYourReceiptPicture,
                         style: smallTextStyle.copyWith(

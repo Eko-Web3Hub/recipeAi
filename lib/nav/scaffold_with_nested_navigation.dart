@@ -6,20 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_bottom_nav.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
+import 'package:recipe_ai/nav/hide_nav_bar.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-
-import '../utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class NavigationItem extends Equatable {
   const NavigationItem({
@@ -31,13 +31,6 @@ class NavigationItem extends Equatable {
   @override
   List<Object?> get props => [icon];
 }
-
-// const List<NavigationItem> _navigationsItems = [
-//   NavigationItem(icon: "home"),
-//   NavigationItem(icon: "favorite_outlined"),
-//   NavigationItem(icon: "list_add"),
-//   NavigationItem(icon: "profile"),
-// ];
 
 class ScaffoldWithNestedNavigation extends StatelessWidget {
   const ScaffoldWithNestedNavigation({
@@ -81,96 +74,45 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           : null,
       resizeToAvoidBottomInset: false,
       body: navigationShell,
-      floatingActionButton: hideNavBar
-          ? null
-          : ChefFab(
-              iconAsset: 'assets/icon/chef_hat.svg', // le pictogramme blanc
-              onPressed: () {
-                // ton action existante
-                _showAiActionRecipeBottomSheet(context);
-              },
-            ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      bottomNavigationBar:
-          (hideNavBar || MediaQuery.of(context).viewInsets.bottom != 0)
+      floatingActionButton:
+          hideNavBar || context.watch<HideNavBar>().isNavBarHidden
               ? null
+              : ChefFab(
+                  iconAsset: 'assets/icon/chef_hat.svg', // le pictogramme blanc
+                  onPressed: () {
+                    // ton action existante
+                    _showAiActionRecipeBottomSheet(context);
+                  },
+                ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: Consumer<HideNavBar>(
+        builder: (context, hideNavBar, child) {
+          return (hideNavBar.isNavBarHidden ||
+                  MediaQuery.of(context).viewInsets.bottom != 0 ||
+                  context.watch<HideNavBar>().isNavBarHidden)
+              ? SizedBox.shrink()
               : FancyBottomBar(
                   items: const [
-                    BarItemData('assets/images/home.svg'),
+                    BarItemData('assets/images/homeInactifIcon.svg'),
                     BarItemData('assets/images/favorite_outlined.svg'),
                     BarItemData('assets/images/list_add.svg'),
-                    BarItemData('assets/images/profile.svg'),
+                    BarItemData('assets/images/profilInactifIcon.svg'),
                   ],
                   currentIndex: navigationShell.currentIndex,
                   onTap: (i) => _goBranch(i),
-                ),
-
-      // BottomAppBar(
-      //     elevation: 10,
-      //     height: 70,
-      //     color: Colors.white,
-      //     shape: const CircularNotchedRectangle(),
-      //     surfaceTintColor: Colors.transparent,
-      //     notchMargin: 10,
-      //     child: Row(
-      //       children: [
-      //         for (int i = 0; i < 2; i++)
-      //           _NavBarItem(
-      //             index: i,
-      //             item: _navigationsItems[i],
-      //             currentIndex: navigationShell.currentIndex,
-      //             onTap: _goBranch,
-      //           ),
-      //         const SizedBox(width: 64),
-      //         for (int i = 2; i < 4; i++)
-      //           _NavBarItem(
-      //             index: i,
-      //             item: _navigationsItems[i],
-      //             currentIndex: navigationShell.currentIndex,
-      //             onTap: _goBranch,
-      //           ),
-      //       ],
-      //     ),
-      //   ),
-
-      // NavigationBar(
-      //     height: 70,
-      //     surfaceTintColor: Colors.transparent,
-      //     indicatorColor: Colors.transparent,
-      //     backgroundColor: Colors.white,
-      //     selectedIndex: navigationShell.currentIndex,
-      //     indicatorShape: const RoundedRectangleBorder(),
-      //     destinations: _navigationsItems
-      //         .map<Widget>((NavigationItem item) => Padding(
-      //               padding: const EdgeInsets.all(15),
-      //               child: InkWell(
-      //                 onTap: () => _goBranch(
-      //                   _navigationsItems.indexOf(item),
-      //                 ),
-      //                 overlayColor:
-      //                     WidgetStateProperty.all(Colors.transparent),
-      //                 child: SvgPicture.asset(
-      //                   "assets/images/${item.icon}.svg",
-      //                   width: 24,
-      //                   height: 24,
-      //                   fit: BoxFit.contain,
-      //                   colorFilter: ColorFilter.mode(
-      //                     _navigationsItems.indexOf(item) ==
-      //                             navigationShell.currentIndex
-      //                         ? greenPrimaryColor
-      //                         : const Color(0xFFDADADA),
-      //                     BlendMode.srcATop,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ))
-      //         .toList(),
-      //   ),
+                );
+        },
+      ),
     );
   }
 }
+
+final modalBottomSheetShape = RoundedRectangleBorder(
+  borderRadius: BorderRadius.only(
+    topLeft: Radius.circular(20),
+    topRight: Radius.circular(20),
+  ),
+);
 
 void _showAiActionRecipeBottomSheet(BuildContext context) =>
     showModalBottomSheet(
@@ -178,51 +120,8 @@ void _showAiActionRecipeBottomSheet(BuildContext context) =>
       builder: (BuildContext context) => _AiGenRecipeBottomSheet(),
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
+      shape: modalBottomSheetShape,
     );
-
-class _NavBarItem extends StatelessWidget {
-  final int index;
-  final NavigationItem item;
-  final int currentIndex;
-  final void Function(int) onTap;
-
-  const _NavBarItem({
-    required this.index,
-    required this.item,
-    required this.currentIndex,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isSelected = index == currentIndex;
-
-    return Expanded(
-      child: InkWell(
-        onTap: () => onTap(index),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        child: Center(
-          child: SvgPicture.asset(
-            "assets/images/${item.icon}.svg",
-            width: 24,
-            height: 24,
-            colorFilter: ColorFilter.mode(
-              isSelected ? greenPrimaryColor : const Color(0xFF484848),
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _AiGenRecipeBottomSheet extends StatefulWidget {
   const _AiGenRecipeBottomSheet();
@@ -287,7 +186,8 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                   _ingredientsImage != null
                       ? appText.generateRecipeWithGroceriePhoto
                       : appText.generateRecipe,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     color: Colors.black,
@@ -449,7 +349,8 @@ class _ActionBtn extends StatelessWidget {
             const Gap(10),
             Text(
               title,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
                 color: Color(0xff333333),

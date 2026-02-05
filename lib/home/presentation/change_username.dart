@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
@@ -68,7 +67,8 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                     const Gap(25.0),
                     Text(
                       appTexts.changeUsername,
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
+                        fontFamily: poppinsFontFamily,
                         fontSize: 11,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,

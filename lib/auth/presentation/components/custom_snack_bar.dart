@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 void showSnackBar(
   BuildContext context,
@@ -10,9 +10,10 @@ void showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
           color: Colors.white,
           fontSize: 14,
+          fontFamily: poppinsFontFamily,
         ),
       ),
       backgroundColor: isError ? Colors.red : Colors.green,

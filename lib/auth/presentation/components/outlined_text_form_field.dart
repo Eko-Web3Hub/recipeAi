@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/utils/colors.dart';
 
 import '../../../utils/constant.dart';
@@ -67,7 +66,8 @@ class _OutlinedTextFormFieldState extends State<OutlinedTextFormField> {
           filled: true,
           fillColor: Colors.white,
           hintText: widget.hintText,
-          hintStyle: GoogleFonts.poppins(
+          hintStyle: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 14,
             height: 16.5 / 11,

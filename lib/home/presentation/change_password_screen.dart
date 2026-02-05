@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
@@ -51,7 +50,8 @@ class ChangePasswordScreen extends StatelessWidget {
                   const Gap(25.0),
                   Text(
                     appTexts.changePasswordDescription,
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
+                      fontFamily: poppinsFontFamily,
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
                       color: Colors.black,

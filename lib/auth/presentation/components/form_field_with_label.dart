@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_text_form_field.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -34,7 +33,8 @@ class FormFieldWithLabel extends StatelessWidget {
       children: [
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w400,
             fontSize: 14,
             height: 21 / 14,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 enum InitialAlign { left, right }
 
@@ -98,7 +98,8 @@ class CustomToggleButtonState extends State<CustomToggleButton> {
                 alignment: Alignment.center,
                 child: Text(
                   widget.leftContent,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     color: leftColor,
                     fontSize: 12,
                     fontWeight: leftFontWeight,
@@ -129,7 +130,8 @@ class CustomToggleButtonState extends State<CustomToggleButton> {
                 alignment: Alignment.center,
                 child: Text(
                   widget.rightContent,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     color: rightColor,
                     fontSize: 12,
                     fontWeight: rightFontWeight,

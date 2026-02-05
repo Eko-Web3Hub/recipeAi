@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
@@ -19,6 +19,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/firebase_options.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
+import 'package:recipe_ai/nav/hide_nav_bar.dart';
 import 'package:recipe_ai/nav/router.dart';
 import 'package:recipe_ai/notification/application/general_notification_service.dart';
 import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
@@ -131,47 +132,57 @@ class _MyAppState extends State<MyApp> {
           create: (_) => NotificationUserController.inject(),
         ),
       ],
-      child: ResponsiveSizer(builder: (context, orientation, screenType) {
-        return BlocListener<AuthNavigationController, AuthNavigationState>(
-          listener: (context, state) {
-            log('AuthNavigationState: $state');
-            _router.refresh();
-          },
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            child: MaterialApp.router(
-              title: "Eat'Easy",
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                scaffoldBackgroundColor: Colors.white,
-                primaryColor: const Color(0xff57b031),
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                textTheme: TextTheme(
-                  displayLarge: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20.0,
-                    height: 30 / 20,
-                    color: Colors.black,
-                  ),
-                  labelSmall: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 11.0,
-                    height: 16.5 / 11,
-                    color: const Color(0xffA9A9A9),
-                  ),
-                ),
-                useMaterial3: true,
-              ),
-              routerConfig: _router,
-              localizationsDelegates: localizationsDelegate,
-              supportedLocales: supportedLocales,
-            ),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => HideNavBar(),
           ),
-        );
-      }),
+        ],
+        child: ResponsiveSizer(builder: (context, orientation, screenType) {
+          return BlocListener<AuthNavigationController, AuthNavigationState>(
+            listener: (context, state) {
+              log('AuthNavigationState: $state');
+              _router.refresh();
+            },
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: MaterialApp.router(
+                title: "Eat'Easy",
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  scaffoldBackgroundColor: Colors.white,
+                  primaryColor: const Color(0xff57b031),
+                  colorScheme:
+                      ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                  textTheme: TextTheme(
+                    displayLarge: TextStyle(
+                      fontFamily: poppinsFontFamily,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20.0,
+                      height: 30 / 20,
+                      color: Colors.black,
+                    ),
+                    labelSmall: TextStyle(
+                      fontFamily: poppinsFontFamily,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 11.0,
+                      height: 16.5 / 11,
+                      color: const Color(0xffA9A9A9),
+                    ),
+                  ),
+                  useMaterial3: true,
+                ),
+                routerConfig: _router,
+                localizationsDelegates: localizationsDelegate,
+                supportedLocales: supportedLocales,
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 }

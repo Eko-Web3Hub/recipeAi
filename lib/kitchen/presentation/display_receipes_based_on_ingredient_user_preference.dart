@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
@@ -120,7 +119,10 @@ class _ErrorDisplayWidget extends StatelessWidget {
             const Gap(60),
             Text(
               errorDescription,
-              style: GoogleFonts.poppins(),
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
+                fontWeight: FontWeight.w400,
+              ),
               textAlign: TextAlign.center,
             ),
             const Gap(10),
@@ -128,7 +130,8 @@ class _ErrorDisplayWidget extends StatelessWidget {
               onPressed: onTap,
               child: Text(
                 btnText,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
+                  fontFamily: poppinsFontFamily,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -155,7 +158,8 @@ class _InternalServerErrorWidget extends StatelessWidget {
         ),
         child: Text(
           appTexts.internalServerError,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             color: Colors.red,
           ),
           textAlign: TextAlign.center,

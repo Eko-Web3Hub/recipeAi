@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 const _ingredientsOne = [
   _Ingredient(
@@ -185,7 +185,8 @@ class _IngredientDisplay extends StatelessWidget {
       child: Center(
         child: Text(
           ingredient,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w600,
             fontSize: 16,
             height: 24 / 16,

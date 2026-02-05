@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -201,9 +200,6 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Stack(
-                            children: [],
-                          ),
                           Center(
                             child: Container(
                               width: 50,
@@ -220,37 +216,21 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               receipe.name,
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
+                                fontFamily: poppinsFontFamily,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20.0,
                                 color: newNeutralBlackColor,
                               ),
                             ),
                           ),
-                          const Gap(20.0),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              children: [
-                                _NutrientItem(
-                                    asset: 'plant', title: '65g carbs'),
-                                const Gap(30),
-                                _NutrientItem(
-                                    asset: 'proteins', title: '25g protein'),
-                              ],
-                            ),
-                          ),
                           const Gap(30.0),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              children: [
-                                _NutrientItem(
-                                    asset: 'calories', title: '120 Kcal'),
-                                const Gap(45),
-                                _NutrientItem(asset: 'fats', title: '91g fats'),
-                              ],
-                            ),
+                            child: _NutrientItem(
+                                asset: 'calories',
+                                title:
+                                    '${getOnlyNumber(receipe.totalCalories)} calories'),
                           ),
                           const Gap(30.0),
                           Padding(
@@ -269,51 +249,29 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        appTexts.ingredients,
-                                        style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 17),
-                                      ),
-                                      TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            'Add all to list',
-                                            style: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                color: greenPrimaryColor),
-                                          ))
-                                    ],
+                                  Text(
+                                    appTexts.ingredients,
+                                    style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 17),
                                   ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '${receipe.ingredients.length} Items',
-                                        style: GoogleFonts.poppins(
-                                            color: const Color(0xFF748189),
-                                            fontSize: 14),
-                                      ),
-                                    ],
+                                  Text(
+                                    '${receipe.ingredients.length} Items',
+                                    style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
+                                        color: const Color(0xFF748189),
+                                        fontSize: 14),
                                   ),
-                                  ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: receipe.ingredients.length,
-                                    itemBuilder: (context, index) {
-                                      final ingredient =
-                                          receipe.ingredients[index];
-                                      return _DisplayIngredients(
-                                          ingredient: ingredient.name,
-                                          quantity: ingredient.quantity ?? '');
-                                    },
-                                  )
+                                  const Gap(15.0),
+                                  ...receipe.ingredients.map<Widget>(
+                                    (ingredient) => _DisplayIngredients(
+                                        ingredient: ingredient.name,
+                                        quantity: ingredient.quantity ?? ''),
+                                  ),
+                                  const Gap(90.0),
                                 ],
                               ),
                             )
@@ -372,7 +330,7 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                   alignment: Alignment.topCenter,
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 25),
+                        const EdgeInsets.only(left: 20, right: 20, top: 50),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -430,7 +388,9 @@ class _ReceipeDetailsViewState extends State<ReceipeDetailsView> {
                                   SnackBar(
                                     content: Text(
                                       appTexts.shareLink,
-                                      style: GoogleFonts.poppins(),
+                                      style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -480,7 +440,8 @@ class _NutrientItem extends StatelessWidget {
         const Gap(17),
         Text(
           title,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+              fontFamily: poppinsFontFamily,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: newNeutralBlackColor),
@@ -520,7 +481,8 @@ class _DisplayIngredients extends StatelessWidget {
           Flexible(
             child: Text(
               ingredient,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
                 height: 24 / 16,
@@ -531,7 +493,8 @@ class _DisplayIngredients extends StatelessWidget {
           Flexible(
             child: Text(
               quantity,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
                 height: 21 / 14,
@@ -562,14 +525,16 @@ class _StepsSection extends StatelessWidget {
           children: [
             Text(
               appTexts.steps,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                  fontFamily: poppinsFontFamily,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: newNeutralBlackColor),
             ),
             Text(
               '${steps.length} ${appTexts.steps}',
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: poppinsFontFamily,
                 color: const Color(0xFF748189),
                 fontSize: 14,
               ),
@@ -622,16 +587,6 @@ class _StepView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TranslatedText(
-          //   textSelector: (lang) => '${lang.step} $index',
-          //   style: GoogleFonts.poppins(
-          //     fontWeight: FontWeight.w600,
-          //     fontSize: 16,
-          //     height: 24 / 16,
-          //     color: Colors.black,
-          //   ),
-          // ),
-
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -644,7 +599,8 @@ class _StepView extends StatelessWidget {
                 child: Center(
                   child: Text(
                     '$index',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
+                        fontFamily: poppinsFontFamily,
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                         color: greenPrimaryColor),
@@ -655,7 +611,8 @@ class _StepView extends StatelessWidget {
               Expanded(
                 child: Text(
                   step.description,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: poppinsFontFamily,
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
                     height: 21 / 14,
@@ -689,7 +646,8 @@ class _StepView extends StatelessWidget {
                   const Gap(8.0),
                   Text(
                     '${step.duration}',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
+                      fontFamily: poppinsFontFamily,
                       fontWeight: FontWeight.w400,
                       fontSize: 14,
                       height: 21 / 14,

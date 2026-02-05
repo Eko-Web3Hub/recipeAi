@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference_question.dart';
 import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class UserPreferenceQuestionWidget extends StatelessWidget {
   const UserPreferenceQuestionWidget({
@@ -139,7 +139,8 @@ class _CheckBoxOptionState extends State<CheckBoxOption> {
               ),
         label: Text(
           widget.option,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w700,
             fontSize: 16,
             color: Colors.black,

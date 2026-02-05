@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
 class NotificationDialog extends StatelessWidget {
   const NotificationDialog({super.key});
@@ -39,7 +39,8 @@ class NotificationDialog extends StatelessWidget {
           ),
           Text(
             appTexts.wantToReceiveNotification,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: poppinsFontFamily,
               fontWeight: FontWeight.w600,
               fontSize: 20,
               height: 30 / 20,

@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
@@ -80,14 +78,16 @@ final receipeSample = Receipe(
   totalCalories: '',
 );
 
-final normalTextStyle = GoogleFonts.poppins(
+final normalTextStyle = TextStyle(
+  fontFamily: poppinsFontFamily,
   fontWeight: FontWeight.w600,
   fontSize: 16,
   height: 24 / 16,
   color: blackVariantColor,
 );
 
-final mediumTextStyle = GoogleFonts.poppins(
+final mediumTextStyle = TextStyle(
+  fontFamily: poppinsFontFamily,
   fontWeight: FontWeight.w600,
   fontSize: 18,
   height: 27 / 18,
@@ -134,3 +134,4 @@ const kBottomProfilePadding = 90.0;
 final timeOutOptions = Options(
   receiveTimeout: Duration(seconds: 30),
 );
+const poppinsFontFamily = 'Poppins';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -52,7 +51,8 @@ class _ChangeLanguageScreenState extends State<ChangeLanguageScreen> {
                         value: item,
                         child: Text(
                           item.label,
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
+                            fontFamily: poppinsFontFamily,
                             fontSize: 14,
                             color: Colors.black,
                           ),
