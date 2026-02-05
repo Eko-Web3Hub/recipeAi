@@ -93,10 +93,10 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               ? SizedBox.shrink()
               : FancyBottomBar(
                   items: const [
-                    BarItemData('assets/images/home.svg'),
+                    BarItemData('assets/images/homeInactifIcon.svg'),
                     BarItemData('assets/images/favorite_outlined.svg'),
                     BarItemData('assets/images/list_add.svg'),
-                    BarItemData('assets/images/profile.svg'),
+                    BarItemData('assets/images/profilInactifIcon.svg'),
                   ],
                   currentIndex: navigationShell.currentIndex,
                   onTap: (i) => _goBranch(i),
