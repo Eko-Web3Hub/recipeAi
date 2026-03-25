@@ -8,7 +8,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/setting/setting_screen.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
+import 'package:recipe_ai/shopping/presentation/shopping_screen.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
@@ -291,10 +291,10 @@ GoRouter createRouter() => GoRouter(
             StatefulShellBranch(
               routes: <RouteBase>[
                 GoRoute(
-                  name: 'InventoryScreen',
-                  path: '/inventory-screen',
+                  name: 'ShoppingScreen',
+                  path: '/shopping',
                   redirect: _guardAuth,
-                  builder: (context, state) => InventoryScreen(),
+                  builder: (context, state) => const ShoppingScreen(),
                 ),
               ],
             ),
