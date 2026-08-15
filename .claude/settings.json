@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter --version)",
+      "Bash(flutter pub *)",
+      "Bash(flutter build *)",
+      "Bash(grep -n \"class IconData\" -A5 /Users/imdadadelabou/development/flutter/packages/flutter/lib/src/widgets/icon_data.dart)",
+      "Read(//Users/imdadadelabou/development/flutter/packages/flutter/lib/src/widgets/**)",
+      "Bash(curl -s https://pub.dev/api/packages/font_awesome_flutter)",
+      "Bash(python3 -c ' *)",
+      "Bash(cat /Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/CHANGELOG.md 2>/dev/null | head -100)",
+      "Read(//Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/**)",
+      "Read(//Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/lib/src/**)",
+      "Read(//Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/lib/**)"
+    ]
+  }
+}
