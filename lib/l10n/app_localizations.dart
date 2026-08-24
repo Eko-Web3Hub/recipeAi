@@ -458,6 +458,60 @@ abstract class AppLocalizations {
   /// **'We cannot generate recipe ideas for you. Please add more ingredients to your inventory and select your preferences.'**
   String get cannotGenerateReceipeIdeas;
 
+  /// Title shown on the animated loader while a recipe is being generated
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re simmering your recipe…'**
+  String get recipeGenerationTitle;
+
+  /// First step label of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your ingredients'**
+  String get recipeGenerationStepReadingIngredients;
+
+  /// Second step label of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'Selecting the recipe'**
+  String get recipeGenerationStepSelectingRecipe;
+
+  /// Third step label of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating quantities and macros'**
+  String get recipeGenerationStepCalculatingQuantities;
+
+  /// Subtitle shown during the first step of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'The AI reads your ingredients and their quantities.'**
+  String get recipeGenerationSubReadingIngredients;
+
+  /// Subtitle shown during the second step of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'It puts together a dish suited to your preferences.'**
+  String get recipeGenerationSubSelectingRecipe;
+
+  /// Subtitle shown during the third step of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'It adjusts portions and checks the macros.'**
+  String get recipeGenerationSubCalculatingQuantities;
+
+  /// Title shown on the animated loader once the recipe is ready, at the end of its animation cycle
+  ///
+  /// In en, this message translates to:
+  /// **'Your recipe is ready!'**
+  String get recipeGenerationTitleReady;
+
+  /// Subtitle shown on the animated loader once the recipe is ready, at the end of its animation cycle
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy your meal!'**
+  String get recipeGenerationSubReady;
+
   /// Label for the action of searching for ingredients
   ///
   /// In en, this message translates to:
@@ -913,6 +967,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The recipe link has been copied to your clipboard'**
   String get shareLink;
+
+  /// Label for the portions stepper on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Portions'**
+  String get recipeDetailsPortions;
+
+  /// Abbreviation for kilocalories on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'kcal'**
+  String get recipeDetailsKcal;
+
+  /// Protein macro label on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get recipeDetailsProtein;
+
+  /// Carbohydrates macro label on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get recipeDetailsCarbs;
+
+  /// Fat macro label on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Fat'**
+  String get recipeDetailsLipids;
+
+  /// Button label to add a recipe's ingredients to the shopping list
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my shopping list'**
+  String get recipeDetailsAddToShoppingList;
+
+  /// Button label to enter cook mode for a recipe
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to cook mode'**
+  String get recipeDetailsCookMode;
+
+  /// Button label to mark a recipe as cooked
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as cooked'**
+  String get recipeDetailsMarkAsCooked;
+
+  /// Message shown when tapping a recipe detail action that isn't wired up yet
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get recipeDetailsComingSoon;
+
+  /// Section title for the preparation steps on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation'**
+  String get recipeDetailsPreparationTitle;
+
+  /// Word shown before the step number in cook mode (e.g. "Step 2")
+  ///
+  /// In en, this message translates to:
+  /// **'Step'**
+  String get cookModeStepLabel;
+
+  /// Button label to go back to the previous cook mode step
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get cookModePrevious;
+
+  /// Button label to advance to the next cook mode step
+  ///
+  /// In en, this message translates to:
+  /// **'Next step'**
+  String get cookModeNextStep;
+
+  /// Button label on the last cook mode step to finish cooking
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get cookModeFinish;
+
+  /// Title shown on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy your meal!'**
+  String get cookModeFinishedTitle;
+
+  /// Subtitle shown on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Your recipe is done. How was it?'**
+  String get cookModeFinishedSubtitle;
+
+  /// Button label to add the recipe to favorites on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my favorites'**
+  String get cookModeAddToFavorites;
+
+  /// Button label once the recipe has been added to favorites on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Added to your favorites'**
+  String get cookModeAddedToFavorites;
 
   /// Label for internal server error
   ///

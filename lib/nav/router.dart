@@ -32,7 +32,9 @@ import 'package:recipe_ai/notification/presentation/notification_screen.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/receipe/presentation/cook_mode_screen.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
@@ -156,6 +158,22 @@ GoRouter createRouter() => GoRouter(
               receipe: receipe,
               appLanguage: null,
               userSharingUid: null,
+            );
+          },
+        ),
+
+        GoRoute(
+          name: 'CookMode',
+          path: '/cook-mode',
+          redirect: _guardAuth,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final receipe = extra['receipe'] as Receipe;
+            final userReceipeV2 = extra['userReceipeV2'] as UserReceipeV2;
+
+            return CookModeScreen(
+              receipe: receipe,
+              userReceipeV2: userReceipeV2,
             );
           },
         ),
