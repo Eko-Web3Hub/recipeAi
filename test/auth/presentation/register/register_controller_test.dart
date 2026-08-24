@@ -66,6 +66,7 @@ void main() {
       );
     },
     expect: () => <RegisterControllerState?>[
+      RegisterControllerLoading(),
       RegisterControllerSuccess(),
     ],
   );
@@ -90,6 +91,7 @@ void main() {
       name: name,
     ),
     expect: () => <RegisterControllerState?>[
+      RegisterControllerLoading(),
       RegisterControllerFailed(
         message: errorMessage,
       ),
@@ -116,6 +118,7 @@ void main() {
       name: name,
     ),
     expect: () => <RegisterControllerState?>[
+      RegisterControllerLoading(),
       RegisterControllerFailed(
         message: registerFailedCodeError,
       ),

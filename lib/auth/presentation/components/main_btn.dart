@@ -39,6 +39,8 @@ class MainBtn extends StatelessWidget {
       child: isLoading
           ? const CustomCircularLoader(
               size: 20,
+              color: Colors.white,
+              showIcon: false,
             )
           : Row(
               mainAxisSize: MainAxisSize.min,

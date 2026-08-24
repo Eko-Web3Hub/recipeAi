@@ -93,9 +93,7 @@ class KitchenInventoryScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is KitchenStateLoading) {
                   return const Center(
-                    child: CustomProgress(
-                      color: Colors.black,
-                    ),
+                    child: CustomProgress(),
                   );
                 }
                 if (state is KitchenStateError) {
@@ -604,9 +602,7 @@ class _EmptyKitchenInventoryViewState
                           return const Center(
                             child: Padding(
                               padding: EdgeInsets.only(top: 5.0),
-                              child: CustomProgress(
-                                color: Colors.black,
-                              ),
+                              child: CustomProgress(),
                             ),
                           );
                         }

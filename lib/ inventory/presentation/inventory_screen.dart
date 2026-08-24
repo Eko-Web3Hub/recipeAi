@@ -250,9 +250,7 @@ class InventoryScreen extends StatelessWidget {
                                                 : null,
                                         child: state is ReceiptTicketScanLoading
                                             ? Center(
-                                                child: CustomProgress(
-                                                  color: Colors.black,
-                                                ),
+                                                child: CustomProgress(),
                                               )
                                             : Container(
                                                 width: 40,
@@ -284,9 +282,7 @@ class InventoryScreen extends StatelessWidget {
                         const Gap(20),
                         if (state.isBusy) ...[
                           Center(
-                            child: CustomProgress(
-                              color: Colors.black,
-                            ),
+                            child: CustomProgress(),
                           )
                         ] else if (state.ingredientsSuggested.isNotEmpty) ...[
                           Container(

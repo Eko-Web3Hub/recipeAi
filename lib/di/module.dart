@@ -7,6 +7,7 @@ import 'package:recipe_ai/kitchen/%20di/module.dart';
 import 'package:recipe_ai/notification/di/module.dart';
 import 'package:recipe_ai/receipe/di/module.dart';
 import 'package:recipe_ai/receipt_ticket_scan/di/module.dart';
+import 'package:recipe_ai/shopping/di/module.dart';
 import 'package:recipe_ai/user_account/di/module.dart';
 import 'package:recipe_ai/user_preferences/di/module.dart';
 
@@ -46,6 +47,9 @@ class AppModule implements IDiModule {
     );
     di.registerModule(
       const ChatAiModule(),
+    );
+    di.registerModule(
+      const ShoppingModule(),
     );
   }
 }

@@ -12,6 +12,7 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class _BubleMessageChatContainer extends StatelessWidget {
@@ -212,8 +213,10 @@ class _AiChatMessageBuild implements Visitor {
             ),
           ),
           const SizedBox(height: 8),
-          const CircularProgressIndicator.adaptive(
-            backgroundColor: Colors.white,
+          const CustomCircularLoader(
+            size: 24,
+            color: Colors.white,
+            showIcon: false,
           ),
         ],
       ),

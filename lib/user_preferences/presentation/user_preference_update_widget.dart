@@ -36,9 +36,7 @@ class UserPreferenceUpdateWidget extends StatelessWidget {
           builder: (context, userPreferenceUpdateState) {
             if (userPreferenceUpdateState is UserPreferenceUpdateLoading) {
               return const Center(
-                child: CustomProgress(
-                  color: Colors.black,
-                ),
+                child: CustomProgress(),
               );
             }
 

@@ -28,7 +28,10 @@ class RetrieveReceipeFromApiOneTimePerDayUsecase {
 
       if (userRecipeMetadata == null ||
           userRecipeMetadata.lastRecipesHomeUpdatedDate == null) {
-        return _retrieveAndSave(now);
+        /// `await` is required here: without it the future escapes the
+        /// try/catch and the error is never converted to
+        /// [RetrieveReceipeException].
+        return await _retrieveAndSave(now);
       }
 
       final lastUpdatedDate = userRecipeMetadata.lastRecipesHomeUpdatedDate;

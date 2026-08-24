@@ -37,6 +37,7 @@ class RegisterController extends Cubit<RegisterControllerState?> {
   final IAnalyticsRepository _analyticsRepository;
 
   Future<void> googleSignIn() async {
+    emit(RegisterControllerLoading());
     try {
       final result = await _registerUsecase.registerWithGoogle();
       if (result) {
@@ -44,7 +45,12 @@ class RegisterController extends Cubit<RegisterControllerState?> {
           RegisterFinishEvent(),
         );
         emit(RegisterControllerSuccess());
+        return;
       }
+
+      /// The user cancelled the flow: go back to the idle state so the
+      /// screen does not stay stuck on the loading one.
+      emit(null);
     } on AuthException catch (e) {
       emit(
         RegisterControllerFailed(
@@ -55,6 +61,7 @@ class RegisterController extends Cubit<RegisterControllerState?> {
   }
 
   Future<void> appleSignIn() async {
+    emit(RegisterControllerLoading());
     try {
       final result = await _registerUsecase.registerWithApple();
       if (result) {
@@ -62,7 +69,12 @@ class RegisterController extends Cubit<RegisterControllerState?> {
           RegisterFinishEvent(),
         );
         emit(RegisterControllerSuccess());
+        return;
       }
+
+      /// The user cancelled the flow: go back to the idle state so the
+      /// screen does not stay stuck on the loading one.
+      emit(null);
     } on AuthException catch (e) {
       emit(
         RegisterControllerFailed(
@@ -77,6 +89,7 @@ class RegisterController extends Cubit<RegisterControllerState?> {
     required String password,
     required String name,
   }) async {
+    emit(RegisterControllerLoading());
     try {
       final result = await _registerUsecase.register(
         email: email,
@@ -93,6 +106,12 @@ class RegisterController extends Cubit<RegisterControllerState?> {
         );
         return;
       }
+
+      emit(
+        RegisterControllerFailed(
+          message: registerFailedCodeError,
+        ),
+      );
     } on AuthException catch (e) {
       emit(
         RegisterControllerFailed(
