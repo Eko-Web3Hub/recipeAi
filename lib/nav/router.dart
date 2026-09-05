@@ -181,13 +181,6 @@ GoRouter createRouter() => GoRouter(
       },
     ),
 
-    GoRoute(
-      name: 'ChatAiAppScreen',
-      path: '/chat-ai-app',
-      redirect: _guardAuth,
-      builder: (context, state) => const ChatAiScreen(),
-    ),
-
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => ListenableBuilder(
         listenable: di<TranslationController>(),
