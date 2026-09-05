@@ -605,5 +605,45 @@
     "editProfile": "Modifier le profil",
     "@editProfile": {
         "description": "Label pour modifier le profil"
+    },
+    "portions": "Portions",
+    "@portions": {
+        "description": "Label pour le compteur de portions de la recette"
+    },
+    "proteins": "Protéines",
+    "@proteins": {
+        "description": "Label pour le macronutriment protéines"
+    },
+    "carbs": "Glucides",
+    "@carbs": {
+        "description": "Label pour le macronutriment glucides"
+    },
+    "fats": "Lipides",
+    "@fats": {
+        "description": "Label pour le macronutriment lipides"
+    },
+    "difficultyEasy": "Facile",
+    "@difficultyEasy": {
+        "description": "Label pour une recette de difficulté facile"
+    },
+    "addToShoppingList": "Ajouter à ma liste de courses",
+    "@addToShoppingList": {
+        "description": "Label du bouton qui ajoute les ingrédients de la recette à la liste de courses"
+    },
+    "preparation": "Préparation",
+    "@preparation": {
+        "description": "Titre de la section des étapes de préparation de la recette"
+    },
+    "didYouKnow": "Le savais-tu ?",
+    "@didYouKnow": {
+        "description": "Titre de l'encart anecdote de la recette"
+    },
+    "startCookingMode": "Passer en mode cuisine",
+    "@startCookingMode": {
+        "description": "Label du bouton qui démarre le mode cuisine pas à pas"
+    },
+    "markAsCooked": "Marquer comme cuisiné",
+    "@markAsCooked": {
+        "description": "Label du bouton qui marque une recette comme cuisinée"
     }
 }

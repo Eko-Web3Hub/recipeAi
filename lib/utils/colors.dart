@@ -26,3 +26,11 @@ const neutralGrey4Color = Color(0xFFE6EBF2);
 
 const greenBrandColor = Color(0xff57B031);
 const yellowBrandColor = Color(0xffFFBA4D);
+
+const fatBarColor = Color(0xffE8734A);
+
+const badgeGreenBackgroundColor = Color(0xffE1F0D9);
+const badgeOrangeBackgroundColor = Color(0xffFCEBD3);
+
+const tipBackgroundColor = Color(0xffF5E6C4);
+const tipIconBackgroundColor = Color(0xffC08A2E);

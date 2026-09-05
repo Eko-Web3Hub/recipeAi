@@ -57,312 +57,310 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
 }
 
 GoRouter createRouter() => GoRouter(
-      initialLocation: '/',
-      debugLogDiagnostics: true,
-      routes: [
-        // Add your routes here
-        GoRoute(
-          name: 'SplashScreen',
-          path: '/',
-          builder: (context, state) => const SplashScreen(),
-          redirect: (BuildContext context, _) {
-            final authState = context.read<AuthNavigationController>().state;
-            if (authState == AuthNavigationState.loading) {
-              return null;
-            }
+  initialLocation: '/',
+  debugLogDiagnostics: true,
+  routes: [
+    // Add your routes here
+    GoRoute(
+      name: 'SplashScreen',
+      path: '/',
+      builder: (context, state) => const SplashScreen(),
+      redirect: (BuildContext context, _) {
+        final authState = context.read<AuthNavigationController>().state;
+        if (authState == AuthNavigationState.loading) {
+          return null;
+        }
 
-            switch (authState) {
-              case AuthNavigationState.loggedIn:
-                return '/home';
-              case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
-                return '/onboarding/start';
-              default:
-                return '/onboarding';
-            }
-          },
-        ),
+        switch (authState) {
+          case AuthNavigationState.loggedIn:
+            return '/home';
+          case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
+            return '/onboarding/start';
+          default:
+            return '/onboarding';
+        }
+      },
+    ),
 
+    GoRoute(
+      name: 'OnBoarding',
+      path: '/onboarding',
+      //  redirect: _guardOnboarding,
+      builder: (context, state) => const OnboardingView(),
+      routes: <RouteBase>[
         GoRoute(
-          name: 'OnBoarding',
-          path: '/onboarding',
-          //  redirect: _guardOnboarding,
-          builder: (context, state) => const OnboardingView(),
-          routes: <RouteBase>[
+          name: 'start',
+          path: 'start',
+          builder: (context, state) => const StartScreen(),
+          routes: [
             GoRoute(
-              name: 'start',
-              path: 'start',
-              builder: (context, state) => const StartScreen(),
-              routes: [
+              name: 'Login',
+              path: '/login',
+              builder: (BuildContext context, _) => const LoginView(),
+              routes: <RouteBase>[
                 GoRoute(
-                  name: 'Login',
-                  path: '/login',
-                  builder: (BuildContext context, _) => const LoginView(),
-                  routes: <RouteBase>[
-                    GoRoute(
-                      name: 'ResetPasswordScreen',
-                      path: 'reset-password',
-                      builder: (context, state) => const ResetPasswordScreen(),
-                    ),
-                  ],
+                  name: 'ResetPasswordScreen',
+                  path: 'reset-password',
+                  builder: (context, state) => const ResetPasswordScreen(),
                 ),
               ],
-            ),
-            GoRoute(
-              name: 'Register',
-              path: '/register',
-              builder: (context, state) => const RegisterView(),
             ),
           ],
         ),
-
         GoRoute(
-          name: 'UserPreferences',
-          path: '/user-preferences',
-          builder: (context, state) => const UserPreferencesView(),
+          name: 'Register',
+          path: '/register',
+          builder: (context, state) => const RegisterView(),
         ),
+      ],
+    ),
 
-        GoRoute(
-          name: 'ReceipeIdeaWithIngredientPhotoScreen',
-          path: '/receipe-idea-with-ingredient-photo',
-          builder: (context, state) {
-            final recipes = (state.extra! as Map<String, dynamic>)['recipes']
+    GoRoute(
+      name: 'UserPreferences',
+      path: '/user-preferences',
+      builder: (context, state) => const UserPreferencesView(),
+    ),
+
+    GoRoute(
+      name: 'ReceipeIdeaWithIngredientPhotoScreen',
+      path: '/receipe-idea-with-ingredient-photo',
+      builder: (context, state) {
+        final recipes =
+            (state.extra! as Map<String, dynamic>)['recipes']
                 as List<UserReceipeV2>;
 
-            return RecipesIdeaWithIngredientPhotoScreen(
-              recipes: recipes,
-            );
-          },
-        ),
+        return RecipesIdeaWithIngredientPhotoScreen(recipes: recipes);
+      },
+    ),
 
-        GoRoute(
-          name: 'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
-          path: '/display-receipes-based-on-ingredient-user-preference',
-          redirect: _guardAuth,
-          builder: (context, state) =>
-              const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
-        ),
+    GoRoute(
+      name: 'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
+      path: '/display-receipes-based-on-ingredient-user-preference',
+      redirect: _guardAuth,
+      builder: (context, state) =>
+          const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
+    ),
 
-        GoRoute(
-          name: 'RecipeDetailss',
-          path: '/recipe-details',
-          redirect: _guardAuth,
-          builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>;
-            final receipeId = extra['receipeId'] as EntityId?;
-            final receipe = extra['receipe'] as UserReceipeV2?;
+    GoRoute(
+      name: 'RecipeDetailss',
+      path: '/recipe-details',
+      redirect: _guardAuth,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final receipeId = extra['receipeId'] as EntityId?;
+        final receipe = extra['receipe'] as UserReceipeV2?;
 
-            return ReceipeDetailsView(
-              receipeId: receipeId,
-              receipe: receipe,
-              appLanguage: null,
-              userSharingUid: null,
-            );
-          },
-        ),
+        return RecipeDetailsView(
+          receipeId: receipeId,
+          receipe: receipe,
+          appLanguage: null,
+          userSharingUid: null,
+        );
+      },
+    ),
 
-        GoRoute(
-          name: 'ChatAiAppScreen',
-          path: '/chat-ai-app',
-          redirect: _guardAuth,
-          builder: (context, state) => const ChatAiScreen(),
-        ),
+    GoRoute(
+      name: 'ChatAiAppScreen',
+      path: '/chat-ai-app',
+      redirect: _guardAuth,
+      builder: (context, state) => const ChatAiScreen(),
+    ),
 
-        StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) => ListenableBuilder(
-              listenable: di<TranslationController>(),
-              builder: (context, _) {
-                return ScaffoldWithNestedNavigation(
-                  appBarTitle: genAppBarTitle(
-                    state.fullPath,
-                    di<TranslationController>().currentLanguage,
-                  ),
-                  actions: genActions(state.fullPath),
-                  navigationShell: navigationShell,
-                  hideNavBar: hideNavBar(state.fullPath),
-                );
-              }),
-          branches: <StatefulShellBranch>[
-            StatefulShellBranch(
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) => ListenableBuilder(
+        listenable: di<TranslationController>(),
+        builder: (context, _) {
+          return ScaffoldWithNestedNavigation(
+            appBarTitle: genAppBarTitle(
+              state.fullPath,
+              di<TranslationController>().currentLanguage,
+            ),
+            actions: genActions(state.fullPath),
+            navigationShell: navigationShell,
+            hideNavBar: hideNavBar(state.fullPath),
+          );
+        },
+      ),
+      branches: <StatefulShellBranch>[
+        StatefulShellBranch(
+          routes: <RouteBase>[
+            GoRoute(
+              name: 'Home',
+              path: '/home',
+              redirect: _guardAuth,
               routes: <RouteBase>[
                 GoRoute(
-                  name: 'Home',
-                  path: '/home',
+                  name: 'HistoricScreen',
+                  path: '/historic',
                   redirect: _guardAuth,
+                  builder: (context, state) => HistoricScreen(),
+                ),
+                GoRoute(
+                  name: 'RecipeDetailsWithReceipeId',
+                  path: 'recipe-details/:language/:userSharingUid/:receipeId',
+                  redirect: _guardAuth,
+                  builder: (context, state) {
+                    return RecipeDetailsView(
+                      appLanguage: appLanguageFromString(
+                        state.pathParameters['language']!,
+                      ),
+                      receipeId: EntityId(state.pathParameters['receipeId']!),
+                      receipe: null,
+                      userSharingUid: EntityId(
+                        state.pathParameters['userSharingUid']!,
+                      ),
+                    );
+                  },
+                ),
+                GoRoute(
+                  name: 'RecipeDetails',
+                  path: 'recipe-details',
+                  redirect: _guardAuth,
+                  builder: (context, state) {
+                    final extra = state.extra as Map<String, dynamic>;
+                    final receipeId = extra['receipeId'] as EntityId?;
+                    final receipe = extra['receipe'] as UserReceipeV2?;
+
+                    return RecipeDetailsView(
+                      appLanguage: null,
+                      receipeId: receipeId,
+                      receipe: receipe,
+                      userSharingUid: null,
+                    );
+                  },
+                ),
+                GoRoute(
+                  name: 'KitchenInventory',
+                  path: '/kitchen-inventory',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const KitchenInventoryScreen(),
                   routes: <RouteBase>[
                     GoRoute(
-                      name: 'HistoricScreen',
-                      path: '/historic',
+                      name: 'AddKitchenInventory',
+                      path: 'add-kitchen-inventory',
                       redirect: _guardAuth,
-                      builder: (context, state) => HistoricScreen(),
+                      builder: (context, state) =>
+                          const AddKitchenInventoryScreen(),
                     ),
                     GoRoute(
-                      name: 'RecipeDetailsWithReceipeId',
-                      path:
-                          'recipe-details/:language/:userSharingUid/:receipeId',
-                      redirect: _guardAuth,
-                      builder: (context, state) {
-                        return ReceipeDetailsView(
-                          appLanguage: appLanguageFromString(
-                              state.pathParameters['language']!),
-                          receipeId:
-                              EntityId(state.pathParameters['receipeId']!),
-                          receipe: null,
-                          userSharingUid: EntityId(
-                            state.pathParameters['userSharingUid']!,
-                          ),
-                        );
-                      },
-                    ),
-                    GoRoute(
-                      name: 'RecipeDetails',
-                      path: 'recipe-details',
+                      name: 'ReceiptTicketScanResultScreen',
+                      path: 'receipt-ticket-scan-result',
                       redirect: _guardAuth,
                       builder: (context, state) {
                         final extra = state.extra as Map<String, dynamic>;
-                        final receipeId = extra['receipeId'] as EntityId?;
-                        final receipe = extra['receipe'] as UserReceipeV2?;
+                        final ingredients =
+                            extra['ingredients'] as List<Ingredient>;
 
-                        return ReceipeDetailsView(
-                          appLanguage: null,
-                          receipeId: receipeId,
-                          receipe: receipe,
-                          userSharingUid: null,
+                        return ReceiptTicketScanResultScreen(
+                          ingredients: ingredients,
                         );
                       },
                     ),
                     GoRoute(
-                      name: 'KitchenInventory',
-                      path: '/kitchen-inventory',
+                      name: 'ReceipeTicketScanScreen',
+                      path: 'receipt-ticket-scan',
                       redirect: _guardAuth,
                       builder: (context, state) =>
-                          const KitchenInventoryScreen(),
-                      routes: <RouteBase>[
-                        GoRoute(
-                          name: 'AddKitchenInventory',
-                          path: 'add-kitchen-inventory',
-                          redirect: _guardAuth,
-                          builder: (context, state) =>
-                              const AddKitchenInventoryScreen(),
-                        ),
-                        GoRoute(
-                          name: 'ReceiptTicketScanResultScreen',
-                          path: 'receipt-ticket-scan-result',
-                          redirect: _guardAuth,
-                          builder: (context, state) {
-                            final extra = state.extra as Map<String, dynamic>;
-                            final ingredients =
-                                extra['ingredients'] as List<Ingredient>;
-
-                            return ReceiptTicketScanResultScreen(
-                              ingredients: ingredients,
-                            );
-                          },
-                        ),
-                        GoRoute(
-                          name: 'ReceipeTicketScanScreen',
-                          path: 'receipt-ticket-scan',
-                          redirect: _guardAuth,
-                          builder: (context, state) =>
-                              const ReceipeTicketScanScreen(),
-                        ),
-                      ],
-                    ),
-                    GoRoute(
-                      name: 'NotificationScreen',
-                      path: 'notification',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const NotificationScreen(),
+                          const ReceipeTicketScanScreen(),
                     ),
                   ],
-                  builder: (context, state) => const HomeScreen(),
+                ),
+                GoRoute(
+                  name: 'NotificationScreen',
+                  path: 'notification',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const NotificationScreen(),
                 ),
               ],
+              builder: (context, state) => const HomeScreen(),
             ),
-            StatefulShellBranch(
+          ],
+        ),
+        StatefulShellBranch(
+          routes: <RouteBase>[
+            GoRoute(
+              name: 'SaveRecipesScreen',
+              path: '/save-recipes',
+              redirect: _guardAuth,
+              builder: (context, state) => const SavedReceipeScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: <RouteBase>[
+            GoRoute(
+              name: 'InventoryScreen',
+              path: '/inventory-screen',
+              redirect: _guardAuth,
+              builder: (context, state) => InventoryScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: <RouteBase>[
+            GoRoute(
+              name: 'ProfilScreen',
+              path: '/profil-screen',
+              redirect: _guardAuth,
+              builder: (context, state) => const ProfileScreen(),
               routes: <RouteBase>[
                 GoRoute(
-                  name: 'SaveRecipesScreen',
-                  path: '/save-recipes',
+                  name: 'SavedReceipeScreen',
+                  path: 'save-recipes',
                   redirect: _guardAuth,
-                  builder: (context, state) => const SavedReceipeScreen(),
+                  builder: (context, state) => const NewSavedRecipeScreen(),
                 ),
-              ],
-            ),
-            StatefulShellBranch(
-              routes: <RouteBase>[
                 GoRoute(
-                  name: 'InventoryScreen',
-                  path: '/inventory-screen',
+                  name: 'SettingsScreen',
+                  path: 'settings',
                   redirect: _guardAuth,
-                  builder: (context, state) => InventoryScreen(),
+                  builder: (context, state) => const SettingScreen(),
                 ),
-              ],
-            ),
-            StatefulShellBranch(
-              routes: <RouteBase>[
                 GoRoute(
-                  name: 'ProfilScreen',
-                  path: '/profil-screen',
+                  name: 'MyAccountScreen',
+                  path: 'my-account',
                   redirect: _guardAuth,
-                  builder: (context, state) => const ProfileScreen(),
-                  routes: <RouteBase>[
-                    GoRoute(
-                      name: 'SavedReceipeScreen',
-                      path: 'save-recipes',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const NewSavedRecipeScreen(),
-                    ),
-                    GoRoute(
-                      name: 'SettingsScreen',
-                      path: 'settings',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const SettingScreen(),
-                    ),
-                    GoRoute(
-                      name: 'MyAccountScreen',
-                      path: 'my-account',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const AccountScreen(),
-                    ),
-                    GoRoute(
-                      name: 'UpdateUserPreference',
-                      path: 'update-user-preference',
-                      redirect: _guardAuth,
-                      builder: (context, state) =>
-                          const UpdateUserPreferenceScreen(),
-                    ),
-                    GoRoute(
-                      name: 'ChangeUsernameScreen',
-                      path: 'change-username',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const ChangeUsername(),
-                    ),
-                    GoRoute(
-                      name: 'ChangeEmailScreen',
-                      path: 'change-email',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const ChangeEmailScreen(),
-                    ),
-                    GoRoute(
-                      name: 'ChangePasswordScreen',
-                      path: 'change-password',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const ChangePasswordScreen(),
-                    ),
-                    GoRoute(
-                      name: 'ChangeLanguageScreen',
-                      path: 'change-language',
-                      redirect: _guardAuth,
-                      builder: (context, state) => const ChangeLanguageScreen(),
-                    ),
-                  ],
+                  builder: (context, state) => const AccountScreen(),
+                ),
+                GoRoute(
+                  name: 'UpdateUserPreference',
+                  path: 'update-user-preference',
+                  redirect: _guardAuth,
+                  builder: (context, state) =>
+                      const UpdateUserPreferenceScreen(),
+                ),
+                GoRoute(
+                  name: 'ChangeUsernameScreen',
+                  path: 'change-username',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const ChangeUsername(),
+                ),
+                GoRoute(
+                  name: 'ChangeEmailScreen',
+                  path: 'change-email',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const ChangeEmailScreen(),
+                ),
+                GoRoute(
+                  name: 'ChangePasswordScreen',
+                  path: 'change-password',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const ChangePasswordScreen(),
+                ),
+                GoRoute(
+                  name: 'ChangeLanguageScreen',
+                  path: 'change-language',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const ChangeLanguageScreen(),
                 ),
               ],
             ),
           ],
         ),
       ],
-    );
+    ),
+  ],
+);
 
 String? genAppBarTitle(String? path, AppLocalizations appTexts) {
   log('genAppBarTitle: $path');

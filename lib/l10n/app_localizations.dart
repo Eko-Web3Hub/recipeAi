@@ -1009,6 +1009,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit Profile'**
   String get editProfile;
+
+  /// Label for the recipe servings/portions counter
+  ///
+  /// In en, this message translates to:
+  /// **'Portions'**
+  String get portions;
+
+  /// Label for the protein macro nutrient
+  ///
+  /// In en, this message translates to:
+  /// **'Proteins'**
+  String get proteins;
+
+  /// Label for the carbohydrates macro nutrient
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get carbs;
+
+  /// Label for the fat macro nutrient
+  ///
+  /// In en, this message translates to:
+  /// **'Fats'**
+  String get fats;
+
+  /// Label for an easy recipe difficulty
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get difficultyEasy;
+
+  /// Label for the button that adds recipe ingredients to the shopping list
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my shopping list'**
+  String get addToShoppingList;
+
+  /// Title for the recipe preparation steps section
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation'**
+  String get preparation;
+
+  /// Title for the recipe fun fact tip box
+  ///
+  /// In en, this message translates to:
+  /// **'Did you know?'**
+  String get didYouKnow;
+
+  /// Label for the button that starts the step by step cooking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to cooking mode'**
+  String get startCookingMode;
+
+  /// Label for the button that marks a recipe as cooked
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as cooked'**
+  String get markAsCooked;
 }
 
 class _AppLocalizationsDelegate

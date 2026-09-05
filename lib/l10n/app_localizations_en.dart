@@ -492,4 +492,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editProfile => 'Edit Profile';
+
+  @override
+  String get portions => 'Portions';
+
+  @override
+  String get proteins => 'Proteins';
+
+  @override
+  String get carbs => 'Carbs';
+
+  @override
+  String get fats => 'Fats';
+
+  @override
+  String get difficultyEasy => 'Easy';
+
+  @override
+  String get addToShoppingList => 'Add to my shopping list';
+
+  @override
+  String get preparation => 'Preparation';
+
+  @override
+  String get didYouKnow => 'Did you know?';
+
+  @override
+  String get startCookingMode => 'Switch to cooking mode';
+
+  @override
+  String get markAsCooked => 'Mark as cooked';
 }

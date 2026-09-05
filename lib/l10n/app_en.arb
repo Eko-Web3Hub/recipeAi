@@ -605,5 +605,45 @@
     "editProfile": "Edit Profile",
     "@editProfile": {
         "description": "Label for edit profile"
+    },
+    "portions": "Portions",
+    "@portions": {
+        "description": "Label for the recipe servings/portions counter"
+    },
+    "proteins": "Proteins",
+    "@proteins": {
+        "description": "Label for the protein macro nutrient"
+    },
+    "carbs": "Carbs",
+    "@carbs": {
+        "description": "Label for the carbohydrates macro nutrient"
+    },
+    "fats": "Fats",
+    "@fats": {
+        "description": "Label for the fat macro nutrient"
+    },
+    "difficultyEasy": "Easy",
+    "@difficultyEasy": {
+        "description": "Label for an easy recipe difficulty"
+    },
+    "addToShoppingList": "Add to my shopping list",
+    "@addToShoppingList": {
+        "description": "Label for the button that adds recipe ingredients to the shopping list"
+    },
+    "preparation": "Preparation",
+    "@preparation": {
+        "description": "Title for the recipe preparation steps section"
+    },
+    "didYouKnow": "Did you know?",
+    "@didYouKnow": {
+        "description": "Title for the recipe fun fact tip box"
+    },
+    "startCookingMode": "Switch to cooking mode",
+    "@startCookingMode": {
+        "description": "Label for the button that starts the step by step cooking mode"
+    },
+    "markAsCooked": "Mark as cooked",
+    "@markAsCooked": {
+        "description": "Label for the button that marks a recipe as cooked"
     }
 }

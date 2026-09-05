@@ -507,4 +507,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get editProfile => 'Modifier le profil';
+
+  @override
+  String get portions => 'Portions';
+
+  @override
+  String get proteins => 'Protéines';
+
+  @override
+  String get carbs => 'Glucides';
+
+  @override
+  String get fats => 'Lipides';
+
+  @override
+  String get difficultyEasy => 'Facile';
+
+  @override
+  String get addToShoppingList => 'Ajouter à ma liste de courses';
+
+  @override
+  String get preparation => 'Préparation';
+
+  @override
+  String get didYouKnow => 'Le savais-tu ?';
+
+  @override
+  String get startCookingMode => 'Passer en mode cuisine';
+
+  @override
+  String get markAsCooked => 'Marquer comme cuisiné';
 }
