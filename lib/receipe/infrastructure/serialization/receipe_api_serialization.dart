@@ -24,6 +24,13 @@ abstract class ReceipeApiSerialization {
               .toList(),
       averageTime: json["average_time"] ?? "",
       totalCalories: json["total_calories"] ?? "",
+      tags: json["tags"] == null
+          ? const []
+          : List<String>.from(json["tags"] as List),
+      difficulty: json["difficulty"],
+      proteinGrams: json["protein_grams"],
+      carbsGrams: json["carbs_grams"],
+      lipidsGrams: json["lipids_grams"],
     );
   }
 
@@ -42,6 +49,11 @@ abstract class ReceipeApiSerialization {
           .toList(),
       "average_time": receipe.averageTime,
       "total_calories": receipe.totalCalories,
+      "tags": receipe.tags,
+      "difficulty": receipe.difficulty,
+      "protein_grams": receipe.proteinGrams,
+      "carbs_grams": receipe.carbsGrams,
+      "lipids_grams": receipe.lipidsGrams,
     };
   }
 }

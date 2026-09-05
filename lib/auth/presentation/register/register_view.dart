@@ -194,13 +194,20 @@ class _RegisterViewState extends State<RegisterView> {
                               },
                             ),
                             const Gap(10),
-                            MainBtn(
-                              text: appTexts.signUp,
-                              backgroundColor: orangePrimaryColor,
-                              showRightIcon: true,
-                              onPressed: _acceptTerms
-                                  ? () => _handleRegister(contextBuilder)
-                                  : null,
+                            BlocBuilder<RegisterController,
+                                RegisterControllerState?>(
+                              builder: (context, registerState) {
+                                return MainBtn(
+                                  text: appTexts.signUp,
+                                  backgroundColor: orangePrimaryColor,
+                                  showRightIcon: true,
+                                  isLoading: registerState
+                                      is RegisterControllerLoading,
+                                  onPressed: _acceptTerms
+                                      ? () => _handleRegister(contextBuilder)
+                                      : null,
+                                );
+                              },
                             ),
                             const Gap(10.0),
                             Row(
@@ -232,15 +239,20 @@ class _RegisterViewState extends State<RegisterView> {
                             BlocBuilder<RegisterController,
                                 RegisterControllerState?>(
                               builder: (context, state) {
+                                final isLoading =
+                                    state is RegisterControllerLoading;
+
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     GestureDetector(
-                                      onTap: () {
-                                        context
-                                            .read<RegisterController>()
-                                            .googleSignIn();
-                                      },
+                                      onTap: isLoading
+                                          ? null
+                                          : () {
+                                              context
+                                                  .read<RegisterController>()
+                                                  .googleSignIn();
+                                            },
                                       child: Container(
                                         width: 44,
                                         height: 44,
@@ -264,11 +276,13 @@ class _RegisterViewState extends State<RegisterView> {
                                     ),
                                     const Gap(25),
                                     GestureDetector(
-                                      onTap: () {
-                                        context
-                                            .read<RegisterController>()
-                                            .appleSignIn();
-                                      },
+                                      onTap: isLoading
+                                          ? null
+                                          : () {
+                                              context
+                                                  .read<RegisterController>()
+                                                  .appleSignIn();
+                                            },
                                       child: Container(
                                         width: 44,
                                         height: 44,

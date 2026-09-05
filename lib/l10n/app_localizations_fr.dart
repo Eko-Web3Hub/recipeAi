@@ -203,6 +203,38 @@ class AppLocalizationsFr extends AppLocalizations {
       'Nous ne pouvons pas générer d\'idées de recettes pour vous. Veuillez ajouter plus d\'ingrédients à votre inventaire et sélectionner vos préférences.';
 
   @override
+  String get recipeGenerationTitle => 'On mijote ta recette…';
+
+  @override
+  String get recipeGenerationStepReadingIngredients =>
+      'Lecture des ingrédients';
+
+  @override
+  String get recipeGenerationStepSelectingRecipe => 'Sélection de la recette';
+
+  @override
+  String get recipeGenerationStepCalculatingQuantities =>
+      'Calcul des quantités et des macros';
+
+  @override
+  String get recipeGenerationSubReadingIngredients =>
+      'L\'IA lit tes ingrédients et leurs quantités.';
+
+  @override
+  String get recipeGenerationSubSelectingRecipe =>
+      'Elle compose un plat adapté à tes préférences.';
+
+  @override
+  String get recipeGenerationSubCalculatingQuantities =>
+      'Elle ajuste les portions et vérifie les macros.';
+
+  @override
+  String get recipeGenerationTitleReady => 'Ta recette est prête !';
+
+  @override
+  String get recipeGenerationSubReady => 'Bon appétit !';
+
+  @override
   String get searchForIngredients => 'Ajouter ou rechercher des ingrédients';
 
   @override
@@ -453,6 +485,61 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get shareLink =>
       'Le lien de partage a été copié dans le presse-papiers';
+
+  @override
+  String get recipeDetailsPortions => 'Portions';
+
+  @override
+  String get recipeDetailsKcal => 'kcal';
+
+  @override
+  String get recipeDetailsProtein => 'Protéines';
+
+  @override
+  String get recipeDetailsCarbs => 'Glucides';
+
+  @override
+  String get recipeDetailsLipids => 'Lipides';
+
+  @override
+  String get recipeDetailsAddToShoppingList => 'Ajouter à ma liste de courses';
+
+  @override
+  String get recipeDetailsCookMode => 'Passer en mode cuisine';
+
+  @override
+  String get recipeDetailsMarkAsCooked => 'Marquer comme cuisiné';
+
+  @override
+  String get recipeDetailsComingSoon => 'Bientôt disponible';
+
+  @override
+  String get recipeDetailsPreparationTitle => 'Préparation';
+
+  @override
+  String get cookModeStepLabel => 'Étape';
+
+  @override
+  String get cookModePrevious => 'Précédent';
+
+  @override
+  String get cookModeNextStep => 'Étape suivante';
+
+  @override
+  String get cookModeFinish => 'Terminer';
+
+  @override
+  String get cookModeFinishedTitle => 'Bon appétit !';
+
+  @override
+  String get cookModeFinishedSubtitle =>
+      'Ta recette est terminée. Comment était-elle ?';
+
+  @override
+  String get cookModeAddToFavorites => 'Ajouter à mes favoris';
+
+  @override
+  String get cookModeAddedToFavorites => 'Ajoutée à tes favoris';
 
   @override
   String get internalServerError =>

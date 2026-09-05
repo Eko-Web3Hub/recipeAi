@@ -240,6 +240,42 @@
         "description": "Message affiché lorsque les idées de recettes ne peuvent pas être générées en raison d'ingrédients insuffisants ou de préférences non sélectionnées"
     },
     "cannotGenerateReceipeIdeas": "Nous ne pouvons pas générer d'idées de recettes pour vous. Veuillez ajouter plus d'ingrédients à votre inventaire et sélectionner vos préférences.",
+    "@recipeGenerationTitle": {
+        "description": "Titre affiché sur le loader animé pendant la génération d'une recette"
+    },
+    "recipeGenerationTitle": "On mijote ta recette…",
+    "@recipeGenerationStepReadingIngredients": {
+        "description": "Libellé de la première étape du loader de génération de recette"
+    },
+    "recipeGenerationStepReadingIngredients": "Lecture des ingrédients",
+    "@recipeGenerationStepSelectingRecipe": {
+        "description": "Libellé de la deuxième étape du loader de génération de recette"
+    },
+    "recipeGenerationStepSelectingRecipe": "Sélection de la recette",
+    "@recipeGenerationStepCalculatingQuantities": {
+        "description": "Libellé de la troisième étape du loader de génération de recette"
+    },
+    "recipeGenerationStepCalculatingQuantities": "Calcul des quantités et des macros",
+    "@recipeGenerationSubReadingIngredients": {
+        "description": "Sous-titre affiché pendant la première étape du loader de génération de recette"
+    },
+    "recipeGenerationSubReadingIngredients": "L'IA lit tes ingrédients et leurs quantités.",
+    "@recipeGenerationSubSelectingRecipe": {
+        "description": "Sous-titre affiché pendant la deuxième étape du loader de génération de recette"
+    },
+    "recipeGenerationSubSelectingRecipe": "Elle compose un plat adapté à tes préférences.",
+    "@recipeGenerationSubCalculatingQuantities": {
+        "description": "Sous-titre affiché pendant la troisième étape du loader de génération de recette"
+    },
+    "recipeGenerationSubCalculatingQuantities": "Elle ajuste les portions et vérifie les macros.",
+    "@recipeGenerationTitleReady": {
+        "description": "Titre affiché sur le loader animé une fois la recette prête, à la fin de son cycle d'animation"
+    },
+    "recipeGenerationTitleReady": "Ta recette est prête !",
+    "@recipeGenerationSubReady": {
+        "description": "Sous-titre affiché sur le loader animé une fois la recette prête, à la fin de son cycle d'animation"
+    },
+    "recipeGenerationSubReady": "Bon appétit !",
     "@searchForIngredients": {
         "description": "Libellé pour l'action de rechercher des ingrédients"
     },
@@ -539,6 +575,78 @@
     "shareLink": "Le lien de partage a été copié dans le presse-papiers",
     "@shareLink": {
         "description": "Label pour le lien de partage"
+    },
+    "recipeDetailsPortions": "Portions",
+    "@recipeDetailsPortions": {
+        "description": "Libellé du sélecteur de portions sur l'écran détail recette"
+    },
+    "recipeDetailsKcal": "kcal",
+    "@recipeDetailsKcal": {
+        "description": "Abréviation des kilocalories sur l'écran détail recette"
+    },
+    "recipeDetailsProtein": "Protéines",
+    "@recipeDetailsProtein": {
+        "description": "Libellé macro protéines sur l'écran détail recette"
+    },
+    "recipeDetailsCarbs": "Glucides",
+    "@recipeDetailsCarbs": {
+        "description": "Libellé macro glucides sur l'écran détail recette"
+    },
+    "recipeDetailsLipids": "Lipides",
+    "@recipeDetailsLipids": {
+        "description": "Libellé macro lipides sur l'écran détail recette"
+    },
+    "recipeDetailsAddToShoppingList": "Ajouter à ma liste de courses",
+    "@recipeDetailsAddToShoppingList": {
+        "description": "Libellé du bouton pour ajouter les ingrédients d'une recette à la liste de courses"
+    },
+    "recipeDetailsCookMode": "Passer en mode cuisine",
+    "@recipeDetailsCookMode": {
+        "description": "Libellé du bouton pour passer en mode cuisine sur une recette"
+    },
+    "recipeDetailsMarkAsCooked": "Marquer comme cuisiné",
+    "@recipeDetailsMarkAsCooked": {
+        "description": "Libellé du bouton pour marquer une recette comme cuisinée"
+    },
+    "recipeDetailsComingSoon": "Bientôt disponible",
+    "@recipeDetailsComingSoon": {
+        "description": "Message affiché en tapant une action de l'écran détail recette qui n'est pas encore branchée"
+    },
+    "recipeDetailsPreparationTitle": "Préparation",
+    "@recipeDetailsPreparationTitle": {
+        "description": "Titre de la section des étapes de préparation sur l'écran détail recette"
+    },
+    "cookModeStepLabel": "Étape",
+    "@cookModeStepLabel": {
+        "description": "Mot affiché avant le numéro de l'étape en mode cuisine (ex: \"Étape 2\")"
+    },
+    "cookModePrevious": "Précédent",
+    "@cookModePrevious": {
+        "description": "Libellé du bouton pour revenir à l'étape précédente en mode cuisine"
+    },
+    "cookModeNextStep": "Étape suivante",
+    "@cookModeNextStep": {
+        "description": "Libellé du bouton pour passer à l'étape suivante en mode cuisine"
+    },
+    "cookModeFinish": "Terminer",
+    "@cookModeFinish": {
+        "description": "Libellé du bouton sur la dernière étape pour terminer la cuisson"
+    },
+    "cookModeFinishedTitle": "Bon appétit !",
+    "@cookModeFinishedTitle": {
+        "description": "Titre affiché sur l'écran de fin du mode cuisine"
+    },
+    "cookModeFinishedSubtitle": "Ta recette est terminée. Comment était-elle ?",
+    "@cookModeFinishedSubtitle": {
+        "description": "Sous-titre affiché sur l'écran de fin du mode cuisine"
+    },
+    "cookModeAddToFavorites": "Ajouter à mes favoris",
+    "@cookModeAddToFavorites": {
+        "description": "Libellé du bouton pour ajouter la recette aux favoris sur l'écran de fin du mode cuisine"
+    },
+    "cookModeAddedToFavorites": "Ajoutée à tes favoris",
+    "@cookModeAddedToFavorites": {
+        "description": "Libellé du bouton une fois la recette ajoutée aux favoris sur l'écran de fin du mode cuisine"
     },
     "internalServerError": "Oops 😵‍💫. Une erreur est survenue. Veuillez réessayer.",
     "@internalServerError": {

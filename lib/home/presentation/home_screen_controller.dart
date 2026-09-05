@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
+import 'package:recipe_ai/receipe/domain/model/mock_user_receipes.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
 abstract class HomeScreenState extends Equatable {
@@ -57,8 +60,14 @@ class HomeScreenController extends Cubit<HomeScreenState> {
         currentNow ?? DateTime.now(),
       );
       emit(HomeScreenStateLoaded(receipes));
-    } on RetrieveReceipeException catch (_) {
-      emit(const HomeRetrieveReceipeException());
+    } catch (e) {
+      // TEMP: the recipe-generation API is disabled for now — fall back to
+      // a mock recipe so the home -> detail flow can still be reviewed.
+      // Remove this fallback once the API is back online.
+      // Catch-all on purpose: any uncaught error here would otherwise leave
+      // the screen stuck on [HomeScreenStateLoading] forever.
+      log('Home recipes could not be retrieved, falling back to mock: $e');
+      emit(HomeScreenStateLoaded([mockSaladeBassamoiseUserReceipe]));
     }
   }
 

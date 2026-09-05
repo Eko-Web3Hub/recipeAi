@@ -34,3 +34,16 @@ const badgeOrangeBackgroundColor = Color(0xffFCEBD3);
 
 const tipBackgroundColor = Color(0xffF5E6C4);
 const tipIconBackgroundColor = Color(0xffC08A2E);
+// Recipe generation loader palette (matches the ecran-07-animation.html mockup).
+const recipeLoaderGreenColor = Color(0xFF49A525);
+const recipeLoaderInkColor = Color(0xFF22331F);
+const recipeLoaderMintColor = Color(0xFFE8F0E3);
+const recipeLoaderCreamColor = Color(0xFFF2EFE8);
+
+// Recipe detail screen palette (matches the 11-recette-generee.html mockup).
+const recipeDetailAmberTagBackgroundColor = Color(0xFFF7E8C4);
+const recipeDetailAmberTagTextColor = Color(0xFFA5761F);
+const recipeDetailCaloriesBarColor = Color(0xFFE8873B);
+const recipeDetailCarbsBarColor = Color(0xFFD9B036);
+const recipeDetailLipidsBarColor = Color(0xFFC96F4A);
+const recipeCookModeAccentColor = Color(0xFFBFE0AE);

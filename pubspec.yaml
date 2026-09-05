@@ -124,6 +124,22 @@ flutter:
           weight: 600
         - asset: assets/fonts/poppins/Poppins-Bold.ttf
           weight: 700
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto/Roboto-Variable.ttf
+          weight: 400
+        - asset: assets/fonts/roboto/Roboto-Variable.ttf
+          weight: 500
+        - asset: assets/fonts/roboto/Roboto-Variable.ttf
+          weight: 700
+    - family: RobotoSlab
+      fonts:
+        - asset: assets/fonts/roboto/RobotoSlab-Variable.ttf
+          weight: 500
+        - asset: assets/fonts/roboto/RobotoSlab-Variable.ttf
+          weight: 600
+        - asset: assets/fonts/roboto/RobotoSlab-Variable.ttf
+          weight: 700
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

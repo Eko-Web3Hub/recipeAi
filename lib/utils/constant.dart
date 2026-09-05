@@ -135,3 +135,5 @@ final timeOutOptions = Options(
   receiveTimeout: Duration(seconds: 30),
 );
 const poppinsFontFamily = 'Poppins';
+const robotoFontFamily = 'Roboto';
+const robotoSlabFontFamily = 'RobotoSlab';

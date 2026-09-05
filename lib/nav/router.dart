@@ -3,12 +3,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
 import 'package:recipe_ai/chat_ai/presentation/chat_ai_screen.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/setting/setting_screen.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
+import 'package:recipe_ai/shopping/presentation/shopping_screen.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
@@ -32,7 +33,9 @@ import 'package:recipe_ai/notification/presentation/notification_screen.dart';
 import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
 import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/receipe/presentation/cook_mode_screen.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_view.dart';
 import 'package:recipe_ai/receipt_ticket_scan/presentation/receipt_ticket_scan_result_screen.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
@@ -156,6 +159,25 @@ GoRouter createRouter() => GoRouter(
           appLanguage: null,
           userSharingUid: null,
         );
+      },
+    ),
+
+    GoRoute(
+      name: 'ChatAiAppScreen',
+      path: '/chat-ai-app',
+      redirect: _guardAuth,
+      builder: (context, state) => const ChatAiScreen(),
+    ),
+    GoRoute(
+      name: 'CookMode',
+      path: '/cook-mode',
+      redirect: _guardAuth,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final receipe = extra['receipe'] as Receipe;
+        final userReceipeV2 = extra['userReceipeV2'] as UserReceipeV2;
+
+        return CookModeScreen(receipe: receipe, userReceipeV2: userReceipeV2);
       },
     ),
 
@@ -315,6 +337,12 @@ GoRouter createRouter() => GoRouter(
                   path: 'settings',
                   redirect: _guardAuth,
                   builder: (context, state) => const SettingScreen(),
+                ),
+                GoRoute(
+                  name: 'ShoppingScreen',
+                  path: '/shopping',
+                  redirect: _guardAuth,
+                  builder: (context, state) => const ShoppingScreen(),
                 ),
                 GoRoute(
                   name: 'MyAccountScreen',
