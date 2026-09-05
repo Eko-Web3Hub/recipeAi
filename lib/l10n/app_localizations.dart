@@ -63,7 +63,7 @@ import 'app_localizations_fr.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('fr')
+    Locale('fr'),
   ];
 
   /// A welcome message
@@ -457,6 +457,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We cannot generate recipe ideas for you. Please add more ingredients to your inventory and select your preferences.'**
   String get cannotGenerateReceipeIdeas;
+
+  /// Title shown on the animated loader while a recipe is being generated
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re simmering your recipe…'**
+  String get recipeGenerationTitle;
+
+  /// First step label of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your ingredients'**
+  String get recipeGenerationStepReadingIngredients;
+
+  /// Second step label of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'Selecting the recipe'**
+  String get recipeGenerationStepSelectingRecipe;
+
+  /// Third step label of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating quantities and macros'**
+  String get recipeGenerationStepCalculatingQuantities;
+
+  /// Subtitle shown during the first step of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'The AI reads your ingredients and their quantities.'**
+  String get recipeGenerationSubReadingIngredients;
+
+  /// Subtitle shown during the second step of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'It puts together a dish suited to your preferences.'**
+  String get recipeGenerationSubSelectingRecipe;
+
+  /// Subtitle shown during the third step of the recipe generation loader
+  ///
+  /// In en, this message translates to:
+  /// **'It adjusts portions and checks the macros.'**
+  String get recipeGenerationSubCalculatingQuantities;
+
+  /// Title shown on the animated loader once the recipe is ready, at the end of its animation cycle
+  ///
+  /// In en, this message translates to:
+  /// **'Your recipe is ready!'**
+  String get recipeGenerationTitleReady;
+
+  /// Subtitle shown on the animated loader once the recipe is ready, at the end of its animation cycle
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy your meal!'**
+  String get recipeGenerationSubReady;
 
   /// Label for the action of searching for ingredients
   ///
@@ -914,6 +968,114 @@ abstract class AppLocalizations {
   /// **'The recipe link has been copied to your clipboard'**
   String get shareLink;
 
+  /// Label for the portions stepper on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Portions'**
+  String get recipeDetailsPortions;
+
+  /// Abbreviation for kilocalories on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'kcal'**
+  String get recipeDetailsKcal;
+
+  /// Protein macro label on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get recipeDetailsProtein;
+
+  /// Carbohydrates macro label on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get recipeDetailsCarbs;
+
+  /// Fat macro label on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Fat'**
+  String get recipeDetailsLipids;
+
+  /// Button label to add a recipe's ingredients to the shopping list
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my shopping list'**
+  String get recipeDetailsAddToShoppingList;
+
+  /// Button label to enter cook mode for a recipe
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to cook mode'**
+  String get recipeDetailsCookMode;
+
+  /// Button label to mark a recipe as cooked
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as cooked'**
+  String get recipeDetailsMarkAsCooked;
+
+  /// Message shown when tapping a recipe detail action that isn't wired up yet
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get recipeDetailsComingSoon;
+
+  /// Section title for the preparation steps on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation'**
+  String get recipeDetailsPreparationTitle;
+
+  /// Word shown before the step number in cook mode (e.g. "Step 2")
+  ///
+  /// In en, this message translates to:
+  /// **'Step'**
+  String get cookModeStepLabel;
+
+  /// Button label to go back to the previous cook mode step
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get cookModePrevious;
+
+  /// Button label to advance to the next cook mode step
+  ///
+  /// In en, this message translates to:
+  /// **'Next step'**
+  String get cookModeNextStep;
+
+  /// Button label on the last cook mode step to finish cooking
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get cookModeFinish;
+
+  /// Title shown on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy your meal!'**
+  String get cookModeFinishedTitle;
+
+  /// Subtitle shown on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Your recipe is done. How was it?'**
+  String get cookModeFinishedSubtitle;
+
+  /// Button label to add the recipe to favorites on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my favorites'**
+  String get cookModeAddToFavorites;
+
+  /// Button label once the recipe has been added to favorites on the cook mode completion screen
+  ///
+  /// In en, this message translates to:
+  /// **'Added to your favorites'**
+  String get cookModeAddedToFavorites;
+
   /// Label for internal server error
   ///
   /// In en, this message translates to:
@@ -1009,6 +1171,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit Profile'**
   String get editProfile;
+
+  /// Label for the recipe servings/portions counter
+  ///
+  /// In en, this message translates to:
+  /// **'Portions'**
+  String get portions;
+
+  /// Label for the protein macro nutrient
+  ///
+  /// In en, this message translates to:
+  /// **'Proteins'**
+  String get proteins;
+
+  /// Label for the carbohydrates macro nutrient
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get carbs;
+
+  /// Label for the fat macro nutrient
+  ///
+  /// In en, this message translates to:
+  /// **'Fats'**
+  String get fats;
+
+  /// Label for an easy recipe difficulty
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get difficultyEasy;
+
+  /// Label for the button that adds recipe ingredients to the shopping list
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my shopping list'**
+  String get addToShoppingList;
+
+  /// Title for the recipe preparation steps section
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation'**
+  String get preparation;
+
+  /// Title for the recipe fun fact tip box
+  ///
+  /// In en, this message translates to:
+  /// **'Did you know?'**
+  String get didYouKnow;
+
+  /// Label for the button that starts the step by step cooking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to cooking mode'**
+  String get startCookingMode;
+
+  /// Label for the button that marks a recipe as cooked
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as cooked'**
+  String get markAsCooked;
 }
 
 class _AppLocalizationsDelegate
@@ -1038,8 +1260,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

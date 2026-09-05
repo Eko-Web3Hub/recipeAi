@@ -15,7 +15,6 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/app_update.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
-import 'package:recipe_ai/home/presentation/pulsing_circle_loader.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
@@ -124,9 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 BlocBuilder<HomeScreenController, HomeScreenState>(
                   builder: (context, homeScreenState) {
                     if (homeScreenState is HomeScreenStateLoading) {
-                      return Expanded(
+                      return const Expanded(
                         child: Center(
-                          child: PulsingCircle(),
+                          child: CustomCircularLoader(),
                         ),
                       );
                     }

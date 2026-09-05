@@ -38,9 +38,7 @@ class HistoricScreen extends StatelessWidget {
                   if (historicState is HistoricLoadingState) {
                     return Expanded(
                       child: Center(
-                        child: CustomProgress(
-                          color: Colors.black,
-                        ),
+                        child: CustomProgress(),
                       ),
                     );
                   }

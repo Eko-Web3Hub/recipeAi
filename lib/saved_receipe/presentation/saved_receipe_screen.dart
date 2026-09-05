@@ -52,9 +52,7 @@ class SavedReceipeScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is SavedReceipeStateLoading) {
                   return const Center(
-                    child: CustomProgress(
-                      color: Colors.black,
-                    ),
+                    child: CustomProgress(),
                   );
                 }
 

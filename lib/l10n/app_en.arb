@@ -240,6 +240,42 @@
         "description": "Message displayed when recipe ideas cannot be generated due to insufficient ingredients or preferences"
     },
     "cannotGenerateReceipeIdeas": "We cannot generate recipe ideas for you. Please add more ingredients to your inventory and select your preferences.",
+    "@recipeGenerationTitle": {
+        "description": "Title shown on the animated loader while a recipe is being generated"
+    },
+    "recipeGenerationTitle": "We're simmering your recipe…",
+    "@recipeGenerationStepReadingIngredients": {
+        "description": "First step label of the recipe generation loader"
+    },
+    "recipeGenerationStepReadingIngredients": "Reading your ingredients",
+    "@recipeGenerationStepSelectingRecipe": {
+        "description": "Second step label of the recipe generation loader"
+    },
+    "recipeGenerationStepSelectingRecipe": "Selecting the recipe",
+    "@recipeGenerationStepCalculatingQuantities": {
+        "description": "Third step label of the recipe generation loader"
+    },
+    "recipeGenerationStepCalculatingQuantities": "Calculating quantities and macros",
+    "@recipeGenerationSubReadingIngredients": {
+        "description": "Subtitle shown during the first step of the recipe generation loader"
+    },
+    "recipeGenerationSubReadingIngredients": "The AI reads your ingredients and their quantities.",
+    "@recipeGenerationSubSelectingRecipe": {
+        "description": "Subtitle shown during the second step of the recipe generation loader"
+    },
+    "recipeGenerationSubSelectingRecipe": "It puts together a dish suited to your preferences.",
+    "@recipeGenerationSubCalculatingQuantities": {
+        "description": "Subtitle shown during the third step of the recipe generation loader"
+    },
+    "recipeGenerationSubCalculatingQuantities": "It adjusts portions and checks the macros.",
+    "@recipeGenerationTitleReady": {
+        "description": "Title shown on the animated loader once the recipe is ready, at the end of its animation cycle"
+    },
+    "recipeGenerationTitleReady": "Your recipe is ready!",
+    "@recipeGenerationSubReady": {
+        "description": "Subtitle shown on the animated loader once the recipe is ready, at the end of its animation cycle"
+    },
+    "recipeGenerationSubReady": "Enjoy your meal!",
     "@searchForIngredients": {
         "description": "Label for the action of searching for ingredients"
     },
@@ -544,6 +580,78 @@
     "@shareLink": {
         "description": "Label for sharing the link"
     },
+    "recipeDetailsPortions": "Portions",
+    "@recipeDetailsPortions": {
+        "description": "Label for the portions stepper on the recipe detail screen"
+    },
+    "recipeDetailsKcal": "kcal",
+    "@recipeDetailsKcal": {
+        "description": "Abbreviation for kilocalories on the recipe detail screen"
+    },
+    "recipeDetailsProtein": "Protein",
+    "@recipeDetailsProtein": {
+        "description": "Protein macro label on the recipe detail screen"
+    },
+    "recipeDetailsCarbs": "Carbs",
+    "@recipeDetailsCarbs": {
+        "description": "Carbohydrates macro label on the recipe detail screen"
+    },
+    "recipeDetailsLipids": "Fat",
+    "@recipeDetailsLipids": {
+        "description": "Fat macro label on the recipe detail screen"
+    },
+    "recipeDetailsAddToShoppingList": "Add to my shopping list",
+    "@recipeDetailsAddToShoppingList": {
+        "description": "Button label to add a recipe's ingredients to the shopping list"
+    },
+    "recipeDetailsCookMode": "Switch to cook mode",
+    "@recipeDetailsCookMode": {
+        "description": "Button label to enter cook mode for a recipe"
+    },
+    "recipeDetailsMarkAsCooked": "Mark as cooked",
+    "@recipeDetailsMarkAsCooked": {
+        "description": "Button label to mark a recipe as cooked"
+    },
+    "recipeDetailsComingSoon": "Coming soon",
+    "@recipeDetailsComingSoon": {
+        "description": "Message shown when tapping a recipe detail action that isn't wired up yet"
+    },
+    "recipeDetailsPreparationTitle": "Preparation",
+    "@recipeDetailsPreparationTitle": {
+        "description": "Section title for the preparation steps on the recipe detail screen"
+    },
+    "cookModeStepLabel": "Step",
+    "@cookModeStepLabel": {
+        "description": "Word shown before the step number in cook mode (e.g. \"Step 2\")"
+    },
+    "cookModePrevious": "Previous",
+    "@cookModePrevious": {
+        "description": "Button label to go back to the previous cook mode step"
+    },
+    "cookModeNextStep": "Next step",
+    "@cookModeNextStep": {
+        "description": "Button label to advance to the next cook mode step"
+    },
+    "cookModeFinish": "Finish",
+    "@cookModeFinish": {
+        "description": "Button label on the last cook mode step to finish cooking"
+    },
+    "cookModeFinishedTitle": "Enjoy your meal!",
+    "@cookModeFinishedTitle": {
+        "description": "Title shown on the cook mode completion screen"
+    },
+    "cookModeFinishedSubtitle": "Your recipe is done. How was it?",
+    "@cookModeFinishedSubtitle": {
+        "description": "Subtitle shown on the cook mode completion screen"
+    },
+    "cookModeAddToFavorites": "Add to my favorites",
+    "@cookModeAddToFavorites": {
+        "description": "Button label to add the recipe to favorites on the cook mode completion screen"
+    },
+    "cookModeAddedToFavorites": "Added to your favorites",
+    "@cookModeAddedToFavorites": {
+        "description": "Button label once the recipe has been added to favorites on the cook mode completion screen"
+    },
     "internalServerError": "Oops 😵‍💫. An error occurred. Please try again.",
     "@internalServerError": {
         "description": "Label for internal server error"
@@ -605,5 +713,45 @@
     "editProfile": "Edit Profile",
     "@editProfile": {
         "description": "Label for edit profile"
+    },
+    "portions": "Portions",
+    "@portions": {
+        "description": "Label for the recipe servings/portions counter"
+    },
+    "proteins": "Proteins",
+    "@proteins": {
+        "description": "Label for the protein macro nutrient"
+    },
+    "carbs": "Carbs",
+    "@carbs": {
+        "description": "Label for the carbohydrates macro nutrient"
+    },
+    "fats": "Fats",
+    "@fats": {
+        "description": "Label for the fat macro nutrient"
+    },
+    "difficultyEasy": "Easy",
+    "@difficultyEasy": {
+        "description": "Label for an easy recipe difficulty"
+    },
+    "addToShoppingList": "Add to my shopping list",
+    "@addToShoppingList": {
+        "description": "Label for the button that adds recipe ingredients to the shopping list"
+    },
+    "preparation": "Preparation",
+    "@preparation": {
+        "description": "Title for the recipe preparation steps section"
+    },
+    "didYouKnow": "Did you know?",
+    "@didYouKnow": {
+        "description": "Title for the recipe fun fact tip box"
+    },
+    "startCookingMode": "Switch to cooking mode",
+    "@startCookingMode": {
+        "description": "Label for the button that starts the step by step cooking mode"
+    },
+    "markAsCooked": "Mark as cooked",
+    "@markAsCooked": {
+        "description": "Label for the button that marks a recipe as cooked"
     }
 }

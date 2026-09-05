@@ -200,6 +200,38 @@ class AppLocalizationsEn extends AppLocalizations {
       'We cannot generate recipe ideas for you. Please add more ingredients to your inventory and select your preferences.';
 
   @override
+  String get recipeGenerationTitle => 'We\'re simmering your recipe…';
+
+  @override
+  String get recipeGenerationStepReadingIngredients =>
+      'Reading your ingredients';
+
+  @override
+  String get recipeGenerationStepSelectingRecipe => 'Selecting the recipe';
+
+  @override
+  String get recipeGenerationStepCalculatingQuantities =>
+      'Calculating quantities and macros';
+
+  @override
+  String get recipeGenerationSubReadingIngredients =>
+      'The AI reads your ingredients and their quantities.';
+
+  @override
+  String get recipeGenerationSubSelectingRecipe =>
+      'It puts together a dish suited to your preferences.';
+
+  @override
+  String get recipeGenerationSubCalculatingQuantities =>
+      'It adjusts portions and checks the macros.';
+
+  @override
+  String get recipeGenerationTitleReady => 'Your recipe is ready!';
+
+  @override
+  String get recipeGenerationSubReady => 'Enjoy your meal!';
+
+  @override
   String get searchForIngredients => 'Add or search for ingredients';
 
   @override
@@ -441,6 +473,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareLink => 'The recipe link has been copied to your clipboard';
 
   @override
+  String get recipeDetailsPortions => 'Portions';
+
+  @override
+  String get recipeDetailsKcal => 'kcal';
+
+  @override
+  String get recipeDetailsProtein => 'Protein';
+
+  @override
+  String get recipeDetailsCarbs => 'Carbs';
+
+  @override
+  String get recipeDetailsLipids => 'Fat';
+
+  @override
+  String get recipeDetailsAddToShoppingList => 'Add to my shopping list';
+
+  @override
+  String get recipeDetailsCookMode => 'Switch to cook mode';
+
+  @override
+  String get recipeDetailsMarkAsCooked => 'Mark as cooked';
+
+  @override
+  String get recipeDetailsComingSoon => 'Coming soon';
+
+  @override
+  String get recipeDetailsPreparationTitle => 'Preparation';
+
+  @override
+  String get cookModeStepLabel => 'Step';
+
+  @override
+  String get cookModePrevious => 'Previous';
+
+  @override
+  String get cookModeNextStep => 'Next step';
+
+  @override
+  String get cookModeFinish => 'Finish';
+
+  @override
+  String get cookModeFinishedTitle => 'Enjoy your meal!';
+
+  @override
+  String get cookModeFinishedSubtitle => 'Your recipe is done. How was it?';
+
+  @override
+  String get cookModeAddToFavorites => 'Add to my favorites';
+
+  @override
+  String get cookModeAddedToFavorites => 'Added to your favorites';
+
+  @override
   String get internalServerError =>
       'Oops 😵‍💫. An error occurred. Please try again.';
 
@@ -492,4 +578,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editProfile => 'Edit Profile';
+
+  @override
+  String get portions => 'Portions';
+
+  @override
+  String get proteins => 'Proteins';
+
+  @override
+  String get carbs => 'Carbs';
+
+  @override
+  String get fats => 'Fats';
+
+  @override
+  String get difficultyEasy => 'Easy';
+
+  @override
+  String get addToShoppingList => 'Add to my shopping list';
+
+  @override
+  String get preparation => 'Preparation';
+
+  @override
+  String get didYouKnow => 'Did you know?';
+
+  @override
+  String get startCookingMode => 'Switch to cooking mode';
+
+  @override
+  String get markAsCooked => 'Mark as cooked';
 }

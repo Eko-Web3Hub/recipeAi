@@ -87,7 +87,7 @@ class _OutlinedTextFormFieldState extends State<OutlinedTextFormField> {
               : null,
           suffixIcon: widget.inputType == InputType.password
               ? IconButton(
-                  icon: Icon(
+                  icon: FaIcon(
                     _obscureText
                         ? FontAwesomeIcons.eyeSlash
                         : FontAwesomeIcons.eye,

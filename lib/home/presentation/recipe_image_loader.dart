@@ -29,11 +29,15 @@ class RecipeImageLoader extends Cubit<RecipeImageState> {
   }
 
   void _load() async {
-    final response = await _functionsCaller.callFunction(
-      'retrieve_recipe_image',
-      {'recipe_name': recipeName},
-    );
-    safeEmit(RecipeImageLoaded(response['url']));
+    try {
+      final response = await _functionsCaller.callFunction(
+        'retrieve_recipe_image',
+        {'recipe_name': recipeName},
+      );
+      safeEmit(RecipeImageLoaded(response['url']));
+    } catch (_) {
+      safeEmit(RecipeImageLoaded(null));
+    }
   }
 
   final FunctionsCaller _functionsCaller;

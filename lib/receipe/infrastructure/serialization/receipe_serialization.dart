@@ -24,6 +24,13 @@ abstract class ReceipeSerialization {
       firestoreRecipeId: json["firestoreRecipeId"] != null
           ? EntityId(json["firestoreRecipeId"])
           : null,
+      tags: json["tags"] == null
+          ? const []
+          : List<String>.from(json["tags"] as List),
+      difficulty: json["difficulty"],
+      proteinGrams: json["proteinGrams"],
+      carbsGrams: json["carbsGrams"],
+      lipidsGrams: json["lipidsGrams"],
     );
   }
 
@@ -43,6 +50,11 @@ abstract class ReceipeSerialization {
       "averageTime": receipe.averageTime,
       "totalCalories": receipe.totalCalories,
       "firestoreRecipeId": receipe.firestoreRecipeId?.value,
+      "tags": receipe.tags,
+      "difficulty": receipe.difficulty,
+      "proteinGrams": receipe.proteinGrams,
+      "carbsGrams": receipe.carbsGrams,
+      "lipidsGrams": receipe.lipidsGrams,
     };
   }
 }

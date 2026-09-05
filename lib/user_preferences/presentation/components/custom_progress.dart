@@ -1,31 +1,13 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 
-class CustomProgress extends StatefulWidget {
+class CustomProgress extends StatelessWidget {
   final Color? color;
 
-  const CustomProgress({super.key, this.color = Colors.white});
+  const CustomProgress({super.key, this.color});
 
-  @override
-  State<CustomProgress> createState() => _CustomProgressState();
-}
-
-class _CustomProgressState extends State<CustomProgress> {
   @override
   Widget build(BuildContext context) {
-    return Platform.isIOS
-        ? CupertinoActivityIndicator(
-            color: widget.color,
-          )
-        : SizedBox(
-            width: 30,
-            height: 30,
-            child: CircularProgressIndicator(
-              color: widget.color,
-              strokeWidth: 1.5,
-            ),
-          );
+    return CustomCircularLoader(size: 30, color: color);
   }
 }

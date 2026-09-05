@@ -14,6 +14,19 @@ class Receipe extends Equatable {
   final String totalCalories;
   final EntityId? firestoreRecipeId;
 
+  /// Dietary tags (e.g. "Végé", "Diabétique"). Empty until the generation
+  /// backend starts returning them.
+  final List<String> tags;
+
+  /// Free-text difficulty label (e.g. "Facile"), as sent by the backend.
+  final String? difficulty;
+
+  /// Macro breakdown, pre-formatted by the backend (e.g. "28g"). Null until
+  /// the generation backend starts returning them.
+  final String? proteinGrams;
+  final String? carbsGrams;
+  final String? lipidsGrams;
+
   const Receipe({
     required this.name,
     required this.ingredients,
@@ -21,6 +34,11 @@ class Receipe extends Equatable {
     required this.averageTime,
     required this.totalCalories,
     this.firestoreRecipeId,
+    this.tags = const [],
+    this.difficulty,
+    this.proteinGrams,
+    this.carbsGrams,
+    this.lipidsGrams,
   });
 
   Receipe assignFirestoreRecipeId(EntityId id) => _copyWith(
@@ -34,6 +52,11 @@ class Receipe extends Equatable {
     String? averageTime,
     String? totalCalories,
     EntityId? firestoreRecipeId,
+    List<String>? tags,
+    String? difficulty,
+    String? proteinGrams,
+    String? carbsGrams,
+    String? lipidsGrams,
   }) {
     return Receipe(
       name: name ?? this.name,
@@ -42,6 +65,11 @@ class Receipe extends Equatable {
       averageTime: averageTime ?? this.averageTime,
       totalCalories: totalCalories ?? this.totalCalories,
       firestoreRecipeId: firestoreRecipeId ?? this.firestoreRecipeId,
+      tags: tags ?? this.tags,
+      difficulty: difficulty ?? this.difficulty,
+      proteinGrams: proteinGrams ?? this.proteinGrams,
+      carbsGrams: carbsGrams ?? this.carbsGrams,
+      lipidsGrams: lipidsGrams ?? this.lipidsGrams,
     );
   }
 
@@ -53,6 +81,11 @@ class Receipe extends Equatable {
         averageTime,
         totalCalories,
         firestoreRecipeId,
+        tags,
+        difficulty,
+        proteinGrams,
+        carbsGrams,
+        lipidsGrams,
       ];
 }
 

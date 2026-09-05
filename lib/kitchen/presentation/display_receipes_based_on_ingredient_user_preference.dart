@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
-import 'package:recipe_ai/home/presentation/pulsing_circle_loader.dart';
+import 'package:recipe_ai/home/presentation/recipe_generation_loader.dart';
 
 import 'package:recipe_ai/kitchen/application/retrieve_recipes_based_on_user_ingredient_and_preferences_usecase.dart';
 import 'package:recipe_ai/kitchen/infrastructure/receipes_based_on_ingredient_user_preference_repository.dart';
@@ -174,23 +174,12 @@ class _LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-
-    return Center(
-        child: Column(
-      children: [
-        const Gap(120),
-        Text(
-          appTexts.receipeIdeasDescription,
-          style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                color: Colors.black,
-              ),
-          textAlign: TextAlign.center,
-        ),
-        const Gap(20),
-        PulsingCircle(),
-      ],
-    ));
+    return const Center(
+      child: Padding(
+        padding: EdgeInsets.only(top: 60),
+        child: RecipeGenerationLoader(),
+      ),
+    );
   }
 }
 
