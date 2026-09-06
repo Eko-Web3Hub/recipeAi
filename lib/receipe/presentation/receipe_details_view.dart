@@ -17,12 +17,14 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/receipe/presentation/food_fact_card.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
+import 'package:recipe_ai/receipe/presentation/recipe_tag_style.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
+import 'package:recipe_ai/utils/functions.dart';
 
 const _heroHeight = 270.0;
 
@@ -415,9 +417,7 @@ class _TagChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAmber =
-        label.toLowerCase().contains('diab') ||
-        label.toLowerCase().contains('diet');
+    final isAmber = classifyRecipeTag(label) == RecipeTagKind.amber;
     final background = isAmber
         ? recipeDetailAmberTagBackgroundColor
         : recipeLoaderMintColor;

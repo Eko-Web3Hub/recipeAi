@@ -753,5 +753,29 @@
     "markAsCooked": "Marquer comme cuisiné",
     "@markAsCooked": {
         "description": "Label du bouton qui marque une recette comme cuisinée"
+    },
+    "homeCookWhatToday": "On cuisine quoi aujourd'hui ?",
+    "@homeCookWhatToday": {
+        "description": "Titre de l'en-tête de l'accueil, sous la salutation"
+    },
+    "homeQuickActionList": "Ma liste",
+    "@homeQuickActionList": {
+        "description": "Libellé du raccourci de l'accueil qui ouvre la liste de courses"
+    },
+    "homeQuickActionFridge": "Mon frigo",
+    "@homeQuickActionFridge": {
+        "description": "Libellé du raccourci de l'accueil qui ouvre l'inventaire du frigo"
+    },
+    "homeQuickActionPhoto": "Photo",
+    "@homeQuickActionPhoto": {
+        "description": "Libellé du raccourci de l'accueil qui génère une recette à partir d'une photo"
+    },
+    "homeForYouToday": "Pour toi aujourd'hui",
+    "@homeForYouToday": {
+        "description": "Titre de la section des recettes recommandées sur l'accueil"
+    },
+    "homeForYouTodaySubtitle": "Adaptées à tes préférences",
+    "@homeForYouTodaySubtitle": {
+        "description": "Sous-titre de la section des recettes recommandées sur l'accueil"
     }
 }

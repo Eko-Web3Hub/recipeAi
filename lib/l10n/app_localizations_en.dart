@@ -608,4 +608,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get markAsCooked => 'Mark as cooked';
+
+  @override
+  String get homeCookWhatToday => 'What are we cooking today?';
+
+  @override
+  String get homeQuickActionList => 'My list';
+
+  @override
+  String get homeQuickActionFridge => 'My fridge';
+
+  @override
+  String get homeQuickActionPhoto => 'Photo';
+
+  @override
+  String get homeForYouToday => 'For you today';
+
+  @override
+  String get homeForYouTodaySubtitle => 'Tailored to your preferences';
 }

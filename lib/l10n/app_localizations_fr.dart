@@ -624,4 +624,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get markAsCooked => 'Marquer comme cuisiné';
+
+  @override
+  String get homeCookWhatToday => 'On cuisine quoi aujourd\'hui ?';
+
+  @override
+  String get homeQuickActionList => 'Ma liste';
+
+  @override
+  String get homeQuickActionFridge => 'Mon frigo';
+
+  @override
+  String get homeQuickActionPhoto => 'Photo';
+
+  @override
+  String get homeForYouToday => 'Pour toi aujourd\'hui';
+
+  @override
+  String get homeForYouTodaySubtitle => 'Adaptées à tes préférences';
 }

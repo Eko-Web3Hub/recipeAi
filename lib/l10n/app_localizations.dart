@@ -1231,6 +1231,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark as cooked'**
   String get markAsCooked;
+
+  /// Home header title, below the greeting
+  ///
+  /// In en, this message translates to:
+  /// **'What are we cooking today?'**
+  String get homeCookWhatToday;
+
+  /// Label of the home shortcut that opens the shopping list
+  ///
+  /// In en, this message translates to:
+  /// **'My list'**
+  String get homeQuickActionList;
+
+  /// Label of the home shortcut that opens the fridge inventory
+  ///
+  /// In en, this message translates to:
+  /// **'My fridge'**
+  String get homeQuickActionFridge;
+
+  /// Label of the home shortcut that generates a recipe from a photo
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get homeQuickActionPhoto;
+
+  /// Title of the recommended recipes section on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'For you today'**
+  String get homeForYouToday;
+
+  /// Subtitle of the recommended recipes section on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tailored to your preferences'**
+  String get homeForYouTodaySubtitle;
 }
 
 class _AppLocalizationsDelegate

@@ -753,5 +753,29 @@
     "markAsCooked": "Mark as cooked",
     "@markAsCooked": {
         "description": "Label for the button that marks a recipe as cooked"
+    },
+    "homeCookWhatToday": "What are we cooking today?",
+    "@homeCookWhatToday": {
+        "description": "Home header title, below the greeting"
+    },
+    "homeQuickActionList": "My list",
+    "@homeQuickActionList": {
+        "description": "Label of the home shortcut that opens the shopping list"
+    },
+    "homeQuickActionFridge": "My fridge",
+    "@homeQuickActionFridge": {
+        "description": "Label of the home shortcut that opens the fridge inventory"
+    },
+    "homeQuickActionPhoto": "Photo",
+    "@homeQuickActionPhoto": {
+        "description": "Label of the home shortcut that generates a recipe from a photo"
+    },
+    "homeForYouToday": "For you today",
+    "@homeForYouToday": {
+        "description": "Title of the recommended recipes section on the home screen"
+    },
+    "homeForYouTodaySubtitle": "Tailored to your preferences",
+    "@homeForYouTodaySubtitle": {
+        "description": "Subtitle of the recommended recipes section on the home screen"
     }
 }

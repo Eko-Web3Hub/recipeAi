@@ -51,3 +51,18 @@ const recipeCookModeAccentColor = Color(0xFFBFE0AE);
 const foodFactCardBackgroundColor = Color(0xfff7e8c4);
 
 const foodFactCardTextColor = Color(0xff22331f);
+
+// Home screen palette (matches the 06-accueil.html mockup).
+// The cream background, the ink text and the mint tile reuse
+// [recipeLoaderCreamColor], [recipeLoaderInkColor] and [recipeLoaderMintColor].
+const homeFridgeTileBackgroundColor = Color(0xFFF4E3D3);
+const homeFridgeIconBackgroundColor = Color(0xFFC96F4A);
+const homePhotoTileBackgroundColor = Color(0xFFF7E8C4);
+const homePhotoIconBackgroundColor = Color(0xFFD8A13A);
+
+// Recipe card palette (matches the 06-accueil.html mockup).
+const recipeCardPlaceholderColor = Color(0xFFDFDBD2);
+const recipeCardOverlayColor = Color(0xFF141A10);
+const recipeCardTagGreenColor = Color(0xFFBFE0AE);
+const recipeCardTagAmberColor = Color(0xFFF0D089);
+const recipeCardTagSalmonColor = Color(0xFFE8B8A3);

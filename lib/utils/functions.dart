@@ -80,6 +80,11 @@ Future<void> launchUrlFunc(String url) async {
   }
 }
 
+/// Keeps only the digits of a backend value such as "480 kcal" or "410".
+String getOnlyNumber(String text) {
+  return text.replaceAll(RegExp(r'[^0-9]'), '');
+}
+
 String convertRecipeNameToFirestoreId(String recipeName) {
   return recipeName.replaceAll(' ', '_').toLowerCase();
 }
