@@ -27,6 +27,8 @@ class Receipe extends Equatable {
   final String? carbsGrams;
   final String? lipidsGrams;
 
+  final String? foodFact;
+
   const Receipe({
     required this.name,
     required this.ingredients,
@@ -39,11 +41,11 @@ class Receipe extends Equatable {
     this.proteinGrams,
     this.carbsGrams,
     this.lipidsGrams,
+    this.foodFact,
   });
 
-  Receipe assignFirestoreRecipeId(EntityId id) => _copyWith(
-        firestoreRecipeId: id,
-      );
+  Receipe assignFirestoreRecipeId(EntityId id) =>
+      _copyWith(firestoreRecipeId: id);
 
   Receipe _copyWith({
     String? name,
@@ -57,6 +59,7 @@ class Receipe extends Equatable {
     String? proteinGrams,
     String? carbsGrams,
     String? lipidsGrams,
+    String? foodFact,
   }) {
     return Receipe(
       name: name ?? this.name,
@@ -70,30 +73,29 @@ class Receipe extends Equatable {
       proteinGrams: proteinGrams ?? this.proteinGrams,
       carbsGrams: carbsGrams ?? this.carbsGrams,
       lipidsGrams: lipidsGrams ?? this.lipidsGrams,
+      foodFact: foodFact ?? this.foodFact,
     );
   }
 
   @override
   List<Object?> get props => [
-        name,
-        ingredients,
-        steps,
-        averageTime,
-        totalCalories,
-        firestoreRecipeId,
-        tags,
-        difficulty,
-        proteinGrams,
-        carbsGrams,
-        lipidsGrams,
-      ];
+    name,
+    ingredients,
+    steps,
+    averageTime,
+    totalCalories,
+    firestoreRecipeId,
+    tags,
+    difficulty,
+    proteinGrams,
+    carbsGrams,
+    lipidsGrams,
+    foodFact,
+  ];
 }
 
 class TranslatedRecipe {
-  const TranslatedRecipe({
-    required this.recipesEn,
-    required this.recipesFr,
-  });
+  const TranslatedRecipe({required this.recipesEn, required this.recipesFr});
 
   factory TranslatedRecipe.fromJson(Map<String, dynamic> json) {
     final recipesEn = (json['recipesEn'] as List)
@@ -103,10 +105,7 @@ class TranslatedRecipe {
         .map((recipe) => ReceipeApiSerialization.fromJson(recipe))
         .toList();
 
-    return TranslatedRecipe(
-      recipesEn: recipesEn,
-      recipesFr: recipesFr,
-    );
+    return TranslatedRecipe(recipesEn: recipesEn, recipesFr: recipesFr);
   }
 
   final List<Receipe> recipesEn;

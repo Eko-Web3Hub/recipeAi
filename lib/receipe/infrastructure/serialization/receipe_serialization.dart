@@ -15,9 +15,7 @@ abstract class ReceipeSerialization {
           )
           .toList(),
       steps: (json["steps"] as List)
-          .map<ReceipeStep>(
-            (step) => ReceipeStepSerialization.fromJson(step),
-          )
+          .map<ReceipeStep>((step) => ReceipeStepSerialization.fromJson(step))
           .toList(),
       averageTime: json["averageTime"],
       totalCalories: json["totalCalories"],
@@ -31,6 +29,7 @@ abstract class ReceipeSerialization {
       proteinGrams: json["proteinGrams"],
       carbsGrams: json["carbsGrams"],
       lipidsGrams: json["lipidsGrams"],
+      foodFact: json["foodFact"],
     );
   }
 
@@ -38,14 +37,10 @@ abstract class ReceipeSerialization {
     return {
       "name": receipe.name,
       "ingredients": receipe.ingredients
-          .map(
-            (e) => IngredientSerialization.toJson(e),
-          )
+          .map((e) => IngredientSerialization.toJson(e))
           .toList(),
       "steps": receipe.steps
-          .map(
-            (e) => ReceipeStepSerialization.toJson(e),
-          )
+          .map((e) => ReceipeStepSerialization.toJson(e))
           .toList(),
       "averageTime": receipe.averageTime,
       "totalCalories": receipe.totalCalories,
@@ -55,6 +50,7 @@ abstract class ReceipeSerialization {
       "proteinGrams": receipe.proteinGrams,
       "carbsGrams": receipe.carbsGrams,
       "lipidsGrams": receipe.lipidsGrams,
+      "foodFact": receipe.foodFact,
     };
   }
 }
