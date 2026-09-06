@@ -626,4 +626,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeForYouTodaySubtitle => 'Tailored to your preferences';
+
+  @override
+  String get navHome => 'Home';
 }

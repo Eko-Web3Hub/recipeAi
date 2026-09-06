@@ -642,4 +642,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get homeForYouTodaySubtitle => 'Adaptées à tes préférences';
+
+  @override
+  String get navHome => 'Accueil';
 }

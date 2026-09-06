@@ -777,5 +777,9 @@
     "homeForYouTodaySubtitle": "Adaptées à tes préférences",
     "@homeForYouTodaySubtitle": {
         "description": "Sous-titre de la section des recettes recommandées sur l'accueil"
+    },
+    "navHome": "Accueil",
+    "@navHome": {
+        "description": "Libellé de l'onglet Accueil de la barre de navigation"
     }
 }

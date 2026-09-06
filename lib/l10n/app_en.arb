@@ -777,5 +777,9 @@
     "homeForYouTodaySubtitle": "Tailored to your preferences",
     "@homeForYouTodaySubtitle": {
         "description": "Subtitle of the recommended recipes section on the home screen"
+    },
+    "navHome": "Home",
+    "@navHome": {
+        "description": "Label of the Home tab in the bottom navigation bar"
     }
 }

@@ -60,6 +60,11 @@ const homeFridgeIconBackgroundColor = Color(0xFFC96F4A);
 const homePhotoTileBackgroundColor = Color(0xFFF7E8C4);
 const homePhotoIconBackgroundColor = Color(0xFFD8A13A);
 
+// Bottom navigation bar palette (matches the 06-accueil.html mockup).
+const bottomNavActiveColor = Color(0xFF2E6B18);
+const bottomNavInactiveColor = Color(0xFF9BA39A);
+const bottomNavFabColor = Color(0xFFF8A62D);
+
 // Recipe card palette (matches the 06-accueil.html mockup).
 const recipeCardPlaceholderColor = Color(0xFFDFDBD2);
 const recipeCardOverlayColor = Color(0xFF141A10);

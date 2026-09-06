@@ -54,6 +54,30 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
     );
   }
 
+  /// Shell branch behind each slot of the bar, in the order the mockup lays
+  /// them out: home and kitchen inventory on the left of the FAB, favorites
+  /// and profile on its right.
+  static const _navBarBranches = <int>[0, 2, 1, 3];
+
+  static final _navBarItems = <BarItemData>[
+    BarItemData(
+      asset: 'assets/icon/nav_home.svg',
+      labelSelector: (lang) => lang.navHome,
+    ),
+    BarItemData(
+      asset: 'assets/icon/nav_fridge.svg',
+      labelSelector: (lang) => lang.homeQuickActionFridge,
+    ),
+    BarItemData(
+      asset: 'assets/icon/nav_favorite.svg',
+      labelSelector: (lang) => lang.favorite,
+    ),
+    BarItemData(
+      asset: 'assets/icon/nav_profile.svg',
+      labelSelector: (lang) => lang.profil,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,11 +102,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           hideNavBar || context.watch<HideNavBar>().isNavBarHidden
               ? null
               : ChefFab(
-                  iconAsset: 'assets/icon/chef_hat.svg', // le pictogramme blanc
-                  onPressed: () {
-                    // ton action existante
-                    _showAiActionRecipeBottomSheet(context);
-                  },
+                  onPressed: () => _showAiActionRecipeBottomSheet(context),
                 ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Consumer<HideNavBar>(
@@ -92,14 +112,11 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
                   context.watch<HideNavBar>().isNavBarHidden)
               ? SizedBox.shrink()
               : FancyBottomBar(
-                  items: const [
-                    BarItemData('assets/images/homeInactifIcon.svg'),
-                    BarItemData('assets/images/favorite_outlined.svg'),
-                    BarItemData('assets/images/list_add.svg'),
-                    BarItemData('assets/images/profilInactifIcon.svg'),
-                  ],
-                  currentIndex: navigationShell.currentIndex,
-                  onTap: (i) => _goBranch(i),
+                  items: _navBarItems,
+                  currentIndex: _navBarBranches.indexOf(
+                    navigationShell.currentIndex,
+                  ),
+                  onTap: (slot) => _goBranch(_navBarBranches[slot]),
                 );
         },
       ),

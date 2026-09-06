@@ -1267,6 +1267,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tailored to your preferences'**
   String get homeForYouTodaySubtitle;
+
+  /// Label of the Home tab in the bottom navigation bar
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
 }
 
 class _AppLocalizationsDelegate
