@@ -27,6 +27,7 @@ import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_s
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
+import 'package:recipe_ai/nav/animated_branch_container.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/notification/presentation/notification_screen.dart';
@@ -181,7 +182,12 @@ GoRouter createRouter() => GoRouter(
       },
     ),
 
-    StatefulShellRoute.indexedStack(
+    StatefulShellRoute(
+      navigatorContainerBuilder: (context, navigationShell, children) =>
+          AnimatedBranchContainer(
+            currentIndex: navigationShell.currentIndex,
+            children: children,
+          ),
       builder: (context, state, navigationShell) => ListenableBuilder(
         listenable: di<TranslationController>(),
         builder: (context, _) {

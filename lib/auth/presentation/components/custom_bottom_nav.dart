@@ -101,38 +101,52 @@ class _BarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? bottomNavActiveColor : bottomNavInactiveColor;
-
-    return InkWell(
+    // The selection is animated by hand rather than with an ink splash: a
+    // splash would paint a square that fights with the rounded pill.
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
-          decoration: BoxDecoration(
-            color: selected ? recipeLoaderMintColor : Colors.transparent,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                data.asset,
-                width: 20,
-                height: 20,
-                colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 0, end: selected ? 1 : 0),
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOut,
+          builder: (context, progress, child) {
+            final color = Color.lerp(
+              bottomNavInactiveColor,
+              bottomNavActiveColor,
+              progress,
+            )!;
+
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+              decoration: BoxDecoration(
+                color: recipeLoaderMintColor.withValues(alpha: progress),
+                borderRadius: BorderRadius.circular(15),
               ),
-              const SizedBox(height: 2),
-              TranslatedText(
-                textSelector: data.labelSelector,
-                style: TextStyle(
-                  fontFamily: robotoFontFamily,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10.5,
-                  color: color,
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    data.asset,
+                    width: 20,
+                    height: 20,
+                    colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                  ),
+                  const SizedBox(height: 2),
+                  TranslatedText(
+                    textSelector: data.labelSelector,
+                    style: TextStyle(
+                      fontFamily: robotoFontFamily,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10.5,
+                      color: color,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
