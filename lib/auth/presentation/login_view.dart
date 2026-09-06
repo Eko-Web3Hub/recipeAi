@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
                 if (state is LoginViewSuccess) {
                   context.go('/home');
                 } else if (state is EmptyUserPrefs) {
-                  context.go('/user-preferences');
+                  context.go('/onboarding/notifications');
                 } else if (state is LoginViewError) {
                   showSnackBar(
                     context,

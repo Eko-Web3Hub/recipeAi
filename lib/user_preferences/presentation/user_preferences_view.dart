@@ -1,154 +1,116 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
+import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/notification/presentation/notification_dialog.dart';
-import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
-import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_quizz_repository.dart';
-import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
-import 'package:recipe_ai/user_preferences/presentation/user_preference_question_list.dart';
-import 'package:recipe_ai/user_preferences/presentation/user_preference_quizz_controller.dart';
-import 'package:recipe_ai/user_preferences/presentation/user_preference_submit_btn_controller.dart';
-import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/onboarding_step_scaffold.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_quizz_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_steps.dart';
+import 'package:recipe_ai/user_preferences/presentation/steps/morphology_step.dart';
+import 'package:recipe_ai/user_preferences/presentation/steps/option_list_step.dart';
 
-class UserPreferencesView extends StatefulWidget {
+/// Paginated onboarding quizz: one step per screen, submitted at the last one.
+class UserPreferencesView extends StatelessWidget {
   const UserPreferencesView({super.key});
 
   @override
-  State<UserPreferencesView> createState() => _UserPreferencesViewState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => OnboardingQuizzController(
+        di<UserPreferenceService>(),
+        di<IAuthUserService>(),
+      ),
+      child: const _UserPreferencesBody(),
+    );
+  }
 }
 
-class _UserPreferencesViewState extends State<UserPreferencesView>
-    with AutomaticKeepAliveClientMixin {
-  final PageController _pageController = PageController();
-  final appTexts = di<TranslationController>().currentLanguage;
+class _UserPreferencesBody extends StatelessWidget {
+  const _UserPreferencesBody();
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  Widget build(BuildContext context) {
+    final controller = context.read<OnboardingQuizzController>();
+    final appTexts = di<TranslationController>().currentLanguage;
 
-  Future<bool?> showNotificationDialog() {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-          insetPadding: const EdgeInsets.symmetric(horizontal: 33),
-          content: const NotificationDialog(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+    return BlocConsumer<OnboardingQuizzController, OnboardingQuizzState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status == OnboardingQuizzStatus.success) {
+          context.go('/home');
+        }
+        if (state.status == OnboardingQuizzStatus.error) {
+          showSnackBar(context, appTexts.somethingWentWrong, isError: true);
+        }
+      },
+      builder: (context, state) {
+        final step = controller.steps[state.currentIndex];
+        final isLast = state.currentIndex == controller.steps.length - 1;
+
+        return PopScope(
+          canPop: state.currentIndex == 0,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) controller.previous();
+          },
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+              child: OnboardingStepScaffold(
+                currentStep: state.currentIndex + 1,
+                totalSteps: controller.steps.length,
+                title: step.title(appTexts),
+                helper: step.helper(appTexts),
+                footnote: step.footnote?.call(appTexts),
+                onBack: state.currentIndex == 0 ? null : controller.previous,
+                isLoading: state.status == OnboardingQuizzStatus.submitting,
+                ctaLabel: isLast
+                    ? appTexts.finish
+                    : appTexts.onboardingContinue,
+                onCta: isLast ? controller.submit : controller.next,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: KeyedSubtree(
+                    key: ValueKey(step.key),
+                    child: _StepContent(step: step, state: state),
+                  ),
+                ),
+              ),
+            ),
           ),
-          backgroundColor: Colors.white,
         );
       },
     );
   }
+}
+
+class _StepContent extends StatelessWidget {
+  const _StepContent({required this.step, required this.state});
+
+  final OnboardingStep step;
+  final OnboardingQuizzState state;
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return BlocProvider(
-      create: (context) => UserPreferenceQuizzController(
-        di.get<IUserPreferenceQuizzRepository>(),
-        currentUserLanguage: di<TranslationController>().currentLanguageEnum,
-      ),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: SafeArea(
-              child: BlocBuilder<UserPreferenceQuizzController,
-                  UserPreferenceQuizzState>(
-                builder: (context, state) {
-                  if (state is UserPreferenceQuizzLoading) {
-                    return const Center(
-                      child: CustomCircularLoader(),
-                    );
-                  }
+    final controller = context.read<OnboardingQuizzController>();
 
-                  final questions =
-                      (state as UserPreferenceQuizzLoaded).questions;
-
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: horizontalScreenPadding,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: UserPreferenceQuestionList(
-                              questions: questions,
-                            ),
-                          ),
-                        ),
-                        BlocProvider(
-                          create: (context) =>
-                              UserPreferenceSubmitBtnController(
-                            di<UserPreferenceService>(),
-                            di<IAuthUserService>(),
-                          ),
-                          child: BlocBuilder<UserPreferenceSubmitBtnController,
-                                  UserPreferenceSubmitBtnState>(
-                              builder: (context, userPreferenceSubmitBtnState) {
-                            return BlocListener<
-                                UserPreferenceSubmitBtnController,
-                                UserPreferenceSubmitBtnState>(
-                              listener: (context, state) {
-                                if (state is UserPreferenceSubmitBtnSuccess) {
-                                  context.go('/home');
-                                }
-                              },
-                              child: MainBtn(
-                                isLoading: userPreferenceSubmitBtnState
-                                    is UserPreferenceSubmitBtnLoading,
-                                text: appTexts.finish,
-                                showRightIcon: false,
-                                onPressed: () async {
-                                  final userPreferenceSubmitBtnController =
-                                      context.read<
-                                          UserPreferenceSubmitBtnController>();
-
-                                  final enableNotif =
-                                      await showNotificationDialog();
-                                  log('enableNotif: $enableNotif');
-
-                                  if (enableNotif != null && enableNotif) {
-                                    context
-                                        .read<NotificationUserController>()
-                                        .requestPermission(true);
-                                  }
-
-                                  userPreferenceSubmitBtnController
-                                      .submit(questions);
-                                },
-                              ),
-                            );
-                          }),
-                        ),
-                        const Gap(31.0),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
-    );
+    switch (step.kind) {
+      case OnboardingStepKind.morphology:
+        return MorphologyStep(
+          answers: state.answers,
+          onGenderChanged: controller.setGender,
+          onHeightChanged: controller.setHeight,
+          onWeightChanged: controller.setWeight,
+        );
+      case OnboardingStepKind.options:
+        return OptionListStep(
+          step: step,
+          answers: state.answers,
+          onToggle: (optionKey) => controller.toggleOption(step.key, optionKey),
+          onOtherChanged: controller.setChronicDiseaseOther,
+        );
+    }
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

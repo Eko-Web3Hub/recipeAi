@@ -629,4 +629,230 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navHome => 'Home';
+
+  @override
+  String get welcomeTagline => 'Say goodbye to “What are we eating tonight?”';
+
+  @override
+  String get welcomeStartCta => 'Get started';
+
+  @override
+  String get welcomeAlreadyHaveAccount => 'I already have an account';
+
+  @override
+  String get notificationPermissionTitle => 'Allow notifications';
+
+  @override
+  String get notificationPreviewTime => 'now';
+
+  @override
+  String get notificationPreviewTitle => '💧 Time to hydrate!';
+
+  @override
+  String get notificationPreviewBody =>
+      'A big glass of water now, your body will thank you.';
+
+  @override
+  String get notificationPermissionWhy => 'Why turn notifications on?';
+
+  @override
+  String get notificationPermissionBody =>
+      'No spam, promise. We only notify you when it is genuinely useful.';
+
+  @override
+  String get notificationPermissionBody2 =>
+      'Turn notifications on to get your reminders and our food facts.';
+
+  @override
+  String get notificationPermissionLater => 'Later';
+
+  @override
+  String get onboardingContinue => 'Continue';
+
+  @override
+  String onboardingStepCounter(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get onboardingBack => 'Previous step';
+
+  @override
+  String get onboardingDietTitle => 'What is your dietary profile?';
+
+  @override
+  String get onboardingDietHelper =>
+      'Pick as many as you need — every recipe adapts to them.';
+
+  @override
+  String get dietNoRestriction => 'No restriction';
+
+  @override
+  String get dietVegetarian => 'Vegetarian';
+
+  @override
+  String get dietGlutenFree => 'Gluten free';
+
+  @override
+  String get dietLactoseFree => 'Lactose free';
+
+  @override
+  String get dietVegan => 'Vegan';
+
+  @override
+  String get onboardingMorphologyTitle => 'Tell us about you';
+
+  @override
+  String get onboardingMorphologyHelper =>
+      'This is used to compute your calorie needs. It stays private.';
+
+  @override
+  String get morphologyGender => 'Gender';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderOther => 'Other';
+
+  @override
+  String get morphologyHeight => 'Height';
+
+  @override
+  String get morphologyWeight => 'Weight';
+
+  @override
+  String get unitCentimeter => 'cm';
+
+  @override
+  String get unitKilogram => 'kg';
+
+  @override
+  String get bmiLabel => 'Your BMI';
+
+  @override
+  String get bmiUnderweight => 'Underweight';
+
+  @override
+  String get bmiNormal => 'Normal';
+
+  @override
+  String get bmiOverweight => 'Overweight';
+
+  @override
+  String get bmiObesity => 'Obesity';
+
+  @override
+  String get bmiStatusUnderweight => 'Underweight';
+
+  @override
+  String get bmiStatusNormal => 'Normal weight';
+
+  @override
+  String get bmiStatusOverweight => 'Overweight';
+
+  @override
+  String get bmiStatusObesity => 'Obesity';
+
+  @override
+  String get onboardingActivityTitle => 'What is your activity level?';
+
+  @override
+  String get onboardingActivityHelper =>
+      'We adjust the calories and portions of your recipes to your energy needs.';
+
+  @override
+  String get activitySedentary => 'Sedentary';
+
+  @override
+  String get activitySedentaryDescription => 'Little to no exercise, desk job';
+
+  @override
+  String get activityLightlyActive => 'Lightly active';
+
+  @override
+  String get activityLightlyActiveDescription => '1 to 3 sessions a week';
+
+  @override
+  String get activityModeratelyActive => 'Moderately active';
+
+  @override
+  String get activityModeratelyActiveDescription => '3 to 5 sessions a week';
+
+  @override
+  String get activityVeryActive => 'Very active';
+
+  @override
+  String get activityVeryActiveDescription => '6 to 7 sessions a week';
+
+  @override
+  String get activityAthlete => 'Athlete';
+
+  @override
+  String get activityAthleteDescription => 'Intense daily training';
+
+  @override
+  String get onboardingGoalsTitle => 'What are your goals?';
+
+  @override
+  String get onboardingGoalsHelper =>
+      'Health or nutrition wise. Pick as many as you want.';
+
+  @override
+  String get goalWeightLoss => 'Weight loss';
+
+  @override
+  String get goalWeightLossDescription => 'Gentle, sustainable calorie deficit';
+
+  @override
+  String get goalHealthImprovement => 'Better health';
+
+  @override
+  String get goalHealthImprovementDescription =>
+      'Balance, fibre and micronutrients';
+
+  @override
+  String get goalMuscleGain => 'Muscle gain';
+
+  @override
+  String get goalMuscleGainDescription => 'Higher protein intake';
+
+  @override
+  String get goalDetox => 'Detox';
+
+  @override
+  String get goalDetoxDescription => 'Light, unprocessed, hydrating';
+
+  @override
+  String get onboardingChronicDiseaseTitle =>
+      'Do you have a chronic condition?';
+
+  @override
+  String get onboardingChronicDiseaseHelper =>
+      'To adjust sugar, salt and fat intake. This stays confidential.';
+
+  @override
+  String get chronicDiabetes => 'Diabetes';
+
+  @override
+  String get chronicCardiovascular => 'Cardiovascular disease';
+
+  @override
+  String get chronicOverweight => 'Overweight';
+
+  @override
+  String get chronicHypertension => 'High blood pressure';
+
+  @override
+  String get chronicSmop => 'PCOS';
+
+  @override
+  String get chronicOtherHint => 'Other';
+
+  @override
+  String get onboardingChronicDiseaseFootnote =>
+      'Eat\'Easy is not a medical device. Talk to a healthcare professional for any follow-up.';
 }

@@ -60,6 +60,28 @@ const homeFridgeIconBackgroundColor = Color(0xFFC96F4A);
 const homePhotoTileBackgroundColor = Color(0xFFF7E8C4);
 const homePhotoIconBackgroundColor = Color(0xFFD8A13A);
 
+// Onboarding palette (matches the onboarding mockups 01 to 02e).
+// The green, the ink, the cream and the mint reuse the recipeLoader* colors.
+const onboardingOptionBorderColor = Color(0x2422331F); // rgba(34,51,31,.14)
+const onboardingIconTileColor = Color(0xFFC9D6C1);
+const onboardingCheckBorderColor = Color(0x3822331F); // rgba(34,51,31,.22)
+const onboardingHelperTextColor = Color(0x8C22331F); // rgba(34,51,31,.55)
+const onboardingSubtleTextColor = Color(0x8022331F); // rgba(34,51,31,.5)
+const onboardingProgressTrackColor = Color(0x1F22331F); // rgba(34,51,31,.12)
+
+// Option dot palette of the "profil alimentaire" and "maladies" steps.
+const optionOliveColor = Color(0xFF7A9B3F);
+const optionTerraColor = Color(0xFFC96F4A);
+const optionAmberColor = Color(0xFFD8A13A);
+const optionBrownColor = Color(0xFFA5761F);
+const optionBlueColor = Color(0xFF8CA0C9);
+
+// BMI gauge segments, from underweight to obesity.
+const bmiUnderweightColor = Color(0xFF8CA0C9);
+const bmiNormalColor = Color(0xFF49A525);
+const bmiOverweightColor = Color(0xFFD8A13A);
+const bmiObesityColor = Color(0xFFC96F4A);
+
 // Bottom navigation bar palette (matches the 06-accueil.html mockup).
 const bottomNavActiveColor = Color(0xFF2E6B18);
 const bottomNavInactiveColor = Color(0xFF9BA39A);

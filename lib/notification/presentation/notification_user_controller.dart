@@ -21,7 +21,9 @@ class NotificationUserController extends Cubit<NotificationUser?> {
           di<INotificationUserService>(),
         );
 
-  void requestPermission(bool hasJustEnabled) async {
+  /// Returns once the system prompt has been answered, so callers can chain a
+  /// navigation on it.
+  Future<void> requestPermission(bool hasJustEnabled) async {
     final currentNotificationUser = await _notificationUserService.get();
 
     if (!hasJustEnabled &&

@@ -70,7 +70,7 @@ class _RegisterViewState extends State<RegisterView> {
       child: BlocListener<RegisterController, RegisterControllerState?>(
         listener: (context, state) {
           if (state is RegisterControllerSuccess) {
-            context.go('/user-preferences');
+            context.go('/onboarding/notifications');
             showSnackBar(
               context,
               appTexts.registerSuccess,

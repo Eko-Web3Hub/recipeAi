@@ -781,5 +781,297 @@
     "navHome": "Accueil",
     "@navHome": {
         "description": "Libellé de l'onglet Accueil de la barre de navigation"
+    },
+    "welcomeTagline": "Dis adieu à la question : « On mange quoi ce soir ? »",
+    "@welcomeTagline": {
+            "description": "Onboarding: welcomeTagline"
+    },
+    "welcomeStartCta": "Commencer",
+    "@welcomeStartCta": {
+            "description": "Onboarding: welcomeStartCta"
+    },
+    "welcomeAlreadyHaveAccount": "J'ai déjà un compte",
+    "@welcomeAlreadyHaveAccount": {
+            "description": "Onboarding: welcomeAlreadyHaveAccount"
+    },
+    "notificationPermissionTitle": "Autoriser les notifications",
+    "@notificationPermissionTitle": {
+            "description": "Onboarding: notificationPermissionTitle"
+    },
+    "notificationPreviewTime": "maintenant",
+    "@notificationPreviewTime": {
+            "description": "Onboarding: notificationPreviewTime"
+    },
+    "notificationPreviewTitle": "💧 Pense à t'hydrater !",
+    "@notificationPreviewTitle": {
+            "description": "Onboarding: notificationPreviewTitle"
+    },
+    "notificationPreviewBody": "Un grand verre d'eau maintenant, ton corps te dira merci.",
+    "@notificationPreviewBody": {
+            "description": "Onboarding: notificationPreviewBody"
+    },
+    "notificationPermissionWhy": "Pourquoi activer les notifications ?",
+    "@notificationPermissionWhy": {
+            "description": "Onboarding: notificationPermissionWhy"
+    },
+    "notificationPermissionBody": "Promis, pas de spam. On te notifie uniquement lorsque c'est vraiment utile.",
+    "@notificationPermissionBody": {
+            "description": "Onboarding: notificationPermissionBody"
+    },
+    "notificationPermissionBody2": "Active les notifications pour recevoir tes rappels ou nos food facts.",
+    "@notificationPermissionBody2": {
+            "description": "Onboarding: notificationPermissionBody2"
+    },
+    "notificationPermissionLater": "Plus tard",
+    "@notificationPermissionLater": {
+            "description": "Onboarding: notificationPermissionLater"
+    },
+    "onboardingContinue": "Continuer",
+    "@onboardingContinue": {
+            "description": "Onboarding: onboardingContinue"
+    },
+    "onboardingStepCounter": "{current}/{total}",
+    "@onboardingStepCounter": {
+            "description": "Progress counter of the onboarding, e.g. 2/5",
+            "placeholders": {
+                    "current": {
+                            "type": "int"
+                    },
+                    "total": {
+                            "type": "int"
+                    }
+            }
+    },
+    "onboardingBack": "Étape précédente",
+    "@onboardingBack": {
+            "description": "Onboarding: onboardingBack"
+    },
+    "onboardingDietTitle": "Quel est ton profil alimentaire ?",
+    "@onboardingDietTitle": {
+            "description": "Onboarding: onboardingDietTitle"
+    },
+    "onboardingDietHelper": "Plusieurs choix possibles — on adapte chaque recette à tes besoins.",
+    "@onboardingDietHelper": {
+            "description": "Onboarding: onboardingDietHelper"
+    },
+    "dietNoRestriction": "Aucune restriction",
+    "@dietNoRestriction": {
+            "description": "Onboarding: dietNoRestriction"
+    },
+    "dietVegetarian": "Végétarien",
+    "@dietVegetarian": {
+            "description": "Onboarding: dietVegetarian"
+    },
+    "dietGlutenFree": "Sans gluten",
+    "@dietGlutenFree": {
+            "description": "Onboarding: dietGlutenFree"
+    },
+    "dietLactoseFree": "Sans lactose",
+    "@dietLactoseFree": {
+            "description": "Onboarding: dietLactoseFree"
+    },
+    "dietVegan": "Végétalien",
+    "@dietVegan": {
+            "description": "Onboarding: dietVegan"
+    },
+    "onboardingMorphologyTitle": "Parle-nous de toi",
+    "@onboardingMorphologyTitle": {
+            "description": "Onboarding: onboardingMorphologyTitle"
+    },
+    "onboardingMorphologyHelper": "Ces données servent à calculer tes besoins caloriques. Elles restent privées.",
+    "@onboardingMorphologyHelper": {
+            "description": "Onboarding: onboardingMorphologyHelper"
+    },
+    "morphologyGender": "Sexe",
+    "@morphologyGender": {
+            "description": "Onboarding: morphologyGender"
+    },
+    "genderFemale": "Femme",
+    "@genderFemale": {
+            "description": "Onboarding: genderFemale"
+    },
+    "genderMale": "Homme",
+    "@genderMale": {
+            "description": "Onboarding: genderMale"
+    },
+    "genderOther": "Autre",
+    "@genderOther": {
+            "description": "Onboarding: genderOther"
+    },
+    "morphologyHeight": "Taille",
+    "@morphologyHeight": {
+            "description": "Onboarding: morphologyHeight"
+    },
+    "morphologyWeight": "Poids",
+    "@morphologyWeight": {
+            "description": "Onboarding: morphologyWeight"
+    },
+    "unitCentimeter": "cm",
+    "@unitCentimeter": {
+            "description": "Onboarding: unitCentimeter"
+    },
+    "unitKilogram": "kg",
+    "@unitKilogram": {
+            "description": "Onboarding: unitKilogram"
+    },
+    "bmiLabel": "Ton IMC",
+    "@bmiLabel": {
+            "description": "Onboarding: bmiLabel"
+    },
+    "bmiUnderweight": "Maigreur",
+    "@bmiUnderweight": {
+            "description": "Onboarding: bmiUnderweight"
+    },
+    "bmiNormal": "Normal",
+    "@bmiNormal": {
+            "description": "Onboarding: bmiNormal"
+    },
+    "bmiOverweight": "Surpoids",
+    "@bmiOverweight": {
+            "description": "Onboarding: bmiOverweight"
+    },
+    "bmiObesity": "Obésité",
+    "@bmiObesity": {
+            "description": "Onboarding: bmiObesity"
+    },
+    "bmiStatusUnderweight": "Corpulence maigre",
+    "@bmiStatusUnderweight": {
+            "description": "Onboarding: bmiStatusUnderweight"
+    },
+    "bmiStatusNormal": "Corpulence normale",
+    "@bmiStatusNormal": {
+            "description": "Onboarding: bmiStatusNormal"
+    },
+    "bmiStatusOverweight": "Surpoids",
+    "@bmiStatusOverweight": {
+            "description": "Onboarding: bmiStatusOverweight"
+    },
+    "bmiStatusObesity": "Obésité",
+    "@bmiStatusObesity": {
+            "description": "Onboarding: bmiStatusObesity"
+    },
+    "onboardingActivityTitle": "Quel est ton niveau d'activité ?",
+    "@onboardingActivityTitle": {
+            "description": "Onboarding: onboardingActivityTitle"
+    },
+    "onboardingActivityHelper": "On ajuste les calories et les portions de tes recettes selon ta dépense énergétique.",
+    "@onboardingActivityHelper": {
+            "description": "Onboarding: onboardingActivityHelper"
+    },
+    "activitySedentary": "Sédentaire",
+    "@activitySedentary": {
+            "description": "Onboarding: activitySedentary"
+    },
+    "activitySedentaryDescription": "Peu ou pas d'exercice, travail assis",
+    "@activitySedentaryDescription": {
+            "description": "Onboarding: activitySedentaryDescription"
+    },
+    "activityLightlyActive": "Légèrement actif",
+    "@activityLightlyActive": {
+            "description": "Onboarding: activityLightlyActive"
+    },
+    "activityLightlyActiveDescription": "1 à 3 séances par semaine",
+    "@activityLightlyActiveDescription": {
+            "description": "Onboarding: activityLightlyActiveDescription"
+    },
+    "activityModeratelyActive": "Modérément actif",
+    "@activityModeratelyActive": {
+            "description": "Onboarding: activityModeratelyActive"
+    },
+    "activityModeratelyActiveDescription": "3 à 5 séances par semaine",
+    "@activityModeratelyActiveDescription": {
+            "description": "Onboarding: activityModeratelyActiveDescription"
+    },
+    "activityVeryActive": "Très actif",
+    "@activityVeryActive": {
+            "description": "Onboarding: activityVeryActive"
+    },
+    "activityVeryActiveDescription": "6 à 7 séances par semaine",
+    "@activityVeryActiveDescription": {
+            "description": "Onboarding: activityVeryActiveDescription"
+    },
+    "activityAthlete": "Athlète",
+    "@activityAthlete": {
+            "description": "Onboarding: activityAthlete"
+    },
+    "activityAthleteDescription": "Entraînement intensif quotidien",
+    "@activityAthleteDescription": {
+            "description": "Onboarding: activityAthleteDescription"
+    },
+    "onboardingGoalsTitle": "Quels sont tes objectifs ?",
+    "@onboardingGoalsTitle": {
+            "description": "Onboarding: onboardingGoalsTitle"
+    },
+    "onboardingGoalsHelper": "En matière de santé ou de nutrition. Plusieurs choix possibles.",
+    "@onboardingGoalsHelper": {
+            "description": "Onboarding: onboardingGoalsHelper"
+    },
+    "goalWeightLoss": "Perte de poids",
+    "@goalWeightLoss": {
+            "description": "Onboarding: goalWeightLoss"
+    },
+    "goalWeightLossDescription": "Déficit calorique doux et durable",
+    "@goalWeightLossDescription": {
+            "description": "Onboarding: goalWeightLossDescription"
+    },
+    "goalHealthImprovement": "Amélioration de la santé",
+    "@goalHealthImprovement": {
+            "description": "Onboarding: goalHealthImprovement"
+    },
+    "goalHealthImprovementDescription": "Équilibre, fibres et micronutriments",
+    "@goalHealthImprovementDescription": {
+            "description": "Onboarding: goalHealthImprovementDescription"
+    },
+    "goalMuscleGain": "Gain de muscles",
+    "@goalMuscleGain": {
+            "description": "Onboarding: goalMuscleGain"
+    },
+    "goalMuscleGainDescription": "Apports protéinés renforcés",
+    "@goalMuscleGainDescription": {
+            "description": "Onboarding: goalMuscleGainDescription"
+    },
+    "goalDetox": "Detox",
+    "@goalDetox": {
+            "description": "Onboarding: goalDetox"
+    },
+    "goalDetoxDescription": "Léger, peu transformé, hydratant",
+    "@goalDetoxDescription": {
+            "description": "Onboarding: goalDetoxDescription"
+    },
+    "onboardingChronicDiseaseTitle": "As-tu une maladie chronique ?",
+    "@onboardingChronicDiseaseTitle": {
+            "description": "Onboarding: onboardingChronicDiseaseTitle"
+    },
+    "onboardingChronicDiseaseHelper": "Pour adapter les apports en sucre, sel et matières grasses. Cette information reste confidentielle.",
+    "@onboardingChronicDiseaseHelper": {
+            "description": "Onboarding: onboardingChronicDiseaseHelper"
+    },
+    "chronicDiabetes": "Diabète",
+    "@chronicDiabetes": {
+            "description": "Onboarding: chronicDiabetes"
+    },
+    "chronicCardiovascular": "Maladie cardiovasculaire",
+    "@chronicCardiovascular": {
+            "description": "Onboarding: chronicCardiovascular"
+    },
+    "chronicOverweight": "Surpoids",
+    "@chronicOverweight": {
+            "description": "Onboarding: chronicOverweight"
+    },
+    "chronicHypertension": "Hypertension artérielle élevée",
+    "@chronicHypertension": {
+            "description": "Onboarding: chronicHypertension"
+    },
+    "chronicSmop": "SMOP (ex SOPK)",
+    "@chronicSmop": {
+            "description": "Onboarding: chronicSmop"
+    },
+    "chronicOtherHint": "Autre",
+    "@chronicOtherHint": {
+            "description": "Onboarding: chronicOtherHint"
+    },
+    "onboardingChronicDiseaseFootnote": "Eat'Easy n'est pas un dispositif médical. Consulte un professionnel de santé pour tout suivi.",
+    "@onboardingChronicDiseaseFootnote": {
+            "description": "Onboarding: onboardingChronicDiseaseFootnote"
     }
 }
