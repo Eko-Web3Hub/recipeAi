@@ -224,6 +224,10 @@
         "description": "Message affiché lorsque le mot de passe saisi est incorrect"
     },
     "deleteAccountIncorrectPassword": "Le mot de passe est incorrect. Essayez à nouveau ou réinitialisez votre mot de passe dans la page des paramètres.",
+    "@sessionExpiredLoginAgain": {
+        "description": "Message affiché lorsque la session de l'utilisateur n'est plus valide et qu'il doit se reconnecter pour continuer à utiliser l'application"
+    },
+    "sessionExpiredLoginAgain": "Votre session a expiré. Veuillez vous reconnecter.",
     "@emptyReceipes": {
         "description": "Message affiché lorsqu'il n'y a pas de recettes disponibles"
     },

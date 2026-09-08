@@ -3,27 +3,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
-class ReceipeRepositoryMock extends Mock implements IUserReceipeRepository {}
-
-class AuthUserServiceMock extends Mock implements IAuthUserService {}
+class UserRecipeServiceMock extends Mock implements IUserRecipeService {}
 
 class AnalyticsRepositoryMock extends Mock implements IAnalyticsRepository {}
 
 void main() {
-  late IUserReceipeRepository receipeRepository;
-  late IAuthUserService authUserService;
+  late IUserRecipeService userRecipeService;
   late IAnalyticsRepository analyticsRepository;
 
-  const AuthUser authUser = AuthUser(
-    uid: EntityId("uid"),
-    email: "test@gmail.com",
-  );
   const receipe = Receipe(
       name: "name",
       ingredients: [],
@@ -31,9 +24,12 @@ void main() {
       averageTime: "",
       totalCalories: "");
 
-  String receipeName() {
-    return receipe.name.toLowerCase().replaceAll(' ', '');
-  }
+  final userRecipe = UserRecipeV2(
+    id: const EntityId('recipeId'),
+    receipeFr: receipe,
+    receipeEn: receipe,
+    createdDate: DateTime(2024, 1, 1),
+  );
 
   setUpAll(() {
     registerFallbackValue(RecipeSavedEvent());
@@ -41,8 +37,7 @@ void main() {
 
   setUp(
     () {
-      receipeRepository = ReceipeRepositoryMock();
-      authUserService = AuthUserServiceMock();
+      userRecipeService = UserRecipeServiceMock();
       analyticsRepository = AnalyticsRepositoryMock();
 
       when(() => analyticsRepository.logEvent(any())).thenAnswer(
@@ -53,9 +48,8 @@ void main() {
 
   ReceipeItemController buildSut() {
     return ReceipeItemController(
-      receipe,
-      receipeRepository,
-      authUserService,
+      userRecipe,
+      userRecipeService,
       analyticsRepository,
     );
   }
@@ -64,11 +58,8 @@ void main() {
     "Should be in unsaved state when not saved",
     build: () => buildSut(),
     setUp: () {
-      when(() => authUserService.currentUser).thenReturn(authUser);
-      when(() => receipeRepository.isReceiptSaved(
-            authUser.uid,
-            receipeName(),
-          )).thenAnswer((_) => Stream.value(false));
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(false));
     },
     verify: (bloc) =>
         expect(bloc.state, equals(const ReceipeItemStateUnsaved())),
@@ -78,11 +69,8 @@ void main() {
     "Should be in saved state when already saved",
     build: () => buildSut(),
     setUp: () {
-      when(() => authUserService.currentUser).thenReturn(authUser);
-      when(() => receipeRepository.isReceiptSaved(
-            authUser.uid,
-            receipeName(),
-          )).thenAnswer((_) => Stream.value(true));
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(true));
     },
     verify: (bloc) => expect(bloc.state, equals(const ReceipeItemStateSaved())),
   );
@@ -90,24 +78,21 @@ void main() {
   blocTest<ReceipeItemController, ReceipeItemState>(
     "Should save receipe",
     build: () => buildSut(),
-    act: (bloc) => bloc.saveReceipe(),
     setUp: () {
-      when(() => authUserService.currentUser).thenReturn(authUser);
-      when(() => receipeRepository.saveOneReceipt(
-            authUser.uid,
-            receipe,
-          )).thenAnswer((_) => Future.value());
-      when(() => receipeRepository.isReceiptSaved(
-            authUser.uid,
-            receipeName(),
-          )).thenAnswer((_) => Stream.value(true));
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(false));
+      when(() => userRecipeService.addToFavorite(userRecipe))
+          .thenAnswer((_) => Future.value());
+    },
+    act: (bloc) async {
+      await pumpEventQueue();
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(true));
+      bloc.toggleFavorite();
     },
     verify: (bloc) => {
-      verify(() => receipeRepository.saveOneReceipt(
-            authUser.uid,
-            receipe,
-          )).called(1),
-      expect(bloc.state, equals(const ReceipeItemStateSaved()))
+      verify(() => userRecipeService.addToFavorite(userRecipe)).called(1),
+      expect(bloc.state, equals(const ReceipeItemStateSaved())),
     },
   );
 
@@ -115,19 +100,15 @@ void main() {
   blocTest<ReceipeItemController, ReceipeItemState>(
     "Should emit error when saving fails",
     build: () => buildSut(),
-    act: (bloc) => bloc.saveReceipe(),
     setUp: () {
-      when(() => authUserService.currentUser).thenReturn(authUser);
-
-      when(() => receipeRepository.saveOneReceipt(
-            authUser.uid,
-            receipe,
-          )).thenThrow(Exception());
-
-      when(() => receipeRepository.isReceiptSaved(
-            authUser.uid,
-            receipeName(),
-          )).thenThrow(Exception());
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(false));
+      when(() => userRecipeService.addToFavorite(userRecipe))
+          .thenThrow(Exception());
+    },
+    act: (bloc) async {
+      await pumpEventQueue();
+      bloc.toggleFavorite();
     },
     verify: (bloc) => {
       expect(bloc.state,
@@ -139,19 +120,15 @@ void main() {
   blocTest<ReceipeItemController, ReceipeItemState>(
     "Should emit error when removing fails",
     build: () => buildSut(),
-    act: (bloc) => bloc.removeReceipe(),
     setUp: () {
-      when(() => authUserService.currentUser).thenReturn(authUser);
-
-      when(() => receipeRepository.removeSavedReceipe(
-            authUser.uid,
-            receipeName(),
-          )).thenThrow(Exception());
-
-      when(() => receipeRepository.isReceiptSaved(
-            authUser.uid,
-            receipeName(),
-          )).thenThrow(Exception());
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(true));
+      when(() => userRecipeService.removeFromFavorite(userRecipe))
+          .thenThrow(Exception());
+    },
+    act: (bloc) async {
+      await pumpEventQueue();
+      bloc.toggleFavorite();
     },
     verify: (bloc) => {
       expect(bloc.state,
@@ -162,24 +139,20 @@ void main() {
   blocTest<ReceipeItemController, ReceipeItemState>(
     "Should remove saved receipe",
     build: () => buildSut(),
-    act: (bloc) => bloc.removeReceipe(),
     setUp: () {
-      when(() => authUserService.currentUser).thenReturn(authUser);
-      when(() => receipeRepository.removeSavedReceipe(
-            authUser.uid,
-            receipeName(),
-          )).thenAnswer((_) => Future.value());
-
-      when(() => receipeRepository.isReceiptSaved(
-            authUser.uid,
-            receipeName(),
-          )).thenAnswer((_) => Stream.value(false));
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(true));
+      when(() => userRecipeService.removeFromFavorite(userRecipe))
+          .thenAnswer((_) => Future.value());
+    },
+    act: (bloc) async {
+      await pumpEventQueue();
+      when(() => userRecipeService.isReceiptSaved(userRecipe.id!))
+          .thenAnswer((_) => Stream.value(false));
+      bloc.toggleFavorite();
     },
     verify: (bloc) => {
-      verify(() => receipeRepository.removeSavedReceipe(
-            authUser.uid,
-            receipeName(),
-          )).called(1),
+      verify(() => userRecipeService.removeFromFavorite(userRecipe)).called(1),
       expect(bloc.state, equals(const ReceipeItemStateUnsaved()))
     },
   );

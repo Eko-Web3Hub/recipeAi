@@ -434,6 +434,12 @@ abstract class AppLocalizations {
   /// **'The password is incorrect. Try again or reset your password on the settings page.'**
   String get deleteAccountIncorrectPassword;
 
+  /// Message shown when the user's session is no longer valid and they need to log in again to keep using the app
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please log in again.'**
+  String get sessionExpiredLoginAgain;
+
   /// Message displayed when no recipes are available
   ///
   /// In en, this message translates to:

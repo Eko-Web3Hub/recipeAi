@@ -23,12 +23,7 @@ final _saladeBassamoiseReceipe = Receipe(
       id: null,
     ),
     Ingredient(name: 'Tomates', quantity: '2', date: null, id: null),
-    Ingredient(
-      name: 'Ciboulette',
-      quantity: '1 bouquet',
-      date: null,
-      id: null,
-    ),
+    Ingredient(name: 'Ciboulette', quantity: '1 bouquet', date: null, id: null),
     Ingredient(
       name: 'Menthe verte',
       quantity: '½ bouquet',
@@ -40,12 +35,7 @@ final _saladeBassamoiseReceipe = Receipe(
     Ingredient(name: 'Citron', quantity: '1', date: null, id: null),
     Ingredient(name: 'Huile végétale', quantity: null, date: null, id: null),
     Ingredient(name: 'Vinaigre', quantity: null, date: null, id: null),
-    Ingredient(
-      name: 'Sel, poivre',
-      quantity: 'au goût',
-      date: null,
-      id: null,
-    ),
+    Ingredient(name: 'Sel, poivre', quantity: 'au goût', date: null, id: null),
   ],
   steps: const [
     ReceipeStep(
@@ -59,13 +49,15 @@ final _saladeBassamoiseReceipe = Receipe(
       duration: null,
     ),
     ReceipeStep(
-      description: 'Pour la vinaigrette, mélangez environ 2 CS '
+      description:
+          'Pour la vinaigrette, mélangez environ 2 CS '
           "d'huile pour 1 CS de vinaigre. Salez, poivrez et ajoutez "
           'le jus du citron.',
       duration: null,
     ),
     ReceipeStep(
-      description: 'Et versez la vinaigrette. Goûtez et rectifiez '
+      description:
+          'Et versez la vinaigrette. Goûtez et rectifiez '
           "l'assaisonnement si nécessaire 🙂",
       duration: null,
     ),
@@ -76,11 +68,9 @@ final _saladeBassamoiseReceipe = Receipe(
   ],
 );
 
-final mockSaladeBassamoiseUserReceipe = UserReceipeV2(
+final mockSaladeBassamoiseUserReceipe = UserRecipeV2(
   id: const EntityId('mock-salade-bassamoise'),
   receipeFr: _saladeBassamoiseReceipe,
   receipeEn: _saladeBassamoiseReceipe,
   createdDate: DateTime.now(),
-  isForHome: true,
-  isAddedToFavorites: false,
 );

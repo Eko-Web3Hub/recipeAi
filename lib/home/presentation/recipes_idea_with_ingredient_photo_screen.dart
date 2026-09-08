@@ -13,7 +13,7 @@ class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
     required this.recipes,
   });
 
-  final List<UserReceipeV2> recipes;
+  final List<UserRecipeV2> recipes;
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +22,19 @@ class RecipesIdeaWithIngredientPhotoScreen extends StatelessWidget {
     return Scaffold(
       appBar: KitchenInventoryAppBar(
         title: appTexts.receipeIdeas,
-        arrowLeftOnPressed: () => context.go(
-          '/home',
-        ),
+        arrowLeftOnPressed: () => context.go('/home'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: horizontalScreenPadding,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: horizontalScreenPadding),
         child: Column(
           children: recipes
-              .map<Widget>((userRecipe) => ReceipeItem(
-                    key: ValueKey(userRecipe.id),
-                    redirectionPath: '/recipe-details',
-                    receipe: userRecipe,
-                  ))
+              .map<Widget>(
+                (userRecipe) => ReceipeItem(
+                  key: ValueKey(userRecipe.id),
+                  redirectionPath: '/recipe-details',
+                  receipe: userRecipe,
+                ),
+              )
               .toList(),
         ),
       ),

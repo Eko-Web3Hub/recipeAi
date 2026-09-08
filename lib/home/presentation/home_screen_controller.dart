@@ -19,7 +19,7 @@ class HomeScreenStateLoading extends HomeScreenState {
 
 class HomeScreenStateLoaded extends HomeScreenState {
   const HomeScreenStateLoaded(this.receipes);
-  final List<UserReceipeV2> receipes;
+  final List<UserRecipeV2> receipes;
 
   @override
   List<Object> get props => [receipes];
@@ -33,11 +33,8 @@ class HomeScreenStateError extends HomeScreenState {
   List<Object> get props => [message];
 }
 
-class HomeRetrieveReceipeException extends HomeScreenState {
-  const HomeRetrieveReceipeException();
-
-  @override
-  List<Object> get props => [];
+class HomeScreenStateRequiresLogin extends HomeScreenState {
+  const HomeScreenStateRequiresLogin();
 }
 
 /// The controller for the home screen
@@ -51,15 +48,15 @@ class HomeScreenController extends Cubit<HomeScreenState> {
   }
   final IUserRecipeService _userReceipeService;
   final RetrieveReceipeFromApiOneTimePerDayUsecase
-      _retrieveReceipeFromApiOneTimePerDayUsecase;
+  _retrieveReceipeFromApiOneTimePerDayUsecase;
 
   Future<void> _load() async {
     try {
-      final receipes =
-          await _retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(
-        currentNow ?? DateTime.now(),
-      );
+      final receipes = await _retrieveReceipeFromApiOneTimePerDayUsecase
+          .retrieve(currentNow ?? DateTime.now());
       emit(HomeScreenStateLoaded(receipes));
+    } on UserNotAuthenticatedException {
+      emit(const HomeScreenStateRequiresLogin());
     } catch (e) {
       // TEMP: the recipe-generation API is disabled for now — fall back to
       // a mock recipe so the home -> detail flow can still be reviewed.

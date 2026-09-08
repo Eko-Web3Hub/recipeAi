@@ -22,9 +22,7 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_circul
 import 'package:recipe_ai/utils/constant.dart';
 
 class NavigationItem extends Equatable {
-  const NavigationItem({
-    required this.icon,
-  });
+  const NavigationItem({required this.icon});
 
   final String icon;
 
@@ -40,8 +38,8 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
     this.actions,
     this.appBarTitle,
   }) : super(
-          key: key ?? const ValueKey<String>("ScaffoldWithNestedNavigation"),
-        );
+         key: key ?? const ValueKey<String>("ScaffoldWithNestedNavigation"),
+       );
   final StatefulNavigationShell navigationShell;
   final bool hideNavBar;
   final String? appBarTitle;
@@ -64,10 +62,9 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               backgroundColor: Colors.white,
               title: Text(
                 appBarTitle!,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayLarge
-                    ?.copyWith(fontSize: 17),
+                style: Theme.of(
+                  context,
+                ).textTheme.displayLarge?.copyWith(fontSize: 17),
               ),
               actions: actions,
             )
@@ -76,14 +73,14 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       body: navigationShell,
       floatingActionButton:
           hideNavBar || context.watch<HideNavBar>().isNavBarHidden
-              ? null
-              : ChefFab(
-                  iconAsset: 'assets/icon/chef_hat.svg', // le pictogramme blanc
-                  onPressed: () {
-                    // ton action existante
-                    _showAiActionRecipeBottomSheet(context);
-                  },
-                ),
+          ? null
+          : ChefFab(
+              iconAsset: 'assets/icon/chef_hat.svg', // le pictogramme blanc
+              onPressed: () {
+                // ton action existante
+                _showAiActionRecipeBottomSheet(context);
+              },
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Consumer<HideNavBar>(
         builder: (context, hideNavBar, child) {
@@ -137,9 +134,7 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
   void _takeCameraPicture() async {
     final ImagePicker picker = ImagePicker();
     // change to ImageSource.camera
-    final XFile? photo = await picker.pickImage(
-      source: ImageSource.gallery,
-    );
+    final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
     if (photo != null) {
       setState(() {
         _ingredientsImage = File(photo.path);
@@ -150,9 +145,7 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
   void _takeLivePicture() async {
     final ImagePicker picker = ImagePicker();
     // change to ImageSource.camera
-    final XFile? photo = await picker.pickImage(
-      source: ImageSource.camera,
-    );
+    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
       setState(() {
         _ingredientsImage = File(photo.path);
@@ -174,8 +167,9 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
           children: [
             const Gap(5),
             Center(
-              child:
-                  SvgPicture.asset('assets/images/rectangleSeparationBar.svg'),
+              child: SvgPicture.asset(
+                'assets/images/rectangleSeparationBar.svg',
+              ),
             ),
             const Gap(7),
             Row(
@@ -228,7 +222,8 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                     appText.generateRecipeWithGrocerieList,
                     onTap: () {
                       context.push(
-                          '/display-receipes-based-on-ingredient-user-preference');
+                        '/display-receipes-based-on-ingredient-user-preference',
+                      );
                       Navigator.of(context).pop();
                     },
                   ),
@@ -248,17 +243,15 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
 }
 
 class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
-  RecipeIdeasNavigation(
-    this.context,
-    this.analyticsRepository,
-  );
+  RecipeIdeasNavigation(this.context, this.analyticsRepository);
 
   @override
-  void goToRecipeIdeas(List<UserReceipeV2> recipes) {
+  void goToRecipeIdeas(List<UserRecipeV2> recipes) {
     analyticsRepository.logEvent(RecipesGeneratedWithIngredientPictureEvent());
-    context.push('/receipe-idea-with-ingredient-photo', extra: {
-      'recipes': recipes,
-    });
+    context.push(
+      '/receipe-idea-with-ingredient-photo',
+      extra: {'recipes': recipes},
+    );
     Navigator.of(context).pop();
   }
 
@@ -280,32 +273,21 @@ class _GenRecipeFromIngredientPicture extends StatelessWidget {
           width: 300,
           height: MediaQuery.of(context).size.height * 0.6,
           decoration: BoxDecoration(
-            border: Border.all(
-              width: 2,
-              color: Color(0xffFFAD30),
-            ),
+            border: Border.all(width: 2, color: Color(0xffFFAD30)),
             borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              image: FileImage(file),
-              fit: BoxFit.cover,
-            ),
+            image: DecorationImage(image: FileImage(file), fit: BoxFit.cover),
           ),
         ),
         const Gap(30),
         BlocProvider(
           lazy: false,
           create: (context) => GenerateRecipeWithIngredientPhotoController(
-            RecipeIdeasNavigation(
-              context,
-              di<IAnalyticsRepository>(),
-            ),
+            RecipeIdeasNavigation(context, di<IAnalyticsRepository>()),
             di<IUserReceipeRepositoryV2>(),
             di<IAuthUserService>(),
             file,
           ),
-          child: CustomCircularLoader(
-            size: 20,
-          ),
+          child: CustomCircularLoader(size: 20),
         ),
       ],
     );
@@ -313,11 +295,7 @@ class _GenRecipeFromIngredientPicture extends StatelessWidget {
 }
 
 class _ActionBtn extends StatelessWidget {
-  const _ActionBtn(
-    this.icon,
-    this.title, {
-    this.onTap,
-  });
+  const _ActionBtn(this.icon, this.title, {this.onTap});
 
   final String icon;
   final String title;
@@ -329,23 +307,14 @@ class _ActionBtn extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.only(
-          top: 8,
-          right: 19,
-          bottom: 8,
-          left: 19,
-        ),
+        padding: EdgeInsets.only(top: 8, right: 19, bottom: 8, left: 19),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Color(0xffD9D9D9),
-          ),
+          border: Border.all(color: Color(0xffD9D9D9)),
         ),
         child: Row(
           children: [
-            SvgPicture.asset(
-              icon,
-            ),
+            SvgPicture.asset(icon),
             const Gap(10),
             Text(
               title,

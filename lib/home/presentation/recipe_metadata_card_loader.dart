@@ -21,21 +21,21 @@ class RecipeMetadataCardLoader extends Cubit<Receipe> {
     _subscription = _userAccountMetaDataRepository
         .watchUserAccount(_authUserService.currentUser!.uid)
         .listen((userAccount) async {
-      if (userAccount != null) {
-        if (userAccount.appLanguage == AppLanguage.fr) {
-          safeEmit(userRecipe.receipeFr);
-        } else if (userAccount.appLanguage == AppLanguage.en) {
-          safeEmit(userRecipe.receipeEn);
-        } else {
-          throw Exception(
-            'Unsupported language: ${userAccount.appLanguage}',
-          );
-        }
-      } else {
-        // If user account is null, emit the recipe in English by default
-        safeEmit(userRecipe.receipeEn);
-      }
-    });
+          if (userAccount != null) {
+            if (userAccount.appLanguage == AppLanguage.fr) {
+              safeEmit(userRecipe.receipeFr);
+            } else if (userAccount.appLanguage == AppLanguage.en) {
+              safeEmit(userRecipe.receipeEn);
+            } else {
+              throw Exception(
+                'Unsupported language: ${userAccount.appLanguage}',
+              );
+            }
+          } else {
+            // If user account is null, emit the recipe in English by default
+            safeEmit(userRecipe.receipeEn);
+          }
+        });
   }
 
   @override
@@ -44,7 +44,7 @@ class RecipeMetadataCardLoader extends Cubit<Receipe> {
     return super.close();
   }
 
-  final UserReceipeV2 userRecipe;
+  final UserRecipeV2 userRecipe;
   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
   final IAuthUserService _authUserService;
 

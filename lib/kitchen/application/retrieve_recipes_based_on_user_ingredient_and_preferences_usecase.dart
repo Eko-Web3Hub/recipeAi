@@ -21,15 +21,16 @@ class RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase {
   );
 
   RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase.inject()
-      : this(
-          di<IReceipesBasedOnIngredientUserPreferenceRepository>(),
-          di<IAuthUserService>(),
-          di<IUserReceipeRepositoryV2>(),
-          di<IAnalyticsRepository>(),
-        );
+    : this(
+        di<IReceipesBasedOnIngredientUserPreferenceRepository>(),
+        di<IAuthUserService>(),
+        di<IUserReceipeRepositoryV2>(),
+        di<IAnalyticsRepository>(),
+      );
 
-  Future<Either<GenRecipeErrorCode, List<UserReceipeV2>>> retrieve(
-      EntityId uid) async {
+  Future<Either<GenRecipeErrorCode, List<UserRecipeV2>>> retrieve(
+    EntityId uid,
+  ) async {
     final uid = _authUserService.currentUser!.uid;
     final receipesTranslated =
         await _receipesBasedOnIngredientUserPreferenceRepository
@@ -55,33 +56,31 @@ class RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase {
           convertRecipesToUserRecipes,
         );
 
-        _analyticsRepository
-            .logEvent(RecipesGeneratedWithIngredientListEvent());
+        _analyticsRepository.logEvent(
+          RecipesGeneratedWithIngredientListEvent(),
+        );
         return Right(userRecipeSaved);
       },
     );
   }
 
   final IReceipesBasedOnIngredientUserPreferenceRepository
-      _receipesBasedOnIngredientUserPreferenceRepository;
+  _receipesBasedOnIngredientUserPreferenceRepository;
   final IAuthUserService _authUserService;
   final IUserReceipeRepositoryV2 _userReceipeRepositoryV2;
   final IAnalyticsRepository _analyticsRepository;
 }
 
-UserReceipeV2 convertTranslatedRecipeToUserReciepe({
+UserRecipeV2 convertTranslatedRecipeToUserReciepe({
   EntityId? id,
   required Receipe recipeFr,
   required Receipe recipeEn,
   required DateTime createdDate,
   bool isForHome = false,
   bool isAddedToFavorites = false,
-}) =>
-    UserReceipeV2(
-      createdDate: createdDate,
-      id: id,
-      receipeFr: recipeFr,
-      receipeEn: recipeEn,
-      isForHome: isForHome,
-      isAddedToFavorites: isAddedToFavorites,
-    );
+}) => UserRecipeV2(
+  createdDate: createdDate,
+  id: id,
+  receipeFr: recipeFr,
+  receipeEn: recipeEn,
+);

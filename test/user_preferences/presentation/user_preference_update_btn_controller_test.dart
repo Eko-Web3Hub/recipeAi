@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_btn_controller.dart';
@@ -15,12 +15,12 @@ class AuthUserService extends Mock implements IAuthUserService {}
 class UserPreferenceRepository extends Mock
     implements IUserPreferenceRepository {}
 
-class UserReceipeRepository extends Mock implements IUserReceipeRepository {}
+class UserRecipeServiceMock extends Mock implements IUserRecipeService {}
 
 void main() {
   late IAuthUserService authUserService;
   late IUserPreferenceRepository userPreferenceRepository;
-  late IUserReceipeRepository userReceipeRepository;
+  late IUserRecipeService userRecipeService;
   const newUserPreference = UserPreference(
     {
       'Halal': true,
@@ -35,7 +35,7 @@ void main() {
   setUp(() {
     authUserService = AuthUserService();
     userPreferenceRepository = UserPreferenceRepository();
-    userReceipeRepository = UserReceipeRepository();
+    userRecipeService = UserRecipeServiceMock();
 
     when(() => authUserService.currentUser).thenReturn(authUser);
   });
@@ -44,7 +44,7 @@ void main() {
       UserPreferenceUpdateBtnController(
         authUserService,
         userPreferenceRepository,
-        userReceipeRepository,
+        userRecipeService,
       );
 
   blocTest<UserPreferenceUpdateBtnController, UserPreferenceUpdateBtnState>(
@@ -126,7 +126,7 @@ void main() {
         (_) => Future.value(),
       );
       when(
-        () => userReceipeRepository.deleteUserReceipe(authUser.uid),
+        () => userRecipeService.removeLastRecipesHomeUpdatedDate(),
       ).thenAnswer(
         (_) => Future.value(),
       );
@@ -145,7 +145,7 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => userReceipeRepository.deleteUserReceipe(authUser.uid),
+        () => userRecipeService.removeLastRecipesHomeUpdatedDate(),
       ).called(1);
     },
     expect: () => [

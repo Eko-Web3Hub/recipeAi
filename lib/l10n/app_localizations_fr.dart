@@ -188,6 +188,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Le mot de passe est incorrect. Essayez à nouveau ou réinitialisez votre mot de passe dans la page des paramètres.';
 
   @override
+  String get sessionExpiredLoginAgain =>
+      'Votre session a expiré. Veuillez vous reconnecter.';
+
+  @override
   String get emptyReceipes =>
       'Aucune recette 😉. \nMettez à jour vos préférences';
 

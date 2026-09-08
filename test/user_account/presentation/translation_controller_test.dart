@@ -84,13 +84,17 @@ void main() {
             (_) => Future.value(
               const UserAccountMetaData(
                 appLanguage: AppLanguage.fr,
+                lastLogin: null,
               ),
             ),
           );
 
           when(() => userAccountMetaDataRepository.save(
                 authUser.uid,
-                const UserAccountMetaData(appLanguage: AppLanguage.fr),
+                const UserAccountMetaData(
+                  appLanguage: AppLanguage.fr,
+                  lastLogin: null,
+                ),
               )).thenAnswer(
             (_) => Future.value(),
           );
@@ -117,12 +121,16 @@ void main() {
             (_) => Future.value(
               const UserAccountMetaData(
                 appLanguage: AppLanguage.en,
+                lastLogin: null,
               ),
             ),
           );
           when(() => userAccountMetaDataRepository.save(
                 authUser.uid,
-                const UserAccountMetaData(appLanguage: AppLanguage.en),
+                const UserAccountMetaData(
+                  appLanguage: AppLanguage.en,
+                  lastLogin: null,
+                ),
               )).thenAnswer(
             (_) => Future.value(),
           );

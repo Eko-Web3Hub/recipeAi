@@ -9,28 +9,21 @@ class FindRecipeWithImageUsecase {
     this._authUserService,
   );
 
-  Future<UserReceipeV2> findRecipeWithImage(String recipePathImage) async {
+  Future<UserRecipeV2> findRecipeWithImage(String recipePathImage) async {
     final uid = _authUserService.currentUser!.uid;
     final now = DateTime.now();
     final translatedRecipe = await _userReceipeRepository.findRecipeWithImage(
       recipePathImage,
     );
-    final userRecipeUnsaved = UserReceipeV2(
+    final userRecipeUnsaved = UserRecipeV2(
       id: null,
-      receipeFr: _fromRawRecipeFindWithImageToRecipe(
-        translatedRecipe.recipeFr,
-      ),
-      receipeEn: _fromRawRecipeFindWithImageToRecipe(
-        translatedRecipe.recipeEn,
-      ),
+      receipeFr: _fromRawRecipeFindWithImageToRecipe(translatedRecipe.recipeFr),
+      receipeEn: _fromRawRecipeFindWithImageToRecipe(translatedRecipe.recipeEn),
       createdDate: now,
-      isForHome: false,
-      isAddedToFavorites: false,
     );
-    final userRecipes = await _userReceipeRepository.save(
-      uid,
-      [userRecipeUnsaved],
-    );
+    final userRecipes = await _userReceipeRepository.save(uid, [
+      userRecipeUnsaved,
+    ]);
 
     return userRecipes.first;
   }
