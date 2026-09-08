@@ -46,9 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SavedReceipeController(
-        di<IUserRecipeService>(),
-      ),
+      create: (_) => SavedReceipeController(di<IUserRecipeService>()),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -72,7 +70,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Gap(24),
                 BlocBuilder<SavedReceipeController, SavedReceipeState>(
                   builder: (context, state) {
-                    final showSeeMore = state is SavedReceipeStateLoaded &&
+                    final showSeeMore =
+                        state is SavedReceipeStateLoaded &&
                         state.savedReceipes.length > 4;
 
                     return Column(
@@ -83,11 +82,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             TranslatedText(
                               textSelector: (lang) => lang.myFavorites,
                               style: TextStyle(
-                                  fontFamily: poppinsFontFamily,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20,
-                                  height: 1.30,
-                                  color: newNeutralBlackColor),
+                                fontFamily: poppinsFontFamily,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20,
+                                height: 1.30,
+                                color: newNeutralBlackColor,
+                              ),
                             ),
                             Visibility(
                               visible: showSeeMore,
@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ? const NoFavoriteRecipeSaved()
                               : _FavoriteRecipeGridDisplay(
                                   favoriteRecipes: state.savedReceipes,
-                                )
+                                ),
                       ],
                     );
                   },
@@ -149,20 +149,16 @@ class _FavoriteRecipeGridLoading extends StatelessWidget {
         direction: ShimmerDirection.fromLeftToRight(),
         colorOpacity: 0.2,
         color: yellowBrandColor,
-        child: _RecipeCardContainer(
-          child: Container(),
-        ),
+        child: _RecipeCardContainer(child: Container()),
       ),
     );
   }
 }
 
 class _FavoriteRecipeGridDisplay extends StatelessWidget {
-  const _FavoriteRecipeGridDisplay({
-    required this.favoriteRecipes,
-  });
+  const _FavoriteRecipeGridDisplay({required this.favoriteRecipes});
 
-  final List<UserReceipeV2> favoriteRecipes;
+  final List<UserRecipeV2> favoriteRecipes;
 
   @override
   Widget build(BuildContext context) {
@@ -179,10 +175,7 @@ class _FavoriteRecipeGridDisplay extends StatelessWidget {
 }
 
 class _GridViewBase extends StatelessWidget {
-  const _GridViewBase({
-    required this.itemCount,
-    required this.itemBuilder,
-  });
+  const _GridViewBase({required this.itemCount, required this.itemBuilder});
 
   final int itemCount;
   final Widget? Function(BuildContext, int) itemBuilder;
@@ -206,26 +199,20 @@ class _GridViewBase extends StatelessWidget {
 }
 
 class _RecipeCard extends StatelessWidget {
-  const _RecipeCard({
-    Key? key,
-    required this.recipe,
-  }) : super(key: key);
+  const _RecipeCard({Key? key, required this.recipe}) : super(key: key);
 
-  final UserReceipeV2 recipe;
+  final UserRecipeV2 recipe;
 
   @override
   Widget build(BuildContext context) {
     final currentLanguage = di<TranslationController>().currentLanguageEnum;
-    final currentRecipe =
-        currentLanguage == AppLanguage.en ? recipe.receipeEn : recipe.receipeFr;
+    final currentRecipe = currentLanguage == AppLanguage.en
+        ? recipe.receipeEn
+        : recipe.receipeFr;
 
     return GestureDetector(
-      onTap: () => context.push(
-        '/home/recipe-details',
-        extra: {
-          'receipe': recipe,
-        },
-      ),
+      onTap: () =>
+          context.push('/home/recipe-details', extra: {'receipe': recipe}),
       child: _RecipeCardContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,9 +227,7 @@ class _RecipeCard extends StatelessWidget {
                   BlocBuilder<RecipeImageLoader, RecipeImageState>(
                     builder: (context, imageLoaderState) {
                       if (imageLoaderState is RecipeImageLoading) {
-                        return _ImageRecipeLoader(
-                          progress: null,
-                        );
+                        return _ImageRecipeLoader(progress: null);
                       }
 
                       if (imageLoaderState is RecipeImageLoaded) {
@@ -259,16 +244,14 @@ class _RecipeCard extends StatelessWidget {
                         return CachedNetworkImage(
                           imageUrl: imageLoaderState.url!,
                           progressIndicatorBuilder: (context, url, progress) =>
-                              _ImageRecipeLoader(
-                            progress: progress.progress,
-                          ),
+                              _ImageRecipeLoader(progress: progress.progress),
                           errorWidget: (context, url, error) =>
                               const _ImageRecipeWithError(),
                           imageBuilder: (context, imageProvider) =>
                               _SubRecipeCardContainer(
-                            imageProvider: imageProvider,
-                            child: null,
-                          ),
+                                imageProvider: imageProvider,
+                                child: null,
+                              ),
                         );
                       }
 
@@ -278,9 +261,7 @@ class _RecipeCard extends StatelessWidget {
                   Positioned(
                     top: 10,
                     right: 10,
-                    child: _ToggleFavoriteBtn(
-                      receipe: recipe,
-                    ),
+                    child: _ToggleFavoriteBtn(receipe: recipe),
                   ),
                 ],
               ),
@@ -311,9 +292,7 @@ class _RecipeCard extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
                     height: 1.5,
-                    color: Color(
-                      0xff97A2B0,
-                    ),
+                    color: Color(0xff97A2B0),
                   ),
                 ),
               ],
@@ -328,7 +307,7 @@ class _RecipeCard extends StatelessWidget {
 class _ToggleFavoriteBtn extends StatelessWidget {
   const _ToggleFavoriteBtn({required this.receipe});
 
-  final UserReceipeV2 receipe;
+  final UserRecipeV2 receipe;
 
   @override
   Widget build(BuildContext context) {
@@ -372,9 +351,7 @@ class _ImageRecipeWithError extends StatelessWidget {
 }
 
 class _ImageRecipeLoader extends StatelessWidget {
-  const _ImageRecipeLoader({
-    required this.progress,
-  });
+  const _ImageRecipeLoader({required this.progress});
 
   final double? progress;
 
@@ -382,9 +359,7 @@ class _ImageRecipeLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SubRecipeCardContainer(
       imageProvider: null,
-      child: CustomCircularLoader(
-        value: progress,
-      ),
+      child: CustomCircularLoader(value: progress),
     );
   }
 }
@@ -404,16 +379,11 @@ class _SubRecipeCardContainer extends StatelessWidget {
       width: double.infinity,
       height: 88,
       decoration: BoxDecoration(
-        color: Color(
-          0xffCCD4DE,
-        ),
+        color: Color(0xffCCD4DE),
         borderRadius: BorderRadius.circular(16),
         image: imageProvider == null
             ? null
-            : DecorationImage(
-                image: imageProvider!,
-                fit: BoxFit.cover,
-              ),
+            : DecorationImage(image: imageProvider!, fit: BoxFit.cover),
       ),
       child: child,
     );
@@ -421,9 +391,7 @@ class _SubRecipeCardContainer extends StatelessWidget {
 }
 
 class _RecipeCardContainer extends StatelessWidget {
-  const _RecipeCardContainer({
-    required this.child,
-  });
+  const _RecipeCardContainer({required this.child});
 
   final Widget child;
 
@@ -435,9 +403,7 @@ class _RecipeCardContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Color(0xffFBFBFB),
-        ),
+        border: Border.all(color: Color(0xffFBFBFB)),
         boxShadow: [
           BoxShadow(
             color: Color(0xff063336).withOpacity(0.1),
@@ -459,9 +425,7 @@ class ProfilActionAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        right: 20.0,
-      ),
+      padding: const EdgeInsets.only(right: 20.0),
       child: GestureDetector(
         onTap: () => context.push('/profil-screen/settings'),
         child: SvgPicture.asset('assets/images/settingProfilIcon.svg'),
@@ -471,10 +435,7 @@ class ProfilActionAppBar extends StatelessWidget {
 }
 
 class _UserProfilCard extends StatelessWidget {
-  const _UserProfilCard({
-    required this.email,
-    required this.name,
-  });
+  const _UserProfilCard({required this.email, required this.name});
 
   final String email;
   final String name;
@@ -505,10 +466,7 @@ class _UserProfilCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                UserProfilePicture(
-                  name: name,
-                  size: 48,
-                ),
+                UserProfilePicture(name: name, size: 48),
                 const Gap(16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -549,11 +507,7 @@ class _UserProfilCard extends StatelessWidget {
 }
 
 class UserProfilePicture extends StatelessWidget {
-  const UserProfilePicture({
-    super.key,
-    required this.size,
-    required this.name,
-  });
+  const UserProfilePicture({super.key, required this.size, required this.name});
 
   final double size;
   final String? name;
@@ -566,9 +520,7 @@ class UserProfilePicture extends StatelessWidget {
       decoration: BoxDecoration(
         color: Color(0xffCCD4DE),
         shape: BoxShape.circle,
-        border: Border.all(
-          color: greenBrandColor,
-        ),
+        border: Border.all(color: greenBrandColor),
       ),
       child: name == null
           ? null
@@ -595,36 +547,26 @@ class _ArrowRight extends StatelessWidget {
         color: Color(0xff353535),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: SvgPicture.asset(
-        'assets/images/arrowWhiteIcon.svg',
-      ),
+      child: SvgPicture.asset('assets/images/arrowWhiteIcon.svg'),
     );
   }
 }
 
 class DialogLayout extends StatelessWidget {
-  const DialogLayout({
-    super.key,
-    required this.child,
-  });
+  const DialogLayout({super.key, required this.child});
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            const Gap(4),
-            child,
-          ],
+          children: [const Gap(4), child],
         ),
       ),
     );
@@ -632,10 +574,7 @@ class DialogLayout extends StatelessWidget {
 }
 
 class PopupTitle extends StatelessWidget {
-  const PopupTitle({
-    super.key,
-    required this.title,
-  });
+  const PopupTitle({super.key, required this.title});
 
   final String title;
   @override
@@ -656,10 +595,7 @@ class AppLanguageItem {
   final String label;
   final String key;
 
-  AppLanguageItem({
-    required this.label,
-    required this.key,
-  });
+  AppLanguageItem({required this.label, required this.key});
 }
 
 final appLanguagesItem = [

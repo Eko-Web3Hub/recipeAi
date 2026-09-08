@@ -56,7 +56,7 @@ class RecipeDetailsView extends StatefulWidget {
   });
 
   final EntityId? receipeId;
-  final UserReceipeV2? receipe;
+  final UserRecipeV2? receipe;
   final AppLanguage? appLanguage;
   final EntityId? userSharingUid;
 

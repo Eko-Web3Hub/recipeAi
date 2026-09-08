@@ -18,10 +18,7 @@ final appLanguages = <AppLanguage, AppLocalizations>{
   AppLanguage.en: AppLocalizationsEn(),
 };
 
-final recipeCardColorFilter = ColorFilter.mode(
-  Colors.white,
-  BlendMode.srcATop,
-);
+final recipeCardColorFilter = ColorFilter.mode(Colors.white, BlendMode.srcATop);
 
 const horizontalScreenPadding = 30.0;
 const verticalScreenPadding = 20.0;
@@ -95,10 +92,7 @@ final mediumTextStyle = TextStyle(
 );
 
 final dioOption = BaseOptions(
-  headers: {
-    'Content-Type': 'application/json',
-    'accept': 'application/json',
-  },
+  headers: {'Content-Type': 'application/json', 'accept': 'application/json'},
 );
 
 const localizationsDelegate = [
@@ -108,10 +102,7 @@ const localizationsDelegate = [
   GlobalCupertinoLocalizations.delegate,
 ];
 
-const supportedLocales = [
-  Locale('en'),
-  Locale('fr'),
-];
+const supportedLocales = [Locale('en'), Locale('fr')];
 
 enum AppLanguage { en, fr }
 
@@ -131,9 +122,8 @@ enum AuthError { userNotFound, somethingWentWrong }
 const logoPath = 'assets/images/newLogo.png';
 const hasSeenOnboardingKey = 'has_already_seen_onboarding';
 const kBottomProfilePadding = 90.0;
-final timeOutOptions = Options(
-  receiveTimeout: Duration(seconds: 30),
-);
+final timeOutOptions = Options(receiveTimeout: Duration(seconds: 30));
+const timeOutDuration = Duration(seconds: 30);
 const poppinsFontFamily = 'Poppins';
 const robotoFontFamily = 'Roboto';
 const robotoSlabFontFamily = 'RobotoSlab';
