@@ -44,10 +44,7 @@ class _BubleMessageChatContainer extends StatelessWidget {
 }
 
 class _ChatAiBubble extends StatelessWidget {
-  const _ChatAiBubble({
-    this.isRight = false,
-    required this.text,
-  });
+  const _ChatAiBubble({this.isRight = false, required this.text});
 
   final bool isRight;
   final String text;
@@ -81,18 +78,13 @@ class _PictureDisplay extends StatelessWidget {
       child: SizedBox(
         width: 200,
         height: 200,
-        child: Image.file(
-          File(imagePath),
-        ),
+        child: Image.file(File(imagePath)),
       ),
     );
   }
 }
 
-enum ChatRole {
-  user,
-  ai,
-}
+enum ChatRole { user, ai }
 
 class ChatAiScreen extends StatelessWidget {
   const ChatAiScreen({super.key});
@@ -105,47 +97,45 @@ class ChatAiScreen extends StatelessWidget {
         arrowLeftOnPressed: () => context.pop(),
       ),
       body: BlocProvider(
-        create: (_) => FindRecipeWithImageController(
-          di<FindRecipeWithImageUsecase>(),
-        ),
+        create: (_) =>
+            FindRecipeWithImageController(di<FindRecipeWithImageUsecase>()),
         child: BlocProvider(
-          create: (context) => ChatAiController(
-            di<TranslationController>(),
-          ),
-          child: Builder(builder: (context) {
-            return SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
-                child: BlocBuilder<ChatAiController, ChatAiState>(
+          create: (context) => ChatAiController(di<TranslationController>()),
+          child: Builder(
+            builder: (context) {
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: BlocBuilder<ChatAiController, ChatAiState>(
                     builder: (context, chatAiState) {
-                  if (chatAiState is ChatAiLoadedState) {
-                    final chatMessages = chatAiState.chatMessages;
+                      if (chatAiState is ChatAiLoadedState) {
+                        final chatMessages = chatAiState.chatMessages;
 
-                    return ListView.separated(
-                      itemBuilder: (context, index) {
-                        return Align(
-                          alignment: chatMessages[index].role == ChatRole.user
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: _AiChatMessageBuild.buildMessageWidget(
-                            chatMessages[index],
-                          ),
+                        return ListView.separated(
+                          itemBuilder: (context, index) {
+                            return Align(
+                              alignment:
+                                  chatMessages[index].role == ChatRole.user
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: _AiChatMessageBuild.buildMessageWidget(
+                                chatMessages[index],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 10),
+                          itemCount: chatMessages.length,
                         );
-                      },
-                      separatorBuilder: (_, __) => const SizedBox(
-                        height: 10,
-                      ),
-                      itemCount: chatMessages.length,
-                    );
-                  }
+                      }
 
-                  return SizedBox.shrink();
-                }),
-              ),
-            );
-          }),
+                      return SizedBox.shrink();
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -159,9 +149,7 @@ class _AiChatMessageBuild implements Visitor {
 
   Widget? messageWidget;
 
-  static Widget buildMessageWidget(
-    ChatMessage chatMessage,
-  ) {
+  static Widget buildMessageWidget(ChatMessage chatMessage) {
     final visitor = _AiChatMessageBuild(chatMessage);
 
     chatMessage.message.accept(visitor);
@@ -172,12 +160,8 @@ class _AiChatMessageBuild implements Visitor {
   @override
   void visitCTAMessage(CTAMessage message) {
     messageWidget = Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-      ),
-      child: _UploadFileCTA(
-        message.text,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: _UploadFileCTA(message.text),
     );
   }
 
@@ -227,17 +211,13 @@ class _AiChatMessageBuild implements Visitor {
   void visitRecipeDisplayMessage(RecipeDisplayMessage message) {
     messageWidget = _BubleMessageChatContainer(
       isRight: chatMessage.role == ChatRole.user,
-      child: _RecipeDisplay(
-        message.recipe,
-      ),
+      child: _RecipeDisplay(message.recipe),
     );
   }
 }
 
 class _UploadFileCTA extends StatelessWidget {
-  const _UploadFileCTA(
-    this.text,
-  );
+  const _UploadFileCTA(this.text);
 
   final String text;
 
@@ -246,18 +226,15 @@ class _UploadFileCTA extends StatelessWidget {
     final appTexts = di<TranslationController>().currentLanguage;
     final chatAiController = context.read<ChatAiController>();
 
-    return BlocListener<FindRecipeWithImageController,
-        FindRecipeWithImageState?>(
+    return BlocListener<
+      FindRecipeWithImageController,
+      FindRecipeWithImageState?
+    >(
       listener: (context, findRecipeWithImageState) {
         if (findRecipeWithImageState is FindRecipeWithImageLoadedState) {
           chatAiController.removeLastMessage();
           chatAiController.addMessage(
-            ChatMessage(
-              TextMessage(
-                appTexts.recipeFound,
-              ),
-              ChatRole.ai,
-            ),
+            ChatMessage(TextMessage(appTexts.recipeFound), ChatRole.ai),
           );
           chatAiController.addMessage(
             ChatMessage(
@@ -278,29 +255,20 @@ class _UploadFileCTA extends StatelessWidget {
 
           if (photo != null) {
             chatAiController.addMessage(
-              ChatMessage(
-                ImageMessage(photo.path),
-                ChatRole.user,
-              ),
+              ChatMessage(ImageMessage(photo.path), ChatRole.user),
             );
 
-            Future.delayed(
-              const Duration(milliseconds: 500),
-            ).then(
-              (_) async {
-                chatAiController.addMessage(
-                  ChatMessage(
-                    LoaderMessage(
-                      appTexts.findRecipeWithImageLoader,
-                    ),
-                    ChatRole.ai,
-                  ),
-                );
-                context
-                    .read<FindRecipeWithImageController>()
-                    .findRecipe(photo.path);
-              },
-            );
+            Future.delayed(const Duration(milliseconds: 500)).then((_) async {
+              chatAiController.addMessage(
+                ChatMessage(
+                  LoaderMessage(appTexts.findRecipeWithImageLoader),
+                  ChatRole.ai,
+                ),
+              );
+              context.read<FindRecipeWithImageController>().findRecipe(
+                photo.path,
+              );
+            });
           }
         },
       ),
@@ -309,11 +277,9 @@ class _UploadFileCTA extends StatelessWidget {
 }
 
 class _RecipeDisplay extends StatelessWidget {
-  const _RecipeDisplay(
-    this.userRecipe,
-  );
+  const _RecipeDisplay(this.userRecipe);
 
-  final UserReceipeV2 userRecipe;
+  final UserRecipeV2 userRecipe;
 
   @override
   Widget build(BuildContext context) {
@@ -340,10 +306,7 @@ class _RecipeDisplay extends StatelessWidget {
         MainBtn(
           text: appTexts.seeMore,
           onPressed: () {
-            context.push(
-              '/recipe-details',
-              extra: {'receipe': userRecipe},
-            );
+            context.push('/recipe-details', extra: {'receipe': userRecipe});
           },
         ),
       ],

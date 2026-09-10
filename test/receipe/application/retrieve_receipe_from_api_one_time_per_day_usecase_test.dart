@@ -3,332 +3,249 @@ import 'package:mocktail/mocktail.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
-
-class UserReceipeRepositoryMock extends Mock
-    implements IUserReceipeRepository {}
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
+import 'package:recipe_ai/utils/local_storage_repo.dart';
 
 class AuthUserServiceMock extends Mock implements IAuthUserService {}
 
-void main() {
-  late IUserReceipeRepository userReceipeRepository;
-  late IAuthUserService authUserService;
+class UserReceipeRepositoryV2Mock extends Mock
+    implements IUserReceipeRepositoryV2 {}
 
-  const AuthUser authUser = AuthUser(
-    uid: EntityId('uid'),
-    email: 'email',
+class UserRecipeServiceMock extends Mock implements IUserRecipeService {}
+
+class LocalStorageRepositoryMock extends Mock
+    implements ILocalStorageRepository {}
+
+void main() {
+  late IAuthUserService authUserService;
+  late IUserReceipeRepositoryV2 userReceipeRepositoryV2;
+  late IUserRecipeService userRecipeService;
+  late ILocalStorageRepository localStorageRepository;
+
+  const authUser = AuthUser(uid: EntityId('uid'), email: 'email');
+  const token = 'token';
+
+  const receipe = Receipe(
+    name: 'name',
+    ingredients: [],
+    steps: [],
+    averageTime: '',
+    totalCalories: '',
   );
 
+  final apiRecipes = [
+    UserRecipeV2(
+      id: const EntityId('apiId'),
+      receipeFr: receipe,
+      receipeEn: receipe,
+      createdDate: DateTime(2024, 1, 1),
+    ),
+  ];
+
+  final localRecipes = [
+    UserRecipeV2(
+      id: const EntityId('localId'),
+      receipeFr: receipe,
+      receipeEn: receipe,
+      createdDate: DateTime(2024, 1, 1),
+    ),
+  ];
+
   setUp(() {
-    userReceipeRepository = UserReceipeRepositoryMock();
     authUserService = AuthUserServiceMock();
+    userReceipeRepositoryV2 = UserReceipeRepositoryV2Mock();
+    userRecipeService = UserRecipeServiceMock();
+    localStorageRepository = LocalStorageRepositoryMock();
+
+    when(() => authUserService.currentUser).thenReturn(authUser);
+    when(
+      () => authUserService.getIdToken,
+    ).thenAnswer((_) => Future.value(token));
   });
 
-  group(
-    'should return a new list of receipes from the api',
-    () {
-      test(
-        'after 24 hours',
-        () async {
-          final now = DateTime(2024, 1, 2);
-          final currentUserReceipe = UserReceipe(
-            receipes: const [
-              Receipe(
-                name: 'name',
-                ingredients: [],
-                steps: [],
-                averageTime: '',
-                totalCalories: '',
-              ),
-            ],
-            lastUpdatedDate: DateTime(2024, 1, 1),
-          );
-          const newReceipes = <Receipe>[
-            Receipe(
-              name: 'name',
-              ingredients: [],
-              steps: [],
-              averageTime: '',
-              totalCalories: '',
-            ),
-            Receipe(
-              name: 'name1',
-              ingredients: [],
-              steps: [],
-              averageTime: '',
-              totalCalories: '',
-            ),
-          ];
-
-          when(() => authUserService.currentUser).thenReturn(
-            authUser,
-          );
-
-          when(
-            () => userReceipeRepository
-                .getReceipesBasedOnUserPreferencesFromFirestore(
-              authUser.uid,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(currentUserReceipe),
-          );
-
-          when(
-            () =>
-                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              authUser.uid,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(newReceipes),
-          );
-
-          when(
-            () => userReceipeRepository.save(
-              authUser.uid,
-              UserReceipe(
-                receipes: newReceipes,
-                lastUpdatedDate: now,
-              ),
-            ),
-          ).thenAnswer(
-            (_) => Future.value(),
-          );
-
-          final sut = RetrieveReceipeFromApiOneTimePerDayUsecase(
-            userReceipeRepository,
-            authUserService,
-          );
-          final receipes = await sut.retrieve(
-            now,
-          );
-
-          verify(
-            () =>
-                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              authUser.uid,
-            ),
-          ).called(1);
-          expect(receipes.length, newReceipes.length);
-        },
+  RetrieveReceipeFromApiOneTimePerDayUsecase buildSut() =>
+      RetrieveReceipeFromApiOneTimePerDayUsecase(
+        authUserService,
+        userReceipeRepositoryV2,
+        userRecipeService,
+        localStorageRepository,
       );
 
-      test(
-        'after more than 24 hours',
-        () async {
-          final now = DateTime(2024, 1, 3);
-          final currentUserReceipe = UserReceipe(
-            receipes: const [
-              Receipe(
-                name: 'name',
-                ingredients: [],
-                steps: [],
-                averageTime: '',
-                totalCalories: '',
-              ),
-            ],
-            lastUpdatedDate: DateTime(2024, 1, 1),
-          );
-          const newReceipes = <Receipe>[
-            Receipe(
-              name: 'name',
-              ingredients: [],
-              steps: [],
-              averageTime: '',
-              totalCalories: '',
-            ),
-            Receipe(
-              name: 'name1',
-              ingredients: [],
-              steps: [],
-              averageTime: '',
-              totalCalories: '',
-            ),
-          ];
+  void stubRefresh(DateTime now) {
+    when(
+      () => userReceipeRepositoryV2.suggestedRecipes(authUser.uid, token),
+    ).thenAnswer((_) => Future.value(apiRecipes));
+    when(
+      () => localStorageRepository.setSuggestedRecipes(apiRecipes),
+    ).thenAnswer((_) => Future.value());
+    when(
+      () => userRecipeService.saveUserReceipeMetadata(authUser.uid, now),
+    ).thenAnswer((_) => Future.value());
+  }
 
-          when(() => authUserService.currentUser).thenReturn(
-            authUser,
-          );
+  test(
+    'should retrieve and cache new recipes when there is no metadata yet',
+    () async {
+      final now = DateTime(2024, 1, 2);
 
-          when(
-            () => userReceipeRepository
-                .getReceipesBasedOnUserPreferencesFromFirestore(
-              authUser.uid,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(currentUserReceipe),
-          );
+      when(
+        () => userRecipeService.getUserRecipeMetadata(authUser.uid),
+      ).thenAnswer((_) => Future.value(null));
+      stubRefresh(now);
 
-          when(
-            () =>
-                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              authUser.uid,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(newReceipes),
-          );
+      final recipes = await buildSut().retrieve(now);
 
-          when(
-            () => userReceipeRepository.save(
-              authUser.uid,
-              UserReceipe(
-                receipes: newReceipes,
-                lastUpdatedDate: now,
-              ),
-            ),
-          ).thenAnswer(
-            (_) => Future.value(),
-          );
+      verify(
+        () => userReceipeRepositoryV2.suggestedRecipes(authUser.uid, token),
+      ).called(1);
+      verify(
+        () => localStorageRepository.setSuggestedRecipes(apiRecipes),
+      ).called(1);
+      verify(
+        () => userRecipeService.saveUserReceipeMetadata(authUser.uid, now),
+      ).called(1);
+      expect(recipes, equals(apiRecipes));
+    },
+  );
 
-          final sut = RetrieveReceipeFromApiOneTimePerDayUsecase(
-            userReceipeRepository,
-            authUserService,
-          );
-          final receipes = await sut.retrieve(
-            now,
-          );
+  test(
+    'should retrieve and cache new recipes when the metadata has no last updated date',
+    () async {
+      final now = DateTime(2024, 1, 2);
 
-          verify(
-            () =>
-                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              authUser.uid,
-            ),
-          ).called(1);
-          expect(receipes.length, newReceipes.length);
-        },
+      when(
+        () => userRecipeService.getUserRecipeMetadata(authUser.uid),
+      ).thenAnswer((_) => Future.value(const UserRecipeMetadata.initial()));
+      stubRefresh(now);
+
+      final recipes = await buildSut().retrieve(now);
+
+      verify(
+        () => userReceipeRepositoryV2.suggestedRecipes(authUser.uid, token),
+      ).called(1);
+      expect(recipes, equals(apiRecipes));
+    },
+  );
+
+  test('should retrieve new recipes when the last update was on a previous '
+      'calendar day, even if less than 24h ago', () async {
+    final lastUpdatedDate = DateTime(2024, 1, 1, 23, 45);
+    final now = DateTime(2024, 1, 2, 0, 30);
+
+    when(
+      () => userRecipeService.getUserRecipeMetadata(authUser.uid),
+    ).thenAnswer(
+      (_) => Future.value(
+        UserRecipeMetadata(lastRecipesHomeUpdatedDate: lastUpdatedDate),
+      ),
+    );
+    stubRefresh(now);
+
+    final recipes = await buildSut().retrieve(now);
+
+    verify(
+      () => userReceipeRepositoryV2.suggestedRecipes(authUser.uid, token),
+    ).called(1);
+    expect(recipes, equals(apiRecipes));
+  });
+
+  test('should return recipes cached in local storage when the last update was '
+      'earlier the same calendar day, even close to 24h ago', () async {
+    final lastUpdatedDate = DateTime(2024, 1, 1, 0, 5);
+    final now = DateTime(2024, 1, 1, 23, 55);
+
+    when(
+      () => userRecipeService.getUserRecipeMetadata(authUser.uid),
+    ).thenAnswer(
+      (_) => Future.value(
+        UserRecipeMetadata(lastRecipesHomeUpdatedDate: lastUpdatedDate),
+      ),
+    );
+    when(
+      () => localStorageRepository.getSuggestedRecipes(),
+    ).thenAnswer((_) => Future.value(localRecipes));
+
+    final recipes = await buildSut().retrieve(now);
+
+    verifyNever(
+      () => userReceipeRepositoryV2.suggestedRecipes(authUser.uid, token),
+    );
+    expect(recipes, equals(localRecipes));
+  });
+
+  test(
+    'should return an empty list when there is nothing cached in local storage',
+    () async {
+      final now = DateTime(2024, 1, 1, 12);
+
+      when(
+        () => userRecipeService.getUserRecipeMetadata(authUser.uid),
+      ).thenAnswer(
+        (_) => Future.value(
+          UserRecipeMetadata(lastRecipesHomeUpdatedDate: DateTime(2024, 1, 1)),
+        ),
       );
+      when(
+        () => localStorageRepository.getSuggestedRecipes(),
+      ).thenAnswer((_) => Future.value(null));
 
-      test(
-        'when the user has no receipes in the firestore',
-        () async {
-          final now = DateTime(2024, 1, 3);
-          const newReceipes = <Receipe>[
-            Receipe(
-              name: 'name',
-              ingredients: [],
-              steps: [],
-              averageTime: '',
-              totalCalories: '',
-            ),
-            Receipe(
-              name: 'name1',
-              ingredients: [],
-              steps: [],
-              averageTime: '',
-              totalCalories: '',
-            ),
-          ];
+      final recipes = await buildSut().retrieve(now);
 
-          when(() => authUserService.currentUser).thenReturn(
-            authUser,
-          );
+      expect(recipes, isEmpty);
+    },
+  );
 
-          when(
-            () => userReceipeRepository
-                .getReceipesBasedOnUserPreferencesFromFirestore(
-              authUser.uid,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(null),
-          );
+  test(
+    'should throw a UserNotAuthenticatedException when the user is not authenticated',
+    () async {
+      when(() => authUserService.currentUser).thenReturn(null);
 
-          when(
-            () =>
-                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              authUser.uid,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(newReceipes),
-          );
+      expect(
+        () => buildSut().retrieve(DateTime(2024, 1, 1)),
+        throwsA(isA<UserNotAuthenticatedException>()),
+      );
+      verifyNever(() => userRecipeService.getUserRecipeMetadata(authUser.uid));
+    },
+  );
 
-          when(
-            () => userReceipeRepository.save(
-              authUser.uid,
-              UserReceipe(
-                receipes: newReceipes,
-                lastUpdatedDate: now,
-              ),
-            ),
-          ).thenAnswer(
-            (_) => Future.value(),
-          );
+  test(
+    'should throw a UserNotAuthenticatedException when there is no auth token available',
+    () async {
+      final now = DateTime(2024, 1, 2);
 
-          final sut = RetrieveReceipeFromApiOneTimePerDayUsecase(
-            userReceipeRepository,
-            authUserService,
-          );
-          final receipes = await sut.retrieve(
-            now,
-          );
+      when(
+        () => userRecipeService.getUserRecipeMetadata(authUser.uid),
+      ).thenAnswer((_) => Future.value(null));
+      when(
+        () => authUserService.getIdToken,
+      ).thenAnswer((_) => Future.value(null));
 
-          verify(
-            () =>
-                userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-              authUser.uid,
-            ),
-          ).called(1);
-          expect(receipes.length, newReceipes.length);
-        },
+      expect(
+        () => buildSut().retrieve(now),
+        throwsA(isA<UserNotAuthenticatedException>()),
+      );
+      verifyNever(
+        () => userReceipeRepositoryV2.suggestedRecipes(authUser.uid, token),
+      );
+      verifyNever(
+        () => userRecipeService.saveUserReceipeMetadata(authUser.uid, now),
       );
     },
   );
 
   test(
-    'should return the old list of receipes from the firestore before 24 hours',
+    'should throw a RetrieveReceipeException when an error occurs',
     () async {
-      final now = DateTime(2024, 1, 1);
-      final currentUserReceipe = UserReceipe(
-        receipes: const [
-          Receipe(
-            name: 'name',
-            ingredients: [],
-            steps: [],
-            averageTime: '',
-            totalCalories: '',
-          ),
-        ],
-        lastUpdatedDate: DateTime(2024, 1, 1),
-      );
-
-      when(() => authUserService.currentUser).thenReturn(
-        authUser,
-      );
-
       when(
-        () => userReceipeRepository
-            .getReceipesBasedOnUserPreferencesFromFirestore(
-          authUser.uid,
-        ),
-      ).thenAnswer(
-        (_) => Future.value(currentUserReceipe),
-      );
+        () => userRecipeService.getUserRecipeMetadata(authUser.uid),
+      ).thenThrow(Exception());
 
-      final sut = RetrieveReceipeFromApiOneTimePerDayUsecase(
-        userReceipeRepository,
-        authUserService,
-      );
-      final receipes = await sut.retrieve(
-        now,
-      );
-
-      verifyNever(
-        () => userReceipeRepository.getReceipesBasedOnUserPreferencesFromApi(
-          authUser.uid,
-        ),
-      );
-      verifyNever(
-        () => userReceipeRepository.save(
-          authUser.uid,
-          UserReceipe(
-            receipes: const [],
-            lastUpdatedDate: now,
-          ),
-        ),
-      );
       expect(
-        receipes.length,
-        currentUserReceipe.receipes.length,
+        () => buildSut().retrieve(DateTime(2024, 1, 1)),
+        throwsA(isA<RetrieveReceipeException>()),
       );
     },
   );

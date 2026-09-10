@@ -18,9 +18,7 @@ import 'package:recipe_ai/utils/constant.dart';
 
 class DisplayReceipesBasedOnIngredientUserPreferenceScreen
     extends StatelessWidget {
-  const DisplayReceipesBasedOnIngredientUserPreferenceScreen({
-    super.key,
-  });
+  const DisplayReceipesBasedOnIngredientUserPreferenceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +27,13 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
     return BlocProvider(
       create: (context) =>
           DisplayReceipesBasedOnIngredientUserPreferenceController(
-        di<IAuthUserService>(),
-        di<RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase>(),
-      ),
+            di<IAuthUserService>(),
+            di<RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase>(),
+          ),
       child: Scaffold(
         appBar: KitchenInventoryAppBar(
           title: appTexts.receipeIdeas,
-          arrowLeftOnPressed: () => context.go(
-            '/home',
-          ),
+          arrowLeftOnPressed: () => context.go('/home'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(
@@ -46,8 +42,9 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
           child: Column(
             children: [
               BlocBuilder<
-                  DisplayReceipesBasedOnIngredientUserPreferenceController,
-                  DisplayReceipesBasedOnIngredientUserPreferenceState>(
+                DisplayReceipesBasedOnIngredientUserPreferenceController,
+                DisplayReceipesBasedOnIngredientUserPreferenceState
+              >(
                 builder: (context, state) {
                   if (state
                       is DisplayReceipesBasedOnIngredientUserPreferenceLoading) {
@@ -76,14 +73,12 @@ class DisplayReceipesBasedOnIngredientUserPreferenceScreen
                     }
                   }
 
-                  final receipes = (state
-                          as DisplayReceipesBasedOnIngredientUserPreferenceLoaded)
-                      .receipes;
+                  final receipes =
+                      (state as DisplayReceipesBasedOnIngredientUserPreferenceLoaded)
+                          .receipes;
 
                   return Expanded(
-                    child: _DisplayLoadedRecipe(
-                      receipes: receipes,
-                    ),
+                    child: _DisplayLoadedRecipe(receipes: receipes),
                   );
                 },
               ),
@@ -110,9 +105,7 @@ class _ErrorDisplayWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20.0,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -153,15 +146,10 @@ class _InternalServerErrorWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 60.0),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.0,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Text(
           appTexts.internalServerError,
-          style: TextStyle(
-            fontFamily: poppinsFontFamily,
-            color: Colors.red,
-          ),
+          style: TextStyle(fontFamily: poppinsFontFamily, color: Colors.red),
           textAlign: TextAlign.center,
         ),
       ),
@@ -184,11 +172,9 @@ class _LoadingView extends StatelessWidget {
 }
 
 class _DisplayLoadedRecipe extends StatelessWidget {
-  const _DisplayLoadedRecipe({
-    required this.receipes,
-  });
+  const _DisplayLoadedRecipe({required this.receipes});
 
-  final List<UserReceipeV2> receipes;
+  final List<UserRecipeV2> receipes;
 
   @override
   Widget build(BuildContext context) {
@@ -198,9 +184,9 @@ class _DisplayLoadedRecipe extends StatelessWidget {
         ? Center(
             child: Text(
               appTexts.cannotGenerateReceipeIdeas,
-              style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: Colors.black,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall!.copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
           )

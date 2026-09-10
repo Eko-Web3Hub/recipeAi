@@ -36,16 +36,14 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
   ) : super(const ReceipeItemStateUnsaved()) {
     checkReceipeStatus();
   }
-  final UserReceipeV2 _receipe;
+  final UserRecipeV2 _receipe;
   final IUserRecipeService _userRecipeService;
   final IAnalyticsRepository _analyticsRepository;
 
   Future<void> _saveReceipe() async {
     try {
       await _userRecipeService.addToFavorite(_receipe);
-      _analyticsRepository.logEvent(
-        RecipeSavedEvent(),
-      );
+      _analyticsRepository.logEvent(RecipeSavedEvent());
       checkReceipeStatus();
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error saving receipe"));
@@ -56,9 +54,7 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
   Future<void> _removeFromReceipe() async {
     try {
       await _userRecipeService.removeFromFavorite(_receipe);
-      _analyticsRepository.logEvent(
-        RecipeUnSaveEvent(),
-      );
+      _analyticsRepository.logEvent(RecipeUnSaveEvent());
       checkReceipeStatus();
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error removing saved receipe"));
@@ -76,13 +72,13 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
 
   Future<void> checkReceipeStatus() async {
     try {
-      _userRecipeService.isReceiptSaved(_receipe.id!).listen(
-        (isSaved) {
-          safeEmit(isSaved
+      _userRecipeService.isReceiptSaved(_receipe.id!).listen((isSaved) {
+        safeEmit(
+          isSaved
               ? const ReceipeItemStateSaved()
-              : const ReceipeItemStateUnsaved());
-        },
-      );
+              : const ReceipeItemStateUnsaved(),
+        );
+      });
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error checking receipe status"));
     }

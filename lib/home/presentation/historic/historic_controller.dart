@@ -10,7 +10,7 @@ class HistoricLoadingState extends HistoricState {}
 class HistoricLoadedState extends HistoricState {
   HistoricLoadedState(this.recipes);
 
-  final List<UserReceipeV2> recipes;
+  final List<UserRecipeV2> recipes;
 }
 
 class HistoricController extends Cubit<HistoricState> {

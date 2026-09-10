@@ -17,14 +17,12 @@ class DisplayReceipesBasedOnIngredientUserPreferenceLoading
 
 class DisplayReceipesBasedOnIngredientUserPreferenceLoaded
     extends DisplayReceipesBasedOnIngredientUserPreferenceState {
-  DisplayReceipesBasedOnIngredientUserPreferenceLoaded(
-    this.receipes,
-  );
+  DisplayReceipesBasedOnIngredientUserPreferenceLoaded(this.receipes);
 
   @override
   List<Object?> get props => [receipes];
 
-  final List<UserReceipeV2> receipes;
+  final List<UserRecipeV2> receipes;
 }
 
 class DisplayReceipesBasedOnIngredientUserPreferenceError
@@ -47,16 +45,12 @@ class DisplayReceipesBasedOnIngredientUserPreferenceController
   }
 
   Future<void> _load() async {
-    final receipes =
-        await _receipesBasedOnIngredientUserPreferenceUsecase.retrieve(
-      _authUserService.currentUser!.uid,
-    );
+    final receipes = await _receipesBasedOnIngredientUserPreferenceUsecase
+        .retrieve(_authUserService.currentUser!.uid);
 
     return receipes.fold(
       (error) {
-        safeEmit(
-          DisplayReceipesBasedOnIngredientUserPreferenceError(error),
-        );
+        safeEmit(DisplayReceipesBasedOnIngredientUserPreferenceError(error));
       },
       (receipes) {
         safeEmit(
@@ -68,5 +62,5 @@ class DisplayReceipesBasedOnIngredientUserPreferenceController
 
   final IAuthUserService _authUserService;
   final RetrieveRecipesBasedOnUserIngredientAndPreferencesUsecase
-      _receipesBasedOnIngredientUserPreferenceUsecase;
+  _receipesBasedOnIngredientUserPreferenceUsecase;
 }

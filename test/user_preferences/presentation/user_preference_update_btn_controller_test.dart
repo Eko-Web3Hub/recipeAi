@@ -15,7 +15,7 @@ class AuthUserService extends Mock implements IAuthUserService {}
 class UserPreferenceRepository extends Mock
     implements IUserPreferenceRepository {}
 
-class UserRecipeService extends Mock implements IUserRecipeService {}
+class UserRecipeServiceMock extends Mock implements IUserRecipeService {}
 
 void main() {
   late IAuthUserService authUserService;
@@ -35,7 +35,7 @@ void main() {
   setUp(() {
     authUserService = AuthUserService();
     userPreferenceRepository = UserPreferenceRepository();
-    userRecipeService = UserRecipeService();
+    userRecipeService = UserRecipeServiceMock();
 
     when(() => authUserService.currentUser).thenReturn(authUser);
   });

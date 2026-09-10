@@ -8,7 +8,7 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 
 abstract class IRecipeIdeasNavigation {
-  void goToRecipeIdeas(List<UserReceipeV2> recipes);
+  void goToRecipeIdeas(List<UserRecipeV2> recipes);
 }
 
 abstract class GenerateRecipeWithIngredientPhotoState {}
@@ -38,12 +38,13 @@ class GenerateRecipeWithIngredientPhotoController
         .genererateRecipesWithIngredientPicture(file);
     if (recipes != null) {
       final recipesToUserRecipes = recipes.recipesEn
-          .mapIndexed<UserReceipeV2>(
-              (index, userRecipe) => convertTranslatedRecipeToUserReciepe(
-                    recipeFr: recipes.recipesFr[index],
-                    recipeEn: userRecipe,
-                    createdDate: DateTime.now(),
-                  ))
+          .mapIndexed<UserRecipeV2>(
+            (index, userRecipe) => convertTranslatedRecipeToUserReciepe(
+              recipeFr: recipes.recipesFr[index],
+              recipeEn: userRecipe,
+              createdDate: DateTime.now(),
+            ),
+          )
           .toList();
       final userRecipesSaved = await _userReceipeRepository.save(
         _authUserService.currentUser!.uid,

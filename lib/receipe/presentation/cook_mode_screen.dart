@@ -25,7 +25,7 @@ class CookModeScreen extends StatefulWidget {
   });
 
   final Receipe receipe;
-  final UserReceipeV2 userReceipeV2;
+  final UserRecipeV2 userReceipeV2;
 
   @override
   State<CookModeScreen> createState() => _CookModeScreenState();
@@ -57,8 +57,7 @@ class _CookModeScreenState extends State<CookModeScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor:
-            _finished ? Colors.white : recipeLoaderInkColor,
+        backgroundColor: _finished ? Colors.white : recipeLoaderInkColor,
         body: SafeArea(
           child: _finished
               ? _CookModeFinishedView(userReceipeV2: widget.userReceipeV2)
@@ -67,8 +66,7 @@ class _CookModeScreenState extends State<CookModeScreen> {
                   stepIndex: _currentStepIndex,
                   stepCount: widget.receipe.steps.length,
                   onClose: () => context.pop(),
-                  onPrevious:
-                      _currentStepIndex > 0 ? _goToPreviousStep : null,
+                  onPrevious: _currentStepIndex > 0 ? _goToPreviousStep : null,
                   onNext: _goToNextStepOrFinish,
                 ),
         ),
@@ -194,8 +192,9 @@ class _CookModeStepView extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: _CookModePrimaryButton(
-                  label:
-                      isLastStep ? appTexts.cookModeFinish : appTexts.cookModeNextStep,
+                  label: isLastStep
+                      ? appTexts.cookModeFinish
+                      : appTexts.cookModeNextStep,
                   onTap: onNext,
                 ),
               ),
@@ -358,7 +357,7 @@ class _CookModeSecondaryButton extends StatelessWidget {
 class _CookModeFinishedView extends StatefulWidget {
   const _CookModeFinishedView({required this.userReceipeV2});
 
-  final UserReceipeV2 userReceipeV2;
+  final UserRecipeV2 userReceipeV2;
 
   @override
   State<_CookModeFinishedView> createState() => _CookModeFinishedViewState();
@@ -457,8 +456,9 @@ class _CookModeFinishedViewState extends State<_CookModeFinishedView> {
                       label: saved
                           ? appTexts.cookModeAddedToFavorites
                           : appTexts.cookModeAddToFavorites,
-                      onTap: () =>
-                          context.read<ReceipeItemController>().toggleFavorite(),
+                      onTap: () => context
+                          .read<ReceipeItemController>()
+                          .toggleFavorite(),
                     );
                   },
                 ),

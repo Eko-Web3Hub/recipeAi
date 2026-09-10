@@ -14,22 +14,14 @@ import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/safe_emit.dart';
 
 class ReceipeDetailsState extends Equatable {
-  const ReceipeDetailsState(
-    this.reciepe,
-    this.userReceipeV2,
-  );
+  const ReceipeDetailsState(this.reciepe, this.userReceipeV2);
 
   const ReceipeDetailsState.loading() : this(null, null);
-  const ReceipeDetailsState.loaded(
-    Receipe reciepe,
-    UserReceipeV2 userReceipeV2,
-  ) : this(
-          reciepe,
-          userReceipeV2,
-        );
+  const ReceipeDetailsState.loaded(Receipe reciepe, UserRecipeV2 userReceipeV2)
+    : this(reciepe, userReceipeV2);
 
   final Receipe? reciepe;
-  final UserReceipeV2? userReceipeV2;
+  final UserRecipeV2? userReceipeV2;
 
   @override
   List<Object?> get props => [reciepe, userReceipeV2];
@@ -44,26 +36,17 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     this._authUserService,
     this._userAccountMetaDataRepository,
     this._userReceipeRepositoryV2,
-  ) : super(
-          const ReceipeDetailsState.loading(),
-        ) {
+  ) : super(const ReceipeDetailsState.loading()) {
     _loadRecipeUsingId();
   }
 
   ReceipeDetailsController.fromReceipe(
-    UserReceipeV2 receipe,
+    UserRecipeV2 receipe,
     this._authUserService,
     this._userAccountMetaDataRepository,
     this._userReceipeRepositoryV2,
-  ) : super(
-          ReceipeDetailsState.loaded(
-            receipe.receipeEn,
-            receipe,
-          ),
-        ) {
-    _load(
-      receipe,
-    );
+  ) : super(ReceipeDetailsState.loaded(receipe.receipeEn, receipe)) {
+    _load(receipe);
   }
 
   void _loadRecipeUsingId() async {
@@ -77,38 +60,29 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
     _load(recipe!);
   }
 
-  void _load(UserReceipeV2 userRecipe) async {
+  void _load(UserRecipeV2 userRecipe) async {
     _subscription = _userAccountMetaDataRepository
         .watchUserAccount(_authUserService.currentUser!.uid)
         .listen((userAccount) async {
-      if (userAccount != null) {
-        if (userAccount.appLanguage == AppLanguage.fr) {
-          safeEmit(
-            ReceipeDetailsState.loaded(
-              userRecipe.receipeFr,
-              userRecipe,
-            ),
-          );
-          return;
-        }
+          if (userAccount != null) {
+            if (userAccount.appLanguage == AppLanguage.fr) {
+              safeEmit(
+                ReceipeDetailsState.loaded(userRecipe.receipeFr, userRecipe),
+              );
+              return;
+            }
 
-        safeEmit(
-          ReceipeDetailsState.loaded(
-            userRecipe.receipeEn,
-            userRecipe,
-          ),
-        );
-      } else {
-        // If user account is null, emit the recipe in English by default
+            safeEmit(
+              ReceipeDetailsState.loaded(userRecipe.receipeEn, userRecipe),
+            );
+          } else {
+            // If user account is null, emit the recipe in English by default
 
-        safeEmit(
-          ReceipeDetailsState.loaded(
-            userRecipe.receipeEn,
-            userRecipe,
-          ),
-        );
-      }
-    });
+            safeEmit(
+              ReceipeDetailsState.loaded(userRecipe.receipeEn, userRecipe),
+            );
+          }
+        });
   }
 
   @override

@@ -13,6 +13,9 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   static const String baseUrl =
       "$baseApiUrl/v2/gen-receipe-with-user-preference";
 
+  static const String recipesSuggestionEngineBaseUrl =
+      'https://recipes-suggestions-v7duguwfla-ew.a.run.app/suggestions';
+
   static const String receipesCollection = "receipes";
 
   static const String userReceipeV2Collection = "UserReceipeV2";
@@ -27,28 +30,43 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
 
   final FirebaseFirestore _firestore;
 
-  const UserReceipeRepositoryV2(
-    this._firestore,
-    this._dio,
-  );
+  const UserReceipeRepositoryV2(this._firestore, this._dio);
   final Dio _dio;
 
   @override
-  Future<TranslatedRecipe> getReceipesBasedOnUserPreferencesFromApi(
-      EntityId uid) async {
-    final apiRoute = "$baseUrl/${uid.value}";
-    final response = await _dio.get(
-      apiRoute,
-      options: timeOutOptions,
-    );
-    log(response.toString());
-    final json = response.data as Map<String, dynamic>;
+  Future<List<UserRecipeV2>> suggestedRecipes(
+    EntityId uid,
+    String token,
+  ) async {
+    try {
+      final apiRoute = "$recipesSuggestionEngineBaseUrl/${uid.value}";
+      final response = await _dio.get(
+        apiRoute,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            "Accept": 'application/json',
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      log(response.toString());
+      final recipes = response.data['recipes'] as List<dynamic>;
 
-    return TranslatedRecipe.fromJson(json);
+      return recipes
+          .map(
+            (recipe) => UserRecipeV2.fromJson(recipe as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      log('An error occurred while fetching suggested recipes: $e');
+
+      return [];
+    }
   }
 
   @override
-  Future<List<UserReceipeV2>> getReceipesBasedOnUserPreferencesFromFirestore(
+  Future<List<UserRecipeV2>> getReceipesBasedOnUserPreferencesFromFirestore(
     EntityId uid,
   ) async {
     final snapshot = await _firestore
@@ -61,18 +79,19 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     if (snapshot.docs.isEmpty) {
       return [];
     }
-    final userReceipes =
-        snapshot.docs.map((doc) => UserReceipeV2.fromJson(doc.data())).toList();
+    final userReceipes = snapshot.docs
+        .map((doc) => UserRecipeV2.fromJson(doc.data()))
+        .toList();
 
     return userReceipes;
   }
 
   @override
-  Future<List<UserReceipeV2>> save(
+  Future<List<UserRecipeV2>> save(
     EntityId uid,
-    List<UserReceipeV2> userReceipe,
+    List<UserRecipeV2> userReceipe,
   ) async {
-    final recipesWithId = <UserReceipeV2>[];
+    final recipesWithId = <UserRecipeV2>[];
 
     for (final receipe in userReceipe) {
       final docRef = _firestore
@@ -91,7 +110,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Stream<List<UserReceipeV2>> watchAllSavedReceipes(EntityId uid) {
+  Stream<List<UserRecipeV2>> watchAllSavedReceipes(EntityId uid) {
     return _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
@@ -99,15 +118,15 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
         .where(_isAddedToFavoritesKey, isEqualTo: true)
         .snapshots()
         .map((snapshot) {
-      if (snapshot.docs.isEmpty) {
-        return [];
-      }
-      final userReceipes = snapshot.docs
-          .map((doc) => UserReceipeV2.fromJson(doc.data()))
-          .toList();
+          if (snapshot.docs.isEmpty) {
+            return [];
+          }
+          final userReceipes = snapshot.docs
+              .map((doc) => UserRecipeV2.fromJson(doc.data()))
+              .toList();
 
-      return userReceipes;
-    });
+          return userReceipes;
+        });
   }
 
   @override
@@ -118,36 +137,35 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
         .collection(receipesCollection)
         .doc(receipeId.value)
         .snapshots()
-        .map((snapshot) =>
-            snapshot.exists &&
-            snapshot.data() != null &&
-            snapshot.data()![_isAddedToFavoritesKey] == true);
+        .map(
+          (snapshot) =>
+              snapshot.exists &&
+              snapshot.data() != null &&
+              snapshot.data()![_isAddedToFavoritesKey] == true,
+        );
   }
 
   @override
-  Stream<List<UserReceipeV2>> watchUserReceipe(EntityId uid) {
+  Stream<List<UserRecipeV2>> watchUserReceipe(EntityId uid) {
     return _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
         .collection(receipesCollection)
         .snapshots()
         .map((snapshot) {
-      if (snapshot.docs.isEmpty) {
-        return [];
-      }
-      final userReceipes = snapshot.docs
-          .map((doc) => UserReceipeV2.fromJson(doc.data()))
-          .toList();
+          if (snapshot.docs.isEmpty) {
+            return [];
+          }
+          final userReceipes = snapshot.docs
+              .map((doc) => UserRecipeV2.fromJson(doc.data()))
+              .toList();
 
-      return userReceipes;
-    });
+          return userReceipes;
+        });
   }
 
   @override
-  Future<void> delete({
-    required EntityId uid,
-    required EntityId receipeId,
-  }) {
+  Future<void> delete({required EntityId uid, required EntityId receipeId}) {
     return _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
@@ -157,9 +175,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Future<UserRecipeMetadata?> getUserRecipeMetadata(
-    EntityId uid,
-  ) async {
+  Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid) async {
     final snapshot = await _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
@@ -179,24 +195,23 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     EntityId uid,
     UserRecipeMetadata metadata,
   ) {
-    return _firestore.collection(userReceipeV2Collection).doc(uid.value).set(
-          metadata.toJson(),
-          SetOptions(merge: true),
-        );
+    return _firestore
+        .collection(userReceipeV2Collection)
+        .doc(uid.value)
+        .set(metadata.toJson(), SetOptions(merge: true));
   }
 
   @override
   Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(
-      File file) async {
+    File file,
+  ) async {
     try {
       final apiRoute = "$baseApiUrl/gen-receipe-with-ingredient-picture";
       final fileToSend = await MultipartFile.fromFile(
         file.path,
         filename: file.path.split("/").last,
       );
-      final formData = FormData.fromMap({
-        "file": fileToSend,
-      });
+      final formData = FormData.fromMap({"file": fileToSend});
       final response = await _dio.post(
         apiRoute,
         data: formData,
@@ -207,13 +222,15 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
 
       return TranslatedRecipe.fromJson(json);
     } catch (e) {
-      log('An error occurred while generating recipes with ingredients picture: $e');
+      log(
+        'An error occurred while generating recipes with ingredients picture: $e',
+      );
       return null;
     }
   }
 
   @override
-  Future<void> saveUserReceipe(EntityId uid, UserReceipeV2 recipe) {
+  Future<void> saveUserReceipe(EntityId uid, UserRecipeV2 recipe) {
     return _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
@@ -223,7 +240,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Future<List<UserReceipeV2>> getHomeUserReceipes(EntityId uid) async {
+  Future<List<UserRecipeV2>> getHomeUserReceipes(EntityId uid) async {
     final recipesDocs = await _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
@@ -232,13 +249,14 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
         .get();
 
     return recipesDocs.docs
-        .map<UserReceipeV2>(
-            (userRecipe) => UserReceipeV2.fromJson(userRecipe.data()))
+        .map<UserRecipeV2>(
+          (userRecipe) => UserRecipeV2.fromJson(userRecipe.data()),
+        )
         .toList();
   }
 
   @override
-  Future<List<UserReceipeV2>> getAllUserRecipe(EntityId uid) async {
+  Future<List<UserRecipeV2>> getAllUserRecipe(EntityId uid) async {
     final docSnapshot = await _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
@@ -249,29 +267,27 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     final docs = docSnapshot.docs;
 
     return docs
-        .map<UserReceipeV2>((userRecipe) => UserReceipeV2.fromJson(
-              userRecipe.data(),
-            ))
+        .map<UserRecipeV2>(
+          (userRecipe) => UserRecipeV2.fromJson(userRecipe.data()),
+        )
         .toList();
   }
 
   @override
-  Future<UserReceipeV2?> getRecipeByName(
+  Future<UserRecipeV2?> getRecipeByName(
     AppLanguage appLanguage,
     EntityId recipeName,
     EntityId uid,
   ) async {
-    final filterKey =
-        appLanguage == AppLanguage.fr ? 'receipeFr.name' : 'receipeEn.name';
+    final filterKey = appLanguage == AppLanguage.fr
+        ? 'receipeFr.name'
+        : 'receipeEn.name';
 
     final docSnapshot = await _firestore
         .collection(userReceipeV2Collection)
         .doc(uid.value)
         .collection(receipesCollection)
-        .where(
-          filterKey,
-          isEqualTo: recipeName.value.replaceAll('_', ' '),
-        )
+        .where(filterKey, isEqualTo: recipeName.value.replaceAll('_', ' '))
         .get();
 
     final docs = docSnapshot.docs;
@@ -280,12 +296,13 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     }
 
     final userRecipe = docs.first;
-    return UserReceipeV2.fromJson(userRecipe.data());
+    return UserRecipeV2.fromJson(userRecipe.data());
   }
 
   @override
   Future<RawRecipeFindWithImage> findRecipeWithImage(
-      String recipePathImage) async {
+    String recipePathImage,
+  ) async {
     final apiRoute = "$baseApiUrl/find-recipe-with-picture";
     final file = File(recipePathImage);
 
@@ -293,9 +310,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
       file.path,
       filename: file.path.split("/").last,
     );
-    final formData = FormData.fromMap({
-      "file": fileToSend,
-    });
+    final formData = FormData.fromMap({"file": fileToSend});
     final response = await _dio.post(
       apiRoute,
       data: formData,

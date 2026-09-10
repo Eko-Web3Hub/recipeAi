@@ -30,7 +30,7 @@ class RecipeCard extends StatelessWidget {
     this.redirectionPath = '/home/recipe-details',
   });
 
-  final UserReceipeV2 receipe;
+  final UserRecipeV2 receipe;
   final String redirectionPath;
 
   @override

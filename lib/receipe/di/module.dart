@@ -12,6 +12,7 @@ import 'package:recipe_ai/receipe/domain/repositories/user_recipe_translate.dart
 import 'package:recipe_ai/receipe/infrastructure/receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/receipe_repository_v2.dart';
 import 'package:recipe_ai/receipe/infrastructure/user_recipe_translate_repository.dart';
+import 'package:recipe_ai/utils/local_storage_repo.dart';
 
 class ReceipeModule implements IDiModule {
   const ReceipeModule();
@@ -47,6 +48,7 @@ class ReceipeModule implements IDiModule {
         di<IAuthUserService>(),
         di<IUserReceipeRepositoryV2>(),
         di<IUserRecipeService>(),
+        di<ILocalStorageRepository>(),
       ),
     );
     di.registerFactory<UserRecipeTranslateService>(

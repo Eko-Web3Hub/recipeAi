@@ -8,11 +8,9 @@ abstract class FindRecipeWithImageState {}
 class FindRecipeWithImageLoadingState extends FindRecipeWithImageState {}
 
 class FindRecipeWithImageLoadedState extends FindRecipeWithImageState {
-  final UserReceipeV2 userRecipe;
+  final UserRecipeV2 userRecipe;
 
-  FindRecipeWithImageLoadedState({
-    required this.userRecipe,
-  });
+  FindRecipeWithImageLoadedState({required this.userRecipe});
 }
 
 class FindRecipeWithImageErrorState extends FindRecipeWithImageState {
@@ -22,9 +20,7 @@ class FindRecipeWithImageErrorState extends FindRecipeWithImageState {
 }
 
 class FindRecipeWithImageController extends Cubit<FindRecipeWithImageState?> {
-  FindRecipeWithImageController(
-    this._findRecipeWithImageUsecase,
-  ) : super(null);
+  FindRecipeWithImageController(this._findRecipeWithImageUsecase) : super(null);
 
   Future<void> findRecipe(String recipePathImage) async {
     emit(FindRecipeWithImageLoadingState());
@@ -32,11 +28,7 @@ class FindRecipeWithImageController extends Cubit<FindRecipeWithImageState?> {
       recipePathImage,
     );
 
-    safeEmit(
-      FindRecipeWithImageLoadedState(
-        userRecipe: userRecipe,
-      ),
-    );
+    safeEmit(FindRecipeWithImageLoadedState(userRecipe: userRecipe));
   }
 
   final FindRecipeWithImageUsecase _findRecipeWithImageUsecase;

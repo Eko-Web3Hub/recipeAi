@@ -186,6 +186,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The password is incorrect. Try again or reset your password on the settings page.';
 
   @override
+  String get sessionExpiredLoginAgain =>
+      'Your session has expired. Please log in again.';
+
+  @override
   String get emptyReceipes => 'No recipes 😉. \nGo update your preferences';
 
   @override

@@ -9,10 +9,7 @@ class ChatMessage extends Equatable {
   const ChatMessage(this.message, this.role);
 
   @override
-  List<Object?> get props => [
-        message,
-        role,
-      ];
+  List<Object?> get props => [message, role];
 }
 
 abstract class Visitor {
@@ -45,19 +42,14 @@ class ImageMessage extends ChatMessageType {
   void accept(Visitor visitor) => visitor.visitImageMessage(this);
 }
 
-enum CtaAction {
-  uploadFile,
-}
+enum CtaAction { uploadFile }
 
 class CTAMessage extends ChatMessageType {
   final CtaAction action;
 
   final String text;
 
-  CTAMessage(
-    this.text,
-    this.action,
-  );
+  CTAMessage(this.text, this.action);
 
   @override
   void accept(Visitor visitor) => visitor.visitCTAMessage(this);
@@ -66,23 +58,17 @@ class CTAMessage extends ChatMessageType {
 class LoaderMessage extends ChatMessageType {
   final String text;
 
-  LoaderMessage(
-    this.text,
-  );
+  LoaderMessage(this.text);
 
   @override
-  void accept(Visitor visitor) => visitor.visitLoaderMessage(
-        this,
-      );
+  void accept(Visitor visitor) => visitor.visitLoaderMessage(this);
 }
 
 class RecipeDisplayMessage extends ChatMessageType {
-  final UserReceipeV2 recipe;
+  final UserRecipeV2 recipe;
 
   RecipeDisplayMessage(this.recipe);
 
   @override
-  void accept(Visitor visitor) => visitor.visitRecipeDisplayMessage(
-        this,
-      );
+  void accept(Visitor visitor) => visitor.visitRecipeDisplayMessage(this);
 }

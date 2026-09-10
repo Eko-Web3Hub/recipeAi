@@ -139,7 +139,7 @@ GoRouter createRouter() => GoRouter(
       builder: (context, state) {
         final recipes =
             (state.extra! as Map<String, dynamic>)['recipes']
-                as List<UserReceipeV2>;
+                as List<UserRecipeV2>;
 
         return RecipesIdeaWithIngredientPhotoScreen(recipes: recipes);
       },
@@ -160,7 +160,7 @@ GoRouter createRouter() => GoRouter(
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
         final receipeId = extra['receipeId'] as EntityId?;
-        final receipe = extra['receipe'] as UserReceipeV2?;
+        final receipe = extra['receipe'] as UserRecipeV2?;
 
         return RecipeDetailsView(
           receipeId: receipeId,
@@ -184,7 +184,7 @@ GoRouter createRouter() => GoRouter(
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
         final receipe = extra['receipe'] as Receipe;
-        final userReceipeV2 = extra['userReceipeV2'] as UserReceipeV2;
+        final userReceipeV2 = extra['userReceipeV2'] as UserRecipeV2;
 
         return CookModeScreen(receipe: receipe, userReceipeV2: userReceipeV2);
       },
@@ -248,7 +248,7 @@ GoRouter createRouter() => GoRouter(
                   builder: (context, state) {
                     final extra = state.extra as Map<String, dynamic>;
                     final receipeId = extra['receipeId'] as EntityId?;
-                    final receipe = extra['receipe'] as UserReceipeV2?;
+                    final receipe = extra['receipe'] as UserRecipeV2?;
 
                     return RecipeDetailsView(
                       appLanguage: null,

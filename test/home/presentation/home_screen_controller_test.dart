@@ -1,73 +1,64 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
+import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
+import 'package:recipe_ai/receipe/domain/model/mock_user_receipes.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
-import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
+import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
 class RetrieveReceipeFromApiOneTimePerDayUsecaseMock extends Mock
     implements RetrieveReceipeFromApiOneTimePerDayUsecase {}
 
-class UserReceipeRepositoryMock extends Mock
-    implements IUserReceipeRepository {}
-
-class AuthUserServiceMock extends Mock implements IAuthUserService {}
+class UserRecipeServiceMock extends Mock implements IUserRecipeService {}
 
 void main() {
   late RetrieveReceipeFromApiOneTimePerDayUsecase
-      retrieveReceipeFromApiOneTimePerDayUsecase;
-  late IUserReceipeRepository userReceipeRepository;
-  late IAuthUserService authUserService;
-  const authUser = AuthUser(
-    uid: EntityId('uid'),
-    email: 'test@gmail.com',
-  );
+  retrieveReceipeFromApiOneTimePerDayUsecase;
+  late IUserRecipeService userRecipeService;
 
   DateTime now = DateTime(2024, 10, 2);
 
-  const reciepes = [
-    Receipe(
-      name: 'receipeName',
-      ingredients: [],
-      steps: [],
-      averageTime: 'averageTime',
-      totalCalories: 'totalCalories',
+  const receipe = Receipe(
+    name: 'receipeName',
+    ingredients: [],
+    steps: [],
+    averageTime: 'averageTime',
+    totalCalories: 'totalCalories',
+  );
+
+  final recipes = [
+    UserRecipeV2(
+      id: const EntityId('id'),
+      receipeFr: receipe,
+      receipeEn: receipe,
+      createdDate: now,
     ),
   ];
 
   setUp(() {
     retrieveReceipeFromApiOneTimePerDayUsecase =
         RetrieveReceipeFromApiOneTimePerDayUsecaseMock();
-    userReceipeRepository = UserReceipeRepositoryMock();
-    authUserService = AuthUserServiceMock();
-
-    when(
-      () => authUserService.currentUser,
-    ).thenReturn(
-      authUser,
-    );
+    userRecipeService = UserRecipeServiceMock();
   });
 
   HomeScreenController buildSut() {
     return HomeScreenController(
       retrieveReceipeFromApiOneTimePerDayUsecase,
-      userReceipeRepository,
-      authUserService,
+      userRecipeService,
       now: now,
     );
   }
 
   blocTest<HomeScreenController, HomeScreenState>(
-    'should reload user receiepes based on user preferences',
+    'should reload user receipes based on user preferences',
     build: () => buildSut(),
     setUp: () {
-      when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
-          .thenAnswer(
-        (_) => Future.value(reciepes),
-      );
+      when(
+        () => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now),
+      ).thenAnswer((_) => Future.value(recipes));
     },
     act: (bloc) async {
       await pumpEventQueue();
@@ -75,7 +66,7 @@ void main() {
     },
     expect: () => [
       const HomeScreenStateLoading(),
-      const HomeScreenStateLoaded(reciepes),
+      HomeScreenStateLoaded(recipes),
     ],
   );
 
@@ -83,17 +74,12 @@ void main() {
     'should regenerate user receipe',
     build: () => buildSut(),
     setUp: () {
-      when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
-          .thenAnswer(
-        (_) => Future.value(reciepes),
-      );
       when(
-        () => userReceipeRepository.deleteUserReceipe(
-          authUser.uid,
-        ),
-      ).thenAnswer(
-        (_) => Future.value(),
-      );
+        () => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now),
+      ).thenAnswer((_) => Future.value(recipes));
+      when(
+        () => userRecipeService.removeLastRecipesHomeUpdatedDate(),
+      ).thenAnswer((_) => Future.value());
     },
     act: (bloc) async {
       await pumpEventQueue();
@@ -101,37 +87,48 @@ void main() {
     },
     verify: (bloc) {
       verify(
-        () => userReceipeRepository.deleteUserReceipe(
-          authUser.uid,
-        ),
+        () => userRecipeService.removeLastRecipesHomeUpdatedDate(),
       ).called(1);
     },
     expect: () => [
       const HomeScreenStateLoading(),
-      const HomeScreenStateLoaded(reciepes),
+      HomeScreenStateLoaded(recipes),
     ],
   );
 
   blocTest<HomeScreenController, HomeScreenState>(
-    'should failed when an error occurs',
+    'should fall back to the mock receipe when an error occurs',
     build: () => buildSut(),
     setUp: () {
-      when(() => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now))
-          .thenThrow(
-        const RetrieveReceipeException(),
-      );
+      when(
+        () => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now),
+      ).thenThrow(const RetrieveReceipeException());
     },
     act: (bloc) async {
       await pumpEventQueue();
       await bloc.reload();
     },
-    verify: (bloc) => {
-      expect(
-        bloc.state,
-        equals(
-          const HomeRetrieveReceipeException(),
-        ),
-      ),
+    expect: () => [
+      const HomeScreenStateLoading(),
+      HomeScreenStateLoaded([mockSaladeBassamoiseUserReceipe]),
+    ],
+  );
+
+  blocTest<HomeScreenController, HomeScreenState>(
+    'should require login when the user is not authenticated',
+    build: () => buildSut(),
+    setUp: () {
+      when(
+        () => retrieveReceipeFromApiOneTimePerDayUsecase.retrieve(now),
+      ).thenThrow(const UserNotAuthenticatedException());
     },
+    act: (bloc) async {
+      await pumpEventQueue();
+      await bloc.reload();
+    },
+    expect: () => [
+      const HomeScreenStateLoading(),
+      const HomeScreenStateRequiresLogin(),
+    ],
   );
 }

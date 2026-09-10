@@ -17,7 +17,7 @@ class SavedReceipeStateLoading extends SavedReceipeState {
 
 class SavedReceipeStateLoaded extends SavedReceipeState {
   const SavedReceipeStateLoaded(this.savedReceipes);
-  final List<UserReceipeV2> savedReceipes;
+  final List<UserRecipeV2> savedReceipes;
 
   @override
   List<Object> get props => [savedReceipes];
@@ -34,7 +34,7 @@ class SavedReceipeStateError extends SavedReceipeState {
 /// The controller for the saved receipe screen
 class SavedReceipeController extends Cubit<SavedReceipeState> {
   SavedReceipeController(this._userReceipeService)
-      : super(const SavedReceipeStateLoading()) {
+    : super(const SavedReceipeStateLoading()) {
     _load();
   }
 
@@ -42,11 +42,9 @@ class SavedReceipeController extends Cubit<SavedReceipeState> {
 
   Future<void> _load() async {
     try {
-      _userReceipeService.watchAllSavedReceipes().listen(
-        (savedReceipes) {
-          safeEmit(SavedReceipeStateLoaded(savedReceipes));
-        },
-      );
+      _userReceipeService.watchAllSavedReceipes().listen((savedReceipes) {
+        safeEmit(SavedReceipeStateLoaded(savedReceipes));
+      });
     } on Exception catch (e) {
       log(e.toString());
       emit(SavedReceipeStateError(e.toString()));
