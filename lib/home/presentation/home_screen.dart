@@ -86,37 +86,41 @@ class _HomeScreenState extends State<HomeScreen> {
         color: recipeLoaderCreamColor,
         child: SafeArea(
           bottom: false,
-          child: RefreshIndicator(
-            color: Theme.of(context).primaryColor,
-            onRefresh: () async {
-              context.read<HomeScreenController>().regenerateUserReceipe();
+          // The greeting and the three quick actions are pinned: only the
+          // recipe list scrolls under them.
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 24, 20, 0),
+                child: _HomeHeader(),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 6),
+                child: _QuickActions(),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                  color: Theme.of(context).primaryColor,
+                  onRefresh: () async {
+                    context.read<HomeScreenController>().regenerateUserReceipe();
 
-              return Future.delayed(const Duration(seconds: 1));
-            },
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 24, 20, 0),
-                    child: _HomeHeader(),
+                    return Future.delayed(const Duration(seconds: 1));
+                  },
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 2),
+                          child: _ForYouTodayHeader(),
+                        ),
+                      ),
+                      _HomeRecipes(bottomInset: bottomInset),
+                    ],
                   ),
                 ),
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 6),
-                    child: _QuickActions(),
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 2),
-                    child: _ForYouTodayHeader(),
-                  ),
-                ),
-                _HomeRecipes(bottomInset: bottomInset),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

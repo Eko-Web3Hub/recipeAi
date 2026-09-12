@@ -14,9 +14,9 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-/// Full-screen step-by-step cooking flow, matching 12-mode-cuisine.html.
-/// Ends on a completion screen (13-termine.html) once the last step is
-/// acknowledged.
+/// Full-screen step-by-step cooking flow, matching the "09 · Mode cuisine"
+/// artboard. Ends on a completion screen ("10 · Terminé") once the last step
+/// is acknowledged. Both run on the cream background of the rest of the app.
 class CookModeScreen extends StatefulWidget {
   const CookModeScreen({
     super.key,
@@ -57,10 +57,13 @@ class _CookModeScreenState extends State<CookModeScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: _finished ? Colors.white : recipeLoaderInkColor,
+        backgroundColor: recipeLoaderCreamColor,
         body: SafeArea(
           child: _finished
-              ? _CookModeFinishedView(userReceipeV2: widget.userReceipeV2)
+              ? _CookModeFinishedView(
+                  userReceipeV2: widget.userReceipeV2,
+                  onClose: () => context.pop(),
+                )
               : _CookModeStepView(
                   step: widget.receipe.steps[_currentStepIndex],
                   stepIndex: _currentStepIndex,
@@ -104,14 +107,7 @@ class _CookModeStepView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InkWell(
-                onTap: onClose,
-                borderRadius: BorderRadius.circular(20),
-                child: const Padding(
-                  padding: EdgeInsets.all(6),
-                  child: Icon(Icons.close, size: 16, color: Colors.white),
-                ),
-              ),
+              _CookModeCloseButton(onTap: onClose),
               Row(
                 children: List.generate(stepCount, (i) {
                   return Padding(
@@ -122,8 +118,8 @@ class _CookModeStepView extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         color: i == stepIndex
-                            ? Colors.white
-                            : Colors.white.withValues(alpha: 0.3),
+                            ? recipeLoaderGreenColor
+                            : recipeLoaderInkColor.withValues(alpha: 0.12),
                       ),
                     ),
                   );
@@ -135,7 +131,7 @@ class _CookModeStepView extends StatelessWidget {
                   fontFamily: robotoFontFamily,
                   fontWeight: FontWeight.w500,
                   fontSize: 11,
-                  color: Colors.white.withValues(alpha: 0.6),
+                  color: recipeLoaderInkColor.withValues(alpha: 0.45),
                 ),
               ),
             ],
@@ -153,7 +149,7 @@ class _CookModeStepView extends StatelessWidget {
                     fontFamily: robotoSlabFontFamily,
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
-                    color: recipeCookModeAccentColor,
+                    color: recipeLoaderGreenColor,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -165,7 +161,7 @@ class _CookModeStepView extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     fontSize: 24,
                     height: 1.5,
-                    color: Colors.white,
+                    color: recipeLoaderInkColor,
                   ),
                 ),
                 if (step.duration != null) ...[
@@ -202,6 +198,26 @@ class _CookModeStepView extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// The single way out of the cook mode, shown on the steps and on the
+/// completion screen alike.
+class _CookModeCloseButton extends StatelessWidget {
+  const _CookModeCloseButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: const Padding(
+        padding: EdgeInsets.all(6),
+        child: Icon(Icons.close, size: 16, color: recipeLoaderInkColor),
+      ),
     );
   }
 }
@@ -264,13 +280,17 @@ class _StepTimerChipState extends State<_StepTimerChip> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
+        color: recipeLoaderGreenColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(100),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.access_time, size: 16, color: recipeCookModeAccentColor),
+          const Icon(
+            Icons.access_time,
+            size: 16,
+            color: recipeLoaderGreenColor,
+          ),
           const SizedBox(width: 8),
           Text(
             label,
@@ -278,7 +298,7 @@ class _StepTimerChipState extends State<_StepTimerChip> {
               fontFamily: robotoFontFamily,
               fontWeight: FontWeight.w700,
               fontSize: 15,
-              color: Colors.white,
+              color: recipeLoaderInkColor,
             ),
           ),
         ],
@@ -302,7 +322,7 @@ class _CookModePrimaryButton extends StatelessWidget {
         height: 52,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: recipeCookModeAccentColor,
+          color: recipeLoaderGreenColor,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Text(
@@ -311,7 +331,7 @@ class _CookModePrimaryButton extends StatelessWidget {
             fontFamily: robotoFontFamily,
             fontWeight: FontWeight.w600,
             fontSize: 13.5,
-            color: recipeLoaderInkColor,
+            color: Colors.white,
           ),
         ),
       ),
@@ -336,7 +356,9 @@ class _CookModeSecondaryButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
-            color: Colors.white.withValues(alpha: onTap == null ? 0.12 : 0.3),
+            color: recipeLoaderGreenColor.withValues(
+              alpha: onTap == null ? 0.25 : 0.6,
+            ),
             width: 1.5,
           ),
         ),
@@ -346,7 +368,9 @@ class _CookModeSecondaryButton extends StatelessWidget {
             fontFamily: robotoFontFamily,
             fontWeight: FontWeight.w600,
             fontSize: 13.5,
-            color: Colors.white.withValues(alpha: onTap == null ? 0.3 : 1),
+            color: recipeLoaderGreenColor.withValues(
+              alpha: onTap == null ? 0.35 : 1,
+            ),
           ),
         ),
       ),
@@ -355,9 +379,13 @@ class _CookModeSecondaryButton extends StatelessWidget {
 }
 
 class _CookModeFinishedView extends StatefulWidget {
-  const _CookModeFinishedView({required this.userReceipeV2});
+  const _CookModeFinishedView({
+    required this.userReceipeV2,
+    required this.onClose,
+  });
 
   final UserRecipeV2 userReceipeV2;
+  final VoidCallback onClose;
 
   @override
   State<_CookModeFinishedView> createState() => _CookModeFinishedViewState();
@@ -388,92 +416,110 @@ class _CookModeFinishedViewState extends State<_CookModeFinishedView> {
         di<IUserRecipeService>(),
         di<IAnalyticsRepository>(),
       ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 36),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 76,
-                height: 76,
-                decoration: const BoxDecoration(
-                  color: recipeLoaderGreenColor,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.check, color: Colors.white, size: 34),
-              ),
-              const SizedBox(height: 22),
-              Text(
-                appTexts.cookModeFinishedTitle,
-                style: const TextStyle(
-                  fontFamily: robotoSlabFontFamily,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 23,
-                  color: recipeLoaderInkColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                appTexts.cookModeFinishedSubtitle,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: robotoFontFamily,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 13,
-                  height: 1.5,
-                  color: recipeLoaderInkColor.withValues(alpha: 0.55),
-                ),
-              ),
-              const SizedBox(height: 22),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (i) {
-                  final filled = i < _rating;
-                  return InkWell(
-                    onTap: () => setState(() => _rating = i + 1),
-                    customBorder: const CircleBorder(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Icon(
-                        filled ? Icons.star : Icons.star_border,
-                        size: 24,
-                        color: filled
-                            ? recipeLoaderGreenColor
-                            : recipeLoaderInkColor.withValues(alpha: 0.2),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: _CookModeCloseButton(onTap: widget.onClose),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(36, 0, 36, 48),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 76,
+                      height: 76,
+                      decoration: const BoxDecoration(
+                        color: recipeLoaderGreenColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 34,
                       ),
                     ),
-                  );
-                }),
-              ),
-              const SizedBox(height: 22),
-              SizedBox(
-                width: double.infinity,
-                child: BlocBuilder<ReceipeItemController, ReceipeItemState>(
-                  builder: (context, state) {
-                    final saved = state is ReceipeItemStateSaved;
-                    return _CookModePrimaryButton(
-                      label: saved
-                          ? appTexts.cookModeAddedToFavorites
-                          : appTexts.cookModeAddToFavorites,
-                      onTap: () => context
-                          .read<ReceipeItemController>()
-                          .toggleFavorite(),
-                    );
-                  },
+                    const SizedBox(height: 22),
+                    Text(
+                      appTexts.cookModeFinishedTitle,
+                      style: const TextStyle(
+                        fontFamily: robotoSlabFontFamily,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 23,
+                        color: recipeLoaderInkColor,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      appTexts.cookModeFinishedSubtitle,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: robotoFontFamily,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        height: 1.5,
+                        color: recipeLoaderInkColor.withValues(alpha: 0.55),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (i) {
+                        final filled = i < _rating;
+                        return InkWell(
+                          onTap: () => setState(() => _rating = i + 1),
+                          customBorder: const CircleBorder(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: Icon(
+                              filled ? Icons.star : Icons.star_border,
+                              size: 30,
+                              color: filled
+                                  ? recipeLoaderGreenColor
+                                  : recipeLoaderInkColor.withValues(alpha: 0.2),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child:
+                          BlocBuilder<ReceipeItemController, ReceipeItemState>(
+                            builder: (context, state) {
+                              final saved = state is ReceipeItemStateSaved;
+                              return _CookModePrimaryButton(
+                                label: saved
+                                    ? appTexts.cookModeAddedToFavorites
+                                    : appTexts.cookModeAddToFavorites,
+                                onTap: () => context
+                                    .read<ReceipeItemController>()
+                                    .toggleFavorite(),
+                              );
+                            },
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: _CookModeGhostButton(
+                        label: appTexts.recipeDetailsMarkAsCooked,
+                        onTap: () => _showComingSoon(context),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: _CookModeGhostButton(
-                  label: appTexts.recipeDetailsMarkAsCooked,
-                  onTap: () => _showComingSoon(context),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -46,7 +46,6 @@ const recipeDetailAmberTagTextColor = Color(0xFFA5761F);
 const recipeDetailCaloriesBarColor = Color(0xFFE8873B);
 const recipeDetailCarbsBarColor = Color(0xFFD9B036);
 const recipeDetailLipidsBarColor = Color(0xFFC96F4A);
-const recipeCookModeAccentColor = Color(0xFFBFE0AE);
 
 const foodFactCardBackgroundColor = Color(0xfff7e8c4);
 
