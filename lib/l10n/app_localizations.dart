@@ -1237,6 +1237,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark as cooked'**
   String get markAsCooked;
+
+  /// Home header title, below the greeting
+  ///
+  /// In en, this message translates to:
+  /// **'What are we cooking today?'**
+  String get homeCookWhatToday;
+
+  /// Label of the home shortcut that opens the shopping list
+  ///
+  /// In en, this message translates to:
+  /// **'My list'**
+  String get homeQuickActionList;
+
+  /// Label of the home shortcut that opens the fridge inventory
+  ///
+  /// In en, this message translates to:
+  /// **'My fridge'**
+  String get homeQuickActionFridge;
+
+  /// Label of the home shortcut that generates a recipe from a photo
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get homeQuickActionPhoto;
+
+  /// Title of the recommended recipes section on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'For you today'**
+  String get homeForYouToday;
+
+  /// Subtitle of the recommended recipes section on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tailored to your preferences'**
+  String get homeForYouTodaySubtitle;
+
+  /// Label of the Home tab in the bottom navigation bar
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// Onboarding: welcomeTagline
+  ///
+  /// In en, this message translates to:
+  /// **'Say goodbye to “What are we eating tonight?”'**
+  String get welcomeTagline;
+
+  /// Onboarding: welcomeStartCta
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get welcomeStartCta;
+
+  /// Onboarding: welcomeAlreadyHaveAccount
+  ///
+  /// In en, this message translates to:
+  /// **'I already have an account'**
+  String get welcomeAlreadyHaveAccount;
+
+  /// Onboarding: notificationPermissionTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications'**
+  String get notificationPermissionTitle;
+
+  /// Onboarding: notificationPreviewTime
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get notificationPreviewTime;
+
+  /// Onboarding: notificationPreviewTitle
+  ///
+  /// In en, this message translates to:
+  /// **'💧 Time to hydrate!'**
+  String get notificationPreviewTitle;
+
+  /// Onboarding: notificationPreviewBody
+  ///
+  /// In en, this message translates to:
+  /// **'A big glass of water now, your body will thank you.'**
+  String get notificationPreviewBody;
+
+  /// Onboarding: notificationPermissionWhy
+  ///
+  /// In en, this message translates to:
+  /// **'Why turn notifications on?'**
+  String get notificationPermissionWhy;
+
+  /// Onboarding: notificationPermissionBody
+  ///
+  /// In en, this message translates to:
+  /// **'No spam, promise. We only notify you when it is genuinely useful.'**
+  String get notificationPermissionBody;
+
+  /// Onboarding: notificationPermissionBody2
+  ///
+  /// In en, this message translates to:
+  /// **'Turn notifications on to get your reminders and our food facts.'**
+  String get notificationPermissionBody2;
+
+  /// Onboarding: notificationPermissionLater
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get notificationPermissionLater;
+
+  /// Onboarding: onboardingContinue
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingContinue;
+
+  /// Progress counter of the onboarding, e.g. 2/5
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{total}'**
+  String onboardingStepCounter(int current, int total);
+
+  /// Onboarding: onboardingBack
+  ///
+  /// In en, this message translates to:
+  /// **'Previous step'**
+  String get onboardingBack;
+
+  /// Onboarding: onboardingDietTitle
+  ///
+  /// In en, this message translates to:
+  /// **'What is your dietary profile?'**
+  String get onboardingDietTitle;
+
+  /// Onboarding: onboardingDietHelper
+  ///
+  /// In en, this message translates to:
+  /// **'Pick as many as you need — every recipe adapts to them.'**
+  String get onboardingDietHelper;
+
+  /// Onboarding: dietNoRestriction
+  ///
+  /// In en, this message translates to:
+  /// **'No restriction'**
+  String get dietNoRestriction;
+
+  /// Onboarding: dietVegetarian
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetarian'**
+  String get dietVegetarian;
+
+  /// Onboarding: dietGlutenFree
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten free'**
+  String get dietGlutenFree;
+
+  /// Onboarding: dietLactoseFree
+  ///
+  /// In en, this message translates to:
+  /// **'Lactose free'**
+  String get dietLactoseFree;
+
+  /// Onboarding: dietVegan
+  ///
+  /// In en, this message translates to:
+  /// **'Vegan'**
+  String get dietVegan;
+
+  /// Onboarding: onboardingMorphologyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about you'**
+  String get onboardingMorphologyTitle;
+
+  /// Onboarding: onboardingMorphologyHelper
+  ///
+  /// In en, this message translates to:
+  /// **'This is used to compute your calorie needs. It stays private.'**
+  String get onboardingMorphologyHelper;
+
+  /// Onboarding: morphologyGender
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get morphologyGender;
+
+  /// Onboarding: genderFemale
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get genderFemale;
+
+  /// Onboarding: genderMale
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get genderMale;
+
+  /// Onboarding: genderOther
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get genderOther;
+
+  /// Onboarding: morphologyHeight
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get morphologyHeight;
+
+  /// Onboarding: morphologyWeight
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get morphologyWeight;
+
+  /// Onboarding: unitCentimeter
+  ///
+  /// In en, this message translates to:
+  /// **'cm'**
+  String get unitCentimeter;
+
+  /// Onboarding: unitKilogram
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get unitKilogram;
+
+  /// Onboarding: bmiLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Your BMI'**
+  String get bmiLabel;
+
+  /// Onboarding: bmiUnderweight
+  ///
+  /// In en, this message translates to:
+  /// **'Underweight'**
+  String get bmiUnderweight;
+
+  /// Onboarding: bmiNormal
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get bmiNormal;
+
+  /// Onboarding: bmiOverweight
+  ///
+  /// In en, this message translates to:
+  /// **'Overweight'**
+  String get bmiOverweight;
+
+  /// Onboarding: bmiObesity
+  ///
+  /// In en, this message translates to:
+  /// **'Obesity'**
+  String get bmiObesity;
+
+  /// Onboarding: bmiStatusUnderweight
+  ///
+  /// In en, this message translates to:
+  /// **'Underweight'**
+  String get bmiStatusUnderweight;
+
+  /// Onboarding: bmiStatusNormal
+  ///
+  /// In en, this message translates to:
+  /// **'Normal weight'**
+  String get bmiStatusNormal;
+
+  /// Onboarding: bmiStatusOverweight
+  ///
+  /// In en, this message translates to:
+  /// **'Overweight'**
+  String get bmiStatusOverweight;
+
+  /// Onboarding: bmiStatusObesity
+  ///
+  /// In en, this message translates to:
+  /// **'Obesity'**
+  String get bmiStatusObesity;
+
+  /// Onboarding: onboardingActivityTitle
+  ///
+  /// In en, this message translates to:
+  /// **'What is your activity level?'**
+  String get onboardingActivityTitle;
+
+  /// Onboarding: onboardingActivityHelper
+  ///
+  /// In en, this message translates to:
+  /// **'We adjust the calories and portions of your recipes to your energy needs.'**
+  String get onboardingActivityHelper;
+
+  /// Onboarding: activitySedentary
+  ///
+  /// In en, this message translates to:
+  /// **'Sedentary'**
+  String get activitySedentary;
+
+  /// Onboarding: activitySedentaryDescription
+  ///
+  /// In en, this message translates to:
+  /// **'Little to no exercise, desk job'**
+  String get activitySedentaryDescription;
+
+  /// Onboarding: activityLightlyActive
+  ///
+  /// In en, this message translates to:
+  /// **'Lightly active'**
+  String get activityLightlyActive;
+
+  /// Onboarding: activityLightlyActiveDescription
+  ///
+  /// In en, this message translates to:
+  /// **'1 to 3 sessions a week'**
+  String get activityLightlyActiveDescription;
+
+  /// Onboarding: activityModeratelyActive
+  ///
+  /// In en, this message translates to:
+  /// **'Moderately active'**
+  String get activityModeratelyActive;
+
+  /// Onboarding: activityModeratelyActiveDescription
+  ///
+  /// In en, this message translates to:
+  /// **'3 to 5 sessions a week'**
+  String get activityModeratelyActiveDescription;
+
+  /// Onboarding: activityVeryActive
+  ///
+  /// In en, this message translates to:
+  /// **'Very active'**
+  String get activityVeryActive;
+
+  /// Onboarding: activityVeryActiveDescription
+  ///
+  /// In en, this message translates to:
+  /// **'6 to 7 sessions a week'**
+  String get activityVeryActiveDescription;
+
+  /// Onboarding: activityAthlete
+  ///
+  /// In en, this message translates to:
+  /// **'Athlete'**
+  String get activityAthlete;
+
+  /// Onboarding: activityAthleteDescription
+  ///
+  /// In en, this message translates to:
+  /// **'Intense daily training'**
+  String get activityAthleteDescription;
+
+  /// Onboarding: onboardingGoalsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'What are your goals?'**
+  String get onboardingGoalsTitle;
+
+  /// Onboarding: onboardingGoalsHelper
+  ///
+  /// In en, this message translates to:
+  /// **'Health or nutrition wise. Pick as many as you want.'**
+  String get onboardingGoalsHelper;
+
+  /// Onboarding: goalWeightLoss
+  ///
+  /// In en, this message translates to:
+  /// **'Weight loss'**
+  String get goalWeightLoss;
+
+  /// Onboarding: goalWeightLossDescription
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle, sustainable calorie deficit'**
+  String get goalWeightLossDescription;
+
+  /// Onboarding: goalHealthImprovement
+  ///
+  /// In en, this message translates to:
+  /// **'Better health'**
+  String get goalHealthImprovement;
+
+  /// Onboarding: goalHealthImprovementDescription
+  ///
+  /// In en, this message translates to:
+  /// **'Balance, fibre and micronutrients'**
+  String get goalHealthImprovementDescription;
+
+  /// Onboarding: goalMuscleGain
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle gain'**
+  String get goalMuscleGain;
+
+  /// Onboarding: goalMuscleGainDescription
+  ///
+  /// In en, this message translates to:
+  /// **'Higher protein intake'**
+  String get goalMuscleGainDescription;
+
+  /// Onboarding: goalDetox
+  ///
+  /// In en, this message translates to:
+  /// **'Detox'**
+  String get goalDetox;
+
+  /// Onboarding: goalDetoxDescription
+  ///
+  /// In en, this message translates to:
+  /// **'Light, unprocessed, hydrating'**
+  String get goalDetoxDescription;
+
+  /// Onboarding: onboardingChronicDiseaseTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Do you have a chronic condition?'**
+  String get onboardingChronicDiseaseTitle;
+
+  /// Onboarding: onboardingChronicDiseaseHelper
+  ///
+  /// In en, this message translates to:
+  /// **'To adjust sugar, salt and fat intake. This stays confidential.'**
+  String get onboardingChronicDiseaseHelper;
+
+  /// Onboarding: chronicDiabetes
+  ///
+  /// In en, this message translates to:
+  /// **'Diabetes'**
+  String get chronicDiabetes;
+
+  /// Onboarding: chronicCardiovascular
+  ///
+  /// In en, this message translates to:
+  /// **'Cardiovascular disease'**
+  String get chronicCardiovascular;
+
+  /// Onboarding: chronicOverweight
+  ///
+  /// In en, this message translates to:
+  /// **'Overweight'**
+  String get chronicOverweight;
+
+  /// Onboarding: chronicHypertension
+  ///
+  /// In en, this message translates to:
+  /// **'High blood pressure'**
+  String get chronicHypertension;
+
+  /// Onboarding: chronicSmop
+  ///
+  /// In en, this message translates to:
+  /// **'PCOS'**
+  String get chronicSmop;
+
+  /// Onboarding: chronicOtherHint
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get chronicOtherHint;
+
+  /// Onboarding: onboardingChronicDiseaseFootnote
+  ///
+  /// In en, this message translates to:
+  /// **'Eat\'Easy is not a medical device. Talk to a healthcare professional for any follow-up.'**
+  String get onboardingChronicDiseaseFootnote;
 }
 
 class _AppLocalizationsDelegate

@@ -27,11 +27,12 @@ import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_s
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
+import 'package:recipe_ai/nav/animated_branch_container.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/nav/splash_screen.dart';
 import 'package:recipe_ai/notification/presentation/notification_screen.dart';
-import 'package:recipe_ai/onboarding/presentation/onboarding_view.dart';
-import 'package:recipe_ai/onboarding/presentation/start_screen.dart';
+import 'package:recipe_ai/onboarding/presentation/notification_permission_screen.dart';
+import 'package:recipe_ai/onboarding/presentation/welcome_screen.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
@@ -89,12 +90,15 @@ GoRouter createRouter() => GoRouter(
       name: 'OnBoarding',
       path: '/onboarding',
       //  redirect: _guardOnboarding,
-      builder: (context, state) => const OnboardingView(),
+      builder: (context, state) => const WelcomeScreen(),
       routes: <RouteBase>[
         GoRoute(
           name: 'start',
           path: 'start',
-          builder: (context, state) => const StartScreen(),
+          // Same screen as '/onboarding': the redesign merged the carousel and
+          // the former "Se connecter / Créer un compte" screen, and the
+          // existing go('/onboarding/start') call sites still work.
+          builder: (context, state) => const WelcomeScreen(),
           routes: [
             GoRoute(
               name: 'Login',
@@ -114,6 +118,11 @@ GoRouter createRouter() => GoRouter(
           name: 'Register',
           path: '/register',
           builder: (context, state) => const RegisterView(),
+        ),
+        GoRoute(
+          name: 'NotificationPermission',
+          path: 'notifications',
+          builder: (context, state) => const NotificationPermissionScreen(),
         ),
       ],
     ),
@@ -181,7 +190,12 @@ GoRouter createRouter() => GoRouter(
       },
     ),
 
-    StatefulShellRoute.indexedStack(
+    StatefulShellRoute(
+      navigatorContainerBuilder: (context, navigationShell, children) =>
+          AnimatedBranchContainer(
+            currentIndex: navigationShell.currentIndex,
+            children: children,
+          ),
       builder: (context, state, navigationShell) => ListenableBuilder(
         listenable: di<TranslationController>(),
         builder: (context, _) {

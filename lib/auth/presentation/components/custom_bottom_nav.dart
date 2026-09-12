@@ -1,67 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:recipe_ai/home/presentation/translated_text.dart';
+import 'package:recipe_ai/l10n/app_localizations.dart';
+import 'package:recipe_ai/utils/colors.dart';
+import 'package:recipe_ai/utils/constant.dart';
 
-/// ---- Couleurs (adapte si besoin)
-const Color barBg = Colors.white;
-const Color barStroke = Color(0xFFF0EAD9);
-const Color iconIdle = Color(0xFF3F4953);
-const Color iconActive = Color(0xFF2DBE48);
-const Color fabBg = Color(0xFFFFAD30);
-
-/// ---- Notch très douce façon “U”, plus arrondie que CircularNotchedRectangle
-class SoftUNotch extends NotchedShape {
-  const SoftUNotch({this.cornerRadius = 18, this.notchRadius = 36});
-
-  final double cornerRadius;
-  final double notchRadius;
-
-  @override
-  Path getOuterPath(Rect host, Rect? guest) {
-    final r = cornerRadius;
-    final p = Path()
-      ..addRRect(RRect.fromRectAndRadius(host, Radius.circular(r)));
-
-    if (guest == null || guest.isEmpty) return p;
-
-    // Centre du notch
-    final c = guest.center;
-    final notchR = notchRadius;
-
-    // Découpe un "U" très doux (cubic) dans le bord supérieur
-    final top = host.top;
-    final left = host.left;
-    final right = host.right;
-
-    final notchWidth = notchR * 2.2; // un peu plus large que le FAB
-    final notchDepth = notchR * 1.1; // profondeur
-
-    final notchLeftX = c.dx - notchWidth / 2;
-    final notchRightX = c.dx + notchWidth / 2;
-
-    // Path du fond puis on soustrait le notch
-    final notch = Path()
-      ..moveTo(left + r, top) // départ bord sup gauche (après arrondi)
-      ..lineTo(notchLeftX, top)
-      // cubic qui descend puis remonte (U)
-      ..cubicTo(
-        notchLeftX + notchWidth * 0.10, top, // contrôle 1
-        c.dx - notchWidth * 0.36, top + notchDepth, // contrôle 2
-        c.dx, top + notchDepth, // bas du U
-      )
-      ..cubicTo(
-        c.dx + notchWidth * 0.36, top + notchDepth, // contrôle 3
-        notchRightX - notchWidth * 0.10, top, // contrôle 4
-        notchRightX, top, // sortie U
-      )
-      ..lineTo(right - r, top)
-      ..close();
-
-    // Combine: fond arrondi - encoche
-    return Path.combine(PathOperation.difference, p, notch);
-  }
-}
-
-/// ---- Barre complète (fond, halo, encoche, ombres)
+/// Floating navigation bar of the redesign (matches the 06-accueil.html
+/// mockup): a white pill split in five equal slots, the middle one left empty
+/// for the [ChefFab] docked on top of it.
 class FancyBottomBar extends StatelessWidget {
   const FancyBottomBar({
     super.key,
@@ -70,155 +16,62 @@ class FancyBottomBar extends StatelessWidget {
     required this.onTap,
   });
 
+  /// Exactly four items: two on the left of the FAB, two on its right.
   final List<BarItemData> items;
   final int currentIndex;
   final void Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          // Ombre externe douce (carte)
-          Container(
-            height: 76,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                  blurRadius: 18,
-                  spreadRadius: 0,
-                  offset: Offset(0, 6),
-                  color: Color(0x1A000000),
-                ),
-              ],
-            ),
-          ),
+    assert(items.length == 4, 'The bar is laid out around four items');
 
-          // Fond + encoche
-          ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: CustomPaint(
-              painter: _StrokePainter(), // léger liseré beige
-              child: BottomAppBar(
-                // Important : on laisse BottomAppBar dessiner le materiel,
-                // mais on remplace sa forme par la nôtre (encoche U)
-                color: barBg,
-                elevation: 0,
-                shape: const SoftUNotch(),
-                notchMargin: 10,
-                height: 76,
-                child: SafeArea(
-                  top: false,
-                  child: Row(
-                    children: [
-                      for (int i = 0; i < 2; i++)
-                        _BarItem(
-                          data: items[i],
-                          index: i,
-                          current: currentIndex,
-                          onTap: onTap,
-                        ),
-                      const SizedBox(width: 64), // place pour le FAB
-                      for (int i = 2; i < 4; i++)
-                        _BarItem(
-                          data: items[i],
-                          index: i,
-                          current: currentIndex,
-                          onTap: onTap,
-                        ),
-                    ],
-                  ),
-                ),
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        child: Container(
+          height: 58,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(29),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x2E22331F),
+                blurRadius: 26,
+                spreadRadius: -6,
+                offset: Offset(0, 10),
               ),
-            ),
+              BoxShadow(
+                color: Color(0x0F22331F),
+                blurRadius: 6,
+                offset: Offset(0, 2),
+              ),
+            ],
           ),
-
-          // Halo derrière le FAB (glow)
-          Positioned(
-            top: 0,
-            child: IgnorePointer(
-              child: Container(
-                width: 120,
-                height: 60,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 36,
-                      spreadRadius: 6,
-                      offset: Offset(0, 8),
-                      color: Color(0x33FFAD30),
+          child: Material(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(29),
+            clipBehavior: Clip.antiAlias,
+            child: Row(
+              children: [
+                for (var index = 0; index < 2; index++)
+                  Expanded(
+                    child: _BarItem(
+                      data: items[index],
+                      selected: index == currentIndex,
+                      onTap: () => onTap(index),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StrokePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final r = RRect.fromRectAndRadius(
-      Offset.zero & size,
-      const Radius.circular(20),
-    );
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
-      ..color = barStroke;
-    canvas.drawRRect(r, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class BarItemData {
-  const BarItemData(this.asset);
-  final String asset; // chemin SVG
-}
-
-class _BarItem extends StatelessWidget {
-  const _BarItem({
-    required this.data,
-    required this.index,
-    required this.current,
-    required this.onTap,
-  });
-
-  final BarItemData data;
-  final int index;
-  final int current;
-  final void Function(int) onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final selected = index == current;
-    return Expanded(
-      child: InkWell(
-        onTap: () => onTap(index),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        child: Center(
-          child: AnimatedScale(
-            duration: const Duration(milliseconds: 150),
-            scale: selected ? 1.05 : 1.0,
-            child: SvgPicture.asset(
-              data.asset,
-              width: 26,
-              height: 26,
-              colorFilter: ColorFilter.mode(
-                selected ? iconActive : iconIdle,
-                BlendMode.srcIn,
-              ),
+                  ),
+                // Slot left empty for the docked FAB.
+                const Spacer(),
+                for (var index = 2; index < 4; index++)
+                  Expanded(
+                    child: _BarItem(
+                      data: items[index],
+                      selected: index == currentIndex,
+                      onTap: () => onTap(index),
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
@@ -227,57 +80,128 @@ class _BarItem extends StatelessWidget {
   }
 }
 
-/// ---- FAB rond + chef + ombre interne
+class BarItemData {
+  const BarItemData({required this.asset, required this.labelSelector});
+
+  /// Path of the SVG glyph, tinted by the bar.
+  final String asset;
+  final String Function(AppLocalizations lang) labelSelector;
+}
+
+class _BarItem extends StatelessWidget {
+  const _BarItem({
+    required this.data,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final BarItemData data;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    // The selection is animated by hand rather than with an ink splash: a
+    // splash would paint a square that fights with the rounded pill.
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Center(
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 0, end: selected ? 1 : 0),
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOut,
+          builder: (context, progress, child) {
+            final color = Color.lerp(
+              bottomNavInactiveColor,
+              bottomNavActiveColor,
+              progress,
+            )!;
+
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+              decoration: BoxDecoration(
+                color: recipeLoaderMintColor.withValues(alpha: progress),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    data.asset,
+                    width: 20,
+                    height: 20,
+                    colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                  ),
+                  const SizedBox(height: 2),
+                  TranslatedText(
+                    textSelector: data.labelSelector,
+                    style: TextStyle(
+                      fontFamily: robotoFontFamily,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10.5,
+                      color: color,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/// Round action button docked on the top edge of the [FancyBottomBar].
 class ChefFab extends StatelessWidget {
-  const ChefFab({super.key, required this.onPressed, this.iconAsset});
+  const ChefFab({
+    super.key,
+    required this.onPressed,
+    this.iconAsset = 'assets/icon/nav_chef_hat.svg',
+  });
 
   final VoidCallback onPressed;
-  final String? iconAsset; // ex: 'assets/icons/chef_hat.svg'
+  final String iconAsset;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 76,
-      height: 76,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // halo discret
-          Container(
-            width: 76,
-            height: 76,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 40,
-                  spreadRadius: 0,
-                  offset: Offset(0, 6),
-                  color: Color(0x33000000),
+      width: 54,
+      height: 54,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: bottomNavFabColor,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 4),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x80D88A14),
+              blurRadius: 18,
+              spreadRadius: -4,
+              offset: Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          shape: const CircleBorder(),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onPressed,
+            child: Center(
+              child: SvgPicture.asset(
+                iconAsset,
+                width: 26,
+                height: 26,
+                colorFilter: const ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
                 ),
-              ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 22.0, bottom: 10),
-            child: FloatingActionButton(
-              heroTag: 'chef_fab',
-              onPressed: onPressed,
-              elevation: 0,
-              backgroundColor: fabBg,
-              shape: const CircleBorder(),
-              child: iconAsset == null
-                  ? const Icon(Icons.restaurant, color: Colors.white, size: 28)
-                  : SvgPicture.asset(
-                      iconAsset!,
-                      width: 28,
-                      height: 28,
-                      colorFilter:
-                          const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                    ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

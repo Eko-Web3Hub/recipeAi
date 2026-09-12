@@ -628,4 +628,253 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get markAsCooked => 'Marquer comme cuisiné';
+
+  @override
+  String get homeCookWhatToday => 'On cuisine quoi aujourd\'hui ?';
+
+  @override
+  String get homeQuickActionList => 'Ma liste';
+
+  @override
+  String get homeQuickActionFridge => 'Mon frigo';
+
+  @override
+  String get homeQuickActionPhoto => 'Photo';
+
+  @override
+  String get homeForYouToday => 'Pour toi aujourd\'hui';
+
+  @override
+  String get homeForYouTodaySubtitle => 'Adaptées à tes préférences';
+
+  @override
+  String get navHome => 'Accueil';
+
+  @override
+  String get welcomeTagline =>
+      'Dis adieu à la question : « On mange quoi ce soir ? »';
+
+  @override
+  String get welcomeStartCta => 'Commencer';
+
+  @override
+  String get welcomeAlreadyHaveAccount => 'J\'ai déjà un compte';
+
+  @override
+  String get notificationPermissionTitle => 'Autoriser les notifications';
+
+  @override
+  String get notificationPreviewTime => 'maintenant';
+
+  @override
+  String get notificationPreviewTitle => '💧 Pense à t\'hydrater !';
+
+  @override
+  String get notificationPreviewBody =>
+      'Un grand verre d\'eau maintenant, ton corps te dira merci.';
+
+  @override
+  String get notificationPermissionWhy =>
+      'Pourquoi activer les notifications ?';
+
+  @override
+  String get notificationPermissionBody =>
+      'Promis, pas de spam. On te notifie uniquement lorsque c\'est vraiment utile.';
+
+  @override
+  String get notificationPermissionBody2 =>
+      'Active les notifications pour recevoir tes rappels ou nos food facts.';
+
+  @override
+  String get notificationPermissionLater => 'Plus tard';
+
+  @override
+  String get onboardingContinue => 'Continuer';
+
+  @override
+  String onboardingStepCounter(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get onboardingBack => 'Étape précédente';
+
+  @override
+  String get onboardingDietTitle => 'Quel est ton profil alimentaire ?';
+
+  @override
+  String get onboardingDietHelper =>
+      'Plusieurs choix possibles — on adapte chaque recette à tes besoins.';
+
+  @override
+  String get dietNoRestriction => 'Aucune restriction';
+
+  @override
+  String get dietVegetarian => 'Végétarien';
+
+  @override
+  String get dietGlutenFree => 'Sans gluten';
+
+  @override
+  String get dietLactoseFree => 'Sans lactose';
+
+  @override
+  String get dietVegan => 'Végétalien';
+
+  @override
+  String get onboardingMorphologyTitle => 'Parle-nous de toi';
+
+  @override
+  String get onboardingMorphologyHelper =>
+      'Ces données servent à calculer tes besoins caloriques. Elles restent privées.';
+
+  @override
+  String get morphologyGender => 'Sexe';
+
+  @override
+  String get genderFemale => 'Femme';
+
+  @override
+  String get genderMale => 'Homme';
+
+  @override
+  String get genderOther => 'Autre';
+
+  @override
+  String get morphologyHeight => 'Taille';
+
+  @override
+  String get morphologyWeight => 'Poids';
+
+  @override
+  String get unitCentimeter => 'cm';
+
+  @override
+  String get unitKilogram => 'kg';
+
+  @override
+  String get bmiLabel => 'Ton IMC';
+
+  @override
+  String get bmiUnderweight => 'Maigreur';
+
+  @override
+  String get bmiNormal => 'Normal';
+
+  @override
+  String get bmiOverweight => 'Surpoids';
+
+  @override
+  String get bmiObesity => 'Obésité';
+
+  @override
+  String get bmiStatusUnderweight => 'Corpulence maigre';
+
+  @override
+  String get bmiStatusNormal => 'Corpulence normale';
+
+  @override
+  String get bmiStatusOverweight => 'Surpoids';
+
+  @override
+  String get bmiStatusObesity => 'Obésité';
+
+  @override
+  String get onboardingActivityTitle => 'Quel est ton niveau d\'activité ?';
+
+  @override
+  String get onboardingActivityHelper =>
+      'On ajuste les calories et les portions de tes recettes selon ta dépense énergétique.';
+
+  @override
+  String get activitySedentary => 'Sédentaire';
+
+  @override
+  String get activitySedentaryDescription =>
+      'Peu ou pas d\'exercice, travail assis';
+
+  @override
+  String get activityLightlyActive => 'Légèrement actif';
+
+  @override
+  String get activityLightlyActiveDescription => '1 à 3 séances par semaine';
+
+  @override
+  String get activityModeratelyActive => 'Modérément actif';
+
+  @override
+  String get activityModeratelyActiveDescription => '3 à 5 séances par semaine';
+
+  @override
+  String get activityVeryActive => 'Très actif';
+
+  @override
+  String get activityVeryActiveDescription => '6 à 7 séances par semaine';
+
+  @override
+  String get activityAthlete => 'Athlète';
+
+  @override
+  String get activityAthleteDescription => 'Entraînement intensif quotidien';
+
+  @override
+  String get onboardingGoalsTitle => 'Quels sont tes objectifs ?';
+
+  @override
+  String get onboardingGoalsHelper =>
+      'En matière de santé ou de nutrition. Plusieurs choix possibles.';
+
+  @override
+  String get goalWeightLoss => 'Perte de poids';
+
+  @override
+  String get goalWeightLossDescription => 'Déficit calorique doux et durable';
+
+  @override
+  String get goalHealthImprovement => 'Amélioration de la santé';
+
+  @override
+  String get goalHealthImprovementDescription =>
+      'Équilibre, fibres et micronutriments';
+
+  @override
+  String get goalMuscleGain => 'Gain de muscles';
+
+  @override
+  String get goalMuscleGainDescription => 'Apports protéinés renforcés';
+
+  @override
+  String get goalDetox => 'Detox';
+
+  @override
+  String get goalDetoxDescription => 'Léger, peu transformé, hydratant';
+
+  @override
+  String get onboardingChronicDiseaseTitle => 'As-tu une maladie chronique ?';
+
+  @override
+  String get onboardingChronicDiseaseHelper =>
+      'Pour adapter les apports en sucre, sel et matières grasses. Cette information reste confidentielle.';
+
+  @override
+  String get chronicDiabetes => 'Diabète';
+
+  @override
+  String get chronicCardiovascular => 'Maladie cardiovasculaire';
+
+  @override
+  String get chronicOverweight => 'Surpoids';
+
+  @override
+  String get chronicHypertension => 'Hypertension artérielle élevée';
+
+  @override
+  String get chronicSmop => 'SMOP (ex SOPK)';
+
+  @override
+  String get chronicOtherHint => 'Autre';
+
+  @override
+  String get onboardingChronicDiseaseFootnote =>
+      'Eat\'Easy n\'est pas un dispositif médical. Consulte un professionnel de santé pour tout suivi.';
 }

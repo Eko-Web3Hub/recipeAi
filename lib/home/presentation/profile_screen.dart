@@ -19,6 +19,7 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
 import 'package:recipe_ai/utils/styles.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';

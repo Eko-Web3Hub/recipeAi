@@ -14,6 +14,8 @@ final _saladeBassamoiseReceipe = Receipe(
   proteinGrams: '29g',
   carbsGrams: '34g',
   lipidsGrams: '16g',
+  tags: const ['Sans gluten', 'Sans lactose'],
+  difficulty: 'Facile',
   ingredients: const [
     Ingredient(name: 'Attiéké cuit', quantity: '200 g', date: null, id: null),
     Ingredient(
