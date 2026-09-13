@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -18,6 +19,8 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
 
   static const String receipesCollection = "receipes";
 
+  static const String _recipeCollection = 'recipes';
+
   static const String userReceipeV2Collection = "UserReceipeV2";
 
   static const String _isForHomeKey = 'isForHome';
@@ -25,6 +28,8 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   static const String _isAddedToFavoritesKey = 'isAddedToFavorites';
 
   static const String _createdDateKey = 'createdDate';
+
+  static const String _userFinishedReceipesCollection = 'UserFinishedReceipes';
 
   // static const String _createdDateKey = 'createdDate';
 
@@ -320,5 +325,43 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     final json = response.data as Map<String, dynamic>;
 
     return RawRecipeFindWithImage.fromJson(json);
+  }
+
+  @override
+  Future<void> markRecipeAsFinished({
+    required EntityId uid,
+    required UserFinishedRecipe recipe,
+  }) async => _firestore
+      .collection(_userFinishedReceipesCollection)
+      .doc(uid.value)
+      .collection(_recipeCollection)
+      .add(recipe.toJson());
+
+  @override
+  Stream<RecipeCookedSummary?> recipeCookedSummary({
+    required EntityId uid,
+    required EntityId recipeId,
+  }) {
+    return _firestore
+        .collection(_userFinishedReceipesCollection)
+        .doc(uid.value)
+        .collection(_recipeCollection)
+        .where('recipeId', isEqualTo: recipeId.value)
+        .snapshots()
+        .map((snapshot) {
+          if (snapshot.docs.isEmpty) return null;
+
+          final finishedDates = snapshot.docs
+              .map((doc) => UserFinishedRecipe.fromJson(doc.data()).finishedAt)
+              .whereType<DateTime>()
+              .toList();
+
+          return RecipeCookedSummary(
+            count: snapshot.size,
+            lastCookedAt: finishedDates.isEmpty
+                ? null
+                : finishedDates.reduce((a, b) => a.isAfter(b) ? a : b),
+          );
+        });
   }
 }

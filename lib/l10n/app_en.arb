@@ -612,6 +612,23 @@
     "@recipeDetailsCookMode": {
         "description": "Button label to enter cook mode for a recipe"
     },
+    "recipeDetailsCookAgain": "Cook again",
+    "@recipeDetailsCookAgain": {
+        "description": "Button label to enter cook mode for a recipe that has already been cooked at least once"
+    },
+    "recipeDetailsCookedSummary": "✓ Cooked {count} times · last on {date}",
+    "@recipeDetailsCookedSummary": {
+        "description": "Caption under the cook-again button showing how many times the recipe was cooked and when it was last cooked, e.g. '✓ Cooked 3 times · last on Sep 9'",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "date": {
+                "type": "DateTime",
+                "format": "MMMd"
+            }
+        }
+    },
     "recipeDetailsMarkAsCooked": "Mark as cooked",
     "@recipeDetailsMarkAsCooked": {
         "description": "Button label to mark a recipe as cooked"
@@ -655,6 +672,14 @@
     "cookModeAddedToFavorites": "Added to your favorites",
     "@cookModeAddedToFavorites": {
         "description": "Button label once the recipe has been added to favorites on the cook mode completion screen"
+    },
+    "cookModeFinishedMessage": "Recipe marked as cooked!",
+    "@cookModeFinishedMessage": {
+        "description": "Snackbar message confirming the recipe was successfully marked as cooked"
+    },
+    "cookModeUserNotConnectedError": "Log in to mark this recipe as cooked",
+    "@cookModeUserNotConnectedError": {
+        "description": "Snackbar message shown when a signed-out user tries to mark a recipe as cooked"
     },
     "internalServerError": "Oops 😵‍💫. An error occurred. Please try again.",
     "@internalServerError": {
@@ -1077,5 +1102,14 @@
     "onboardingChronicDiseaseFootnote": "Eat'Easy is not a medical device. Talk to a healthcare professional for any follow-up.",
     "@onboardingChronicDiseaseFootnote": {
             "description": "Onboarding: onboardingChronicDiseaseFootnote"
+    },
+    "recipeCookedCount": "✓ Cooked {count} ×",
+    "@recipeCookedCount": {
+            "description": "Badge showing how many times the user has cooked a recipe, e.g. '✓ Cooked 3 ×'",
+            "placeholders": {
+                    "count": {
+                            "type": "int"
+                    }
+            }
     }
 }

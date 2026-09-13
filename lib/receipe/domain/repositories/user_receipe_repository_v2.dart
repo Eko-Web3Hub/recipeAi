@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
+import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -44,4 +45,14 @@ abstract class IUserReceipeRepositoryV2 {
     EntityId uid,
     UserRecipeMetadata metadata,
   );
+
+  Future<void> markRecipeAsFinished({
+    required EntityId uid,
+    required UserFinishedRecipe recipe,
+  });
+
+  Stream<RecipeCookedSummary?> recipeCookedSummary({
+    required EntityId uid,
+    required EntityId recipeId,
+  });
 }

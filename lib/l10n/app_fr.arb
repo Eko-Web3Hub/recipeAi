@@ -608,6 +608,23 @@
     "@recipeDetailsCookMode": {
         "description": "Libellé du bouton pour passer en mode cuisine sur une recette"
     },
+    "recipeDetailsCookAgain": "Cuisiner à nouveau",
+    "@recipeDetailsCookAgain": {
+        "description": "Libellé du bouton pour passer en mode cuisine sur une recette déjà cuisinée au moins une fois"
+    },
+    "recipeDetailsCookedSummary": "✓ Cuisinée {count} fois · dernière le {date}",
+    "@recipeDetailsCookedSummary": {
+        "description": "Texte sous le bouton indiquant combien de fois la recette a été cuisinée et la date de la dernière fois, ex : '✓ Cuisinée 3 fois · dernière le 9 sept.'",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "date": {
+                "type": "DateTime",
+                "format": "MMMd"
+            }
+        }
+    },
     "recipeDetailsMarkAsCooked": "Marquer comme cuisiné",
     "@recipeDetailsMarkAsCooked": {
         "description": "Libellé du bouton pour marquer une recette comme cuisinée"
@@ -651,6 +668,14 @@
     "cookModeAddedToFavorites": "Ajoutée à tes favoris",
     "@cookModeAddedToFavorites": {
         "description": "Libellé du bouton une fois la recette ajoutée aux favoris sur l'écran de fin du mode cuisine"
+    },
+    "cookModeFinishedMessage": "Recette marquée comme cuisinée !",
+    "@cookModeFinishedMessage": {
+        "description": "Message du snackbar confirmant que la recette a bien été marquée comme cuisinée"
+    },
+    "cookModeUserNotConnectedError": "Connecte-toi pour marquer cette recette comme cuisinée",
+    "@cookModeUserNotConnectedError": {
+        "description": "Message du snackbar affiché quand un utilisateur non connecté essaie de marquer une recette comme cuisinée"
     },
     "internalServerError": "Oops 😵‍💫. Une erreur est survenue. Veuillez réessayer.",
     "@internalServerError": {
@@ -1077,5 +1102,14 @@
     "onboardingChronicDiseaseFootnote": "Eat'Easy n'est pas un dispositif médical. Consulte un professionnel de santé pour tout suivi.",
     "@onboardingChronicDiseaseFootnote": {
             "description": "Onboarding: onboardingChronicDiseaseFootnote"
+    },
+    "recipeCookedCount": "✓ Cuisinée {count} ×",
+    "@recipeCookedCount": {
+            "description": "Badge showing how many times the user has cooked a recipe, e.g. '✓ Cuisinée 3 ×'",
+            "placeholders": {
+                    "count": {
+                            "type": "int"
+                    }
+            }
     }
 }

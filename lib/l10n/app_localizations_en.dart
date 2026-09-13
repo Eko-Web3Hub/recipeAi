@@ -498,6 +498,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipeDetailsCookMode => 'Switch to cook mode';
 
   @override
+  String get recipeDetailsCookAgain => 'Cook again';
+
+  @override
+  String recipeDetailsCookedSummary(int count, DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '✓ Cooked $count times · last on $dateString';
+  }
+
+  @override
   String get recipeDetailsMarkAsCooked => 'Mark as cooked';
 
   @override
@@ -529,6 +540,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cookModeAddedToFavorites => 'Added to your favorites';
+
+  @override
+  String get cookModeFinishedMessage => 'Recipe marked as cooked!';
+
+  @override
+  String get cookModeUserNotConnectedError =>
+      'Log in to mark this recipe as cooked';
 
   @override
   String get internalServerError =>
@@ -859,4 +877,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingChronicDiseaseFootnote =>
       'Eat\'Easy is not a medical device. Talk to a healthcare professional for any follow-up.';
+
+  @override
+  String recipeCookedCount(int count) {
+    return '✓ Cooked $count ×';
+  }
 }

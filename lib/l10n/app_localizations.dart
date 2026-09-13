@@ -1016,6 +1016,18 @@ abstract class AppLocalizations {
   /// **'Switch to cook mode'**
   String get recipeDetailsCookMode;
 
+  /// Button label to enter cook mode for a recipe that has already been cooked at least once
+  ///
+  /// In en, this message translates to:
+  /// **'Cook again'**
+  String get recipeDetailsCookAgain;
+
+  /// Caption under the cook-again button showing how many times the recipe was cooked and when it was last cooked, e.g. '✓ Cooked 3 times · last on Sep 9'
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Cooked {count} times · last on {date}'**
+  String recipeDetailsCookedSummary(int count, DateTime date);
+
   /// Button label to mark a recipe as cooked
   ///
   /// In en, this message translates to:
@@ -1081,6 +1093,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Added to your favorites'**
   String get cookModeAddedToFavorites;
+
+  /// Snackbar message confirming the recipe was successfully marked as cooked
+  ///
+  /// In en, this message translates to:
+  /// **'Recipe marked as cooked!'**
+  String get cookModeFinishedMessage;
+
+  /// Snackbar message shown when a signed-out user tries to mark a recipe as cooked
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to mark this recipe as cooked'**
+  String get cookModeUserNotConnectedError;
 
   /// Label for internal server error
   ///
@@ -1705,6 +1729,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Eat\'Easy is not a medical device. Talk to a healthcare professional for any follow-up.'**
   String get onboardingChronicDiseaseFootnote;
+
+  /// Badge showing how many times the user has cooked a recipe, e.g. '✓ Cooked 3 ×'
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Cooked {count} ×'**
+  String recipeCookedCount(int count);
 }
 
 class _AppLocalizationsDelegate
