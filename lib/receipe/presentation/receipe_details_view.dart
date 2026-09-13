@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -13,10 +15,13 @@ import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
+import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/receipe/presentation/food_fact_card.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
+import 'package:recipe_ai/receipe/presentation/recipe_cook/recipe_cook_ship.dart';
+import 'package:recipe_ai/receipe/presentation/recipe_cook/recipe_cook_ship_controller.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_tag_style.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
@@ -228,16 +233,27 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (receipe.tags.isNotEmpty) ...[
-                              Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
-                                children: receipe.tags
-                                    .map((tag) => _TagChip(label: tag))
-                                    .toList(),
-                              ),
-                              const SizedBox(height: 8),
-                            ],
+                            Row(
+                              children: [
+                                if (receipe.tags.isNotEmpty) ...[
+                                  Wrap(
+                                    spacing: 6,
+                                    runSpacing: 6,
+                                    children: ['vega', 'healthy', 'quick']
+                                        .map((tag) => TagChip(label: tag))
+                                        .toList(),
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                                if (receipeDetailsState.userReceipeV2?.id
+                                    case final recipeId?)
+                                  RecipeCookShip(
+                                    neededLeftSpace: receipe.tags.isNotEmpty,
+                                    recipeId: recipeId,
+                                  ),
+                              ],
+                            ),
+
                             Text(
                               receipe.name,
                               style: const TextStyle(
@@ -355,22 +371,26 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                                 child: FoodFactCard(foodFact: foodFact),
                               ),
 
-                            _PrimaryActionButton(
-                              label: appTexts.recipeDetailsCookMode,
-                              onTap: () => context.push(
-                                '/cook-mode',
-                                extra: {
-                                  'receipe': receipe,
-                                  'userReceipeV2':
-                                      receipeDetailsState.userReceipeV2,
-                                },
+                            if (receipeDetailsState.userReceipeV2?.id
+                                case final recipeId?)
+                              _CookModeButton(
+                                recipeId: recipeId,
+                                receipe: receipe,
+                                userReceipeV2:
+                                    receipeDetailsState.userReceipeV2,
+                              )
+                            else
+                              _PrimaryActionButton(
+                                label: appTexts.recipeDetailsCookMode,
+                                onTap: () => context.push(
+                                  '/cook-mode',
+                                  extra: {
+                                    'receipe': receipe,
+                                    'userReceipeV2':
+                                        receipeDetailsState.userReceipeV2,
+                                  },
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            _GhostActionButton(
-                              label: appTexts.recipeDetailsMarkAsCooked,
-                              onTap: () => _showComingSoon(context),
-                            ),
                           ],
                         ),
                       ),
@@ -410,10 +430,17 @@ class _HeroOverlayButton extends StatelessWidget {
   }
 }
 
-class _TagChip extends StatelessWidget {
-  const _TagChip({required this.label});
+class TagChip extends StatelessWidget {
+  const TagChip({
+    super.key,
+    required this.label,
+    this.backgroundColor,
+    this.foregroundColor,
+  });
 
   final String label;
+  final Color? foregroundColor;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -428,7 +455,7 @@ class _TagChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
       decoration: BoxDecoration(
-        color: background,
+        color: backgroundColor ?? background,
         borderRadius: BorderRadius.circular(100),
       ),
       child: Text(
@@ -437,7 +464,7 @@ class _TagChip extends StatelessWidget {
           fontFamily: robotoFontFamily,
           fontWeight: FontWeight.w600,
           fontSize: 10,
-          color: foreground,
+          color: foregroundColor ?? foreground,
         ),
       ),
     );
@@ -891,6 +918,62 @@ class _PreparationStepRow extends StatelessWidget {
   }
 }
 
+/// The cook-mode entry point on the recipe details screen. Switches its
+/// label to "cook again" and shows how many times / when the recipe was
+/// last cooked once the user has been through cook mode at least once.
+class _CookModeButton extends StatelessWidget {
+  const _CookModeButton({
+    required this.recipeId,
+    required this.receipe,
+    required this.userReceipeV2,
+  });
+
+  final EntityId recipeId;
+  final Receipe receipe;
+  final UserRecipeV2? userReceipeV2;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<RecipeCookShipController>(
+      create: (_) => RecipeCookShipController.inject(recipeId: recipeId),
+      child: BlocBuilder<RecipeCookShipController, RecipeCookedSummary?>(
+        builder: (context, summary) {
+          final appTexts = di<TranslationController>().currentLanguage;
+          final lastCookedAt = summary?.lastCookedAt;
+
+          return Column(
+            children: [
+              _PrimaryActionButton(
+                label: summary == null || summary.count == 0
+                    ? appTexts.recipeDetailsCookMode
+                    : appTexts.recipeDetailsCookAgain,
+                onTap: () => context.push(
+                  '/cook-mode',
+                  extra: {'receipe': receipe, 'userReceipeV2': userReceipeV2},
+                ),
+              ),
+              if (lastCookedAt != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  appTexts.recipeDetailsCookedSummary(
+                    summary!.count,
+                    lastCookedAt,
+                  ),
+                  style: TextStyle(
+                    fontFamily: robotoFontFamily,
+                    fontSize: 12,
+                    color: recipeLoaderInkColor.withValues(alpha: 0.55),
+                  ),
+                ),
+              ],
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
 class _PrimaryActionButton extends StatelessWidget {
   const _PrimaryActionButton({required this.label, required this.onTap});
 
@@ -916,34 +999,6 @@ class _PrimaryActionButton extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontSize: 14,
             color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GhostActionButton extends StatelessWidget {
-  const _GhostActionButton({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        height: 52,
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontFamily: robotoFontFamily,
-            fontWeight: FontWeight.w600,
-            fontSize: 13.5,
-            color: recipeLoaderGreenColor,
           ),
         ),
       ),

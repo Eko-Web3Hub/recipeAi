@@ -512,6 +512,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get recipeDetailsCookMode => 'Passer en mode cuisine';
 
   @override
+  String get recipeDetailsCookAgain => 'Cuisiner à nouveau';
+
+  @override
+  String recipeDetailsCookedSummary(int count, DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '✓ Cuisinée $count fois · dernière le $dateString';
+  }
+
+  @override
   String get recipeDetailsMarkAsCooked => 'Marquer comme cuisiné';
 
   @override
@@ -544,6 +555,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cookModeAddedToFavorites => 'Ajoutée à tes favoris';
+
+  @override
+  String get cookModeFinishedMessage => 'Recette marquée comme cuisinée !';
+
+  @override
+  String get cookModeUserNotConnectedError =>
+      'Connecte-toi pour marquer cette recette comme cuisinée';
 
   @override
   String get internalServerError =>
@@ -877,4 +895,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get onboardingChronicDiseaseFootnote =>
       'Eat\'Easy n\'est pas un dispositif médical. Consulte un professionnel de santé pour tout suivi.';
+
+  @override
+  String recipeCookedCount(int count) {
+    return '✓ Cuisinée $count ×';
+  }
 }

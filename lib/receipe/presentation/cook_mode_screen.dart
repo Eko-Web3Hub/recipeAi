@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
+import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/receipe/presentation/cook_mode_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
@@ -395,131 +397,157 @@ class _CookModeFinishedViewState extends State<_CookModeFinishedView> {
   int _rating = 0;
 
   void _showComingSoon(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          appTexts.recipeDetailsComingSoon,
-          style: TextStyle(fontFamily: robotoFontFamily),
-        ),
-      ),
-    );
+    if (widget.userReceipeV2.id case EntityId recipeId) {
+      context.read<CookModeController>().markAsCooked(recipeId, _rating);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
-    return BlocProvider(
-      create: (_) => ReceipeItemController(
-        widget.userReceipeV2,
-        di<IUserRecipeService>(),
-        di<IAnalyticsRepository>(),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: _CookModeCloseButton(onTap: widget.onClose),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(36, 0, 36, 48),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 76,
-                      height: 76,
-                      decoration: const BoxDecoration(
-                        color: recipeLoaderGreenColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 34,
-                      ),
+    return BlocProvider<CookModeController>(
+      create: (_) => CookModeController.inject(),
+      child: BlocProvider(
+        create: (_) => ReceipeItemController(
+          widget.userReceipeV2,
+          di<IUserRecipeService>(),
+          di<IAnalyticsRepository>(),
+        ),
+        child: BlocListener<CookModeController, CookModeState>(
+          listener: (context, state) {
+            if (state is CookModeStateFinished) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(appTexts.cookModeFinishedMessage)),
+              );
+
+              widget.onClose();
+            }
+
+            if (state is CookModeStateUserNotConnectedError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(appTexts.cookModeUserNotConnectedError)),
+              );
+            }
+          },
+          child: Builder(
+            builder: (context) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: _CookModeCloseButton(onTap: widget.onClose),
                     ),
-                    const SizedBox(height: 22),
-                    Text(
-                      appTexts.cookModeFinishedTitle,
-                      style: const TextStyle(
-                        fontFamily: robotoSlabFontFamily,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 23,
-                        color: recipeLoaderInkColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      appTexts.cookModeFinishedSubtitle,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: robotoFontFamily,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 13,
-                        height: 1.5,
-                        color: recipeLoaderInkColor.withValues(alpha: 0.55),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(5, (i) {
-                        final filled = i < _rating;
-                        return InkWell(
-                          onTap: () => setState(() => _rating = i + 1),
-                          customBorder: const CircleBorder(),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Icon(
-                              filled ? Icons.star : Icons.star_border,
-                              size: 30,
-                              color: filled
-                                  ? recipeLoaderGreenColor
-                                  : recipeLoaderInkColor.withValues(alpha: 0.2),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(36, 0, 36, 48),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 76,
+                              height: 76,
+                              decoration: const BoxDecoration(
+                                color: recipeLoaderGreenColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 34,
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child:
-                          BlocBuilder<ReceipeItemController, ReceipeItemState>(
-                            builder: (context, state) {
-                              final saved = state is ReceipeItemStateSaved;
-                              return _CookModePrimaryButton(
-                                label: saved
-                                    ? appTexts.cookModeAddedToFavorites
-                                    : appTexts.cookModeAddToFavorites,
-                                onTap: () => context
-                                    .read<ReceipeItemController>()
-                                    .toggleFavorite(),
-                              );
-                            },
-                          ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: _CookModeGhostButton(
-                        label: appTexts.recipeDetailsMarkAsCooked,
-                        onTap: () => _showComingSoon(context),
+                            const SizedBox(height: 22),
+                            Text(
+                              appTexts.cookModeFinishedTitle,
+                              style: const TextStyle(
+                                fontFamily: robotoSlabFontFamily,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 23,
+                                color: recipeLoaderInkColor,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              appTexts.cookModeFinishedSubtitle,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: robotoFontFamily,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13,
+                                height: 1.5,
+                                color: recipeLoaderInkColor.withValues(
+                                  alpha: 0.55,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(5, (i) {
+                                final filled = i < _rating;
+                                return InkWell(
+                                  onTap: () => setState(() => _rating = i + 1),
+                                  customBorder: const CircleBorder(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6),
+                                    child: Icon(
+                                      filled ? Icons.star : Icons.star_border,
+                                      size: 30,
+                                      color: filled
+                                          ? recipeLoaderGreenColor
+                                          : recipeLoaderInkColor.withValues(
+                                              alpha: 0.2,
+                                            ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              width: double.infinity,
+                              child:
+                                  BlocBuilder<
+                                    ReceipeItemController,
+                                    ReceipeItemState
+                                  >(
+                                    builder: (context, state) {
+                                      final saved =
+                                          state is ReceipeItemStateSaved;
+                                      return _CookModePrimaryButton(
+                                        label: saved
+                                            ? appTexts.cookModeAddedToFavorites
+                                            : appTexts.cookModeAddToFavorites,
+                                        onTap: () => context
+                                            .read<ReceipeItemController>()
+                                            .toggleFavorite(),
+                                      );
+                                    },
+                                  ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              width: double.infinity,
+                              child: _CookModeGhostButton(
+                                label: appTexts.recipeDetailsMarkAsCooked,
+                                onTap: () => _showComingSoon(context),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
+                ],
+              );
+            },
           ),
-        ],
+        ),
       ),
     );
   }

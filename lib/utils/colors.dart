@@ -92,3 +92,5 @@ const recipeCardOverlayColor = Color(0xFF141A10);
 const recipeCardTagGreenColor = Color(0xFFBFE0AE);
 const recipeCardTagAmberColor = Color(0xFFF0D089);
 const recipeCardTagSalmonColor = Color(0xFFE8B8A3);
+
+const cookedRecipeShigBgColor = Color(0xff43a026);
