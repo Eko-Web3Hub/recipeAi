@@ -1,0 +1,13 @@
+[
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.receipeapi.app",
+            "sha256_cert_fingerprints": [
+                "BD:02:D5:1D:DB:27:0D:0E:DE:E6:87:04:77:EE:97:34:D1:F9:71:60",
+                "F1:E1:2C:55:C9:A7:15:50:22:FD:C7:57:55:A9:C8:59:3F:12:09:84:0E:6E:FD:E9:7D:84:63:7D:79:5F:43:C3"
+            ]
+        }
+    }
+]

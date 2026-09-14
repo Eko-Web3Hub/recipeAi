@@ -509,6 +509,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String recipeDetailsShareText(String url) {
+    return 'Check out this recipe on Eat\'Easy! 👇\n$url';
+  }
+
+  @override
   String get recipeDetailsMarkAsCooked => 'Mark as cooked';
 
   @override

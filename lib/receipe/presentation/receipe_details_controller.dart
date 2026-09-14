@@ -31,7 +31,6 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   ReceipeDetailsController(
     this.receipeId,
     this.appLanguage,
-    this.userSharingUid,
     this.seconds,
     this._authUserService,
     this._userAccountMetaDataRepository,
@@ -51,13 +50,12 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
 
   void _loadRecipeUsingId() async {
     log('Loading recipe using ID: $receipeId');
-    log('with language: $appLanguage');
-    final recipe = await _userReceipeRepositoryV2.getRecipeByName(
-      appLanguage!,
-      receipeId!,
-      userSharingUid!,
-    );
-    _load(recipe!);
+    final recipe = await _userReceipeRepositoryV2.getRecipeById(receipeId!);
+    if (recipe == null) {
+      log('No recipe found for ID: $receipeId');
+      return;
+    }
+    _load(recipe);
   }
 
   void _load(UserRecipeV2 userRecipe) async {
@@ -93,7 +91,6 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
 
   int? seconds;
   EntityId? receipeId;
-  EntityId? userSharingUid;
   final IAuthUserService _authUserService;
   final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
   final IUserReceipeRepositoryV2 _userReceipeRepositoryV2;

@@ -31,6 +31,10 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
 
   static const String _userFinishedReceipesCollection = 'UserFinishedReceipes';
 
+  /// The global, user-independent recipe catalog a recipe-details deep link
+  /// points to (populated outside of this app).
+  static const String _globalRecipesCollection = 'recipes';
+
   // static const String _createdDateKey = 'createdDate';
 
   final FirebaseFirestore _firestore;
@@ -279,29 +283,21 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Future<UserRecipeV2?> getRecipeByName(
-    AppLanguage appLanguage,
-    EntityId recipeName,
-    EntityId uid,
-  ) async {
-    final filterKey = appLanguage == AppLanguage.fr
-        ? 'receipeFr.name'
-        : 'receipeEn.name';
-
+  Future<UserRecipeV2?> getRecipeById(EntityId recipeId) async {
     final docSnapshot = await _firestore
-        .collection(userReceipeV2Collection)
-        .doc(uid.value)
-        .collection(receipesCollection)
-        .where(filterKey, isEqualTo: recipeName.value.replaceAll('_', ' '))
+        .collection(_globalRecipesCollection)
+        .doc(recipeId.value)
         .get();
 
-    final docs = docSnapshot.docs;
-    if (docs.isEmpty) {
+    final data = docSnapshot.data();
+    if (!docSnapshot.exists || data == null) {
       return null;
     }
 
-    final userRecipe = docs.first;
-    return UserRecipeV2.fromJson(userRecipe.data());
+    // The global `recipes` catalog doesn't store its own document id as a
+    // field, so it's assigned explicitly from the doc reference we already
+    // queried by.
+    return UserRecipeV2.fromJson(data).assignId(recipeId);
   }
 
   @override
