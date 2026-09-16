@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -59,13 +60,11 @@ class RecipeDetailsView extends StatefulWidget {
     required this.receipeId,
     required this.receipe,
     required this.appLanguage,
-    required this.userSharingUid,
   });
 
   final EntityId? receipeId;
   final UserRecipeV2? receipe;
   final AppLanguage? appLanguage;
-  final EntityId? userSharingUid;
 
   @override
   State<RecipeDetailsView> createState() => _RecipeDetailsViewState();
@@ -83,6 +82,17 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
 
   int _portions = 2;
   final Set<int> _checkedIngredientIndices = {};
+
+  void _shareRecipe(BuildContext context, EntityId recipeId) {
+    final appTexts = di<TranslationController>().currentLanguage;
+    final language = di<TranslationController>().currentLanguageEnum.name;
+    final url =
+        'https://recipe-ai-5e261.web.app/home/recipe-details/$language/${recipeId.value}';
+
+    SharePlus.instance.share(
+      ShareParams(text: appTexts.recipeDetailsShareText(url)),
+    );
+  }
 
   void _showComingSoon(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
@@ -103,7 +113,6 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
           ? ReceipeDetailsController(
               widget.receipeId,
               widget.appLanguage,
-              widget.userSharingUid,
               null,
               di<IAuthUserService>(),
               di<IUserAccountMetaDataRepository>(),
@@ -213,17 +222,33 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                           Positioned(
                             top: MediaQuery.of(context).padding.top + 18,
                             right: 18,
-                            child: _HeroOverlayButton(
-                              child: RecipeIconFavorite(
-                                receipe: receipeDetailsState.userReceipeV2!,
-                                outlinedFavoriteIcon:
-                                    'assets/icon/icon_favorite_white.svg',
-                                size: 16,
-                                colorFilter: const ColorFilter.mode(
-                                  recipeDetailAmberTagTextColor,
-                                  BlendMode.srcATop,
+                            child: Row(
+                              children: [
+                                if (receipeDetailsState.userReceipeV2?.id
+                                    case final recipeId?)
+                                  _HeroOverlayButton(
+                                    onTap: () =>
+                                        _shareRecipe(context, recipeId),
+                                    child: const Icon(
+                                      Icons.share,
+                                      size: 16,
+                                      color: recipeDetailAmberTagTextColor,
+                                    ),
+                                  ),
+                                const SizedBox(width: 10),
+                                _HeroOverlayButton(
+                                  child: RecipeIconFavorite(
+                                    receipe: receipeDetailsState.userReceipeV2!,
+                                    outlinedFavoriteIcon:
+                                        'assets/icon/icon_favorite_white.svg',
+                                    size: 16,
+                                    colorFilter: const ColorFilter.mode(
+                                      recipeDetailAmberTagTextColor,
+                                      BlendMode.srcATop,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         ],

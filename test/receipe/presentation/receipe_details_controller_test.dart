@@ -25,7 +25,6 @@ void main() {
   late IUserReceipeRepositoryV2 userReceipeRepositoryV2;
 
   const receipeId = EntityId('1');
-  const userSharingUid = EntityId('sharingUid');
   const authUser = AuthUser(uid: EntityId('uid'), email: 'test@gmail.com');
 
   const receipeEn = Receipe(
@@ -62,7 +61,6 @@ void main() {
     return ReceipeDetailsController(
       receipeId,
       AppLanguage.en,
-      userSharingUid,
       0,
       authUserService,
       userAccountMetaDataRepository,
@@ -74,13 +72,12 @@ void main() {
     'should load the receipe details in english by default',
     build: () => buildSut(),
     setUp: () {
-      when(() => userReceipeRepositoryV2.getRecipeByName(
-            AppLanguage.en,
-            receipeId,
-            userSharingUid,
-          )).thenAnswer((_) => Future.value(userRecipe));
-      when(() => userAccountMetaDataRepository.watchUserAccount(authUser.uid))
-          .thenAnswer((_) => Stream.value(null));
+      when(
+        () => userReceipeRepositoryV2.getRecipeById(receipeId),
+      ).thenAnswer((_) => Future.value(userRecipe));
+      when(
+        () => userAccountMetaDataRepository.watchUserAccount(authUser.uid),
+      ).thenAnswer((_) => Stream.value(null));
     },
     expect: () => [
       ReceipeDetailsState.loaded(userRecipe.receipeEn, userRecipe),
@@ -91,13 +88,12 @@ void main() {
     'should load the receipe details in the user account language (fr)',
     build: () => buildSut(),
     setUp: () {
-      when(() => userReceipeRepositoryV2.getRecipeByName(
-            AppLanguage.en,
-            receipeId,
-            userSharingUid,
-          )).thenAnswer((_) => Future.value(userRecipe));
-      when(() => userAccountMetaDataRepository.watchUserAccount(authUser.uid))
-          .thenAnswer(
+      when(
+        () => userReceipeRepositoryV2.getRecipeById(receipeId),
+      ).thenAnswer((_) => Future.value(userRecipe));
+      when(
+        () => userAccountMetaDataRepository.watchUserAccount(authUser.uid),
+      ).thenAnswer(
         (_) => Stream.value(
           const UserAccountMetaData(
             appLanguage: AppLanguage.fr,
@@ -120,8 +116,9 @@ void main() {
       userReceipeRepositoryV2,
     ),
     setUp: () {
-      when(() => userAccountMetaDataRepository.watchUserAccount(authUser.uid))
-          .thenAnswer((_) => Stream.value(null));
+      when(
+        () => userAccountMetaDataRepository.watchUserAccount(authUser.uid),
+      ).thenAnswer((_) => Stream.value(null));
     },
     verify: (bloc) {
       expect(

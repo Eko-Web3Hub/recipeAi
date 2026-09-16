@@ -45,6 +45,13 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
+/// Holds a recipe-details deep link that couldn't be reached because the
+/// user wasn't authenticated yet, so it can be resumed once they log in
+/// (see the `AuthNavigationController` listener in `main.dart`).
+class PendingDeepLink {
+  static String? path;
+}
+
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
   final authState = context.read<AuthNavigationController>().state;
 
@@ -54,8 +61,14 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
     case AuthNavigationState.loggedIn:
       return null;
     case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
+      if (state.name == 'RecipeDetailsWithReceipeId') {
+        PendingDeepLink.path = state.uri.toString();
+      }
       return '/onboarding/start';
     default:
+      if (state.name == 'RecipeDetailsWithReceipeId') {
+        PendingDeepLink.path = state.uri.toString();
+      }
       return '/onboarding';
   }
 }
@@ -166,7 +179,6 @@ GoRouter createRouter() => GoRouter(
           receipeId: receipeId,
           receipe: receipe,
           appLanguage: null,
-          userSharingUid: null,
         );
       },
     ),
@@ -226,7 +238,7 @@ GoRouter createRouter() => GoRouter(
                 ),
                 GoRoute(
                   name: 'RecipeDetailsWithReceipeId',
-                  path: 'recipe-details/:language/:userSharingUid/:receipeId',
+                  path: 'recipe-details/:language/:receipeId',
                   redirect: _guardAuth,
                   builder: (context, state) {
                     return RecipeDetailsView(
@@ -235,9 +247,6 @@ GoRouter createRouter() => GoRouter(
                       ),
                       receipeId: EntityId(state.pathParameters['receipeId']!),
                       receipe: null,
-                      userSharingUid: EntityId(
-                        state.pathParameters['userSharingUid']!,
-                      ),
                     );
                   },
                 ),
@@ -254,7 +263,6 @@ GoRouter createRouter() => GoRouter(
                       appLanguage: null,
                       receipeId: receipeId,
                       receipe: receipe,
-                      userSharingUid: null,
                     );
                   },
                 ),

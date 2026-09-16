@@ -523,6 +523,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String recipeDetailsShareText(String url) {
+    return 'Regarde cette recette sur Eat\'Easy ! 👇\n$url';
+  }
+
+  @override
   String get recipeDetailsMarkAsCooked => 'Marquer comme cuisiné';
 
   @override

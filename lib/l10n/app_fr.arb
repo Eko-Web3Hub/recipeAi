@@ -625,6 +625,15 @@
             }
         }
     },
+    "recipeDetailsShareText": "Regarde cette recette sur Eat'Easy ! 👇\n{url}",
+    "@recipeDetailsShareText": {
+        "description": "Texte partagé avec le lien de la recette quand un utilisateur partage une recette",
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
     "recipeDetailsMarkAsCooked": "Marquer comme cuisiné",
     "@recipeDetailsMarkAsCooked": {
         "description": "Libellé du bouton pour marquer une recette comme cuisinée"

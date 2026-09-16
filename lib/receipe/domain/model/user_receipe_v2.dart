@@ -25,7 +25,7 @@ class UserRecipeV2 extends Equatable {
 
   factory UserRecipeV2.fromJson(Map<String, dynamic> json) {
     return UserRecipeV2(
-      id: EntityId(json["id"]),
+      id: json["id"] == null ? null : EntityId(json["id"]),
       receipeFr: ReceipeSerialization.fromJson(json["receipeFr"]),
       receipeEn: ReceipeSerialization.fromJson(json["receipeEn"]),
       createdDate: json["createdDate"] is String

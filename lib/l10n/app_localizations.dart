@@ -1028,6 +1028,12 @@ abstract class AppLocalizations {
   /// **'✓ Cooked {count} times · last on {date}'**
   String recipeDetailsCookedSummary(int count, DateTime date);
 
+  /// Text shared alongside the recipe link when a user shares a recipe
+  ///
+  /// In en, this message translates to:
+  /// **'Check out this recipe on Eat\'Easy! 👇\n{url}'**
+  String recipeDetailsShareText(String url);
+
   /// Button label to mark a recipe as cooked
   ///
   /// In en, this message translates to:
