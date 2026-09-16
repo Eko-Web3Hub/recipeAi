@@ -29,8 +29,6 @@ abstract class IUserReceipeRepositoryV2 {
 
   Future<void> delete({required EntityId uid, required EntityId receipeId});
 
-  Stream<List<UserRecipeV2>> watchAllSavedReceipes(EntityId uid);
-
   Future<List<UserRecipeV2>> getHomeUserReceipes(EntityId uid);
 
   Stream<List<UserRecipeV2>> watchUserReceipe(EntityId uid);
@@ -55,4 +53,17 @@ abstract class IUserReceipeRepositoryV2 {
     required EntityId uid,
     required EntityId recipeId,
   });
+
+  Future<void> addToFavorite({
+    required EntityId uid,
+    required EntityId recipeId,
+    required UserRecipeV2 recipe,
+  });
+
+  Future<void> removeFromFavorite({
+    required EntityId uid,
+    required EntityId recipeId,
+  });
+
+  Stream<List<UserRecipeV2>> retrieveFavoriteRecipes(EntityId uid);
 }

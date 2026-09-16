@@ -23,9 +23,12 @@ class UserRecipeV2 extends Equatable {
     return _copyWith(id: id);
   }
 
-  factory UserRecipeV2.fromJson(Map<String, dynamic> json) {
+  factory UserRecipeV2.fromJson(
+    Map<String, dynamic> json, {
+    EntityId? customId,
+  }) {
     return UserRecipeV2(
-      id: EntityId(json["id"]),
+      id: customId ?? (json["id"] == null ? null : EntityId(json["id"])),
       receipeFr: ReceipeSerialization.fromJson(json["receipeFr"]),
       receipeEn: ReceipeSerialization.fromJson(json["receipeEn"]),
       createdDate: json["createdDate"] is String

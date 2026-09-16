@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
+import 'package:recipe_ai/receipe/presentation/recipe_card.dart';
 import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/functions.dart';
 
 import '../../utils/styles.dart';
 
@@ -38,10 +40,10 @@ class SavedReceipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomInset = bottomInsetForContentHiddenByTheNavBar(context);
+
     return BlocProvider(
-      create: (context) => SavedReceipeController(
-        di<IUserRecipeService>(),
-      ),
+      create: (context) => SavedReceipeController(di<IUserRecipeService>()),
       child: Builder(
         builder: (context) {
           return Padding(
@@ -51,9 +53,7 @@ class SavedReceipeScreen extends StatelessWidget {
             child: BlocBuilder<SavedReceipeController, SavedReceipeState>(
               builder: (context, state) {
                 if (state is SavedReceipeStateLoading) {
-                  return const Center(
-                    child: CustomProgress(),
-                  );
+                  return const Center(child: CustomProgress());
                 }
 
                 if (state is SavedReceipeStateError) {
@@ -69,11 +69,15 @@ class SavedReceipeScreen extends StatelessWidget {
                 if (state is SavedReceipeStateLoaded) {
                   return state.savedReceipes.isEmpty
                       ? const NoFavoriteRecipeSaved()
-                      : ListView.builder(
-                          padding: const EdgeInsets.only(bottom: 20, top: 15),
+                      : ListView.separated(
+                          padding: EdgeInsets.only(
+                            bottom: bottomInset,
+                            top: 15,
+                          ),
+                          separatorBuilder: (context, index) => const Gap(16),
                           itemBuilder: (context, index) {
                             final data = state.savedReceipes[index];
-                            return ReceipeItem(
+                            return RecipeCard(
                               key: ValueKey(data.id),
                               receipe: data,
                             );

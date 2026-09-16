@@ -66,8 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // The bottom navigation bar floats above the body ([Scaffold.extendBody]),
     // so the last card needs room to scroll past it.
-    final bottomInset =
-        _bottomNavBarSpacing + MediaQuery.of(context).padding.bottom;
+    final bottomInset = bottomInsetForContentHiddenByTheNavBar(context);
 
     return BlocListener<HomeScreenController, HomeScreenState>(
       listener: (context, homeScreenState) {
@@ -102,7 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: RefreshIndicator(
                   color: Theme.of(context).primaryColor,
                   onRefresh: () async {
-                    context.read<HomeScreenController>().regenerateUserReceipe();
+                    context
+                        .read<HomeScreenController>()
+                        .regenerateUserReceipe();
 
                     return Future.delayed(const Duration(seconds: 1));
                   },
@@ -127,9 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-/// Height reserved under the content for the floating bottom navigation bar.
-const _bottomNavBarSpacing = 96.0;
 
 class _HomeHeader extends StatelessWidget {
   const _HomeHeader();

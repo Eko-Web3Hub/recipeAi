@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
@@ -56,7 +57,10 @@ bool isPasswordValid(String value) {
 }
 
 String? confirmPasswordValidator(
-    String? value, String password, AppLocalizations appTexts) {
+  String? value,
+  String password,
+  AppLocalizations appTexts,
+) {
   if (value == null || value.isEmpty) {
     return appTexts.fieldCannotBeEmpty;
   }
@@ -88,3 +92,6 @@ String getOnlyNumber(String text) {
 String convertRecipeNameToFirestoreId(String recipeName) {
   return recipeName.replaceAll(' ', '_').toLowerCase();
 }
+
+double bottomInsetForContentHiddenByTheNavBar(BuildContext context) =>
+    96.0 + MediaQuery.of(context).padding.bottom;
