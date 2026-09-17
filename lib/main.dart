@@ -33,9 +33,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
   if (!kDebugMode) {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -78,13 +76,16 @@ void _handleOnTapNotificationWhenAppTerminated(GoRouter router) async {
 
 void _handleNotificationReceived(RemoteMessage notification, GoRouter router) {
   log('Notification received: ${notification.toMap()}');
-  final hasRedirectionPath =
-      notification.data.containsKey(_appRedirectionPathKey);
-  final hasNotificationId = notification.data.containsKey(_notificationIdKey) &&
+  final hasRedirectionPath = notification.data.containsKey(
+    _appRedirectionPathKey,
+  );
+  final hasNotificationId =
+      notification.data.containsKey(_notificationIdKey) &&
       notification.data[_notificationIdKey] != null;
   if (hasNotificationId) {
-    final notificationId =
-        EntityId(notification.data[_notificationIdKey] as String);
+    final notificationId = EntityId(
+      notification.data[_notificationIdKey] as String,
+    );
     _markNotificationAsRead(notificationId);
   }
   if (!hasRedirectionPath) return;
@@ -128,60 +129,64 @@ class _MyAppState extends State<MyApp> {
             di<IUserRecipeService>(),
           ),
         ),
-        BlocProvider(
-          create: (_) => NotificationUserController.inject(),
-        ),
+        BlocProvider(create: (_) => NotificationUserController.inject()),
       ],
       child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => HideNavBar(),
-          ),
-        ],
-        child: ResponsiveSizer(builder: (context, orientation, screenType) {
-          return BlocListener<AuthNavigationController, AuthNavigationState>(
-            listener: (context, state) {
-              log('AuthNavigationState: $state');
-              _router.refresh();
-            },
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
+        providers: [ChangeNotifierProvider(create: (_) => HideNavBar())],
+        child: ResponsiveSizer(
+          builder: (context, orientation, screenType) {
+            return BlocListener<AuthNavigationController, AuthNavigationState>(
+              listener: (context, state) {
+                log('AuthNavigationState: $state');
+                _router.refresh();
+
+                if (state == AuthNavigationState.loggedIn) {
+                  if (PendingDeepLink.path case final pendingPath?) {
+                    PendingDeepLink.path = null;
+                    _router.go(pendingPath);
+                  }
+                }
               },
-              child: MaterialApp.router(
-                title: "Eat'Easy",
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  scaffoldBackgroundColor: Colors.white,
-                  primaryColor: const Color(0xff57b031),
-                  colorScheme:
-                      ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                  textTheme: TextTheme(
-                    displayLarge: TextStyle(
-                      fontFamily: poppinsFontFamily,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20.0,
-                      height: 30 / 20,
-                      color: Colors.black,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: MaterialApp.router(
+                  title: "Eat'Easy",
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData(
+                    scaffoldBackgroundColor: Colors.white,
+                    primaryColor: const Color(0xff57b031),
+                    colorScheme: ColorScheme.fromSeed(
+                      seedColor: Colors.deepPurple,
                     ),
-                    labelSmall: TextStyle(
-                      fontFamily: poppinsFontFamily,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 11.0,
-                      height: 16.5 / 11,
-                      color: const Color(0xffA9A9A9),
+                    textTheme: TextTheme(
+                      displayLarge: TextStyle(
+                        fontFamily: poppinsFontFamily,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20.0,
+                        height: 30 / 20,
+                        color: Colors.black,
+                      ),
+                      labelSmall: TextStyle(
+                        fontFamily: poppinsFontFamily,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 11.0,
+                        height: 16.5 / 11,
+                        color: const Color(0xffA9A9A9),
+                      ),
                     ),
+                    useMaterial3: true,
                   ),
-                  useMaterial3: true,
+                  routerConfig: _router,
+                  localizationsDelegates: localizationsDelegate,
+                  supportedLocales: supportedLocales,
                 ),
-                routerConfig: _router,
-                localizationsDelegates: localizationsDelegate,
-                supportedLocales: supportedLocales,
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ),
     );
   }

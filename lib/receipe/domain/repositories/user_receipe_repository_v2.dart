@@ -4,14 +4,11 @@ import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
-import 'package:recipe_ai/utils/constant.dart';
 
 abstract class IUserReceipeRepositoryV2 {
-  Future<UserRecipeV2?> getRecipeByName(
-    AppLanguage appLanguage,
-    EntityId recipeName,
-    EntityId uid,
-  );
+  /// Looks up a recipe by id in the global `recipes` collection (the shared
+  /// catalog a recipe-details deep link points to), independent of any user.
+  Future<UserRecipeV2?> getRecipeById(EntityId recipeId);
 
   Future<List<UserRecipeV2>> getReceipesBasedOnUserPreferencesFromFirestore(
     EntityId uid,

@@ -629,6 +629,15 @@
             }
         }
     },
+    "recipeDetailsShareText": "Check out this recipe on Eat'Easy! 👇\n{url}",
+    "@recipeDetailsShareText": {
+        "description": "Text shared alongside the recipe link when a user shares a recipe",
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
     "recipeDetailsMarkAsCooked": "Mark as cooked",
     "@recipeDetailsMarkAsCooked": {
         "description": "Button label to mark a recipe as cooked"
