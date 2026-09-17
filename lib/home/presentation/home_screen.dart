@@ -202,8 +202,7 @@ class _HomeAvatar extends StatelessWidget {
     final userName = name;
 
     return GestureDetector(
-      // TODO(navigation): plug the profile redirection once decided.
-      onTap: () => _showComingSoon(context),
+      onTap: () => context.go('/profil-screen'),
       child: Container(
         width: 40,
         height: 40,
