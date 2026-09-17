@@ -321,7 +321,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'No saved recipes 😉. \nGo select between your available recipes!';
 
   @override
+  String get noFavoriteRecipeTitle => 'No favorites yet';
+
+  @override
+  String get noFavoriteRecipeSubtitle =>
+      'Save a generated recipe to find it here.';
+
+  @override
+  String get noFavoriteRecipeAction => 'Generate a recipe';
+
+  @override
+  String get recipeAddedToFavorites => 'Recipe added to favorites';
+
+  @override
+  String get recipeRemovedFromFavorites => 'Recipe removed from favorites';
+
+  @override
   String get favorite => 'Favorites';
+
+  @override
+  String get savedRecipes => 'saved recipes';
 
   @override
   String get signOut => 'Log out';

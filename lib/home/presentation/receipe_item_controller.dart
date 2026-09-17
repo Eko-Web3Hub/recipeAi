@@ -28,6 +28,20 @@ class ReceipeItemStateError extends ReceipeItemState {
   List<Object> get props => [message];
 }
 
+/// Transient event emitted right after a recipe is successfully added to
+/// favorites, so the UI can show a confirmation snackbar. Always followed
+/// immediately by the steady [ReceipeItemStateSaved] state.
+class ReceipeItemStateAddedToFavorite extends ReceipeItemState {
+  const ReceipeItemStateAddedToFavorite();
+}
+
+/// Transient event emitted right after a recipe is successfully removed
+/// from favorites, so the UI can show a confirmation snackbar. Always
+/// followed immediately by the steady [ReceipeItemStateUnsaved] state.
+class ReceipeItemStateRemovedFromFavorite extends ReceipeItemState {
+  const ReceipeItemStateRemovedFromFavorite();
+}
+
 class ReceipeItemController extends Cubit<ReceipeItemState> {
   ReceipeItemController(
     this._receipe,
@@ -44,6 +58,7 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
     try {
       await _userRecipeService.addToFavorite(_receipe);
       _analyticsRepository.logEvent(RecipeSavedEvent());
+      emit(const ReceipeItemStateAddedToFavorite());
       checkReceipeStatus();
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error saving receipe"));
@@ -55,6 +70,7 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
     try {
       await _userRecipeService.removeFromFavorite(_receipe);
       _analyticsRepository.logEvent(RecipeUnSaveEvent());
+      emit(const ReceipeItemStateRemovedFromFavorite());
       checkReceipeStatus();
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error removing saved receipe"));

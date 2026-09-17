@@ -674,11 +674,47 @@ abstract class AppLocalizations {
   /// **'No saved recipes 😉. \nGo select between your available recipes!'**
   String get noSavedReceipes;
 
+  /// Title of the empty state shown on the favorites screen when there are no favorite recipes yet
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get noFavoriteRecipeTitle;
+
+  /// Subtitle of the empty state shown on the favorites screen when there are no favorite recipes yet
+  ///
+  /// In en, this message translates to:
+  /// **'Save a generated recipe to find it here.'**
+  String get noFavoriteRecipeSubtitle;
+
+  /// Button label on the favorites empty state, navigates to the home screen to generate a recipe
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a recipe'**
+  String get noFavoriteRecipeAction;
+
+  /// Snackbar message shown when a recipe is added to favorites
+  ///
+  /// In en, this message translates to:
+  /// **'Recipe added to favorites'**
+  String get recipeAddedToFavorites;
+
+  /// Snackbar message shown when a recipe is removed from favorites
+  ///
+  /// In en, this message translates to:
+  /// **'Recipe removed from favorites'**
+  String get recipeRemovedFromFavorites;
+
   /// Label for the favorite section
   ///
   /// In en, this message translates to:
   /// **'Favorites'**
   String get favorite;
+
+  /// Label for saved recipes
+  ///
+  /// In en, this message translates to:
+  /// **'saved recipes'**
+  String get savedRecipes;
 
   /// Label for the action of signing out
   ///

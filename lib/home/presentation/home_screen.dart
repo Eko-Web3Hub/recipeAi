@@ -774,8 +774,14 @@ class RecipeIconFavorite extends StatelessWidget {
         builder: (context) {
           return BlocListener<ReceipeItemController, ReceipeItemState>(
             listener: (context, state) {
+              final appTexts = di<TranslationController>().currentLanguage;
+
               if (state is ReceipeItemStateError) {
                 showSnackBar(context, state.message, isError: true);
+              } else if (state is ReceipeItemStateAddedToFavorite) {
+                showSnackBar(context, appTexts.recipeAddedToFavorites);
+              } else if (state is ReceipeItemStateRemovedFromFavorite) {
+                showSnackBar(context, appTexts.recipeRemovedFromFavorites);
               }
             },
             child: BlocBuilder<ReceipeItemController, ReceipeItemState>(
