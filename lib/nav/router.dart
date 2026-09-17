@@ -342,12 +342,6 @@ GoRouter createRouter() => GoRouter(
               builder: (context, state) => const ProfileScreen(),
               routes: <RouteBase>[
                 GoRoute(
-                  name: 'SavedReceipeScreen',
-                  path: 'save-recipes',
-                  redirect: _guardAuth,
-                  builder: (context, state) => const NewSavedRecipeScreen(),
-                ),
-                GoRoute(
                   name: 'SettingsScreen',
                   path: 'settings',
                   redirect: _guardAuth,
@@ -409,7 +403,7 @@ String? genAppBarTitle(String? path, AppLocalizations appTexts) {
   log('genAppBarTitle: $path');
   switch (path) {
     case '/save-recipes':
-      return appTexts.favorite;
+      return appTexts.myFavorites;
     case '/notification-screen':
       return 'Notifications';
     case '/profil-screen':

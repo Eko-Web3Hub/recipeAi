@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/receipe/presentation/widget/primary_action_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
@@ -405,7 +406,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                                     receipeDetailsState.userReceipeV2,
                               )
                             else
-                              _PrimaryActionButton(
+                              PrimaryActionButton(
                                 label: appTexts.recipeDetailsCookMode,
                                 onTap: () => context.push(
                                   '/cook-mode',
@@ -968,7 +969,7 @@ class _CookModeButton extends StatelessWidget {
 
           return Column(
             children: [
-              _PrimaryActionButton(
+              PrimaryActionButton(
                 label: summary == null || summary.count == 0
                     ? appTexts.recipeDetailsCookMode
                     : appTexts.recipeDetailsCookAgain,
@@ -994,38 +995,6 @@ class _CookModeButton extends StatelessWidget {
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-class _PrimaryActionButton extends StatelessWidget {
-  const _PrimaryActionButton({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        height: 52,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: recipeLoaderGreenColor,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontFamily: robotoFontFamily,
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: Colors.white,
-          ),
-        ),
       ),
     );
   }

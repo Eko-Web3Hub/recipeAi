@@ -66,8 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // The bottom navigation bar floats above the body ([Scaffold.extendBody]),
     // so the last card needs room to scroll past it.
-    final bottomInset =
-        _bottomNavBarSpacing + MediaQuery.of(context).padding.bottom;
+    final bottomInset = bottomInsetForContentHiddenByTheNavBar(context);
 
     return BlocListener<HomeScreenController, HomeScreenState>(
       listener: (context, homeScreenState) {
@@ -102,7 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: RefreshIndicator(
                   color: Theme.of(context).primaryColor,
                   onRefresh: () async {
-                    context.read<HomeScreenController>().regenerateUserReceipe();
+                    context
+                        .read<HomeScreenController>()
+                        .regenerateUserReceipe();
 
                     return Future.delayed(const Duration(seconds: 1));
                   },
@@ -127,9 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-/// Height reserved under the content for the floating bottom navigation bar.
-const _bottomNavBarSpacing = 96.0;
 
 class _HomeHeader extends StatelessWidget {
   const _HomeHeader();
@@ -204,8 +202,7 @@ class _HomeAvatar extends StatelessWidget {
     final userName = name;
 
     return GestureDetector(
-      // TODO(navigation): plug the profile redirection once decided.
-      onTap: () => _showComingSoon(context),
+      onTap: () => context.go('/profil-screen'),
       child: Container(
         width: 40,
         height: 40,
@@ -776,8 +773,14 @@ class RecipeIconFavorite extends StatelessWidget {
         builder: (context) {
           return BlocListener<ReceipeItemController, ReceipeItemState>(
             listener: (context, state) {
+              final appTexts = di<TranslationController>().currentLanguage;
+
               if (state is ReceipeItemStateError) {
                 showSnackBar(context, state.message, isError: true);
+              } else if (state is ReceipeItemStateAddedToFavorite) {
+                showSnackBar(context, appTexts.recipeAddedToFavorites);
+              } else if (state is ReceipeItemStateRemovedFromFavorite) {
+                showSnackBar(context, appTexts.recipeRemovedFromFavorites);
               }
             },
             child: BlocBuilder<ReceipeItemController, ReceipeItemState>(

@@ -328,7 +328,26 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucune recette enregistrée 😉. \nAllez sélectionner parmi vos recettes disponibles !';
 
   @override
+  String get noFavoriteRecipeTitle => 'Aucun favori pour l\'instant';
+
+  @override
+  String get noFavoriteRecipeSubtitle =>
+      'Enregistre une recette générée pour la retrouver ici.';
+
+  @override
+  String get noFavoriteRecipeAction => 'Générer une recette';
+
+  @override
+  String get recipeAddedToFavorites => 'Recette ajoutée aux favoris';
+
+  @override
+  String get recipeRemovedFromFavorites => 'Recette retirée des favoris';
+
+  @override
   String get favorite => 'Favoris';
+
+  @override
+  String get savedRecipes => 'recettes sauvegardées';
 
   @override
   String get signOut => 'Déconnexion';

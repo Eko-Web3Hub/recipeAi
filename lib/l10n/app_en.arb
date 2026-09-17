@@ -384,10 +384,34 @@
         "description": "Message displayed when there are no saved recipes"
     },
     "noSavedReceipes": "No saved recipes 😉. \nGo select between your available recipes!",
+    "@noFavoriteRecipeTitle": {
+        "description": "Title of the empty state shown on the favorites screen when there are no favorite recipes yet"
+    },
+    "noFavoriteRecipeTitle": "No favorites yet",
+    "@noFavoriteRecipeSubtitle": {
+        "description": "Subtitle of the empty state shown on the favorites screen when there are no favorite recipes yet"
+    },
+    "noFavoriteRecipeSubtitle": "Save a generated recipe to find it here.",
+    "@noFavoriteRecipeAction": {
+        "description": "Button label on the favorites empty state, navigates to the home screen to generate a recipe"
+    },
+    "noFavoriteRecipeAction": "Generate a recipe",
+    "@recipeAddedToFavorites": {
+        "description": "Snackbar message shown when a recipe is added to favorites"
+    },
+    "recipeAddedToFavorites": "Recipe added to favorites",
+    "@recipeRemovedFromFavorites": {
+        "description": "Snackbar message shown when a recipe is removed from favorites"
+    },
+    "recipeRemovedFromFavorites": "Recipe removed from favorites",
     "@favorite": {
         "description": "Label for the favorite section"
     },
     "favorite": "Favorites",
+    "@savedRecipes": {
+        "description": "Label for saved recipes"
+    },
+    "savedRecipes": "saved recipes",
     "signOut": "Log out",
     "@signOut": {
         "description": "Label for the action of signing out"
@@ -822,303 +846,303 @@
     },
     "welcomeTagline": "Say goodbye to “What are we eating tonight?”",
     "@welcomeTagline": {
-            "description": "Onboarding: welcomeTagline"
+        "description": "Onboarding: welcomeTagline"
     },
     "welcomeStartCta": "Get started",
     "@welcomeStartCta": {
-            "description": "Onboarding: welcomeStartCta"
+        "description": "Onboarding: welcomeStartCta"
     },
     "welcomeAlreadyHaveAccount": "I already have an account",
     "@welcomeAlreadyHaveAccount": {
-            "description": "Onboarding: welcomeAlreadyHaveAccount"
+        "description": "Onboarding: welcomeAlreadyHaveAccount"
     },
     "notificationPermissionTitle": "Allow notifications",
     "@notificationPermissionTitle": {
-            "description": "Onboarding: notificationPermissionTitle"
+        "description": "Onboarding: notificationPermissionTitle"
     },
     "notificationPreviewTime": "now",
     "@notificationPreviewTime": {
-            "description": "Onboarding: notificationPreviewTime"
+        "description": "Onboarding: notificationPreviewTime"
     },
     "notificationPreviewTitle": "💧 Time to hydrate!",
     "@notificationPreviewTitle": {
-            "description": "Onboarding: notificationPreviewTitle"
+        "description": "Onboarding: notificationPreviewTitle"
     },
     "notificationPreviewBody": "A big glass of water now, your body will thank you.",
     "@notificationPreviewBody": {
-            "description": "Onboarding: notificationPreviewBody"
+        "description": "Onboarding: notificationPreviewBody"
     },
     "notificationPermissionWhy": "Why turn notifications on?",
     "@notificationPermissionWhy": {
-            "description": "Onboarding: notificationPermissionWhy"
+        "description": "Onboarding: notificationPermissionWhy"
     },
     "notificationPermissionBody": "No spam, promise. We only notify you when it is genuinely useful.",
     "@notificationPermissionBody": {
-            "description": "Onboarding: notificationPermissionBody"
+        "description": "Onboarding: notificationPermissionBody"
     },
     "notificationPermissionBody2": "Turn notifications on to get your reminders and our food facts.",
     "@notificationPermissionBody2": {
-            "description": "Onboarding: notificationPermissionBody2"
+        "description": "Onboarding: notificationPermissionBody2"
     },
     "notificationPermissionLater": "Later",
     "@notificationPermissionLater": {
-            "description": "Onboarding: notificationPermissionLater"
+        "description": "Onboarding: notificationPermissionLater"
     },
     "onboardingContinue": "Continue",
     "@onboardingContinue": {
-            "description": "Onboarding: onboardingContinue"
+        "description": "Onboarding: onboardingContinue"
     },
     "onboardingStepCounter": "{current}/{total}",
     "@onboardingStepCounter": {
-            "description": "Progress counter of the onboarding, e.g. 2/5",
-            "placeholders": {
-                    "current": {
-                            "type": "int"
-                    },
-                    "total": {
-                            "type": "int"
-                    }
+        "description": "Progress counter of the onboarding, e.g. 2/5",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
             }
+        }
     },
     "onboardingBack": "Previous step",
     "@onboardingBack": {
-            "description": "Onboarding: onboardingBack"
+        "description": "Onboarding: onboardingBack"
     },
     "onboardingDietTitle": "What is your dietary profile?",
     "@onboardingDietTitle": {
-            "description": "Onboarding: onboardingDietTitle"
+        "description": "Onboarding: onboardingDietTitle"
     },
     "onboardingDietHelper": "Pick as many as you need — every recipe adapts to them.",
     "@onboardingDietHelper": {
-            "description": "Onboarding: onboardingDietHelper"
+        "description": "Onboarding: onboardingDietHelper"
     },
     "dietNoRestriction": "No restriction",
     "@dietNoRestriction": {
-            "description": "Onboarding: dietNoRestriction"
+        "description": "Onboarding: dietNoRestriction"
     },
     "dietVegetarian": "Vegetarian",
     "@dietVegetarian": {
-            "description": "Onboarding: dietVegetarian"
+        "description": "Onboarding: dietVegetarian"
     },
     "dietGlutenFree": "Gluten free",
     "@dietGlutenFree": {
-            "description": "Onboarding: dietGlutenFree"
+        "description": "Onboarding: dietGlutenFree"
     },
     "dietLactoseFree": "Lactose free",
     "@dietLactoseFree": {
-            "description": "Onboarding: dietLactoseFree"
+        "description": "Onboarding: dietLactoseFree"
     },
     "dietVegan": "Vegan",
     "@dietVegan": {
-            "description": "Onboarding: dietVegan"
+        "description": "Onboarding: dietVegan"
     },
     "onboardingMorphologyTitle": "Tell us about you",
     "@onboardingMorphologyTitle": {
-            "description": "Onboarding: onboardingMorphologyTitle"
+        "description": "Onboarding: onboardingMorphologyTitle"
     },
     "onboardingMorphologyHelper": "This is used to compute your calorie needs. It stays private.",
     "@onboardingMorphologyHelper": {
-            "description": "Onboarding: onboardingMorphologyHelper"
+        "description": "Onboarding: onboardingMorphologyHelper"
     },
     "morphologyGender": "Gender",
     "@morphologyGender": {
-            "description": "Onboarding: morphologyGender"
+        "description": "Onboarding: morphologyGender"
     },
     "genderFemale": "Female",
     "@genderFemale": {
-            "description": "Onboarding: genderFemale"
+        "description": "Onboarding: genderFemale"
     },
     "genderMale": "Male",
     "@genderMale": {
-            "description": "Onboarding: genderMale"
+        "description": "Onboarding: genderMale"
     },
     "genderOther": "Other",
     "@genderOther": {
-            "description": "Onboarding: genderOther"
+        "description": "Onboarding: genderOther"
     },
     "morphologyHeight": "Height",
     "@morphologyHeight": {
-            "description": "Onboarding: morphologyHeight"
+        "description": "Onboarding: morphologyHeight"
     },
     "morphologyWeight": "Weight",
     "@morphologyWeight": {
-            "description": "Onboarding: morphologyWeight"
+        "description": "Onboarding: morphologyWeight"
     },
     "unitCentimeter": "cm",
     "@unitCentimeter": {
-            "description": "Onboarding: unitCentimeter"
+        "description": "Onboarding: unitCentimeter"
     },
     "unitKilogram": "kg",
     "@unitKilogram": {
-            "description": "Onboarding: unitKilogram"
+        "description": "Onboarding: unitKilogram"
     },
     "bmiLabel": "Your BMI",
     "@bmiLabel": {
-            "description": "Onboarding: bmiLabel"
+        "description": "Onboarding: bmiLabel"
     },
     "bmiUnderweight": "Underweight",
     "@bmiUnderweight": {
-            "description": "Onboarding: bmiUnderweight"
+        "description": "Onboarding: bmiUnderweight"
     },
     "bmiNormal": "Normal",
     "@bmiNormal": {
-            "description": "Onboarding: bmiNormal"
+        "description": "Onboarding: bmiNormal"
     },
     "bmiOverweight": "Overweight",
     "@bmiOverweight": {
-            "description": "Onboarding: bmiOverweight"
+        "description": "Onboarding: bmiOverweight"
     },
     "bmiObesity": "Obesity",
     "@bmiObesity": {
-            "description": "Onboarding: bmiObesity"
+        "description": "Onboarding: bmiObesity"
     },
     "bmiStatusUnderweight": "Underweight",
     "@bmiStatusUnderweight": {
-            "description": "Onboarding: bmiStatusUnderweight"
+        "description": "Onboarding: bmiStatusUnderweight"
     },
     "bmiStatusNormal": "Normal weight",
     "@bmiStatusNormal": {
-            "description": "Onboarding: bmiStatusNormal"
+        "description": "Onboarding: bmiStatusNormal"
     },
     "bmiStatusOverweight": "Overweight",
     "@bmiStatusOverweight": {
-            "description": "Onboarding: bmiStatusOverweight"
+        "description": "Onboarding: bmiStatusOverweight"
     },
     "bmiStatusObesity": "Obesity",
     "@bmiStatusObesity": {
-            "description": "Onboarding: bmiStatusObesity"
+        "description": "Onboarding: bmiStatusObesity"
     },
     "onboardingActivityTitle": "What is your activity level?",
     "@onboardingActivityTitle": {
-            "description": "Onboarding: onboardingActivityTitle"
+        "description": "Onboarding: onboardingActivityTitle"
     },
     "onboardingActivityHelper": "We adjust the calories and portions of your recipes to your energy needs.",
     "@onboardingActivityHelper": {
-            "description": "Onboarding: onboardingActivityHelper"
+        "description": "Onboarding: onboardingActivityHelper"
     },
     "activitySedentary": "Sedentary",
     "@activitySedentary": {
-            "description": "Onboarding: activitySedentary"
+        "description": "Onboarding: activitySedentary"
     },
     "activitySedentaryDescription": "Little to no exercise, desk job",
     "@activitySedentaryDescription": {
-            "description": "Onboarding: activitySedentaryDescription"
+        "description": "Onboarding: activitySedentaryDescription"
     },
     "activityLightlyActive": "Lightly active",
     "@activityLightlyActive": {
-            "description": "Onboarding: activityLightlyActive"
+        "description": "Onboarding: activityLightlyActive"
     },
     "activityLightlyActiveDescription": "1 to 3 sessions a week",
     "@activityLightlyActiveDescription": {
-            "description": "Onboarding: activityLightlyActiveDescription"
+        "description": "Onboarding: activityLightlyActiveDescription"
     },
     "activityModeratelyActive": "Moderately active",
     "@activityModeratelyActive": {
-            "description": "Onboarding: activityModeratelyActive"
+        "description": "Onboarding: activityModeratelyActive"
     },
     "activityModeratelyActiveDescription": "3 to 5 sessions a week",
     "@activityModeratelyActiveDescription": {
-            "description": "Onboarding: activityModeratelyActiveDescription"
+        "description": "Onboarding: activityModeratelyActiveDescription"
     },
     "activityVeryActive": "Very active",
     "@activityVeryActive": {
-            "description": "Onboarding: activityVeryActive"
+        "description": "Onboarding: activityVeryActive"
     },
     "activityVeryActiveDescription": "6 to 7 sessions a week",
     "@activityVeryActiveDescription": {
-            "description": "Onboarding: activityVeryActiveDescription"
+        "description": "Onboarding: activityVeryActiveDescription"
     },
     "activityAthlete": "Athlete",
     "@activityAthlete": {
-            "description": "Onboarding: activityAthlete"
+        "description": "Onboarding: activityAthlete"
     },
     "activityAthleteDescription": "Intense daily training",
     "@activityAthleteDescription": {
-            "description": "Onboarding: activityAthleteDescription"
+        "description": "Onboarding: activityAthleteDescription"
     },
     "onboardingGoalsTitle": "What are your goals?",
     "@onboardingGoalsTitle": {
-            "description": "Onboarding: onboardingGoalsTitle"
+        "description": "Onboarding: onboardingGoalsTitle"
     },
     "onboardingGoalsHelper": "Health or nutrition wise. Pick as many as you want.",
     "@onboardingGoalsHelper": {
-            "description": "Onboarding: onboardingGoalsHelper"
+        "description": "Onboarding: onboardingGoalsHelper"
     },
     "goalWeightLoss": "Weight loss",
     "@goalWeightLoss": {
-            "description": "Onboarding: goalWeightLoss"
+        "description": "Onboarding: goalWeightLoss"
     },
     "goalWeightLossDescription": "Gentle, sustainable calorie deficit",
     "@goalWeightLossDescription": {
-            "description": "Onboarding: goalWeightLossDescription"
+        "description": "Onboarding: goalWeightLossDescription"
     },
     "goalHealthImprovement": "Better health",
     "@goalHealthImprovement": {
-            "description": "Onboarding: goalHealthImprovement"
+        "description": "Onboarding: goalHealthImprovement"
     },
     "goalHealthImprovementDescription": "Balance, fibre and micronutrients",
     "@goalHealthImprovementDescription": {
-            "description": "Onboarding: goalHealthImprovementDescription"
+        "description": "Onboarding: goalHealthImprovementDescription"
     },
     "goalMuscleGain": "Muscle gain",
     "@goalMuscleGain": {
-            "description": "Onboarding: goalMuscleGain"
+        "description": "Onboarding: goalMuscleGain"
     },
     "goalMuscleGainDescription": "Higher protein intake",
     "@goalMuscleGainDescription": {
-            "description": "Onboarding: goalMuscleGainDescription"
+        "description": "Onboarding: goalMuscleGainDescription"
     },
     "goalDetox": "Detox",
     "@goalDetox": {
-            "description": "Onboarding: goalDetox"
+        "description": "Onboarding: goalDetox"
     },
     "goalDetoxDescription": "Light, unprocessed, hydrating",
     "@goalDetoxDescription": {
-            "description": "Onboarding: goalDetoxDescription"
+        "description": "Onboarding: goalDetoxDescription"
     },
     "onboardingChronicDiseaseTitle": "Do you have a chronic condition?",
     "@onboardingChronicDiseaseTitle": {
-            "description": "Onboarding: onboardingChronicDiseaseTitle"
+        "description": "Onboarding: onboardingChronicDiseaseTitle"
     },
     "onboardingChronicDiseaseHelper": "To adjust sugar, salt and fat intake. This stays confidential.",
     "@onboardingChronicDiseaseHelper": {
-            "description": "Onboarding: onboardingChronicDiseaseHelper"
+        "description": "Onboarding: onboardingChronicDiseaseHelper"
     },
     "chronicDiabetes": "Diabetes",
     "@chronicDiabetes": {
-            "description": "Onboarding: chronicDiabetes"
+        "description": "Onboarding: chronicDiabetes"
     },
     "chronicCardiovascular": "Cardiovascular disease",
     "@chronicCardiovascular": {
-            "description": "Onboarding: chronicCardiovascular"
+        "description": "Onboarding: chronicCardiovascular"
     },
     "chronicOverweight": "Overweight",
     "@chronicOverweight": {
-            "description": "Onboarding: chronicOverweight"
+        "description": "Onboarding: chronicOverweight"
     },
     "chronicHypertension": "High blood pressure",
     "@chronicHypertension": {
-            "description": "Onboarding: chronicHypertension"
+        "description": "Onboarding: chronicHypertension"
     },
     "chronicSmop": "PCOS",
     "@chronicSmop": {
-            "description": "Onboarding: chronicSmop"
+        "description": "Onboarding: chronicSmop"
     },
     "chronicOtherHint": "Other",
     "@chronicOtherHint": {
-            "description": "Onboarding: chronicOtherHint"
+        "description": "Onboarding: chronicOtherHint"
     },
     "onboardingChronicDiseaseFootnote": "Eat'Easy is not a medical device. Talk to a healthcare professional for any follow-up.",
     "@onboardingChronicDiseaseFootnote": {
-            "description": "Onboarding: onboardingChronicDiseaseFootnote"
+        "description": "Onboarding: onboardingChronicDiseaseFootnote"
     },
     "recipeCookedCount": "✓ Cooked {count} ×",
     "@recipeCookedCount": {
-            "description": "Badge showing how many times the user has cooked a recipe, e.g. '✓ Cooked 3 ×'",
-            "placeholders": {
-                    "count": {
-                            "type": "int"
-                    }
+        "description": "Badge showing how many times the user has cooked a recipe, e.g. '✓ Cooked 3 ×'",
+        "placeholders": {
+            "count": {
+                "type": "int"
             }
+        }
     }
 }

@@ -21,11 +21,11 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
 
   static const String _recipeCollection = 'recipes';
 
+  static const String _favoriteRecipeCollection = 'FavoriteRecipes';
+
   static const String userReceipeV2Collection = "UserReceipeV2";
 
   static const String _isForHomeKey = 'isForHome';
-
-  static const String _isAddedToFavoritesKey = 'isAddedToFavorites';
 
   static const String _createdDateKey = 'createdDate';
 
@@ -119,39 +119,14 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Stream<List<UserRecipeV2>> watchAllSavedReceipes(EntityId uid) {
-    return _firestore
-        .collection(userReceipeV2Collection)
-        .doc(uid.value)
-        .collection(receipesCollection)
-        .where(_isAddedToFavoritesKey, isEqualTo: true)
-        .snapshots()
-        .map((snapshot) {
-          if (snapshot.docs.isEmpty) {
-            return [];
-          }
-          final userReceipes = snapshot.docs
-              .map((doc) => UserRecipeV2.fromJson(doc.data()))
-              .toList();
-
-          return userReceipes;
-        });
-  }
-
-  @override
   Stream<bool> isReceiptSaved(EntityId uid, EntityId receipeId) {
     return _firestore
-        .collection(userReceipeV2Collection)
+        .collection(_userFinishedReceipesCollection)
         .doc(uid.value)
-        .collection(receipesCollection)
+        .collection(_favoriteRecipeCollection)
         .doc(receipeId.value)
         .snapshots()
-        .map(
-          (snapshot) =>
-              snapshot.exists &&
-              snapshot.data() != null &&
-              snapshot.data()![_isAddedToFavoritesKey] == true,
-        );
+        .map((snapshot) => snapshot.exists);
   }
 
   @override
@@ -359,5 +334,47 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
                 : finishedDates.reduce((a, b) => a.isAfter(b) ? a : b),
           );
         });
+  }
+
+  @override
+  Future<void> addToFavorite({
+    required EntityId uid,
+    required EntityId recipeId,
+    required UserRecipeV2 recipe,
+  }) => _firestore
+      .collection(_userFinishedReceipesCollection)
+      .doc(uid.value)
+      .collection(_favoriteRecipeCollection)
+      .doc(recipeId.value)
+      .set(recipe.toJson());
+
+  @override
+  Future<void> removeFromFavorite({
+    required EntityId uid,
+    required EntityId recipeId,
+  }) => _firestore
+      .collection(_userFinishedReceipesCollection)
+      .doc(uid.value)
+      .collection(_favoriteRecipeCollection)
+      .doc(recipeId.value)
+      .delete();
+
+  @override
+  Stream<List<UserRecipeV2>> retrieveFavoriteRecipes(EntityId uid) {
+    return _firestore
+        .collection(_userFinishedReceipesCollection)
+        .doc(uid.value)
+        .collection(_favoriteRecipeCollection)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map(
+                (doc) => UserRecipeV2.fromJson(
+                  doc.data(),
+                  customId: EntityId(doc.id),
+                ),
+              )
+              .toList(),
+        );
   }
 }

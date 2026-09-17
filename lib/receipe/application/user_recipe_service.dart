@@ -21,14 +21,19 @@ class UserRecipeService implements IUserRecipeService {
   final IAuthUserService _authUserService;
 
   @override
-  Future<void> addToFavorite(UserRecipeV2 recipe) {
-    throw UnimplementedError();
-  }
+  Future<void> addToFavorite(UserRecipeV2 recipe) =>
+      _userReceipeRepositoryV2.addToFavorite(
+        uid: _authUserService.currentUser!.uid,
+        recipeId: recipe.id!,
+        recipe: recipe,
+      );
 
   @override
-  Future<void> removeFromFavorite(UserRecipeV2 recipe) {
-    throw UnimplementedError();
-  }
+  Future<void> removeFromFavorite(UserRecipeV2 recipe) =>
+      _userReceipeRepositoryV2.removeFromFavorite(
+        uid: _authUserService.currentUser!.uid,
+        recipeId: recipe.id!,
+      );
 
   @override
   Stream<bool> isReceiptSaved(EntityId receipeId) => _userReceipeRepositoryV2
@@ -36,7 +41,7 @@ class UserRecipeService implements IUserRecipeService {
 
   @override
   Stream<List<UserRecipeV2>> watchAllSavedReceipes() => _userReceipeRepositoryV2
-      .watchAllSavedReceipes(_authUserService.currentUser!.uid);
+      .retrieveFavoriteRecipes(_authUserService.currentUser!.uid);
 
   @override
   Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid) =>

@@ -28,10 +28,12 @@ class RecipeCard extends StatelessWidget {
     super.key,
     required this.receipe,
     this.redirectionPath = '/home/recipe-details',
+    this.titleRecipeSize,
   });
 
   final UserRecipeV2 receipe;
   final String redirectionPath;
+  final double? titleRecipeSize;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +57,10 @@ class RecipeCard extends StatelessWidget {
                     di<IAuthUserService>(),
                   ),
                   child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
-                    builder: (context, translatedReceipe) =>
-                        _RecipeCardOverlay(receipe: translatedReceipe),
+                    builder: (context, translatedReceipe) => _RecipeCardOverlay(
+                      receipe: translatedReceipe,
+                      titleRecipeSize: titleRecipeSize,
+                    ),
                   ),
                 ),
               ),
@@ -124,9 +128,10 @@ class _RecipeCardImagePlaceholder extends StatelessWidget {
 }
 
 class _RecipeCardOverlay extends StatelessWidget {
-  const _RecipeCardOverlay({required this.receipe});
+  const _RecipeCardOverlay({required this.receipe, this.titleRecipeSize});
 
   final Receipe receipe;
+  final double? titleRecipeSize;
 
   @override
   Widget build(BuildContext context) {
@@ -149,10 +154,10 @@ class _RecipeCardOverlay extends StatelessWidget {
         children: [
           Text(
             receipe.name,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: robotoSlabFontFamily,
               fontWeight: FontWeight.w600,
-              fontSize: 15,
+              fontSize: titleRecipeSize ?? 15,
               color: Colors.white,
             ),
           ),
