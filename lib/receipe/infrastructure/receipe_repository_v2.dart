@@ -15,7 +15,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
       "$baseApiUrl/v2/gen-receipe-with-user-preference";
 
   static const String recipesSuggestionEngineBaseUrl =
-      'https://recipes-suggestions-v7duguwfla-ew.a.run.app/suggestions';
+      'https://recipes-suggestions-v7duguwfla-ew.a.run.app';
 
   static const String receipesCollection = "receipes";
 
@@ -48,7 +48,8 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     String token,
   ) async {
     try {
-      final apiRoute = "$recipesSuggestionEngineBaseUrl/${uid.value}";
+      final apiRoute =
+          "$recipesSuggestionEngineBaseUrl/suggestions/${uid.value}";
       final response = await _dio.get(
         apiRoute,
         options: Options(
@@ -186,30 +187,36 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(
+  Future<List<UserRecipeV2>> genererateRecipesWithIngredientPicture(
+    EntityId uid,
+    String token,
     File file,
   ) async {
     try {
-      final apiRoute = "$baseApiUrl/gen-receipe-with-ingredient-picture";
+      final apiRoute =
+          "$recipesSuggestionEngineBaseUrl/suggestions/${uid.value}/from-photo";
       final fileToSend = await MultipartFile.fromFile(
         file.path,
         filename: file.path.split("/").last,
       );
-      final formData = FormData.fromMap({"file": fileToSend});
+      final formData = FormData.fromMap({"photo": fileToSend});
       final response = await _dio.post(
         apiRoute,
         data: formData,
-        options: timeOutOptions,
+        options: Options(
+          receiveTimeout: timeOutDuration,
+          headers: {"Authorization": "Bearer $token"},
+        ),
       );
 
-      final json = response.data as Map<String, dynamic>;
-
-      return TranslatedRecipe.fromJson(json);
+      return (response.data['recipes'] as List)
+          .map<UserRecipeV2>((recipe) => UserRecipeV2.fromJson(recipe))
+          .toList();
     } catch (e) {
       log(
         'An error occurred while generating recipes with ingredients picture: $e',
       );
-      return null;
+      return [];
     }
   }
 

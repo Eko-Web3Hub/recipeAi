@@ -55,7 +55,9 @@ class AppUpdatePopup extends StatelessWidget {
           MainBtn(
             text: 'OK',
             onPressed: () => _redirectToStore().then((value) {
-              Navigator.pop(context);
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
             }),
           )
         ],
@@ -75,7 +77,7 @@ Future<void> showAppUpdatePopup(BuildContext context) async {
     currentVersion: currentVersion,
     pertinentVersionKey: pertinentVersionKey,
   );
-  if (!shouldSuggestUpdate) {
+  if (!shouldSuggestUpdate || !context.mounted) {
     return;
   }
 

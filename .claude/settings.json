@@ -11,7 +11,9 @@
       "Bash(cat /Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/CHANGELOG.md 2>/dev/null | head -100)",
       "Read(//Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/**)",
       "Read(//Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/lib/src/**)",
-      "Read(//Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/lib/**)"
+      "Read(//Users/imdadadelabou/.pub-cache/hosted/pub.dev/font_awesome_flutter-11.0.0/lib/**)",
+      "Bash(pod install *)",
+      "Bash(flutter analyze *)"
     ]
   }
 }

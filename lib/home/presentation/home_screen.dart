@@ -57,7 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
       await di<IUserAccountMetaDataService>().saveRecentLoginDate(
         DateTime.now(),
       );
-      await showAppUpdatePopup(context);
+      if (mounted) {
+        await showAppUpdatePopup(context);
+      }
       notificationUserController.requestPermission(false);
     });
   }
@@ -853,8 +855,10 @@ class UserFirstNameCharOnCapitalCase extends StatelessWidget {
 }
 
 class ExpandingCircleDemo extends StatefulWidget {
+  const ExpandingCircleDemo({super.key});
+
   @override
-  _ExpandingCircleDemoState createState() => _ExpandingCircleDemoState();
+  State<ExpandingCircleDemo> createState() => _ExpandingCircleDemoState();
 }
 
 class _ExpandingCircleDemoState extends State<ExpandingCircleDemo>

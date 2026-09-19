@@ -180,12 +180,10 @@ class _CircleButton extends StatelessWidget {
   const _CircleButton({
     required this.icon,
     required this.onTap,
-    this.filled = false,
   });
 
   final IconData icon;
   final VoidCallback onTap;
-  final bool filled;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +194,7 @@ class _CircleButton extends StatelessWidget {
         height: 28,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: filled ? greenPrimaryColor : Colors.transparent,
+          color: Colors.transparent,
           border: Border.all(
             color: greenPrimaryColor,
             width: 1.5,
@@ -205,7 +203,7 @@ class _CircleButton extends StatelessWidget {
         child: Icon(
           icon,
           size: 16,
-          color: filled ? Colors.white : greenPrimaryColor,
+          color: greenPrimaryColor,
         ),
       ),
     );

@@ -100,7 +100,7 @@ class _UserProfilCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0),
           boxShadow: [
             BoxShadow(
-              color: Color(0xff063336).withOpacity(0.1),
+              color: Color(0xff063336).withValues(alpha: 0.1),
               spreadRadius: 0,
               blurRadius: 16,
               offset: const Offset(0, 2),

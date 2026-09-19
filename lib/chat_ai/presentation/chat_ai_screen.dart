@@ -225,6 +225,8 @@ class _UploadFileCTA extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
     final chatAiController = context.read<ChatAiController>();
+    final findRecipeWithImageController = context
+        .read<FindRecipeWithImageController>();
 
     return BlocListener<
       FindRecipeWithImageController,
@@ -265,9 +267,7 @@ class _UploadFileCTA extends StatelessWidget {
                   ChatRole.ai,
                 ),
               );
-              context.read<FindRecipeWithImageController>().findRecipe(
-                photo.path,
-              );
+              findRecipeWithImageController.findRecipe(photo.path);
             });
           }
         },

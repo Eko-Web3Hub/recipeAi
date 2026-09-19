@@ -250,7 +250,7 @@ class DeleteAccountBtn extends StatelessWidget {
       onPressed: () async {
         final response = await _showConfirmationDialog(context);
 
-        if (response == true) {
+        if (response == true && context.mounted) {
           context.read<DeleteAccountController>().deleteAccount();
         }
       },

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class GreenCurvedHeader extends StatelessWidget {

@@ -94,3 +94,11 @@ const recipeCardTagAmberColor = Color(0xFFF0D089);
 const recipeCardTagSalmonColor = Color(0xFFE8B8A3);
 
 const cookedRecipeShigBgColor = Color(0xff43a026);
+
+// Custom ingredient camera screen palette (matches the "Photo des
+// ingrédients" mockup): dark backdrop with a warm cream viewfinder.
+const cameraScreenBackgroundColor = Color(0xFF1E1D18);
+const cameraControlBackgroundColor = Color(0x33FFFFFF);
+const cameraFramePlaceholderColor = Color(0xFFDAD5C8);
+const cameraFramePlaceholderTextColor = Color(0xFF8C8777);
+const cameraHintTextColor = Color(0xFFB6B2A6);

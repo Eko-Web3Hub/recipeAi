@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// **'Something went wrong. Please try again'**
   String get somethingWentWrong;
 
+  /// Retry button label
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
   /// Ingredients section title
   ///
   /// In en, this message translates to:
@@ -1777,6 +1783,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'✓ Cooked {count} ×'**
   String recipeCookedCount(int count);
+
+  /// Title of the custom camera screen used to photograph ingredients
+  ///
+  /// In en, this message translates to:
+  /// **'Ingredients photo'**
+  String get ingredientCameraTitle;
+
+  /// Text shown inside the frame of the camera screen while the camera is initializing
+  ///
+  /// In en, this message translates to:
+  /// **'ingredients on the countertop'**
+  String get ingredientCameraPlaceholder;
+
+  /// Helper text under the frame of the custom camera screen
+  ///
+  /// In en, this message translates to:
+  /// **'Frame your ingredients in the zone'**
+  String get ingredientCameraHint;
+
+  /// Label of the button opening the gallery from the custom camera screen
+  ///
+  /// In en, this message translates to:
+  /// **'gallery'**
+  String get ingredientCameraGallery;
+
+  /// Message shown when the camera permission is denied on the custom camera screen
+  ///
+  /// In en, this message translates to:
+  /// **'Allow camera access to take a photo of your ingredients'**
+  String get ingredientCameraPermissionDenied;
 }
 
 class _AppLocalizationsDelegate

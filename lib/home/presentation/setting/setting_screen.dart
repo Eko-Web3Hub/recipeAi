@@ -135,7 +135,7 @@ class _NotificationSetting extends StatelessWidget {
           iconPath: iconPath,
           title: title,
           rightSectionChild: Switch(
-            activeColor: yellowBrandColor,
+            activeThumbColor: yellowBrandColor,
             thumbColor: WidgetStateProperty.all(Colors.white),
             value: notificationSettingState?.status ==
                 NotificationUserStatus.authorized,
@@ -269,9 +269,7 @@ class _SettingOptionCard extends StatelessWidget {
               offset: const Offset(0, 2),
               blurRadius: 16,
               spreadRadius: 0,
-              color: Color(0xff063336).withOpacity(
-                0.1,
-              ),
+              color: Color(0xff063336).withValues(alpha: 0.1),
             ),
           ],
         ),

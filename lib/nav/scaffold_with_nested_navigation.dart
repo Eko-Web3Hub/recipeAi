@@ -14,11 +14,13 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_bottom_nav.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
+import 'package:recipe_ai/home/presentation/ingredient_camera_screen.dart';
 import 'package:recipe_ai/nav/hide_nav_bar.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class NavigationItem extends Equatable {
@@ -97,10 +99,8 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       body: navigationShell,
       floatingActionButton:
           hideNavBar || context.watch<HideNavBar>().isNavBarHidden
-              ? null
-              : ChefFab(
-                  onPressed: () => _showAiActionRecipeBottomSheet(context),
-                ),
+          ? null
+          : ChefFab(onPressed: () => _showAiActionRecipeBottomSheet(context)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Consumer<HideNavBar>(
         builder: (context, hideNavBar, child) {
@@ -160,12 +160,12 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
   }
 
   void _takeLivePicture() async {
-    final ImagePicker picker = ImagePicker();
-    // change to ImageSource.camera
-    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+    final File? photo = await Navigator.of(context).push<File>(
+      MaterialPageRoute(builder: (_) => const IngredientCameraScreen()),
+    );
     if (photo != null) {
       setState(() {
-        _ingredientsImage = File(photo.path);
+        _ingredientsImage = photo;
       });
     }
   }
@@ -304,7 +304,56 @@ class _GenRecipeFromIngredientPicture extends StatelessWidget {
             di<IAuthUserService>(),
             file,
           ),
-          child: CustomCircularLoader(size: 20),
+          child:
+              BlocBuilder<
+                GenerateRecipeWithIngredientPhotoController,
+                GenerateRecipeWithIngredientPhotoState
+              >(
+                builder: (context, state) {
+                  if (state is GenerateRecipeWithIngredientPhotoFailure) {
+                    final appText = di<TranslationController>().currentLanguage;
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 28,
+                        ),
+                        const Gap(8),
+                        Text(
+                          appText.somethingWentWrong,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: poppinsFontFamily,
+                            fontSize: 13,
+                            color: Colors.red,
+                          ),
+                        ),
+                        const Gap(8),
+                        TextButton(
+                          onPressed: () => context
+                              .read<
+                                GenerateRecipeWithIngredientPhotoController
+                              >()
+                              .retry(),
+                          child: Text(
+                            appText.retry,
+                            style: TextStyle(
+                              fontFamily: poppinsFontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: greenPrimaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return CustomCircularLoader(size: 20);
+                },
+              ),
         ),
       ],
     );

@@ -106,6 +106,7 @@ class AuthUserService implements IAuthUserService {
           email: _firebaseAuth.currentUser!.email,
         );
 
+  @override
   Future<String?>? get getIdToken => _firebaseAuth.currentUser?.getIdToken();
 }
 
