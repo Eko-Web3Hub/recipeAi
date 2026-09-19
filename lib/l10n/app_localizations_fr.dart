@@ -981,4 +981,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fridgeUnitTablespoon => 'c. à s.';
+
+  @override
+  String get profileStatGenerated => 'Générées';
+
+  @override
+  String get profileStatFavorites => 'Favoris';
+
+  @override
+  String get profileDietaryPreferences => 'Mes préférences alimentaires';
+
+  @override
+  String get profileHelpContact => 'Aide & contact';
+
+  @override
+  String get notificationSettingsReceive => 'Recevoir les notifications';
+
+  @override
+  String get notificationSettingsBlocked =>
+      'Les notifications sont bloquées dans les réglages de ton téléphone. Autorise Eat\'Easy pour les recevoir.';
 }

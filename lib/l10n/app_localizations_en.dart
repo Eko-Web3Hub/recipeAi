@@ -963,4 +963,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fridgeUnitTablespoon => 'tbsp';
+
+  @override
+  String get profileStatGenerated => 'Generated';
+
+  @override
+  String get profileStatFavorites => 'Favorites';
+
+  @override
+  String get profileDietaryPreferences => 'My dietary preferences';
+
+  @override
+  String get profileHelpContact => 'Help & contact';
+
+  @override
+  String get notificationSettingsReceive => 'Receive notifications';
+
+  @override
+  String get notificationSettingsBlocked =>
+      'Notifications are blocked in your phone settings. Allow Eat\'Easy to receive them.';
 }

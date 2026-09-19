@@ -4,20 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/signout_btn_controlller.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
-import 'package:recipe_ai/notification/domain/models/notification_user.dart';
-import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
-import 'package:recipe_ai/utils/app_version.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
-import 'package:recipe_ai/utils/device_info.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -43,20 +37,11 @@ class SettingScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Gap(10),
-                    _NotificationSetting(
-                      iconPath: 'assets/images/notificationSettingIcon.svg',
-                      title: appTexts.notification,
+                    _MyAccountSetting(
+                      title: appTexts.myAccount,
                     ),
                     const Gap(16),
                     _LanguageSetting(),
-                    const Gap(16),
-                    _MyPreferencesSetting(
-                      title: appTexts.myPreferences,
-                    ),
-                    const Gap(16),
-                    _FeedBackSetting(
-                      title: appTexts.sendABug,
-                    ),
                     const Gap(16),
                     _LogOutBtn(
                       title: appTexts.signOut,
@@ -99,8 +84,8 @@ class _LogOutBtn extends StatelessWidget {
   }
 }
 
-class _MyPreferencesSetting extends StatelessWidget {
-  const _MyPreferencesSetting({
+class _MyAccountSetting extends StatelessWidget {
+  const _MyAccountSetting({
     required this.title,
   });
 
@@ -109,42 +94,11 @@ class _MyPreferencesSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SettingOptionCard(
       onTap: () => context.push(
-        "/profil-screen/update-user-preference",
+        '/profil-screen/my-account',
       ),
-      iconPath: 'assets/icon/myPreferencesIcon.svg',
+      iconPath: 'assets/icon/accountIcon.svg',
       title: title,
       rightSectionChild: _RedirectionIcon(),
-    );
-  }
-}
-
-class _NotificationSetting extends StatelessWidget {
-  const _NotificationSetting({
-    required this.title,
-    required this.iconPath,
-  });
-
-  final String iconPath;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<NotificationUserController, NotificationUser?>(
-      builder: (context, notificationSettingState) {
-        return _SettingOptionCard(
-          iconPath: iconPath,
-          title: title,
-          rightSectionChild: Switch(
-            activeColor: yellowBrandColor,
-            thumbColor: WidgetStateProperty.all(Colors.white),
-            value: notificationSettingState?.status ==
-                NotificationUserStatus.authorized,
-            onChanged: (newValue) => context
-                .read<NotificationUserController>()
-                .toggleNotification(newValue),
-          ),
-        );
-      },
     );
   }
 }
@@ -197,40 +151,6 @@ class _LanguageSetting extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _FeedBackSetting extends StatelessWidget {
-  const _FeedBackSetting({
-    required this.title,
-  });
-
-  final String title;
-
-  Future<void> _openFeedBackLink() async {
-    final encodedUid =
-        Uri.encodeComponent(di<IAuthUserService>().currentUser!.uid.value);
-    final device = await deviceInfo();
-    final appVersion = await getAppVersion();
-
-    final encodedDevice = Uri.encodeComponent(device);
-    final encodedAppVersion = Uri.encodeComponent(appVersion);
-
-    final url =
-        'https://tally.so/r/nGblKQ?uid=$encodedUid&device=$encodedDevice&version=$encodedAppVersion';
-    final uri = Uri.parse(url);
-
-    await launchUrl(uri);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _SettingOptionCard(
-      onTap: _openFeedBackLink,
-      iconPath: 'assets/icon/solarBugIcon.svg',
-      title: title,
-      rightSectionChild: _RedirectionIcon(),
     );
   }
 }

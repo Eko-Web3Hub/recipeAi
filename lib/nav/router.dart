@@ -20,6 +20,7 @@ import 'package:recipe_ai/home/presentation/change_password_screen.dart';
 import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/home/presentation/historic/historic_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/home/presentation/profile/notification_settings_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_screen.dart';
@@ -224,7 +225,6 @@ GoRouter createRouter() => GoRouter(
               state.fullPath,
               di<TranslationController>().currentLanguage,
             ),
-            actions: genActions(state.fullPath),
             navigationShell: navigationShell,
             hideNavBar: hideNavBar(state.fullPath),
           );
@@ -368,6 +368,13 @@ GoRouter createRouter() => GoRouter(
                   builder: (context, state) => const AccountScreen(),
                 ),
                 GoRoute(
+                  name: 'NotificationSettingsScreen',
+                  path: 'notifications',
+                  redirect: _guardAuth,
+                  builder: (context, state) =>
+                      const NotificationSettingsScreen(),
+                ),
+                GoRoute(
                   name: 'UpdateUserPreference',
                   path: 'update-user-preference',
                   redirect: _guardAuth,
@@ -414,17 +421,6 @@ String? genAppBarTitle(String? path, AppLocalizations appTexts) {
       return appTexts.myFavorites;
     case '/notification-screen':
       return 'Notifications';
-    case '/profil-screen':
-      return appTexts.profil;
-    default:
-      return null;
-  }
-}
-
-List<Widget>? genActions(String? path) {
-  switch (path) {
-    case '/profil-screen':
-      return [ProfilActionAppBar()];
     default:
       return null;
   }
@@ -433,6 +429,7 @@ List<Widget>? genActions(String? path) {
 bool hideNavBar(String? path) {
   switch (path) {
     case '/profil-screen/update-user-preference':
+    case '/profil-screen/notifications':
     case '/profil-screen/change-username':
     case '/profil-screen/change-email':
     case '/profil-screen/change-password':

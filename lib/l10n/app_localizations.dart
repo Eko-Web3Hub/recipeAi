@@ -1759,6 +1759,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'tbsp'**
   String get fridgeUnitTablespoon;
+
+  /// Profile: generated recipes stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Generated'**
+  String get profileStatGenerated;
+
+  /// Profile: favorite recipes stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get profileStatFavorites;
+
+  /// Profile: dietary preferences menu item
+  ///
+  /// In en, this message translates to:
+  /// **'My dietary preferences'**
+  String get profileDietaryPreferences;
+
+  /// Profile: help and contact menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Help & contact'**
+  String get profileHelpContact;
+
+  /// Notification settings: switch label
+  ///
+  /// In en, this message translates to:
+  /// **'Receive notifications'**
+  String get notificationSettingsReceive;
+
+  /// Notification settings: shown when the system permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked in your phone settings. Allow Eat\'Easy to receive them.'**
+  String get notificationSettingsBlocked;
 }
 
 class _AppLocalizationsDelegate

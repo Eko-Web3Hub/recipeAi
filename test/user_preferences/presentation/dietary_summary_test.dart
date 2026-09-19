@@ -4,10 +4,8 @@ import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/user_preferences/presentation/dietary_summary.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-OnboardingOption _option(String key, String fr, String en) => OnboardingOption(
-  key: key,
-  label: LocalizedString({'fr': fr, 'en': en}),
-);
+OnboardingOption _option(String key, String fr, String en) =>
+    OnboardingOption(key: key, label: LocalizedString({'fr': fr, 'en': en}));
 
 OnboardingStep _step(
   String key,
@@ -63,5 +61,14 @@ void main() {
     });
 
     expect(dietarySummaryLabels(preferences, steps, AppLanguage.fr), isEmpty);
+  });
+
+  test('tells diets and chronic diseases apart', () {
+    const preferences = UserPreference({'vegetarian': true, 'diabetes': true});
+
+    expect(dietarySummaryEntries(preferences, steps, AppLanguage.fr), [
+      (stepKey: dietProfileStepKey, label: 'Végétarien'),
+      (stepKey: chronicDiseaseStepKey, label: 'Diabète'),
+    ]);
   });
 }

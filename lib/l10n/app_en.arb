@@ -1216,5 +1216,29 @@
     "fridgeUnitTablespoon": "tbsp",
     "@fridgeUnitTablespoon": {
         "description": "Fridge tab: fridgeUnitTablespoon"
+    },
+    "profileStatGenerated": "Generated",
+    "@profileStatGenerated": {
+        "description": "Profile: generated recipes stat label"
+    },
+    "profileStatFavorites": "Favorites",
+    "@profileStatFavorites": {
+        "description": "Profile: favorite recipes stat label"
+    },
+    "profileDietaryPreferences": "My dietary preferences",
+    "@profileDietaryPreferences": {
+        "description": "Profile: dietary preferences menu item"
+    },
+    "profileHelpContact": "Help & contact",
+    "@profileHelpContact": {
+        "description": "Profile: help and contact menu item"
+    },
+    "notificationSettingsReceive": "Receive notifications",
+    "@notificationSettingsReceive": {
+        "description": "Notification settings: switch label"
+    },
+    "notificationSettingsBlocked": "Notifications are blocked in your phone settings. Allow Eat'Easy to receive them.",
+    "@notificationSettingsBlocked": {
+        "description": "Notification settings: shown when the system permission is denied"
     }
 }

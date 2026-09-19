@@ -91,7 +91,7 @@ class _NotificationPermissionScreenState
                 ),
               ),
               const SizedBox(height: 32),
-              const _NotificationPreviewCard(),
+              const NotificationPreviewCard(),
               const SizedBox(height: 40),
               Text(
                 appTexts.notificationPermissionWhy,
@@ -107,13 +107,13 @@ class _NotificationPermissionScreenState
               Text(
                 appTexts.notificationPermissionBody,
                 textAlign: TextAlign.center,
-                style: _bodyStyle,
+                style: notificationPrimingBodyStyle,
               ),
               const SizedBox(height: 24),
               Text(
                 appTexts.notificationPermissionBody2,
                 textAlign: TextAlign.center,
-                style: _bodyStyle,
+                style: notificationPrimingBodyStyle,
               ),
               const Spacer(),
               _GhostButton(
@@ -146,7 +146,7 @@ class _NotificationPermissionScreenState
   }
 }
 
-final _bodyStyle = TextStyle(
+final notificationPrimingBodyStyle = TextStyle(
   fontFamily: robotoFontFamily,
   fontWeight: FontWeight.w400,
   fontSize: 14,
@@ -154,9 +154,10 @@ final _bodyStyle = TextStyle(
   color: Colors.white.withValues(alpha: 0.92),
 );
 
-/// Mock of the push notification the user is about to allow.
-class _NotificationPreviewCard extends StatelessWidget {
-  const _NotificationPreviewCard();
+/// Mock of the push notification the user is about to allow, also shown on
+/// the profile notification settings.
+class NotificationPreviewCard extends StatelessWidget {
+  const NotificationPreviewCard({super.key});
 
   @override
   Widget build(BuildContext context) {
