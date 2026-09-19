@@ -17,12 +17,12 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
-import 'package:recipe_ai/utils/functions.dart';
 import 'package:recipe_ai/utils/widgets/empty_state_view.dart';
 
 const _fieldTop = 16.0;
 const _fieldHeight = 46.0;
 const _ctaHeight = 52.0;
+const _fabOverhang = 40.0;
 
 /// "Mon frigo" tab: the ingredients the user has at home, used to generate
 /// recipes (see the "Ma liste" proposition 2 mockup, titled "Mon frigo").
@@ -173,14 +173,16 @@ class _FridgeViewState extends State<_FridgeView> {
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
-    final bottomInset = bottomInsetForContentHiddenByTheNavBar(context);
+    // Scaffold.extendBody puts the nav bar height in the bottom padding; the
+    // docked chef FAB sticks out 27 px above it.
+    final bottomInset = MediaQuery.paddingOf(context).bottom + _fabOverhang;
 
     return BlocListener<FridgeController, FridgeState>(
       listenWhen: (previous, current) =>
           current.feedback != null && previous.feedback != current.feedback,
       listener: (context, state) => _showFeedback(state.feedback!),
       child: ColoredBox(
-        color: recipeLoaderCreamColor,
+        color: Colors.white,
         child: SafeArea(
           bottom: false,
           child: BlocBuilder<FridgeController, FridgeState>(
@@ -188,14 +190,16 @@ class _FridgeViewState extends State<_FridgeView> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
+                  Container(
+                    height: 36,
+                    alignment: Alignment.centerLeft,
+                    margin: const EdgeInsets.fromLTRB(20, 22, 20, 0),
                     child: Text(
                       appTexts.homeQuickActionFridge,
                       style: const TextStyle(
                         fontFamily: robotoSlabFontFamily,
                         fontWeight: FontWeight.w600,
-                        fontSize: 22,
+                        fontSize: 18,
                         color: recipeLoaderInkColor,
                       ),
                     ),
@@ -644,9 +648,14 @@ class _FridgeRowState extends State<_FridgeRow>
     value: 1,
   );
 
+  bool _initialFlashChecked = false;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Not in initState: _startFlash reads MediaQuery.
+    if (_initialFlashChecked) return;
+    _initialFlashChecked = true;
     if (widget.flashToken != null) _startFlash();
   }
 
@@ -727,6 +736,9 @@ class _FridgeRowState extends State<_FridgeRow>
                     style: const TextStyle(
                       fontFamily: robotoFontFamily,
                       fontWeight: FontWeight.w500,
+                      // Roboto ships as a variable font: the weight axis has
+                      // to be set explicitly.
+                      fontVariations: [FontVariation.weight(500)],
                       fontSize: 14,
                       color: recipeLoaderInkColor,
                     ),
@@ -754,7 +766,7 @@ class _QuantityPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 5, 8, 5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: recipeLoaderCreamColor,
         borderRadius: BorderRadius.circular(100),
       ),
       child: Row(
@@ -765,6 +777,9 @@ class _QuantityPill extends StatelessWidget {
             style: TextStyle(
               fontFamily: robotoFontFamily,
               fontWeight: item.isAsNeeded ? FontWeight.w500 : FontWeight.w600,
+              fontVariations: [
+                FontVariation.weight(item.isAsNeeded ? 500 : 600),
+              ],
               fontSize: 12.5,
               color: item.isAsNeeded
                   ? recipeLoaderInkColor.withValues(alpha: 0.5)
@@ -858,10 +873,7 @@ class _GenerateButton extends StatelessWidget {
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
           stops: const [0.66, 1],
-          colors: [
-            recipeLoaderCreamColor,
-            recipeLoaderCreamColor.withValues(alpha: 0),
-          ],
+          colors: [Colors.white, Colors.white.withValues(alpha: 0)],
         ),
       ),
       child: Padding(
