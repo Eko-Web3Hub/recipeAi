@@ -3,6 +3,7 @@ import 'package:recipe_ai/auth/di/module.dart';
 import 'package:recipe_ai/chat_ai/di/module.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/core_module.dart';
+import 'package:recipe_ai/fridge/di/module.dart';
 import 'package:recipe_ai/kitchen/%20di/module.dart';
 import 'package:recipe_ai/notification/di/module.dart';
 import 'package:recipe_ai/receipe/di/module.dart';
@@ -38,6 +39,9 @@ class AppModule implements IDiModule {
     );
     di.registerModule(
       const InventoryModule(),
+    );
+    di.registerModule(
+      const FridgeModule(),
     );
     di.registerModule(
       const ReceiptTicketScanModule(),

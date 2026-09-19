@@ -36,6 +36,13 @@ class FCMTokenService {
     return settings.authorizationStatus == AuthorizationStatus.authorized;
   }
 
+  /// Whether the system permission prompt was already answered, in which case
+  /// asking again would not show anything.
+  Future<bool> hasAnsweredPermission() async {
+    final settings = await _messaging.getNotificationSettings();
+    return settings.authorizationStatus != AuthorizationStatus.notDetermined;
+  }
+
   void _init() {
     _userSubscription = _authService.authStateChanges.listen(_onUserChanged);
   }

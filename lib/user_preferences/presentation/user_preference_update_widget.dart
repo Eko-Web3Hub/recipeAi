@@ -8,12 +8,15 @@ import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_answers.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
+import 'package:recipe_ai/user_preferences/domain/repositories/onboarding_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_primary_button.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_display.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_preference_mapper.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_quizz_controller.dart';
-import 'package:recipe_ai/user_preferences/presentation/onboarding_steps.dart';
+import 'package:recipe_ai/user_preferences/presentation/steps/chips_step.dart';
 import 'package:recipe_ai/user_preferences/presentation/steps/morphology_step.dart';
 import 'package:recipe_ai/user_preferences/presentation/steps/option_list_step.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preference_update_btn_controller.dart';
@@ -32,6 +35,7 @@ class UserPreferenceUpdateWidget extends StatelessWidget {
       create: (_) => UserPreferenceUpdateController(
         di<IAuthUserService>(),
         di<IUserPreferenceRepository>(),
+        di<IOnboardingQuizzRepository>(),
       ),
       child:
           BlocBuilder<
@@ -43,7 +47,10 @@ class UserPreferenceUpdateWidget extends StatelessWidget {
                 return const Center(child: CustomProgress());
               }
 
-              return _UserPreferenceForm(initialAnswers: state.answers);
+              return _UserPreferenceForm(
+                steps: state.steps,
+                initialAnswers: state.answers,
+              );
             },
           ),
     );
@@ -51,8 +58,12 @@ class UserPreferenceUpdateWidget extends StatelessWidget {
 }
 
 class _UserPreferenceForm extends StatelessWidget {
-  const _UserPreferenceForm({required this.initialAnswers});
+  const _UserPreferenceForm({
+    required this.steps,
+    required this.initialAnswers,
+  });
 
+  final List<OnboardingStep> steps;
   final OnboardingAnswers initialAnswers;
 
   @override
@@ -63,6 +74,7 @@ class _UserPreferenceForm extends StatelessWidget {
           create: (_) => OnboardingQuizzController(
             di<UserPreferenceService>(),
             di<IAuthUserService>(),
+            steps: steps,
             initialAnswers: initialAnswers,
           ),
         ),
@@ -105,8 +117,8 @@ class _UserPreferenceForm extends StatelessWidget {
                               if (step != quizzController.steps.first)
                                 const SizedBox(height: 28),
                               _SectionHeader(
-                                title: step.title(appTexts),
-                                helper: step.helper(appTexts),
+                                title: step.title.text,
+                                helper: step.helper.text,
                               ),
                               const SizedBox(height: 14),
                               _SectionContent(
@@ -217,7 +229,14 @@ class _SectionContent extends StatelessWidget {
           step: step,
           answers: answers,
           onToggle: (optionKey) => controller.toggleOption(step.key, optionKey),
-          onOtherChanged: controller.setChronicDiseaseOther,
+          onTextChanged: controller.setText,
+        );
+      case OnboardingStepKind.chips:
+        return ChipsStep(
+          step: step,
+          answers: answers,
+          onToggle: (optionKey) => controller.toggleOption(step.key, optionKey),
+          onTextChanged: controller.setText,
         );
     }
   }

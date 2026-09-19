@@ -12,7 +12,7 @@ class OnboardingAnswers extends Equatable {
     this.gender,
     this.heightCm = defaultHeightCm,
     this.weightKg = defaultWeightKg,
-    this.chronicDiseaseOther = '',
+    this.texts = const {},
   });
 
   static const defaultHeightCm = 170;
@@ -29,13 +29,15 @@ class OnboardingAnswers extends Equatable {
   final int heightCm;
   final int weightKg;
 
-  /// Free text of the "other chronic disease" field.
-  final String chronicDiseaseOther;
+  /// Free text fields, per `OnboardingOtherField.preferenceKey`.
+  final Map<String, String> texts;
 
   Set<String> selectionsOf(String stepKey) => selections[stepKey] ?? const {};
 
   bool isSelected(String stepKey, String optionKey) =>
       selectionsOf(stepKey).contains(optionKey);
+
+  String textOf(String preferenceKey) => texts[preferenceKey] ?? '';
 
   /// Body mass index, rounded to one decimal like the mockup ("23,5").
   double get bmi {
@@ -55,14 +57,14 @@ class OnboardingAnswers extends Equatable {
     UserGender? gender,
     int? heightCm,
     int? weightKg,
-    String? chronicDiseaseOther,
+    Map<String, String>? texts,
   }) {
     return OnboardingAnswers(
       selections: selections ?? this.selections,
       gender: gender ?? this.gender,
       heightCm: heightCm ?? this.heightCm,
       weightKg: weightKg ?? this.weightKg,
-      chronicDiseaseOther: chronicDiseaseOther ?? this.chronicDiseaseOther,
+      texts: texts ?? this.texts,
     );
   }
 
@@ -78,6 +80,10 @@ class OnboardingAnswers extends Equatable {
     gender,
     heightCm,
     weightKg,
-    chronicDiseaseOther,
+    // Same for an untouched field and an empty one.
+    {
+      for (final entry in texts.entries)
+        if (entry.value.isNotEmpty) entry.key: entry.value,
+    },
   ];
 }

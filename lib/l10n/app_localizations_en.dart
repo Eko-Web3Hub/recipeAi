@@ -104,6 +104,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
+  String get noRecipeGeneratedFromPhoto =>
+      'No recipe was generated. Try again with a new photo';
+
+  @override
   String get ingredients => 'Ingredients';
 
   @override
@@ -727,35 +731,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingBack => 'Previous step';
 
   @override
-  String get onboardingDietTitle => 'What is your dietary profile?';
-
-  @override
-  String get onboardingDietHelper =>
-      'Pick as many as you need — every recipe adapts to them.';
-
-  @override
-  String get dietNoRestriction => 'No restriction';
-
-  @override
-  String get dietVegetarian => 'Vegetarian';
-
-  @override
-  String get dietGlutenFree => 'Gluten free';
-
-  @override
-  String get dietLactoseFree => 'Lactose free';
-
-  @override
-  String get dietVegan => 'Vegan';
-
-  @override
-  String get onboardingMorphologyTitle => 'Tell us about you';
-
-  @override
-  String get onboardingMorphologyHelper =>
-      'This is used to compute your calorie needs. It stays private.';
-
-  @override
   String get morphologyGender => 'Gender';
 
   @override
@@ -807,105 +782,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bmiStatusObesity => 'Obesity';
 
   @override
-  String get onboardingActivityTitle => 'What is your activity level?';
-
-  @override
-  String get onboardingActivityHelper =>
-      'We adjust the calories and portions of your recipes to your energy needs.';
-
-  @override
-  String get activitySedentary => 'Sedentary';
-
-  @override
-  String get activitySedentaryDescription => 'Little to no exercise, desk job';
-
-  @override
-  String get activityLightlyActive => 'Lightly active';
-
-  @override
-  String get activityLightlyActiveDescription => '1 to 3 sessions a week';
-
-  @override
-  String get activityModeratelyActive => 'Moderately active';
-
-  @override
-  String get activityModeratelyActiveDescription => '3 to 5 sessions a week';
-
-  @override
-  String get activityVeryActive => 'Very active';
-
-  @override
-  String get activityVeryActiveDescription => '6 to 7 sessions a week';
-
-  @override
-  String get activityAthlete => 'Athlete';
-
-  @override
-  String get activityAthleteDescription => 'Intense daily training';
-
-  @override
-  String get onboardingGoalsTitle => 'What are your goals?';
-
-  @override
-  String get onboardingGoalsHelper =>
-      'Health or nutrition wise. Pick as many as you want.';
-
-  @override
-  String get goalWeightLoss => 'Weight loss';
-
-  @override
-  String get goalWeightLossDescription => 'Gentle, sustainable calorie deficit';
-
-  @override
-  String get goalHealthImprovement => 'Better health';
-
-  @override
-  String get goalHealthImprovementDescription =>
-      'Balance, fibre and micronutrients';
-
-  @override
-  String get goalMuscleGain => 'Muscle gain';
-
-  @override
-  String get goalMuscleGainDescription => 'Higher protein intake';
-
-  @override
-  String get goalDetox => 'Detox';
-
-  @override
-  String get goalDetoxDescription => 'Light, unprocessed, hydrating';
-
-  @override
-  String get onboardingChronicDiseaseTitle =>
-      'Do you have a chronic condition?';
-
-  @override
-  String get onboardingChronicDiseaseHelper =>
-      'To adjust sugar, salt and fat intake. This stays confidential.';
-
-  @override
-  String get chronicDiabetes => 'Diabetes';
-
-  @override
-  String get chronicCardiovascular => 'Cardiovascular disease';
-
-  @override
-  String get chronicOverweight => 'Overweight';
-
-  @override
-  String get chronicHypertension => 'High blood pressure';
-
-  @override
-  String get chronicSmop => 'PCOS';
-
-  @override
-  String get chronicOtherHint => 'Other';
-
-  @override
-  String get onboardingChronicDiseaseFootnote =>
-      'Eat\'Easy is not a medical device. Talk to a healthcare professional for any follow-up.';
-
-  @override
   String recipeCookedCount(int count) {
     return '✓ Cooked $count ×';
   }
@@ -925,4 +801,208 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get ingredientCameraPermissionDenied =>
       'Allow camera access to take a photo of your ingredients';
+
+  @override
+  String get fridgeAddHint => 'Add an ingredient';
+
+  @override
+  String get fridgeEmptyTitle => 'Your fridge is empty';
+
+  @override
+  String get fridgeEmptySubtitle =>
+      'Search for an ingredient to set its quantity, or start from your usuals.';
+
+  @override
+  String get fridgeUsuals => 'Your usuals';
+
+  @override
+  String get fridgeAlreadyIn => 'already in your fridge';
+
+  @override
+  String fridgeAddCustom(String name) {
+    return 'Add “$name”';
+  }
+
+  @override
+  String fridgeExpressHint(String quantity) {
+    return 'Press Enter to add $quantity directly';
+  }
+
+  @override
+  String get fridgePickHint =>
+      'Pick the ingredient to set its quantity and unit';
+
+  @override
+  String get fridgeAsNeeded => 'as needed';
+
+  @override
+  String get fridgeMoreUnits => 'more';
+
+  @override
+  String get fridgeRemove => 'Remove';
+
+  @override
+  String fridgeRemoved(String name) {
+    return '$name removed';
+  }
+
+  @override
+  String get fridgeUndo => 'Undo';
+
+  @override
+  String get fridgeAddToFridge => 'Add to my fridge';
+
+  @override
+  String get fridgeAddToExisting => 'Add to existing line';
+
+  @override
+  String get fridgeSave => 'Save';
+
+  @override
+  String fridgeConverted(String from, String to) {
+    return 'Converted: $from = $to';
+  }
+
+  @override
+  String get fridgeGenerate => 'Generate my recipe';
+
+  @override
+  String fridgeIngredientCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ingredients',
+      one: '1 ingredient',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeAlreadyInToast(String name) {
+    return '$name is already in your fridge';
+  }
+
+  @override
+  String fridgeQuantitySet(String name, String quantity) {
+    return '$name: $quantity';
+  }
+
+  @override
+  String fridgeTotal(String name, String quantity) {
+    return '$name: $quantity in total';
+  }
+
+  @override
+  String fridgeReplaced(String name) {
+    return '$name: quantity replaced';
+  }
+
+  @override
+  String get fridgeError => 'Something went wrong, please try again';
+
+  @override
+  String get fridgeLoadError => 'We couldn\'t load your fridge';
+
+  @override
+  String get fridgeQuantity => 'Quantity';
+
+  @override
+  String get fridgeDecrease => 'Decrease';
+
+  @override
+  String get fridgeIncrease => 'Increase';
+
+  @override
+  String get fridgeClose => 'Close';
+
+  @override
+  String get fridgeClear => 'Clear';
+
+  @override
+  String fridgeUnitPiece(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pieces',
+      one: 'piece',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBowl(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bowls',
+      one: 'bowl',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitHeap(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'heaps',
+      one: 'heap',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBunch(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bunches',
+      one: 'bunch',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBag(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bags',
+      one: 'bag',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitCan(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'cans',
+      one: 'can',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get fridgeUnitTablespoon => 'tbsp';
+
+  @override
+  String get profileStatGenerated => 'Generated';
+
+  @override
+  String get profileStatFavorites => 'Favorites';
+
+  @override
+  String get profileDietaryPreferences => 'My dietary preferences';
+
+  @override
+  String get profileHelpContact => 'Help & contact';
+
+  @override
+  String get notificationSettingsReceive => 'Receive notifications';
+
+  @override
+  String get notificationSettingsBlocked =>
+      'Notifications are blocked in your phone settings. Allow Eat\'Easy to receive them.';
 }

@@ -22,6 +22,12 @@ class GenerateRecipeWithIngredientPhotoSuccess
 class GenerateRecipeWithIngredientPhotoFailure
     extends GenerateRecipeWithIngredientPhotoState {}
 
+/// The backend responded successfully but found no recipe for the photo,
+/// e.g. the ingredients weren't recognizable. Distinct from [Failure] so the
+/// UI can point the user to retake the photo instead of a generic retry.
+class GenerateRecipeWithIngredientPhotoEmpty
+    extends GenerateRecipeWithIngredientPhotoState {}
+
 class GenerateRecipeWithIngredientPhotoController
     extends Cubit<GenerateRecipeWithIngredientPhotoState> {
   GenerateRecipeWithIngredientPhotoController(
@@ -50,7 +56,7 @@ class GenerateRecipeWithIngredientPhotoController
       final recipes = await _userReceipeRepository
           .genererateRecipesWithIngredientPicture(uid, token, file);
       if (recipes.isEmpty) {
-        safeEmit(GenerateRecipeWithIngredientPhotoFailure());
+        safeEmit(GenerateRecipeWithIngredientPhotoEmpty());
         return;
       }
 

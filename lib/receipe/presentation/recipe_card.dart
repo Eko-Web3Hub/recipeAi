@@ -44,27 +44,42 @@ class RecipeCard extends StatelessWidget {
         child: SizedBox(
           height: _cardHeight,
           width: double.infinity,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              _RecipeCardImage(recipeName: receipe.receipeEn.name),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: BlocProvider(
-                  create: (context) => RecipeMetadataCardLoader(
-                    receipe,
-                    di<IUserAccountMetaDataRepository>(),
-                    di<IAuthUserService>(),
-                  ),
-                  child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
-                    builder: (context, translatedReceipe) => _RecipeCardOverlay(
-                      receipe: translatedReceipe,
-                      titleRecipeSize: titleRecipeSize,
+          // The image loader is shared by the picture and the overlay: a card
+          // without a picture gets the lighter ink gradient of the mockup.
+          child: BlocProvider(
+            create: (context) => RecipeImageLoader(
+              di<FunctionsCaller>(),
+              receipe.receipeEn.name,
+            ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                const _RecipeCardImage(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BlocProvider(
+                    create: (context) => RecipeMetadataCardLoader(
+                      receipe,
+                      di<IUserAccountMetaDataRepository>(),
+                      di<IAuthUserService>(),
+                    ),
+                    child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
+                      builder: (context, translatedReceipe) =>
+                          BlocBuilder<RecipeImageLoader, RecipeImageState>(
+                            builder: (context, imageState) =>
+                                _RecipeCardOverlay(
+                                  receipe: translatedReceipe,
+                                  titleRecipeSize: titleRecipeSize,
+                                  hasPhoto:
+                                      imageState is RecipeImageLoaded &&
+                                      imageState.url != null,
+                                ),
+                          ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -73,64 +88,141 @@ class RecipeCard extends StatelessWidget {
 }
 
 class _RecipeCardImage extends StatelessWidget {
-  const _RecipeCardImage({required this.recipeName});
-
-  final String recipeName;
+  const _RecipeCardImage();
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RecipeImageLoader(di<FunctionsCaller>(), recipeName),
-      child: BlocBuilder<RecipeImageLoader, RecipeImageState>(
-        builder: (context, recipeImageState) {
-          if (recipeImageState is RecipeImageLoading) {
-            return const _RecipeCardImagePlaceholder(
-              child: CustomCircularLoader(),
-            );
-          }
+    return BlocBuilder<RecipeImageLoader, RecipeImageState>(
+      builder: (context, recipeImageState) {
+        if (recipeImageState is RecipeImageLoading) {
+          return const RecipeNoPhotoBackground(child: CustomCircularLoader());
+        }
 
-          final imageUrl = (recipeImageState as RecipeImageLoaded).url;
+        final imageUrl = (recipeImageState as RecipeImageLoaded).url;
 
-          if (imageUrl == null) {
-            return const _RecipeCardImagePlaceholder();
-          }
+        if (imageUrl == null) {
+          return const RecipeNoPhotoBackground();
+        }
 
-          return CachedNetworkImage(
-            imageUrl: imageUrl,
-            fit: BoxFit.cover,
-            progressIndicatorBuilder: (context, url, progress) =>
-                _RecipeCardImagePlaceholder(
-                  child: CustomCircularLoader(value: progress.progress),
-                ),
-            errorWidget: (context, url, error) =>
-                const _RecipeCardImagePlaceholder(),
-          );
-        },
+        return CachedNetworkImage(
+          imageUrl: imageUrl,
+          fit: BoxFit.cover,
+          progressIndicatorBuilder: (context, url, progress) =>
+              RecipeNoPhotoBackground(
+                child: CustomCircularLoader(value: progress.progress),
+              ),
+          errorWidget: (context, url, error) => const RecipeNoPhotoBackground(),
+        );
+      },
+    );
+  }
+}
+
+/// Background of a recipe without a picture (23c mockup): beige, two faint
+/// rings and a green cutlery medallion. [child] (a loader) replaces the
+/// medallion while the picture is being fetched.
+class RecipeNoPhotoBackground extends StatelessWidget {
+  const RecipeNoPhotoBackground({
+    super.key,
+    this.child,
+    // On the cards, the medallion sits in the upper part, clear of the title.
+    this.alignment = const Alignment(0, -0.45),
+  });
+
+  final Widget? child;
+  final Alignment alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 82 px on the home card, smaller in the favorites grid.
+        final medallionSize = (constraints.maxHeight * 0.43).clamp(40.0, 82.0);
+
+        return DecoratedBox(
+          decoration: const BoxDecoration(
+            color: recipeCardNoPhotoBackgroundColor,
+          ),
+          child: CustomPaint(
+            painter: const _NoPhotoRingsPainter(),
+            child: Align(
+              alignment: alignment,
+              child: child ?? _CutleryMedallion(size: medallionSize),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _CutleryMedallion extends StatelessWidget {
+  const _CutleryMedallion({required this.size});
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: recipeLoaderGreenColor,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: recipeLoaderGreenColor.withValues(alpha: 0.35),
+            blurRadius: size * 0.3,
+            offset: Offset(0, size * 0.08),
+          ),
+        ],
+      ),
+      child: Icon(
+        Icons.restaurant_rounded,
+        color: Colors.white,
+        size: size * 0.44,
       ),
     );
   }
 }
 
-class _RecipeCardImagePlaceholder extends StatelessWidget {
-  const _RecipeCardImagePlaceholder({this.child});
-
-  final Widget? child;
+/// The two faint rings of the no-photo card: a large one bleeding out of the
+/// top left corner, a smaller one on the right edge.
+class _NoPhotoRingsPainter extends CustomPainter {
+  const _NoPhotoRingsPainter();
 
   @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: recipeCardPlaceholderColor,
-      child: Center(
-        child: child ?? Image.asset('assets/images/recipePlaceHolder.png'),
-      ),
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = recipeCardNoPhotoRingColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.height * 0.035;
+
+    canvas.drawCircle(
+      Offset(size.width * 0.18, size.height * 0.23),
+      size.height * 0.35,
+      paint,
+    );
+    canvas.drawCircle(
+      Offset(size.width * 0.87, size.height * 0.46),
+      size.height * 0.31,
+      paint,
     );
   }
+
+  @override
+  bool shouldRepaint(covariant _NoPhotoRingsPainter oldDelegate) => false;
 }
 
 class _RecipeCardOverlay extends StatelessWidget {
-  const _RecipeCardOverlay({required this.receipe, this.titleRecipeSize});
+  const _RecipeCardOverlay({
+    required this.receipe,
+    required this.hasPhoto,
+    this.titleRecipeSize,
+  });
 
   final Receipe receipe;
+  final bool hasPhoto;
   final double? titleRecipeSize;
 
   @override
@@ -142,10 +234,15 @@ class _RecipeCardOverlay extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [
-            recipeCardOverlayColor.withValues(alpha: 0.9),
-            recipeCardOverlayColor.withValues(alpha: 0.0),
-          ],
+          colors: hasPhoto
+              ? [
+                  recipeCardOverlayColor.withValues(alpha: 0.9),
+                  recipeCardOverlayColor.withValues(alpha: 0.0),
+                ]
+              : [
+                  recipeLoaderInkColor.withValues(alpha: 0.95),
+                  recipeLoaderInkColor.withValues(alpha: 0.0),
+                ],
         ),
       ),
       child: Column(

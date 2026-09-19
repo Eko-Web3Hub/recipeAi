@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
-import 'package:recipe_ai/auth/application/user_personnal_info_service.dart';
-import 'package:recipe_ai/auth/domain/model/user_personnal_info.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
-import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_controller.dart';
+import 'package:recipe_ai/home/presentation/profile/profile_controller.dart';
+import 'package:recipe_ai/home/presentation/setting/feedback_link.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/dietary_summary.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -19,6 +18,8 @@ TextStyle settingHeadTitleStyle = TextStyle(
   color: Colors.black,
 );
 
+/// Profile tab: who the user is, their diet, a few stats and the entries to
+/// edit their preferences, notifications and to get help.
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -27,38 +28,115 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final _controller = ProfileController.inject();
+
+  /// The branch stays alive when another tab or a profile sub-screen is shown:
+  /// its tickers are only muted. Coming back refreshes what may have changed
+  /// meanwhile (a generated recipe, updated preferences).
+  bool _wasVisible = true;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final isVisible = TickerMode.of(context);
+    if (isVisible && !_wasVisible) _controller.refresh();
+    _wasVisible = isVisible;
+  }
+
+  @override
+  void dispose() {
+    _controller.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SavedReceipeController(di<IUserRecipeService>()),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                StreamBuilder<UserPersonnalInfo?>(
-                  stream: di<IUserPersonnalInfoService>().watch(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return _UserProfilCard(
-                        email: '${di<IAuthUserService>().currentUser!.email}',
-                        name: snapshot.data!.name,
-                      );
-                    }
+    final translationController = di<TranslationController>();
 
-                    return SizedBox.shrink();
-                  },
-                ),
-                const Gap(24),
-              ],
-            ),
+    return BlocProvider.value(
+      value: _controller,
+      child: ColoredBox(
+        color: recipeLoaderCreamColor,
+        child: SafeArea(
+          bottom: false,
+          child: ListenableBuilder(
+            listenable: translationController,
+            builder: (context, _) {
+              final appTexts = translationController.currentLanguage;
+
+              return BlocBuilder<ProfileController, ProfileState>(
+                builder: (context, state) {
+                  return Stack(
+                    children: [
+                      SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(20, 24, 20, 120),
+                        child: Column(
+                          children: [
+                            _ProfileHeader(
+                              name: state.name,
+                              badges: state.preferences == null
+                                  ? const []
+                                  : dietarySummaryEntries(
+                                      state.preferences!,
+                                      state.steps,
+                                      translationController.currentLanguageEnum,
+                                    ),
+                            ),
+                            const Gap(18),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _StatCard(
+                                    value: state.generatedCount,
+                                    label: appTexts.profileStatGenerated,
+                                  ),
+                                ),
+                                const Gap(10),
+                                Expanded(
+                                  child: _StatCard(
+                                    value: state.favoriteCount,
+                                    label: appTexts.profileStatFavorites,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Gap(10),
+                            _ProfileMenu(
+                              items: [
+                                _ProfileMenuItem(
+                                  icon: Icons.restaurant_menu_rounded,
+                                  label: appTexts.profileDietaryPreferences,
+                                  onTap: () => context.push(
+                                    '/profil-screen/update-user-preference',
+                                  ),
+                                ),
+                                _ProfileMenuItem(
+                                  icon: Icons.notifications_none_rounded,
+                                  label: appTexts.notification,
+                                  onTap: () => context.push(
+                                    '/profil-screen/notifications',
+                                  ),
+                                ),
+                                _ProfileMenuItem(
+                                  icon: Icons.help_outline_rounded,
+                                  label: appTexts.profileHelpContact,
+                                  onTap: openFeedbackForm,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Positioned(
+                        top: 12,
+                        right: 0,
+                        child: ProfilActionAppBar(),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ),
       ),
@@ -66,6 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+/// Opens the settings: account, language and sign out.
 class ProfilActionAppBar extends StatelessWidget {
   const ProfilActionAppBar({super.key});
 
@@ -81,71 +160,210 @@ class ProfilActionAppBar extends StatelessWidget {
   }
 }
 
-class _UserProfilCard extends StatelessWidget {
-  const _UserProfilCard({required this.email, required this.name});
+class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({required this.name, required this.badges});
 
-  final String email;
-  final String name;
+  final String? name;
+  final List<DietarySummaryEntry> badges;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.push('/profil-screen/my-account'),
-      child: Container(
-        width: double.infinity,
-        height: 80,
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.0),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xff063336).withValues(alpha: 0.1),
-              spreadRadius: 0,
-              blurRadius: 16,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                UserProfilePicture(name: name, size: 48),
-                const Gap(16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontFamily: poppinsFontFamily,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: newNeutralBlackColor,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 122,
-                      child: Text(
-                        email,
-                        style: TextStyle(
-                          fontFamily: poppinsFontFamily,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: newNeutralGreyColor,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
+    final name = this.name;
+
+    return Column(
+      children: [
+        Container(
+          width: 78,
+          height: 78,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: recipeLoaderGreenColor,
+            shape: BoxShape.circle,
+          ),
+          child: name == null || name.isEmpty
+              ? null
+              : Text(
+                  name[0].toUpperCase(),
+                  style: const TextStyle(
+                    fontFamily: robotoSlabFontFamily,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 32,
+                    color: Colors.white,
+                  ),
                 ),
-              ],
+        ),
+        const Gap(10),
+        Text(
+          name ?? '',
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontFamily: robotoSlabFontFamily,
+            fontWeight: FontWeight.w600,
+            fontSize: 19,
+            color: recipeLoaderInkColor,
+          ),
+        ),
+        if (badges.isNotEmpty) ...[
+          const Gap(8),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 6,
+            runSpacing: 6,
+            children: [for (final badge in badges) _DietBadge(entry: badge)],
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// Diets in green, chronic diseases in terracotta.
+class _DietBadge extends StatelessWidget {
+  const _DietBadge({required this.entry});
+
+  final DietarySummaryEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDisease = entry.stepKey == chronicDiseaseStepKey;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      decoration: BoxDecoration(
+        color: isDisease
+            ? homeFridgeTileBackgroundColor
+            : recipeLoaderMintColor,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Text(
+        entry.label,
+        style: TextStyle(
+          fontFamily: robotoFontFamily,
+          fontWeight: FontWeight.w600,
+          fontSize: 10,
+          color: isDisease ? optionTerraColor : recipeLoaderGreenColor,
+        ),
+      ),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  const _StatCard({required this.value, required this.label});
+
+  /// Null while loading.
+  final int? value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Text(
+            value?.toString() ?? '–',
+            style: const TextStyle(
+              fontFamily: robotoSlabFontFamily,
+              fontWeight: FontWeight.w600,
+              fontSize: 19,
+              color: recipeLoaderInkColor,
             ),
-            _ArrowRight(),
+          ),
+          const Gap(2),
+          Text(
+            label,
+            style: const TextStyle(
+              fontFamily: robotoFontFamily,
+              fontWeight: FontWeight.w500,
+              fontSize: 10.5,
+              color: onboardingSubtleTextColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProfileMenuItem {
+  const _ProfileMenuItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+}
+
+class _ProfileMenu extends StatelessWidget {
+  const _ProfileMenu({required this.items});
+
+  final List<_ProfileMenuItem> items;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (final item in items) ...[
+          _ProfileMenuRow(item: item),
+          if (item != items.last)
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: recipeLoaderInkColor.withValues(alpha: 0.08),
+            ),
+        ],
+      ],
+    );
+  }
+}
+
+class _ProfileMenuRow extends StatelessWidget {
+  const _ProfileMenuRow({required this.item});
+
+  final _ProfileMenuItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: item.onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 15),
+        child: Row(
+          children: [
+            Container(
+              width: 24,
+              height: 24,
+              decoration: const BoxDecoration(
+                color: recipeLoaderMintColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(item.icon, size: 14, color: recipeLoaderGreenColor),
+            ),
+            const Gap(12),
+            Expanded(
+              child: Text(
+                item.label,
+                style: const TextStyle(
+                  fontFamily: robotoFontFamily,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13.5,
+                  color: recipeLoaderInkColor,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.chevron_right_rounded,
+              size: 22,
+              color: recipeLoaderInkColor.withValues(alpha: 0.35),
+            ),
           ],
         ),
       ),
@@ -177,24 +395,6 @@ class UserProfilePicture extends StatelessWidget {
                 style: Theme.of(context).textTheme.displayLarge,
               ),
             ),
-    );
-  }
-}
-
-class _ArrowRight extends StatelessWidget {
-  const _ArrowRight();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsetsGeometry.all(8),
-      width: 28,
-      height: 28,
-      decoration: BoxDecoration(
-        color: Color(0xff353535),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: SvgPicture.asset('assets/images/arrowWhiteIcon.svg'),
     );
   }
 }

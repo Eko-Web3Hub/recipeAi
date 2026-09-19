@@ -124,6 +124,10 @@
         "description": "Retry button label"
     },
     "retry": "Retry",
+    "@noRecipeGeneratedFromPhoto": {
+        "description": "Shown when the backend found no recipe for the submitted ingredient photo"
+    },
+    "noRecipeGeneratedFromPhoto": "No recipe was generated. Try again with a new photo",
     "@ingredients": {
         "description": "Ingredients section title"
     },
@@ -912,42 +916,6 @@
     "@onboardingBack": {
         "description": "Onboarding: onboardingBack"
     },
-    "onboardingDietTitle": "What is your dietary profile?",
-    "@onboardingDietTitle": {
-        "description": "Onboarding: onboardingDietTitle"
-    },
-    "onboardingDietHelper": "Pick as many as you need — every recipe adapts to them.",
-    "@onboardingDietHelper": {
-        "description": "Onboarding: onboardingDietHelper"
-    },
-    "dietNoRestriction": "No restriction",
-    "@dietNoRestriction": {
-        "description": "Onboarding: dietNoRestriction"
-    },
-    "dietVegetarian": "Vegetarian",
-    "@dietVegetarian": {
-        "description": "Onboarding: dietVegetarian"
-    },
-    "dietGlutenFree": "Gluten free",
-    "@dietGlutenFree": {
-        "description": "Onboarding: dietGlutenFree"
-    },
-    "dietLactoseFree": "Lactose free",
-    "@dietLactoseFree": {
-        "description": "Onboarding: dietLactoseFree"
-    },
-    "dietVegan": "Vegan",
-    "@dietVegan": {
-        "description": "Onboarding: dietVegan"
-    },
-    "onboardingMorphologyTitle": "Tell us about you",
-    "@onboardingMorphologyTitle": {
-        "description": "Onboarding: onboardingMorphologyTitle"
-    },
-    "onboardingMorphologyHelper": "This is used to compute your calorie needs. It stays private.",
-    "@onboardingMorphologyHelper": {
-        "description": "Onboarding: onboardingMorphologyHelper"
-    },
     "morphologyGender": "Gender",
     "@morphologyGender": {
         "description": "Onboarding: morphologyGender"
@@ -1016,130 +984,6 @@
     "@bmiStatusObesity": {
         "description": "Onboarding: bmiStatusObesity"
     },
-    "onboardingActivityTitle": "What is your activity level?",
-    "@onboardingActivityTitle": {
-        "description": "Onboarding: onboardingActivityTitle"
-    },
-    "onboardingActivityHelper": "We adjust the calories and portions of your recipes to your energy needs.",
-    "@onboardingActivityHelper": {
-        "description": "Onboarding: onboardingActivityHelper"
-    },
-    "activitySedentary": "Sedentary",
-    "@activitySedentary": {
-        "description": "Onboarding: activitySedentary"
-    },
-    "activitySedentaryDescription": "Little to no exercise, desk job",
-    "@activitySedentaryDescription": {
-        "description": "Onboarding: activitySedentaryDescription"
-    },
-    "activityLightlyActive": "Lightly active",
-    "@activityLightlyActive": {
-        "description": "Onboarding: activityLightlyActive"
-    },
-    "activityLightlyActiveDescription": "1 to 3 sessions a week",
-    "@activityLightlyActiveDescription": {
-        "description": "Onboarding: activityLightlyActiveDescription"
-    },
-    "activityModeratelyActive": "Moderately active",
-    "@activityModeratelyActive": {
-        "description": "Onboarding: activityModeratelyActive"
-    },
-    "activityModeratelyActiveDescription": "3 to 5 sessions a week",
-    "@activityModeratelyActiveDescription": {
-        "description": "Onboarding: activityModeratelyActiveDescription"
-    },
-    "activityVeryActive": "Very active",
-    "@activityVeryActive": {
-        "description": "Onboarding: activityVeryActive"
-    },
-    "activityVeryActiveDescription": "6 to 7 sessions a week",
-    "@activityVeryActiveDescription": {
-        "description": "Onboarding: activityVeryActiveDescription"
-    },
-    "activityAthlete": "Athlete",
-    "@activityAthlete": {
-        "description": "Onboarding: activityAthlete"
-    },
-    "activityAthleteDescription": "Intense daily training",
-    "@activityAthleteDescription": {
-        "description": "Onboarding: activityAthleteDescription"
-    },
-    "onboardingGoalsTitle": "What are your goals?",
-    "@onboardingGoalsTitle": {
-        "description": "Onboarding: onboardingGoalsTitle"
-    },
-    "onboardingGoalsHelper": "Health or nutrition wise. Pick as many as you want.",
-    "@onboardingGoalsHelper": {
-        "description": "Onboarding: onboardingGoalsHelper"
-    },
-    "goalWeightLoss": "Weight loss",
-    "@goalWeightLoss": {
-        "description": "Onboarding: goalWeightLoss"
-    },
-    "goalWeightLossDescription": "Gentle, sustainable calorie deficit",
-    "@goalWeightLossDescription": {
-        "description": "Onboarding: goalWeightLossDescription"
-    },
-    "goalHealthImprovement": "Better health",
-    "@goalHealthImprovement": {
-        "description": "Onboarding: goalHealthImprovement"
-    },
-    "goalHealthImprovementDescription": "Balance, fibre and micronutrients",
-    "@goalHealthImprovementDescription": {
-        "description": "Onboarding: goalHealthImprovementDescription"
-    },
-    "goalMuscleGain": "Muscle gain",
-    "@goalMuscleGain": {
-        "description": "Onboarding: goalMuscleGain"
-    },
-    "goalMuscleGainDescription": "Higher protein intake",
-    "@goalMuscleGainDescription": {
-        "description": "Onboarding: goalMuscleGainDescription"
-    },
-    "goalDetox": "Detox",
-    "@goalDetox": {
-        "description": "Onboarding: goalDetox"
-    },
-    "goalDetoxDescription": "Light, unprocessed, hydrating",
-    "@goalDetoxDescription": {
-        "description": "Onboarding: goalDetoxDescription"
-    },
-    "onboardingChronicDiseaseTitle": "Do you have a chronic condition?",
-    "@onboardingChronicDiseaseTitle": {
-        "description": "Onboarding: onboardingChronicDiseaseTitle"
-    },
-    "onboardingChronicDiseaseHelper": "To adjust sugar, salt and fat intake. This stays confidential.",
-    "@onboardingChronicDiseaseHelper": {
-        "description": "Onboarding: onboardingChronicDiseaseHelper"
-    },
-    "chronicDiabetes": "Diabetes",
-    "@chronicDiabetes": {
-        "description": "Onboarding: chronicDiabetes"
-    },
-    "chronicCardiovascular": "Cardiovascular disease",
-    "@chronicCardiovascular": {
-        "description": "Onboarding: chronicCardiovascular"
-    },
-    "chronicOverweight": "Overweight",
-    "@chronicOverweight": {
-        "description": "Onboarding: chronicOverweight"
-    },
-    "chronicHypertension": "High blood pressure",
-    "@chronicHypertension": {
-        "description": "Onboarding: chronicHypertension"
-    },
-    "chronicSmop": "PCOS",
-    "@chronicSmop": {
-        "description": "Onboarding: chronicSmop"
-    },
-    "chronicOtherHint": "Other",
-    "@chronicOtherHint": {
-        "description": "Onboarding: chronicOtherHint"
-    },
-    "onboardingChronicDiseaseFootnote": "Eat'Easy is not a medical device. Talk to a healthcare professional for any follow-up.",
-    "@onboardingChronicDiseaseFootnote": {
-        "description": "Onboarding: onboardingChronicDiseaseFootnote"
-    },
     "recipeCookedCount": "✓ Cooked {count} ×",
     "@recipeCookedCount": {
         "description": "Badge showing how many times the user has cooked a recipe, e.g. '✓ Cooked 3 ×'",
@@ -1168,5 +1012,261 @@
     "ingredientCameraPermissionDenied": "Allow camera access to take a photo of your ingredients",
     "@ingredientCameraPermissionDenied": {
         "description": "Message shown when the camera permission is denied on the custom camera screen"
+    },
+    "fridgeAddHint": "Add an ingredient",
+    "@fridgeAddHint": {
+        "description": "Fridge tab: fridgeAddHint"
+    },
+    "fridgeEmptyTitle": "Your fridge is empty",
+    "@fridgeEmptyTitle": {
+        "description": "Fridge tab: fridgeEmptyTitle"
+    },
+    "fridgeEmptySubtitle": "Search for an ingredient to set its quantity, or start from your usuals.",
+    "@fridgeEmptySubtitle": {
+        "description": "Fridge tab: fridgeEmptySubtitle"
+    },
+    "fridgeUsuals": "Your usuals",
+    "@fridgeUsuals": {
+        "description": "Fridge tab: fridgeUsuals"
+    },
+    "fridgeAlreadyIn": "already in your fridge",
+    "@fridgeAlreadyIn": {
+        "description": "Fridge tab: fridgeAlreadyIn"
+    },
+    "fridgeAddCustom": "Add “{name}”",
+    "@fridgeAddCustom": {
+        "description": "Fridge tab: fridgeAddCustom",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeExpressHint": "Press Enter to add {quantity} directly",
+    "@fridgeExpressHint": {
+        "description": "Fridge tab: fridgeExpressHint",
+        "placeholders": {
+            "quantity": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgePickHint": "Pick the ingredient to set its quantity and unit",
+    "@fridgePickHint": {
+        "description": "Fridge tab: fridgePickHint"
+    },
+    "fridgeAsNeeded": "as needed",
+    "@fridgeAsNeeded": {
+        "description": "Fridge tab: fridgeAsNeeded"
+    },
+    "fridgeMoreUnits": "more",
+    "@fridgeMoreUnits": {
+        "description": "Fridge tab: fridgeMoreUnits"
+    },
+    "fridgeRemove": "Remove",
+    "@fridgeRemove": {
+        "description": "Fridge tab: fridgeRemove"
+    },
+    "fridgeRemoved": "{name} removed",
+    "@fridgeRemoved": {
+        "description": "Fridge tab: fridgeRemoved",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeUndo": "Undo",
+    "@fridgeUndo": {
+        "description": "Fridge tab: fridgeUndo"
+    },
+    "fridgeAddToFridge": "Add to my fridge",
+    "@fridgeAddToFridge": {
+        "description": "Fridge tab: fridgeAddToFridge"
+    },
+    "fridgeAddToExisting": "Add to existing line",
+    "@fridgeAddToExisting": {
+        "description": "Fridge tab: fridgeAddToExisting"
+    },
+    "fridgeSave": "Save",
+    "@fridgeSave": {
+        "description": "Fridge tab: fridgeSave"
+    },
+    "fridgeConverted": "Converted: {from} = {to}",
+    "@fridgeConverted": {
+        "description": "Fridge tab: fridgeConverted",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeGenerate": "Generate my recipe",
+    "@fridgeGenerate": {
+        "description": "Fridge tab: fridgeGenerate"
+    },
+    "fridgeIngredientCount": "{count, plural, =1{1 ingredient} other{{count} ingredients}}",
+    "@fridgeIngredientCount": {
+        "description": "Fridge tab: fridgeIngredientCount",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "fridgeAlreadyInToast": "{name} is already in your fridge",
+    "@fridgeAlreadyInToast": {
+        "description": "Fridge tab: fridgeAlreadyInToast",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeQuantitySet": "{name}: {quantity}",
+    "@fridgeQuantitySet": {
+        "description": "Fridge tab: fridgeQuantitySet",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "quantity": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeTotal": "{name}: {quantity} in total",
+    "@fridgeTotal": {
+        "description": "Fridge tab: fridgeTotal",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "quantity": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeReplaced": "{name}: quantity replaced",
+    "@fridgeReplaced": {
+        "description": "Fridge tab: fridgeReplaced",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeError": "Something went wrong, please try again",
+    "@fridgeError": {
+        "description": "Fridge tab: fridgeError"
+    },
+    "fridgeLoadError": "We couldn't load your fridge",
+    "@fridgeLoadError": {
+        "description": "Fridge tab: fridgeLoadError"
+    },
+    "fridgeQuantity": "Quantity",
+    "@fridgeQuantity": {
+        "description": "Fridge tab: fridgeQuantity"
+    },
+    "fridgeDecrease": "Decrease",
+    "@fridgeDecrease": {
+        "description": "Fridge tab: fridgeDecrease"
+    },
+    "fridgeIncrease": "Increase",
+    "@fridgeIncrease": {
+        "description": "Fridge tab: fridgeIncrease"
+    },
+    "fridgeClose": "Close",
+    "@fridgeClose": {
+        "description": "Fridge tab: fridgeClose"
+    },
+    "fridgeClear": "Clear",
+    "@fridgeClear": {
+        "description": "Fridge tab: fridgeClear"
+    },
+    "fridgeUnitPiece": "{count, plural, one{piece} other{pieces}}",
+    "@fridgeUnitPiece": {
+        "description": "Fridge tab: fridgeUnitPiece",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitBowl": "{count, plural, one{bowl} other{bowls}}",
+    "@fridgeUnitBowl": {
+        "description": "Fridge tab: fridgeUnitBowl",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitHeap": "{count, plural, one{heap} other{heaps}}",
+    "@fridgeUnitHeap": {
+        "description": "Fridge tab: fridgeUnitHeap",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitBunch": "{count, plural, one{bunch} other{bunches}}",
+    "@fridgeUnitBunch": {
+        "description": "Fridge tab: fridgeUnitBunch",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitBag": "{count, plural, one{bag} other{bags}}",
+    "@fridgeUnitBag": {
+        "description": "Fridge tab: fridgeUnitBag",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitCan": "{count, plural, one{can} other{cans}}",
+    "@fridgeUnitCan": {
+        "description": "Fridge tab: fridgeUnitCan",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitTablespoon": "tbsp",
+    "@fridgeUnitTablespoon": {
+        "description": "Fridge tab: fridgeUnitTablespoon"
+    },
+    "profileStatGenerated": "Generated",
+    "@profileStatGenerated": {
+        "description": "Profile: generated recipes stat label"
+    },
+    "profileStatFavorites": "Favorites",
+    "@profileStatFavorites": {
+        "description": "Profile: favorite recipes stat label"
+    },
+    "profileDietaryPreferences": "My dietary preferences",
+    "@profileDietaryPreferences": {
+        "description": "Profile: dietary preferences menu item"
+    },
+    "profileHelpContact": "Help & contact",
+    "@profileHelpContact": {
+        "description": "Profile: help and contact menu item"
+    },
+    "notificationSettingsReceive": "Receive notifications",
+    "@notificationSettingsReceive": {
+        "description": "Notification settings: switch label"
+    },
+    "notificationSettingsBlocked": "Notifications are blocked in your phone settings. Allow Eat'Easy to receive them.",
+    "@notificationSettingsBlocked": {
+        "description": "Notification settings: shown when the system permission is denied"
     }
 }

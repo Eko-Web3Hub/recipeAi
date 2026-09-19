@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe_ai/receipe/presentation/recipe_card.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -46,6 +47,23 @@ class _RecipeImageContainer extends StatelessWidget {
       height: _heroHeight,
       decoration: BoxDecoration(color: const Color(0xFFDFDBD2), image: image),
       child: Center(child: child),
+    );
+  }
+}
+
+/// Hero of a recipe without a picture: the no-photo background of the cards,
+/// medallion centered.
+class _RecipeNoPhotoHero extends StatelessWidget {
+  const _RecipeNoPhotoHero({this.child});
+
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: _heroHeight,
+      child: RecipeNoPhotoBackground(alignment: Alignment.center, child: child),
     );
   }
 }
@@ -155,8 +173,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                                   builder: (context, recipeImageState) {
                                     if (recipeImageState
                                         is RecipeImageLoading) {
-                                      return const _RecipeImageContainer(
-                                        image: null,
+                                      return const _RecipeNoPhotoHero(
                                         child: CustomCircularLoader(),
                                       );
                                     }
@@ -166,23 +183,13 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                                             .url;
 
                                     if (receipeImageUrl == null) {
-                                      return _RecipeImageContainer(
-                                        image: null,
-                                        child: Image.asset(
-                                          'assets/images/recipePlaceHolder.png',
-                                        ),
-                                      );
+                                      return const _RecipeNoPhotoHero();
                                     }
 
                                     return CachedNetworkImage(
                                       imageUrl: receipeImageUrl,
                                       errorWidget: (context, url, error) =>
-                                          _RecipeImageContainer(
-                                            image: null,
-                                            child: Image.asset(
-                                              'assets/images/recipePlaceHolder.png',
-                                            ),
-                                          ),
+                                          const _RecipeNoPhotoHero(),
                                       progressIndicatorBuilder:
                                           (context, url, progress) => Center(
                                             child: CustomCircularLoader(
