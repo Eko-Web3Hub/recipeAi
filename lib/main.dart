@@ -26,6 +26,7 @@ import 'package:recipe_ai/notification/presentation/notification_user_controller
 import 'package:recipe_ai/onboarding/presentation/onboarding_view_controller.dart';
 import 'package:recipe_ai/receipe/application/retrieve_receipe_from_api_one_time_per_day_usecase.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
+import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/local_storage_repo.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -115,6 +116,7 @@ class _MyAppState extends State<MyApp> {
           create: (_) => AuthNavigationController(
             di<IAuthUserService>(),
             di<ILocalStorageRepository>(),
+            di<IUserPreferenceRepository>(),
           ),
         ),
         BlocProvider(

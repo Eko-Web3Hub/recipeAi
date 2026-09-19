@@ -50,3 +50,7 @@ app.*.map.json
 /ios/Runner/GoogleService-Info.plist
 # Design mockups (reference only, not part of the app)
 screens-html/
+
+# Onboarding quizz seed script
+/tool/seed_onboarding_quizz/node_modules/
+/tool/seed_onboarding_quizz/package-lock.json

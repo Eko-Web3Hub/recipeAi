@@ -1,0 +1,432 @@
+{
+  "diet_profile": {
+    "order": 1,
+    "enabled": true,
+    "kind": "options",
+    "selectionMode": "multiple",
+    "tileStyle": "colorDot",
+    "isRequired": true,
+    "exclusiveOptionKey": "no_restriction",
+    "title": {
+      "fr": "Quel est ton profil alimentaire ?",
+      "en": "What is your dietary profile?"
+    },
+    "helper": {
+      "fr": "Plusieurs choix possibles — on adapte chaque recette à tes besoins.",
+      "en": "Pick as many as you need — every recipe adapts to them."
+    },
+    "options": [
+      {
+        "key": "no_restriction",
+        "label": {
+          "fr": "Aucune restriction",
+          "en": "No restriction"
+        },
+        "color": "#49A525"
+      },
+      {
+        "key": "vegetarian",
+        "label": {
+          "fr": "Végétarien",
+          "en": "Vegetarian"
+        },
+        "color": "#7A9B3F"
+      },
+      {
+        "key": "gluten_free",
+        "label": {
+          "fr": "Sans gluten",
+          "en": "Gluten free"
+        },
+        "color": "#C96F4A"
+      },
+      {
+        "key": "lactose_free",
+        "label": {
+          "fr": "Sans lactose",
+          "en": "Lactose free"
+        },
+        "color": "#D8A13A"
+      },
+      {
+        "key": "vegan",
+        "label": {
+          "fr": "Végétalien",
+          "en": "Vegan"
+        },
+        "color": "#A5761F"
+      }
+    ]
+  },
+  "morphology": {
+    "order": 2,
+    "enabled": true,
+    "kind": "morphology",
+    "isRequired": true,
+    "title": {
+      "fr": "Parle-nous de toi",
+      "en": "Tell us about you"
+    },
+    "helper": {
+      "fr": "Ces données servent à calculer tes besoins caloriques. Elles restent privées.",
+      "en": "This is used to compute your calorie needs. It stays private."
+    }
+  },
+  "activity_level": {
+    "order": 3,
+    "enabled": true,
+    "kind": "options",
+    "selectionMode": "single",
+    "tileStyle": "iconTile",
+    "isRequired": true,
+    "title": {
+      "fr": "Quel est ton niveau d'activité ?",
+      "en": "What is your activity level?"
+    },
+    "helper": {
+      "fr": "On ajuste les calories et les portions de tes recettes selon ta dépense énergétique.",
+      "en": "We adjust the calories and portions of your recipes to your energy needs."
+    },
+    "options": [
+      {
+        "key": "sedentary",
+        "label": {
+          "fr": "Sédentaire",
+          "en": "Sedentary"
+        },
+        "description": {
+          "fr": "Peu ou pas d'exercice, travail assis",
+          "en": "Little to no exercise, desk job"
+        },
+        "icon": "chair_outlined"
+      },
+      {
+        "key": "lightly_active",
+        "label": {
+          "fr": "Légèrement actif",
+          "en": "Lightly active"
+        },
+        "description": {
+          "fr": "1 à 3 séances par semaine",
+          "en": "1 to 3 sessions a week"
+        },
+        "icon": "directions_walk"
+      },
+      {
+        "key": "moderately_active",
+        "label": {
+          "fr": "Modérément actif",
+          "en": "Moderately active"
+        },
+        "description": {
+          "fr": "3 à 5 séances par semaine",
+          "en": "3 to 5 sessions a week"
+        },
+        "icon": "directions_bike"
+      },
+      {
+        "key": "very_active",
+        "label": {
+          "fr": "Très actif",
+          "en": "Very active"
+        },
+        "description": {
+          "fr": "6 à 7 séances par semaine",
+          "en": "6 to 7 sessions a week"
+        },
+        "icon": "directions_run"
+      },
+      {
+        "key": "athlete",
+        "label": {
+          "fr": "Athlète",
+          "en": "Athlete"
+        },
+        "description": {
+          "fr": "Entraînement intensif quotidien",
+          "en": "Intense daily training"
+        },
+        "icon": "local_fire_department_outlined"
+      }
+    ]
+  },
+  "goals": {
+    "order": 4,
+    "enabled": true,
+    "kind": "options",
+    "selectionMode": "multiple",
+    "tileStyle": "iconTile",
+    "isRequired": true,
+    "title": {
+      "fr": "Quels sont tes objectifs ?",
+      "en": "What are your goals?"
+    },
+    "helper": {
+      "fr": "En matière de santé ou de nutrition. Plusieurs choix possibles.",
+      "en": "Health or nutrition wise. Pick as many as you want."
+    },
+    "options": [
+      {
+        "key": "weight_loss",
+        "label": {
+          "fr": "Perte de poids",
+          "en": "Weight loss"
+        },
+        "description": {
+          "fr": "Déficit calorique doux et durable",
+          "en": "Gentle, sustainable calorie deficit"
+        },
+        "icon": "trending_up"
+      },
+      {
+        "key": "health_improvement",
+        "label": {
+          "fr": "Amélioration de la santé",
+          "en": "Better health"
+        },
+        "description": {
+          "fr": "Équilibre, fibres et micronutriments",
+          "en": "Balance, fibre and micronutrients"
+        },
+        "icon": "favorite_border"
+      },
+      {
+        "key": "muscle_gain",
+        "label": {
+          "fr": "Gain de muscles",
+          "en": "Muscle gain"
+        },
+        "description": {
+          "fr": "Apports protéinés renforcés",
+          "en": "Higher protein intake"
+        },
+        "icon": "fitness_center"
+      },
+      {
+        "key": "detox",
+        "label": {
+          "fr": "Detox",
+          "en": "Detox"
+        },
+        "description": {
+          "fr": "Léger, peu transformé, hydratant",
+          "en": "Light, unprocessed, hydrating"
+        },
+        "icon": "water_drop_outlined"
+      }
+    ]
+  },
+  "dietary_preferences": {
+    "order": 5,
+    "enabled": true,
+    "kind": "chips",
+    "selectionMode": "multiple",
+    "isRequired": false,
+    "title": {
+      "fr": "Tes préférences diététiques",
+      "en": "Your dietary preferences"
+    },
+    "helper": {
+      "fr": "Allergies, exclusions, habitudes — on ne te proposera jamais ce que tu écartes.",
+      "en": "Allergies, exclusions, habits — we'll never suggest what you rule out."
+    },
+    "otherField": {
+      "preferenceKey": "dislikedFoods",
+      "title": {
+        "fr": "Aliments que tu n'aimes pas",
+        "en": "Foods you don't like"
+      },
+      "hint": {
+        "fr": "Ex. coriandre, olives…",
+        "en": "E.g. coriander, olives…"
+      }
+    },
+    "sections": [
+      {
+        "title": {
+          "fr": "Allergies & intolérances",
+          "en": "Allergies & intolerances"
+        },
+        "options": [
+          {
+            "key": "allergy_lactose",
+            "label": {
+              "fr": "Lactose",
+              "en": "Lactose"
+            }
+          },
+          {
+            "key": "allergy_gluten",
+            "label": {
+              "fr": "Gluten",
+              "en": "Gluten"
+            }
+          },
+          {
+            "key": "allergy_tree_nuts",
+            "label": {
+              "fr": "Fruits à coque",
+              "en": "Tree nuts"
+            }
+          },
+          {
+            "key": "allergy_egg",
+            "label": {
+              "fr": "Œuf",
+              "en": "Egg"
+            }
+          },
+          {
+            "key": "allergy_soy",
+            "label": {
+              "fr": "Soja",
+              "en": "Soy"
+            }
+          },
+          {
+            "key": "allergy_shellfish",
+            "label": {
+              "fr": "Crustacés",
+              "en": "Shellfish"
+            }
+          }
+        ]
+      },
+      {
+        "title": {
+          "fr": "Habitudes & exclusions",
+          "en": "Habits & exclusions"
+        },
+        "options": [
+          {
+            "key": "halal",
+            "label": {
+              "fr": "Halal",
+              "en": "Halal"
+            }
+          },
+          {
+            "key": "kosher",
+            "label": {
+              "fr": "Casher",
+              "en": "Kosher"
+            }
+          },
+          {
+            "key": "pork_free",
+            "label": {
+              "fr": "Sans porc",
+              "en": "Pork-free"
+            }
+          },
+          {
+            "key": "alcohol_free",
+            "label": {
+              "fr": "Sans alcool",
+              "en": "Alcohol-free"
+            }
+          },
+          {
+            "key": "low_salt",
+            "label": {
+              "fr": "Peu salé",
+              "en": "Low salt"
+            }
+          },
+          {
+            "key": "low_sugar",
+            "label": {
+              "fr": "Peu sucré",
+              "en": "Low sugar"
+            }
+          },
+          {
+            "key": "spicy",
+            "label": {
+              "fr": "J'aime épicé",
+              "en": "I like it spicy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "chronic_disease": {
+    "order": 6,
+    "enabled": true,
+    "kind": "options",
+    "selectionMode": "multiple",
+    "tileStyle": "smallDot",
+    "isRequired": true,
+    "exclusiveOptionKey": "no_chronic_disease",
+    "title": {
+      "fr": "As-tu une maladie chronique ?",
+      "en": "Do you have a chronic condition?"
+    },
+    "helper": {
+      "fr": "Pour adapter les apports en sucre, sel et matières grasses. Cette information reste confidentielle.",
+      "en": "To adjust sugar, salt and fat intake. This stays confidential."
+    },
+    "footnote": {
+      "fr": "Eat'Easy n'est pas un dispositif médical. Consulte un professionnel de santé pour tout suivi.",
+      "en": "Eat'Easy is not a medical device. Talk to a healthcare professional for any follow-up."
+    },
+    "otherField": {
+      "preferenceKey": "chronicDiseaseOther",
+      "hint": {
+        "fr": "Autre",
+        "en": "Other"
+      }
+    },
+    "options": [
+      {
+        "key": "no_chronic_disease",
+        "label": {
+          "fr": "Aucune",
+          "en": "None"
+        },
+        "color": "#49A525"
+      },
+      {
+        "key": "diabetes",
+        "label": {
+          "fr": "Diabète",
+          "en": "Diabetes"
+        },
+        "color": "#D8A13A"
+      },
+      {
+        "key": "cardiovascular_disease",
+        "label": {
+          "fr": "Maladie cardiovasculaire",
+          "en": "Cardiovascular disease"
+        },
+        "color": "#C96F4A"
+      },
+      {
+        "key": "overweight",
+        "label": {
+          "fr": "Surpoids",
+          "en": "Overweight"
+        },
+        "color": "#7A9B3F"
+      },
+      {
+        "key": "hypertension",
+        "label": {
+          "fr": "Hypertension artérielle élevée",
+          "en": "High blood pressure"
+        },
+        "color": "#A5761F"
+      },
+      {
+        "key": "smop",
+        "label": {
+          "fr": "SMOP (ex SOPK)",
+          "en": "PCOS"
+        },
+        "color": "#8CA0C9"
+      }
+    ]
+  }
+}

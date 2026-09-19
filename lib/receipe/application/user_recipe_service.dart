@@ -8,6 +8,7 @@ abstract class IUserRecipeService {
   Future<void> removeFromFavorite(UserRecipeV2 recipe);
   Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid);
   Future<List<UserRecipeV2>> getAllUserRecipes();
+  Future<int> countGeneratedRecipes();
   Future<void> saveUserReceipeMetadata(EntityId uid, DateTime lastUpdatedDate);
   Future<void> removeLastRecipesHomeUpdatedDate();
   Stream<bool> isReceiptSaved(EntityId receipeId);
@@ -83,4 +84,8 @@ class UserRecipeService implements IUserRecipeService {
   @override
   Future<List<UserRecipeV2>> getAllUserRecipes() => _userReceipeRepositoryV2
       .getAllUserRecipe(_authUserService.currentUser!.uid);
+
+  @override
+  Future<int> countGeneratedRecipes() => _userReceipeRepositoryV2
+      .countGeneratedRecipes(_authUserService.currentUser!.uid);
 }

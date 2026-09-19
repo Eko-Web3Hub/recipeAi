@@ -32,6 +32,9 @@ abstract class IUserReceipeRepositoryV2 {
 
   Future<List<UserRecipeV2>> getAllUserRecipe(EntityId uid);
 
+  /// Number of recipes the user generated (from ingredients or a photo).
+  Future<int> countGeneratedRecipes(EntityId uid);
+
   Stream<bool> isReceiptSaved(EntityId uid, EntityId receipeId);
 
   Future<UserRecipeMetadata?> getUserRecipeMetadata(EntityId uid);

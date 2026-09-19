@@ -93,4 +93,9 @@ const recipeCardTagGreenColor = Color(0xFFBFE0AE);
 const recipeCardTagAmberColor = Color(0xFFF0D089);
 const recipeCardTagSalmonColor = Color(0xFFE8B8A3);
 
+// Recipe card without a picture (matches the 23c "Sans photo — couverts"
+// mockup): beige background, faint rings, green cutlery medallion.
+const recipeCardNoPhotoBackgroundColor = Color(0xFFE8E1D4);
+const recipeCardNoPhotoRingColor = Color(0x1422331F); // ink at 8%
+
 const cookedRecipeShigBgColor = Color(0xff43a026);

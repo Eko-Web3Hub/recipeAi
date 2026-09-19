@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_answers.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
+import 'package:recipe_ai/user_preferences/domain/repositories/onboarding_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_preference_mapper.dart';
 import 'package:recipe_ai/utils/safe_emit.dart';
@@ -18,12 +20,13 @@ class UserPreferenceUpdateLoading extends UserPreferenceUpdateState {
 }
 
 class UserPreferenceUpdateLoaded extends UserPreferenceUpdateState {
-  const UserPreferenceUpdateLoaded(this.answers);
+  const UserPreferenceUpdateLoaded(this.steps, this.answers);
 
+  final List<OnboardingStep> steps;
   final OnboardingAnswers answers;
 
   @override
-  List<Object?> get props => [answers];
+  List<Object?> get props => [steps, answers];
 }
 
 /// Loads the saved preferences and turns them back into onboarding answers, so
@@ -32,17 +35,27 @@ class UserPreferenceUpdateController extends Cubit<UserPreferenceUpdateState> {
   UserPreferenceUpdateController(
     this._authUserService,
     this._userPreferenceRepository,
+    this._onboardingQuizzRepository,
   ) : super(const UserPreferenceUpdateLoading()) {
     _load();
   }
 
   Future<void> _load() async {
     final uid = _authUserService.currentUser!.uid;
-    final userPreference = await _userPreferenceRepository.retrieve(uid);
+    final (userPreference, steps) = await (
+      _userPreferenceRepository.retrieve(uid),
+      _onboardingQuizzRepository.retrieve(),
+    ).wait;
 
-    safeEmit(UserPreferenceUpdateLoaded(answersFrom(userPreference)));
+    safeEmit(
+      UserPreferenceUpdateLoaded(
+        steps,
+        answersFrom(userPreference, steps: steps),
+      ),
+    );
   }
 
   final IAuthUserService _authUserService;
   final IUserPreferenceRepository _userPreferenceRepository;
+  final IOnboardingQuizzRepository _onboardingQuizzRepository;
 }

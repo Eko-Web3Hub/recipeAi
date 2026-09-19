@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/module.dart';
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
+import 'package:recipe_ai/user_preferences/domain/repositories/onboarding_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
+import 'package:recipe_ai/user_preferences/infrastructure/onboarding_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/infrastructure/user_preference_repository.dart';
 
 class UserPreferencesModule implements IDiModule {
@@ -12,6 +14,10 @@ class UserPreferencesModule implements IDiModule {
   void register(DiContainer di) {
     di.registerLazySingleton<IUserPreferenceRepository>(
       () => FirestoreUserPreferenceRepository(di<FirebaseFirestore>()),
+    );
+
+    di.registerLazySingleton<IOnboardingQuizzRepository>(
+      () => FirestoreOnboardingQuizzRepository(di<FirebaseFirestore>()),
     );
 
     di.registerFactory(

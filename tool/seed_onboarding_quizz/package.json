@@ -1,0 +1,12 @@
+{
+  "name": "seed-onboarding-quizz",
+  "private": true,
+  "type": "module",
+  "description": "Seeds the OnboardingQuizz Firestore collection from assets/data/onboarding_quizz.json",
+  "scripts": {
+    "seed": "node seed.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  }
+}

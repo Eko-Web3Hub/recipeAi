@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
 import 'package:recipe_ai/chat_ai/presentation/chat_ai_screen.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/setting/setting_screen.dart';
@@ -21,9 +20,11 @@ import 'package:recipe_ai/home/presentation/change_password_screen.dart';
 import 'package:recipe_ai/home/presentation/change_username.dart';
 import 'package:recipe_ai/home/presentation/historic/historic_screen.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
+import 'package:recipe_ai/home/presentation/profile/notification_settings_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_screen.dart';
+import 'package:recipe_ai/fridge/presentation/fridge_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -52,6 +53,10 @@ class PendingDeepLink {
   static String? path;
 }
 
+/// Where a signed in user without preferences resumes the onboarding. The
+/// notification priming screen is skipped: it belongs to the sign up flow.
+const _onboardingQuizzEntry = '/user-preferences';
+
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
   final authState = context.read<AuthNavigationController>().state;
 
@@ -60,6 +65,8 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
       return '/';
     case AuthNavigationState.loggedIn:
       return null;
+    case AuthNavigationState.loggedInWithoutPreferences:
+      return _onboardingQuizzEntry;
     case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
       if (state.name == 'RecipeDetailsWithReceipeId') {
         PendingDeepLink.path = state.uri.toString();
@@ -91,6 +98,8 @@ GoRouter createRouter() => GoRouter(
         switch (authState) {
           case AuthNavigationState.loggedIn:
             return '/home';
+          case AuthNavigationState.loggedInWithoutPreferences:
+            return _onboardingQuizzEntry;
           case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
             return '/onboarding/start';
           default:
@@ -216,7 +225,6 @@ GoRouter createRouter() => GoRouter(
               state.fullPath,
               di<TranslationController>().currentLanguage,
             ),
-            actions: genActions(state.fullPath),
             navigationShell: navigationShell,
             hideNavBar: hideNavBar(state.fullPath),
           );
@@ -329,7 +337,7 @@ GoRouter createRouter() => GoRouter(
               name: 'InventoryScreen',
               path: '/inventory-screen',
               redirect: _guardAuth,
-              builder: (context, state) => InventoryScreen(),
+              builder: (context, state) => const FridgeScreen(),
             ),
           ],
         ),
@@ -358,6 +366,13 @@ GoRouter createRouter() => GoRouter(
                   path: 'my-account',
                   redirect: _guardAuth,
                   builder: (context, state) => const AccountScreen(),
+                ),
+                GoRoute(
+                  name: 'NotificationSettingsScreen',
+                  path: 'notifications',
+                  redirect: _guardAuth,
+                  builder: (context, state) =>
+                      const NotificationSettingsScreen(),
                 ),
                 GoRoute(
                   name: 'UpdateUserPreference',
@@ -406,17 +421,6 @@ String? genAppBarTitle(String? path, AppLocalizations appTexts) {
       return appTexts.myFavorites;
     case '/notification-screen':
       return 'Notifications';
-    case '/profil-screen':
-      return appTexts.profil;
-    default:
-      return null;
-  }
-}
-
-List<Widget>? genActions(String? path) {
-  switch (path) {
-    case '/profil-screen':
-      return [ProfilActionAppBar()];
     default:
       return null;
   }
@@ -425,6 +429,7 @@ List<Widget>? genActions(String? path) {
 bool hideNavBar(String? path) {
   switch (path) {
     case '/profil-screen/update-user-preference':
+    case '/profil-screen/notifications':
     case '/profil-screen/change-username':
     case '/profil-screen/change-email':
     case '/profil-screen/change-password':

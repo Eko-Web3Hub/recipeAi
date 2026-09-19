@@ -71,6 +71,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^5.0.0
+  fake_cloud_firestore: ^3.1.0
 
 
 # flutter_launcher_icons:
@@ -98,6 +99,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icon/
+    - assets/data/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
