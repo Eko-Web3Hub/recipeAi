@@ -778,4 +778,189 @@ class AppLocalizationsEn extends AppLocalizations {
   String recipeCookedCount(int count) {
     return '✓ Cooked $count ×';
   }
+
+  @override
+  String get fridgeAddHint => 'Add an ingredient';
+
+  @override
+  String get fridgeEmptyTitle => 'Your fridge is empty';
+
+  @override
+  String get fridgeEmptySubtitle =>
+      'Search for an ingredient to set its quantity, or start from your usuals.';
+
+  @override
+  String get fridgeUsuals => 'Your usuals';
+
+  @override
+  String get fridgeAlreadyIn => 'already in your fridge';
+
+  @override
+  String fridgeAddCustom(String name) {
+    return 'Add “$name”';
+  }
+
+  @override
+  String fridgeExpressHint(String quantity) {
+    return 'Press Enter to add $quantity directly';
+  }
+
+  @override
+  String get fridgePickHint =>
+      'Pick the ingredient to set its quantity and unit';
+
+  @override
+  String get fridgeAsNeeded => 'as needed';
+
+  @override
+  String get fridgeMoreUnits => 'more';
+
+  @override
+  String get fridgeRemove => 'Remove';
+
+  @override
+  String fridgeRemoved(String name) {
+    return '$name removed';
+  }
+
+  @override
+  String get fridgeUndo => 'Undo';
+
+  @override
+  String get fridgeAddToFridge => 'Add to my fridge';
+
+  @override
+  String get fridgeAddToExisting => 'Add to existing line';
+
+  @override
+  String get fridgeSave => 'Save';
+
+  @override
+  String fridgeConverted(String from, String to) {
+    return 'Converted: $from = $to';
+  }
+
+  @override
+  String get fridgeGenerate => 'Generate my recipe';
+
+  @override
+  String fridgeIngredientCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ingredients',
+      one: '1 ingredient',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeAlreadyInToast(String name) {
+    return '$name is already in your fridge';
+  }
+
+  @override
+  String fridgeQuantitySet(String name, String quantity) {
+    return '$name: $quantity';
+  }
+
+  @override
+  String fridgeTotal(String name, String quantity) {
+    return '$name: $quantity in total';
+  }
+
+  @override
+  String fridgeReplaced(String name) {
+    return '$name: quantity replaced';
+  }
+
+  @override
+  String get fridgeError => 'Something went wrong, please try again';
+
+  @override
+  String get fridgeLoadError => 'We couldn\'t load your fridge';
+
+  @override
+  String get fridgeQuantity => 'Quantity';
+
+  @override
+  String get fridgeDecrease => 'Decrease';
+
+  @override
+  String get fridgeIncrease => 'Increase';
+
+  @override
+  String get fridgeClose => 'Close';
+
+  @override
+  String get fridgeClear => 'Clear';
+
+  @override
+  String fridgeUnitPiece(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pieces',
+      one: 'piece',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBowl(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bowls',
+      one: 'bowl',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitHeap(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'heaps',
+      one: 'heap',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBunch(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bunches',
+      one: 'bunch',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBag(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bags',
+      one: 'bag',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitCan(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'cans',
+      one: 'can',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get fridgeUnitTablespoon => 'tbsp';
 }

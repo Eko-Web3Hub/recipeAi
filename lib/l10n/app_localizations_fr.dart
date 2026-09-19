@@ -796,4 +796,189 @@ class AppLocalizationsFr extends AppLocalizations {
   String recipeCookedCount(int count) {
     return '✓ Cuisinée $count ×';
   }
+
+  @override
+  String get fridgeAddHint => 'Ajouter un ingrédient';
+
+  @override
+  String get fridgeEmptyTitle => 'Ton frigo est vide';
+
+  @override
+  String get fridgeEmptySubtitle =>
+      'Cherche un ingrédient pour régler sa quantité, ou pars de tes habituels.';
+
+  @override
+  String get fridgeUsuals => 'Tes habituels';
+
+  @override
+  String get fridgeAlreadyIn => 'déjà dans ton frigo';
+
+  @override
+  String fridgeAddCustom(String name) {
+    return 'Ajouter « $name »';
+  }
+
+  @override
+  String fridgeExpressHint(String quantity) {
+    return 'Entrée pour ajouter directement $quantity';
+  }
+
+  @override
+  String get fridgePickHint =>
+      'Choisis l\'ingrédient pour régler sa quantité et son unité';
+
+  @override
+  String get fridgeAsNeeded => 'au besoin';
+
+  @override
+  String get fridgeMoreUnits => 'autres';
+
+  @override
+  String get fridgeRemove => 'Retirer';
+
+  @override
+  String fridgeRemoved(String name) {
+    return '$name retiré';
+  }
+
+  @override
+  String get fridgeUndo => 'Annuler';
+
+  @override
+  String get fridgeAddToFridge => 'Ajouter à mon frigo';
+
+  @override
+  String get fridgeAddToExisting => 'Ajouter à la ligne existante';
+
+  @override
+  String get fridgeSave => 'Enregistrer';
+
+  @override
+  String fridgeConverted(String from, String to) {
+    return 'Converti : $from = $to';
+  }
+
+  @override
+  String get fridgeGenerate => 'Générer ma recette';
+
+  @override
+  String fridgeIngredientCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ingrédients',
+      one: '1 ingrédient',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeAlreadyInToast(String name) {
+    return '$name est déjà dans ton frigo';
+  }
+
+  @override
+  String fridgeQuantitySet(String name, String quantity) {
+    return '$name : $quantity';
+  }
+
+  @override
+  String fridgeTotal(String name, String quantity) {
+    return '$name : $quantity au total';
+  }
+
+  @override
+  String fridgeReplaced(String name) {
+    return '$name : quantité remplacée';
+  }
+
+  @override
+  String get fridgeError => 'Une erreur est survenue, réessaie';
+
+  @override
+  String get fridgeLoadError => 'Impossible de charger ton frigo';
+
+  @override
+  String get fridgeQuantity => 'Quantité';
+
+  @override
+  String get fridgeDecrease => 'Diminuer';
+
+  @override
+  String get fridgeIncrease => 'Augmenter';
+
+  @override
+  String get fridgeClose => 'Fermer';
+
+  @override
+  String get fridgeClear => 'Effacer';
+
+  @override
+  String fridgeUnitPiece(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pièces',
+      one: 'pièce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBowl(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bols',
+      one: 'bol',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitHeap(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'tas',
+      one: 'tas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBunch(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bottes',
+      one: 'botte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitBag(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'sachets',
+      one: 'sachet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fridgeUnitCan(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'boîtes',
+      one: 'boîte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get fridgeUnitTablespoon => 'c. à s.';
 }

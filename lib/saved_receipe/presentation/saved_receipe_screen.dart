@@ -14,6 +14,7 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_progre
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
+import 'package:recipe_ai/utils/widgets/empty_state_view.dart';
 
 import '../../utils/styles.dart';
 
@@ -134,57 +135,17 @@ class NoFavoriteRecipeSaved extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 70,
-              height: 70,
-              decoration: const BoxDecoration(
-                color: recipeLoaderCreamColor,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  'assets/images/favorite_outlined.svg',
-                  width: 34,
-                  colorFilter: ColorFilter.mode(
-                    recipeLoaderInkColor.withValues(alpha: 0.45),
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 22),
-            Text(
-              appTexts.noFavoriteRecipeTitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontFamily: robotoSlabFontFamily,
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-                color: recipeLoaderInkColor,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              appTexts.noFavoriteRecipeSubtitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: robotoFontFamily,
-                fontWeight: FontWeight.w400,
-                fontSize: 11,
-                height: 1.5,
-                color: recipeLoaderInkColor.withValues(alpha: 0.55),
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
+    return EmptyStateView(
+      icon: SvgPicture.asset(
+        'assets/images/favorite_outlined.svg',
+        width: 34,
+        colorFilter: ColorFilter.mode(
+          recipeLoaderInkColor.withValues(alpha: 0.45),
+          BlendMode.srcIn,
         ),
       ),
+      title: appTexts.noFavoriteRecipeTitle,
+      subtitle: appTexts.noFavoriteRecipeSubtitle,
     );
   }
 }

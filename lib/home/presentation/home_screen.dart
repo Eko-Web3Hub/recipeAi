@@ -245,7 +245,7 @@ class _QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(navigation): plug the three redirections once decided.
+    // TODO(navigation): plug the list and photo redirections once decided.
     // [IntrinsicHeight] keeps the three tiles the same height even when one
     // label wraps on two lines.
     return IntrinsicHeight(
@@ -268,7 +268,7 @@ class _QuickActions extends StatelessWidget {
               iconBackground: homeFridgeIconBackgroundColor,
               icon: const _FridgeGlyph(),
               labelSelector: (lang) => lang.homeQuickActionFridge,
-              onTap: () => _showComingSoon(context),
+              onTap: () => context.go('/inventory-screen'),
             ),
           ),
           const Gap(10),

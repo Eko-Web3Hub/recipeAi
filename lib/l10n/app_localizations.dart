@@ -1537,6 +1537,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'✓ Cooked {count} ×'**
   String recipeCookedCount(int count);
+
+  /// Fridge tab: fridgeAddHint
+  ///
+  /// In en, this message translates to:
+  /// **'Add an ingredient'**
+  String get fridgeAddHint;
+
+  /// Fridge tab: fridgeEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your fridge is empty'**
+  String get fridgeEmptyTitle;
+
+  /// Fridge tab: fridgeEmptySubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an ingredient to set its quantity, or start from your usuals.'**
+  String get fridgeEmptySubtitle;
+
+  /// Fridge tab: fridgeUsuals
+  ///
+  /// In en, this message translates to:
+  /// **'Your usuals'**
+  String get fridgeUsuals;
+
+  /// Fridge tab: fridgeAlreadyIn
+  ///
+  /// In en, this message translates to:
+  /// **'already in your fridge'**
+  String get fridgeAlreadyIn;
+
+  /// Fridge tab: fridgeAddCustom
+  ///
+  /// In en, this message translates to:
+  /// **'Add “{name}”'**
+  String fridgeAddCustom(String name);
+
+  /// Fridge tab: fridgeExpressHint
+  ///
+  /// In en, this message translates to:
+  /// **'Press Enter to add {quantity} directly'**
+  String fridgeExpressHint(String quantity);
+
+  /// Fridge tab: fridgePickHint
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the ingredient to set its quantity and unit'**
+  String get fridgePickHint;
+
+  /// Fridge tab: fridgeAsNeeded
+  ///
+  /// In en, this message translates to:
+  /// **'as needed'**
+  String get fridgeAsNeeded;
+
+  /// Fridge tab: fridgeMoreUnits
+  ///
+  /// In en, this message translates to:
+  /// **'more'**
+  String get fridgeMoreUnits;
+
+  /// Fridge tab: fridgeRemove
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get fridgeRemove;
+
+  /// Fridge tab: fridgeRemoved
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed'**
+  String fridgeRemoved(String name);
+
+  /// Fridge tab: fridgeUndo
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get fridgeUndo;
+
+  /// Fridge tab: fridgeAddToFridge
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my fridge'**
+  String get fridgeAddToFridge;
+
+  /// Fridge tab: fridgeAddToExisting
+  ///
+  /// In en, this message translates to:
+  /// **'Add to existing line'**
+  String get fridgeAddToExisting;
+
+  /// Fridge tab: fridgeSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get fridgeSave;
+
+  /// Fridge tab: fridgeConverted
+  ///
+  /// In en, this message translates to:
+  /// **'Converted: {from} = {to}'**
+  String fridgeConverted(String from, String to);
+
+  /// Fridge tab: fridgeGenerate
+  ///
+  /// In en, this message translates to:
+  /// **'Generate my recipe'**
+  String get fridgeGenerate;
+
+  /// Fridge tab: fridgeIngredientCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 ingredient} other{{count} ingredients}}'**
+  String fridgeIngredientCount(int count);
+
+  /// Fridge tab: fridgeAlreadyInToast
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is already in your fridge'**
+  String fridgeAlreadyInToast(String name);
+
+  /// Fridge tab: fridgeQuantitySet
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {quantity}'**
+  String fridgeQuantitySet(String name, String quantity);
+
+  /// Fridge tab: fridgeTotal
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {quantity} in total'**
+  String fridgeTotal(String name, String quantity);
+
+  /// Fridge tab: fridgeReplaced
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: quantity replaced'**
+  String fridgeReplaced(String name);
+
+  /// Fridge tab: fridgeError
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong, please try again'**
+  String get fridgeError;
+
+  /// Fridge tab: fridgeLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your fridge'**
+  String get fridgeLoadError;
+
+  /// Fridge tab: fridgeQuantity
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get fridgeQuantity;
+
+  /// Fridge tab: fridgeDecrease
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get fridgeDecrease;
+
+  /// Fridge tab: fridgeIncrease
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get fridgeIncrease;
+
+  /// Fridge tab: fridgeClose
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get fridgeClose;
+
+  /// Fridge tab: fridgeClear
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get fridgeClear;
+
+  /// Fridge tab: fridgeUnitPiece
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{piece} other{pieces}}'**
+  String fridgeUnitPiece(num count);
+
+  /// Fridge tab: fridgeUnitBowl
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{bowl} other{bowls}}'**
+  String fridgeUnitBowl(num count);
+
+  /// Fridge tab: fridgeUnitHeap
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{heap} other{heaps}}'**
+  String fridgeUnitHeap(num count);
+
+  /// Fridge tab: fridgeUnitBunch
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{bunch} other{bunches}}'**
+  String fridgeUnitBunch(num count);
+
+  /// Fridge tab: fridgeUnitBag
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{bag} other{bags}}'**
+  String fridgeUnitBag(num count);
+
+  /// Fridge tab: fridgeUnitCan
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{can} other{cans}}'**
+  String fridgeUnitCan(num count);
+
+  /// Fridge tab: fridgeUnitTablespoon
+  ///
+  /// In en, this message translates to:
+  /// **'tbsp'**
+  String get fridgeUnitTablespoon;
 }
 
 class _AppLocalizationsDelegate

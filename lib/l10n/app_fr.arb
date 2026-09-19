@@ -984,5 +984,237 @@
                 "type": "int"
             }
         }
+    },
+    "fridgeAddHint": "Ajouter un ingrédient",
+    "@fridgeAddHint": {
+        "description": "Fridge tab: fridgeAddHint"
+    },
+    "fridgeEmptyTitle": "Ton frigo est vide",
+    "@fridgeEmptyTitle": {
+        "description": "Fridge tab: fridgeEmptyTitle"
+    },
+    "fridgeEmptySubtitle": "Cherche un ingrédient pour régler sa quantité, ou pars de tes habituels.",
+    "@fridgeEmptySubtitle": {
+        "description": "Fridge tab: fridgeEmptySubtitle"
+    },
+    "fridgeUsuals": "Tes habituels",
+    "@fridgeUsuals": {
+        "description": "Fridge tab: fridgeUsuals"
+    },
+    "fridgeAlreadyIn": "déjà dans ton frigo",
+    "@fridgeAlreadyIn": {
+        "description": "Fridge tab: fridgeAlreadyIn"
+    },
+    "fridgeAddCustom": "Ajouter « {name} »",
+    "@fridgeAddCustom": {
+        "description": "Fridge tab: fridgeAddCustom",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeExpressHint": "Entrée pour ajouter directement {quantity}",
+    "@fridgeExpressHint": {
+        "description": "Fridge tab: fridgeExpressHint",
+        "placeholders": {
+            "quantity": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgePickHint": "Choisis l'ingrédient pour régler sa quantité et son unité",
+    "@fridgePickHint": {
+        "description": "Fridge tab: fridgePickHint"
+    },
+    "fridgeAsNeeded": "au besoin",
+    "@fridgeAsNeeded": {
+        "description": "Fridge tab: fridgeAsNeeded"
+    },
+    "fridgeMoreUnits": "autres",
+    "@fridgeMoreUnits": {
+        "description": "Fridge tab: fridgeMoreUnits"
+    },
+    "fridgeRemove": "Retirer",
+    "@fridgeRemove": {
+        "description": "Fridge tab: fridgeRemove"
+    },
+    "fridgeRemoved": "{name} retiré",
+    "@fridgeRemoved": {
+        "description": "Fridge tab: fridgeRemoved",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeUndo": "Annuler",
+    "@fridgeUndo": {
+        "description": "Fridge tab: fridgeUndo"
+    },
+    "fridgeAddToFridge": "Ajouter à mon frigo",
+    "@fridgeAddToFridge": {
+        "description": "Fridge tab: fridgeAddToFridge"
+    },
+    "fridgeAddToExisting": "Ajouter à la ligne existante",
+    "@fridgeAddToExisting": {
+        "description": "Fridge tab: fridgeAddToExisting"
+    },
+    "fridgeSave": "Enregistrer",
+    "@fridgeSave": {
+        "description": "Fridge tab: fridgeSave"
+    },
+    "fridgeConverted": "Converti : {from} = {to}",
+    "@fridgeConverted": {
+        "description": "Fridge tab: fridgeConverted",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeGenerate": "Générer ma recette",
+    "@fridgeGenerate": {
+        "description": "Fridge tab: fridgeGenerate"
+    },
+    "fridgeIngredientCount": "{count, plural, =1{1 ingrédient} other{{count} ingrédients}}",
+    "@fridgeIngredientCount": {
+        "description": "Fridge tab: fridgeIngredientCount",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "fridgeAlreadyInToast": "{name} est déjà dans ton frigo",
+    "@fridgeAlreadyInToast": {
+        "description": "Fridge tab: fridgeAlreadyInToast",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeQuantitySet": "{name} : {quantity}",
+    "@fridgeQuantitySet": {
+        "description": "Fridge tab: fridgeQuantitySet",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "quantity": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeTotal": "{name} : {quantity} au total",
+    "@fridgeTotal": {
+        "description": "Fridge tab: fridgeTotal",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "quantity": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeReplaced": "{name} : quantité remplacée",
+    "@fridgeReplaced": {
+        "description": "Fridge tab: fridgeReplaced",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeError": "Une erreur est survenue, réessaie",
+    "@fridgeError": {
+        "description": "Fridge tab: fridgeError"
+    },
+    "fridgeLoadError": "Impossible de charger ton frigo",
+    "@fridgeLoadError": {
+        "description": "Fridge tab: fridgeLoadError"
+    },
+    "fridgeQuantity": "Quantité",
+    "@fridgeQuantity": {
+        "description": "Fridge tab: fridgeQuantity"
+    },
+    "fridgeDecrease": "Diminuer",
+    "@fridgeDecrease": {
+        "description": "Fridge tab: fridgeDecrease"
+    },
+    "fridgeIncrease": "Augmenter",
+    "@fridgeIncrease": {
+        "description": "Fridge tab: fridgeIncrease"
+    },
+    "fridgeClose": "Fermer",
+    "@fridgeClose": {
+        "description": "Fridge tab: fridgeClose"
+    },
+    "fridgeClear": "Effacer",
+    "@fridgeClear": {
+        "description": "Fridge tab: fridgeClear"
+    },
+    "fridgeUnitPiece": "{count, plural, one{pièce} other{pièces}}",
+    "@fridgeUnitPiece": {
+        "description": "Fridge tab: fridgeUnitPiece",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitBowl": "{count, plural, one{bol} other{bols}}",
+    "@fridgeUnitBowl": {
+        "description": "Fridge tab: fridgeUnitBowl",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitHeap": "{count, plural, one{tas} other{tas}}",
+    "@fridgeUnitHeap": {
+        "description": "Fridge tab: fridgeUnitHeap",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitBunch": "{count, plural, one{botte} other{bottes}}",
+    "@fridgeUnitBunch": {
+        "description": "Fridge tab: fridgeUnitBunch",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitBag": "{count, plural, one{sachet} other{sachets}}",
+    "@fridgeUnitBag": {
+        "description": "Fridge tab: fridgeUnitBag",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitCan": "{count, plural, one{boîte} other{boîtes}}",
+    "@fridgeUnitCan": {
+        "description": "Fridge tab: fridgeUnitCan",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "fridgeUnitTablespoon": "c. à s.",
+    "@fridgeUnitTablespoon": {
+        "description": "Fridge tab: fridgeUnitTablespoon"
     }
 }

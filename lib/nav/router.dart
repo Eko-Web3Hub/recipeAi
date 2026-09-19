@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_ai/%20inventory/presentation/inventory_screen.dart';
 import 'package:recipe_ai/chat_ai/presentation/chat_ai_screen.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/setting/setting_screen.dart';
@@ -24,6 +23,7 @@ import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/profile/update_user_preference_screen.dart';
 import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_screen.dart';
+import 'package:recipe_ai/fridge/presentation/fridge_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
@@ -337,7 +337,7 @@ GoRouter createRouter() => GoRouter(
               name: 'InventoryScreen',
               path: '/inventory-screen',
               redirect: _guardAuth,
-              builder: (context, state) => InventoryScreen(),
+              builder: (context, state) => const FridgeScreen(),
             ),
           ],
         ),
