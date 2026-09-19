@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
-import 'package:recipe_ai/user_preferences/presentation/onboarding_steps.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_display.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -26,8 +25,7 @@ class OnboardingOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-    final description = option.description?.call(appTexts);
+    final description = option.description?.text;
     final borderRadius = BorderRadius.circular(14);
 
     return GestureDetector(
@@ -57,7 +55,7 @@ class OnboardingOptionTile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    option.label(appTexts),
+                    option.label.text,
                     style: const TextStyle(
                       fontFamily: robotoFontFamily,
                       fontWeight: FontWeight.w600,
@@ -100,7 +98,7 @@ class OnboardingOptionTile extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            color: option.color ?? recipeLoaderGreenColor,
+            color: onboardingColorOf(option.color),
             shape: BoxShape.circle,
           ),
         );
@@ -109,7 +107,7 @@ class OnboardingOptionTile extends StatelessWidget {
           width: 8,
           height: 8,
           decoration: BoxDecoration(
-            color: option.color ?? recipeLoaderGreenColor,
+            color: onboardingColorOf(option.color),
             shape: BoxShape.circle,
           ),
         );
@@ -122,7 +120,7 @@ class OnboardingOptionTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
-            option.icon,
+            onboardingIconOf(option.icon),
             size: 21,
             color: selected ? Colors.white : recipeLoaderInkColor,
           ),

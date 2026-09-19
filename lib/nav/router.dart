@@ -52,6 +52,10 @@ class PendingDeepLink {
   static String? path;
 }
 
+/// Where a signed in user without preferences resumes the onboarding. The
+/// notification priming screen is skipped: it belongs to the sign up flow.
+const _onboardingQuizzEntry = '/user-preferences';
+
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
   final authState = context.read<AuthNavigationController>().state;
 
@@ -60,6 +64,8 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
       return '/';
     case AuthNavigationState.loggedIn:
       return null;
+    case AuthNavigationState.loggedInWithoutPreferences:
+      return _onboardingQuizzEntry;
     case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
       if (state.name == 'RecipeDetailsWithReceipeId') {
         PendingDeepLink.path = state.uri.toString();
@@ -91,6 +97,8 @@ GoRouter createRouter() => GoRouter(
         switch (authState) {
           case AuthNavigationState.loggedIn:
             return '/home';
+          case AuthNavigationState.loggedInWithoutPreferences:
+            return _onboardingQuizzEntry;
           case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
             return '/onboarding/start';
           default:

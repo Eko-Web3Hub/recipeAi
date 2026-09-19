@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/notification/application/fcm_token_service.dart';
 import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -23,6 +24,30 @@ class _NotificationPermissionScreenState
     extends State<NotificationPermissionScreen> {
   bool _isRequesting = false;
 
+  /// Hides the content until we know the system prompt is still to be shown.
+  bool _isCheckingPermission = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _skipIfAlreadyAnswered();
+  }
+
+  Future<void> _skipIfAlreadyAnswered() async {
+    var hasAnswered = false;
+    try {
+      hasAnswered = await di<FCMTokenService>().hasAnsweredPermission();
+    } catch (_) {
+      // Unknown: show the screen, the user can still skip it.
+    }
+    if (!mounted) return;
+    if (hasAnswered) {
+      context.go(_nextRoute);
+    } else {
+      setState(() => _isCheckingPermission = false);
+    }
+  }
+
   Future<void> _allow() async {
     final controller = context.read<NotificationUserController>();
     setState(() => _isRequesting = true);
@@ -41,6 +66,10 @@ class _NotificationPermissionScreenState
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
+
+    if (_isCheckingPermission) {
+      return const Scaffold(backgroundColor: recipeLoaderGreenColor);
+    }
 
     return Scaffold(
       backgroundColor: recipeLoaderGreenColor,

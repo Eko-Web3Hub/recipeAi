@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_answers.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_option_tile.dart';
-import 'package:recipe_ai/user_preferences/presentation/onboarding_steps.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_display.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -15,13 +14,15 @@ class OptionListStep extends StatefulWidget {
     required this.step,
     required this.answers,
     required this.onToggle,
-    required this.onOtherChanged,
+    required this.onTextChanged,
   });
 
   final OnboardingStep step;
   final OnboardingAnswers answers;
   final ValueChanged<String> onToggle;
-  final ValueChanged<String> onOtherChanged;
+
+  /// `(preferenceKey, text)` of the free text field.
+  final void Function(String preferenceKey, String text) onTextChanged;
 
   @override
   State<OptionListStep> createState() => _OptionListStepState();
@@ -33,9 +34,9 @@ class _OptionListStepState extends State<OptionListStep> {
   @override
   void initState() {
     super.initState();
-    if (widget.step.hasOtherField) {
+    if (widget.step.otherField case final field?) {
       _otherController = TextEditingController(
-        text: widget.answers.chronicDiseaseOther,
+        text: widget.answers.textOf(field.preferenceKey),
       );
     }
   }
@@ -48,7 +49,6 @@ class _OptionListStepState extends State<OptionListStep> {
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
     final step = widget.step;
     // The single choice step of the mockup carries no checkbox: the selected
     // border and the green icon tile are the only markers.
@@ -67,11 +67,15 @@ class _OptionListStepState extends State<OptionListStep> {
             onTap: () => widget.onToggle(option.key),
           ),
         ],
-        if (_otherController case final controller?) ...[
+        if ((_otherController, step.otherField) case (
+          final controller?,
+          final field?,
+        )) ...[
           const SizedBox(height: 10),
           TextField(
             controller: controller,
-            onChanged: widget.onOtherChanged,
+            onChanged: (text) =>
+                widget.onTextChanged(field.preferenceKey, text),
             textCapitalization: TextCapitalization.sentences,
             style: const TextStyle(
               fontFamily: robotoFontFamily,
@@ -80,7 +84,7 @@ class _OptionListStepState extends State<OptionListStep> {
               color: recipeLoaderInkColor,
             ),
             decoration: InputDecoration(
-              hintText: appTexts.chronicOtherHint,
+              hintText: field.hint.text,
               hintStyle: const TextStyle(
                 fontFamily: robotoFontFamily,
                 fontWeight: FontWeight.w400,
