@@ -4,7 +4,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_answers.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_preference_mapper.dart';
-import 'package:recipe_ai/user_preferences/presentation/onboarding_steps.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
 import 'package:recipe_ai/utils/safe_emit.dart';
 
 enum OnboardingQuizzStatus { editing, submitting, success, error }
@@ -42,10 +42,9 @@ class OnboardingQuizzController extends Cubit<OnboardingQuizzState> {
   OnboardingQuizzController(
     this._userPreferenceService,
     this._authUserService, {
-    List<OnboardingStep>? steps,
+    required this.steps,
     OnboardingAnswers? initialAnswers,
-  }) : steps = steps ?? onboardingSteps,
-       super(
+  }) : super(
          OnboardingQuizzState(
            answers: initialAnswers ?? const OnboardingAnswers(),
          ),
@@ -58,6 +57,26 @@ class OnboardingQuizzController extends Cubit<OnboardingQuizzState> {
   OnboardingStep get currentStep => steps[state.currentIndex];
   bool get isLastStep => state.currentIndex >= steps.length - 1;
   bool get isFirstStep => state.currentIndex == 0;
+
+  /// Whether [step] is answered enough to move past it.
+  bool isStepComplete(OnboardingStep step) {
+    if (!step.isRequired) return true;
+    final answers = state.answers;
+
+    switch (step.kind) {
+      case OnboardingStepKind.morphology:
+        // Height and weight always hold a value, only the gender can be unset.
+        return answers.gender != null;
+      case OnboardingStepKind.options:
+      case OnboardingStepKind.chips:
+        final otherField = step.otherField;
+        return answers.selectionsOf(step.key).isNotEmpty ||
+            (otherField != null &&
+                answers.textOf(otherField.preferenceKey).trim().isNotEmpty);
+    }
+  }
+
+  bool get canContinue => isStepComplete(currentStep);
 
   void toggleOption(String stepKey, String optionKey) {
     final step = steps.firstWhere((step) => step.key == stepKey);
@@ -105,11 +124,14 @@ class OnboardingQuizzController extends Cubit<OnboardingQuizzState> {
     ),
   );
 
-  void setChronicDiseaseOther(String value) =>
-      _emitAnswers(state.answers.copyWith(chronicDiseaseOther: value));
+  void setText(String preferenceKey, String value) => _emitAnswers(
+    state.answers.copyWith(
+      texts: {...state.answers.texts, preferenceKey: value},
+    ),
+  );
 
   void next() {
-    if (isLastStep) return;
+    if (isLastStep || !canContinue) return;
     safeEmit(state.copyWith(currentIndex: state.currentIndex + 1));
   }
 
@@ -119,6 +141,7 @@ class OnboardingQuizzController extends Cubit<OnboardingQuizzState> {
   }
 
   Future<void> submit() async {
+    if (!steps.every(isStepComplete)) return;
     safeEmit(state.copyWith(status: OnboardingQuizzStatus.submitting));
     try {
       final uid = _authUserService.currentUser!.uid;

@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
+import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/application/user_preference_service.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
+import 'package:recipe_ai/user_preferences/domain/repositories/onboarding_quizz_repository.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_step_scaffold.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_catalogue_controller.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_display.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_quizz_controller.dart';
-import 'package:recipe_ai/user_preferences/presentation/onboarding_steps.dart';
+import 'package:recipe_ai/user_preferences/presentation/steps/chips_step.dart';
 import 'package:recipe_ai/user_preferences/presentation/steps/morphology_step.dart';
 import 'package:recipe_ai/user_preferences/presentation/steps/option_list_step.dart';
 
@@ -19,11 +25,27 @@ class UserPreferencesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OnboardingQuizzController(
-        di<UserPreferenceService>(),
-        di<IAuthUserService>(),
+      create: (_) =>
+          OnboardingCatalogueController(di<IOnboardingQuizzRepository>()),
+      child: BlocBuilder<OnboardingCatalogueController, List<OnboardingStep>?>(
+        builder: (context, steps) {
+          if (steps == null) {
+            return const Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(child: CustomProgress()),
+            );
+          }
+
+          return BlocProvider(
+            create: (_) => OnboardingQuizzController(
+              di<UserPreferenceService>(),
+              di<IAuthUserService>(),
+              steps: steps,
+            ),
+            child: const _UserPreferencesBody(),
+          );
+        },
       ),
-      child: const _UserPreferencesBody(),
     );
   }
 }
@@ -40,6 +62,7 @@ class _UserPreferencesBody extends StatelessWidget {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status == OnboardingQuizzStatus.success) {
+          context.read<AuthNavigationController>().preferencesCompleted();
           context.go('/home');
         }
         if (state.status == OnboardingQuizzStatus.error) {
@@ -61,15 +84,19 @@ class _UserPreferencesBody extends StatelessWidget {
               child: OnboardingStepScaffold(
                 currentStep: state.currentIndex + 1,
                 totalSteps: controller.steps.length,
-                title: step.title(appTexts),
-                helper: step.helper(appTexts),
-                footnote: step.footnote?.call(appTexts),
+                title: step.title.text,
+                helper: step.helper.text,
+                footnote: step.footnote?.text,
                 onBack: state.currentIndex == 0 ? null : controller.previous,
                 isLoading: state.status == OnboardingQuizzStatus.submitting,
                 ctaLabel: isLast
                     ? appTexts.finish
                     : appTexts.onboardingContinue,
-                onCta: isLast ? controller.submit : controller.next,
+                onCta: !controller.canContinue
+                    ? null
+                    : isLast
+                    ? controller.submit
+                    : controller.next,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
                   child: KeyedSubtree(
@@ -109,7 +136,14 @@ class _StepContent extends StatelessWidget {
           step: step,
           answers: state.answers,
           onToggle: (optionKey) => controller.toggleOption(step.key, optionKey),
-          onOtherChanged: controller.setChronicDiseaseOther,
+          onTextChanged: controller.setText,
+        );
+      case OnboardingStepKind.chips:
+        return ChipsStep(
+          step: step,
+          answers: state.answers,
+          onToggle: (optionKey) => controller.toggleOption(step.key, optionKey),
+          onTextChanged: controller.setText,
         );
     }
   }

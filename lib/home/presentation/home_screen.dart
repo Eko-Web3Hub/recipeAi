@@ -28,7 +28,12 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/user_account/application/user_account_metadata_service.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
+import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
+import 'package:recipe_ai/user_preferences/domain/repositories/onboarding_quizz_repository.dart';
+import 'package:recipe_ai/user_preferences/domain/repositories/user_preference_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
+import 'package:recipe_ai/user_preferences/presentation/dietary_summary.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/function_caller.dart';
@@ -87,43 +92,38 @@ class _HomeScreenState extends State<HomeScreen> {
         color: recipeLoaderCreamColor,
         child: SafeArea(
           bottom: false,
-          // The greeting and the three quick actions are pinned: only the
-          // recipe list scrolls under them.
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 24, 20, 0),
-                child: _HomeHeader(),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 6),
-                child: _QuickActions(),
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  color: Theme.of(context).primaryColor,
-                  onRefresh: () async {
-                    context
-                        .read<HomeScreenController>()
-                        .regenerateUserReceipe();
+          // The greeting and the quick actions scroll away with the recipes.
+          child: RefreshIndicator(
+            color: Theme.of(context).primaryColor,
+            onRefresh: () async {
+              context.read<HomeScreenController>().regenerateUserReceipe();
 
-                    return Future.delayed(const Duration(seconds: 1));
-                  },
-                  child: CustomScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    slivers: [
-                      const SliverToBoxAdapter(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(20, 20, 20, 2),
-                          child: _ForYouTodayHeader(),
-                        ),
-                      ),
-                      _HomeRecipes(bottomInset: bottomInset),
-                    ],
+              return Future.delayed(const Duration(seconds: 1));
+            },
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 24, 20, 0),
+                    child: _HomeHeader(),
                   ),
                 ),
-              ),
-            ],
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 6),
+                    child: _QuickActions(),
+                  ),
+                ),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 2),
+                    child: _ForYouTodayHeader(),
+                  ),
+                ),
+                _HomeRecipes(bottomInset: bottomInset),
+              ],
+            ),
           ),
         ),
       ),
@@ -247,7 +247,7 @@ class _QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(navigation): plug the three redirections once decided.
+    // TODO(navigation): plug the list and photo redirections once decided.
     // [IntrinsicHeight] keeps the three tiles the same height even when one
     // label wraps on two lines.
     return IntrinsicHeight(
@@ -270,7 +270,7 @@ class _QuickActions extends StatelessWidget {
               iconBackground: homeFridgeIconBackgroundColor,
               icon: const _FridgeGlyph(),
               labelSelector: (lang) => lang.homeQuickActionFridge,
-              onTap: () => _showComingSoon(context),
+              onTap: () => context.go('/inventory-screen'),
             ),
           ),
           const Gap(10),
@@ -436,8 +436,40 @@ class _CameraGlyph extends StatelessWidget {
   }
 }
 
-class _ForYouTodayHeader extends StatelessWidget {
+class _ForYouTodayHeader extends StatefulWidget {
   const _ForYouTodayHeader();
+
+  @override
+  State<_ForYouTodayHeader> createState() => _ForYouTodayHeaderState();
+}
+
+class _ForYouTodayHeaderState extends State<_ForYouTodayHeader> {
+  UserPreference? _preferences;
+  List<OnboardingStep> _steps = const [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDietarySummary();
+  }
+
+  Future<void> _loadDietarySummary() async {
+    final user = di<IAuthUserService>().currentUser;
+    if (user == null) return;
+    try {
+      final (preferences, steps) = await (
+        di<IUserPreferenceRepository>().retrieve(user.uid),
+        di<IOnboardingQuizzRepository>().retrieve(),
+      ).wait;
+      if (!mounted) return;
+      setState(() {
+        _preferences = preferences;
+        _steps = steps;
+      });
+    } catch (_) {
+      // The subtitle simply stays without the diet summary.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -455,11 +487,22 @@ class _ForYouTodayHeader extends StatelessWidget {
           ),
         ),
         const Gap(3),
-        // TODO(preferences): append the user's dietary preferences
-        // ("· Diabétique, SOPK" in the mockup) once they are exposed as a
-        // readable list.
+        // "Adaptées à tes préférences · Végétarien, Diabète": the diet and
+        // chronic disease answers of the onboarding.
         TranslatedText(
-          textSelector: (lang) => lang.homeForYouTodaySubtitle,
+          textSelector: (lang) {
+            final preferences = _preferences;
+            final labels = preferences == null
+                ? const <String>[]
+                : dietarySummaryLabels(
+                    preferences,
+                    _steps,
+                    di<TranslationController>().currentLanguageEnum,
+                  );
+            return labels.isEmpty
+                ? lang.homeForYouTodaySubtitle
+                : '${lang.homeForYouTodaySubtitle} · ${labels.join(', ')}';
+          },
           style: TextStyle(
             fontFamily: robotoFontFamily,
             fontWeight: FontWeight.w400,

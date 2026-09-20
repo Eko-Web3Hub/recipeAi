@@ -1436,60 +1436,6 @@ abstract class AppLocalizations {
   /// **'Previous step'**
   String get onboardingBack;
 
-  /// Onboarding: onboardingDietTitle
-  ///
-  /// In en, this message translates to:
-  /// **'What is your dietary profile?'**
-  String get onboardingDietTitle;
-
-  /// Onboarding: onboardingDietHelper
-  ///
-  /// In en, this message translates to:
-  /// **'Pick as many as you need — every recipe adapts to them.'**
-  String get onboardingDietHelper;
-
-  /// Onboarding: dietNoRestriction
-  ///
-  /// In en, this message translates to:
-  /// **'No restriction'**
-  String get dietNoRestriction;
-
-  /// Onboarding: dietVegetarian
-  ///
-  /// In en, this message translates to:
-  /// **'Vegetarian'**
-  String get dietVegetarian;
-
-  /// Onboarding: dietGlutenFree
-  ///
-  /// In en, this message translates to:
-  /// **'Gluten free'**
-  String get dietGlutenFree;
-
-  /// Onboarding: dietLactoseFree
-  ///
-  /// In en, this message translates to:
-  /// **'Lactose free'**
-  String get dietLactoseFree;
-
-  /// Onboarding: dietVegan
-  ///
-  /// In en, this message translates to:
-  /// **'Vegan'**
-  String get dietVegan;
-
-  /// Onboarding: onboardingMorphologyTitle
-  ///
-  /// In en, this message translates to:
-  /// **'Tell us about you'**
-  String get onboardingMorphologyTitle;
-
-  /// Onboarding: onboardingMorphologyHelper
-  ///
-  /// In en, this message translates to:
-  /// **'This is used to compute your calorie needs. It stays private.'**
-  String get onboardingMorphologyHelper;
-
   /// Onboarding: morphologyGender
   ///
   /// In en, this message translates to:
@@ -1592,192 +1538,6 @@ abstract class AppLocalizations {
   /// **'Obesity'**
   String get bmiStatusObesity;
 
-  /// Onboarding: onboardingActivityTitle
-  ///
-  /// In en, this message translates to:
-  /// **'What is your activity level?'**
-  String get onboardingActivityTitle;
-
-  /// Onboarding: onboardingActivityHelper
-  ///
-  /// In en, this message translates to:
-  /// **'We adjust the calories and portions of your recipes to your energy needs.'**
-  String get onboardingActivityHelper;
-
-  /// Onboarding: activitySedentary
-  ///
-  /// In en, this message translates to:
-  /// **'Sedentary'**
-  String get activitySedentary;
-
-  /// Onboarding: activitySedentaryDescription
-  ///
-  /// In en, this message translates to:
-  /// **'Little to no exercise, desk job'**
-  String get activitySedentaryDescription;
-
-  /// Onboarding: activityLightlyActive
-  ///
-  /// In en, this message translates to:
-  /// **'Lightly active'**
-  String get activityLightlyActive;
-
-  /// Onboarding: activityLightlyActiveDescription
-  ///
-  /// In en, this message translates to:
-  /// **'1 to 3 sessions a week'**
-  String get activityLightlyActiveDescription;
-
-  /// Onboarding: activityModeratelyActive
-  ///
-  /// In en, this message translates to:
-  /// **'Moderately active'**
-  String get activityModeratelyActive;
-
-  /// Onboarding: activityModeratelyActiveDescription
-  ///
-  /// In en, this message translates to:
-  /// **'3 to 5 sessions a week'**
-  String get activityModeratelyActiveDescription;
-
-  /// Onboarding: activityVeryActive
-  ///
-  /// In en, this message translates to:
-  /// **'Very active'**
-  String get activityVeryActive;
-
-  /// Onboarding: activityVeryActiveDescription
-  ///
-  /// In en, this message translates to:
-  /// **'6 to 7 sessions a week'**
-  String get activityVeryActiveDescription;
-
-  /// Onboarding: activityAthlete
-  ///
-  /// In en, this message translates to:
-  /// **'Athlete'**
-  String get activityAthlete;
-
-  /// Onboarding: activityAthleteDescription
-  ///
-  /// In en, this message translates to:
-  /// **'Intense daily training'**
-  String get activityAthleteDescription;
-
-  /// Onboarding: onboardingGoalsTitle
-  ///
-  /// In en, this message translates to:
-  /// **'What are your goals?'**
-  String get onboardingGoalsTitle;
-
-  /// Onboarding: onboardingGoalsHelper
-  ///
-  /// In en, this message translates to:
-  /// **'Health or nutrition wise. Pick as many as you want.'**
-  String get onboardingGoalsHelper;
-
-  /// Onboarding: goalWeightLoss
-  ///
-  /// In en, this message translates to:
-  /// **'Weight loss'**
-  String get goalWeightLoss;
-
-  /// Onboarding: goalWeightLossDescription
-  ///
-  /// In en, this message translates to:
-  /// **'Gentle, sustainable calorie deficit'**
-  String get goalWeightLossDescription;
-
-  /// Onboarding: goalHealthImprovement
-  ///
-  /// In en, this message translates to:
-  /// **'Better health'**
-  String get goalHealthImprovement;
-
-  /// Onboarding: goalHealthImprovementDescription
-  ///
-  /// In en, this message translates to:
-  /// **'Balance, fibre and micronutrients'**
-  String get goalHealthImprovementDescription;
-
-  /// Onboarding: goalMuscleGain
-  ///
-  /// In en, this message translates to:
-  /// **'Muscle gain'**
-  String get goalMuscleGain;
-
-  /// Onboarding: goalMuscleGainDescription
-  ///
-  /// In en, this message translates to:
-  /// **'Higher protein intake'**
-  String get goalMuscleGainDescription;
-
-  /// Onboarding: goalDetox
-  ///
-  /// In en, this message translates to:
-  /// **'Detox'**
-  String get goalDetox;
-
-  /// Onboarding: goalDetoxDescription
-  ///
-  /// In en, this message translates to:
-  /// **'Light, unprocessed, hydrating'**
-  String get goalDetoxDescription;
-
-  /// Onboarding: onboardingChronicDiseaseTitle
-  ///
-  /// In en, this message translates to:
-  /// **'Do you have a chronic condition?'**
-  String get onboardingChronicDiseaseTitle;
-
-  /// Onboarding: onboardingChronicDiseaseHelper
-  ///
-  /// In en, this message translates to:
-  /// **'To adjust sugar, salt and fat intake. This stays confidential.'**
-  String get onboardingChronicDiseaseHelper;
-
-  /// Onboarding: chronicDiabetes
-  ///
-  /// In en, this message translates to:
-  /// **'Diabetes'**
-  String get chronicDiabetes;
-
-  /// Onboarding: chronicCardiovascular
-  ///
-  /// In en, this message translates to:
-  /// **'Cardiovascular disease'**
-  String get chronicCardiovascular;
-
-  /// Onboarding: chronicOverweight
-  ///
-  /// In en, this message translates to:
-  /// **'Overweight'**
-  String get chronicOverweight;
-
-  /// Onboarding: chronicHypertension
-  ///
-  /// In en, this message translates to:
-  /// **'High blood pressure'**
-  String get chronicHypertension;
-
-  /// Onboarding: chronicSmop
-  ///
-  /// In en, this message translates to:
-  /// **'PCOS'**
-  String get chronicSmop;
-
-  /// Onboarding: chronicOtherHint
-  ///
-  /// In en, this message translates to:
-  /// **'Other'**
-  String get chronicOtherHint;
-
-  /// Onboarding: onboardingChronicDiseaseFootnote
-  ///
-  /// In en, this message translates to:
-  /// **'Eat\'Easy is not a medical device. Talk to a healthcare professional for any follow-up.'**
-  String get onboardingChronicDiseaseFootnote;
-
   /// Badge showing how many times the user has cooked a recipe, e.g. '✓ Cooked 3 ×'
   ///
   /// In en, this message translates to:
@@ -1813,6 +1573,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow camera access to take a photo of your ingredients'**
   String get ingredientCameraPermissionDenied;
+
+  /// Fridge tab: fridgeAddHint
+  ///
+  /// In en, this message translates to:
+  /// **'Add an ingredient'**
+  String get fridgeAddHint;
+
+  /// Fridge tab: fridgeEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your fridge is empty'**
+  String get fridgeEmptyTitle;
+
+  /// Fridge tab: fridgeEmptySubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an ingredient to set its quantity, or start from your usuals.'**
+  String get fridgeEmptySubtitle;
+
+  /// Fridge tab: fridgeUsuals
+  ///
+  /// In en, this message translates to:
+  /// **'Your usuals'**
+  String get fridgeUsuals;
+
+  /// Fridge tab: fridgeAlreadyIn
+  ///
+  /// In en, this message translates to:
+  /// **'already in your fridge'**
+  String get fridgeAlreadyIn;
+
+  /// Fridge tab: fridgeAddCustom
+  ///
+  /// In en, this message translates to:
+  /// **'Add “{name}”'**
+  String fridgeAddCustom(String name);
+
+  /// Fridge tab: fridgeExpressHint
+  ///
+  /// In en, this message translates to:
+  /// **'Press Enter to add {quantity} directly'**
+  String fridgeExpressHint(String quantity);
+
+  /// Fridge tab: fridgePickHint
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the ingredient to set its quantity and unit'**
+  String get fridgePickHint;
+
+  /// Fridge tab: fridgeAsNeeded
+  ///
+  /// In en, this message translates to:
+  /// **'as needed'**
+  String get fridgeAsNeeded;
+
+  /// Fridge tab: fridgeMoreUnits
+  ///
+  /// In en, this message translates to:
+  /// **'more'**
+  String get fridgeMoreUnits;
+
+  /// Fridge tab: fridgeRemove
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get fridgeRemove;
+
+  /// Fridge tab: fridgeRemoved
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed'**
+  String fridgeRemoved(String name);
+
+  /// Fridge tab: fridgeUndo
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get fridgeUndo;
+
+  /// Fridge tab: fridgeAddToFridge
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my fridge'**
+  String get fridgeAddToFridge;
+
+  /// Fridge tab: fridgeAddToExisting
+  ///
+  /// In en, this message translates to:
+  /// **'Add to existing line'**
+  String get fridgeAddToExisting;
+
+  /// Fridge tab: fridgeSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get fridgeSave;
+
+  /// Fridge tab: fridgeConverted
+  ///
+  /// In en, this message translates to:
+  /// **'Converted: {from} = {to}'**
+  String fridgeConverted(String from, String to);
+
+  /// Fridge tab: fridgeGenerate
+  ///
+  /// In en, this message translates to:
+  /// **'Generate my recipe'**
+  String get fridgeGenerate;
+
+  /// Fridge tab: fridgeIngredientCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 ingredient} other{{count} ingredients}}'**
+  String fridgeIngredientCount(int count);
+
+  /// Fridge tab: fridgeAlreadyInToast
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is already in your fridge'**
+  String fridgeAlreadyInToast(String name);
+
+  /// Fridge tab: fridgeQuantitySet
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {quantity}'**
+  String fridgeQuantitySet(String name, String quantity);
+
+  /// Fridge tab: fridgeTotal
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {quantity} in total'**
+  String fridgeTotal(String name, String quantity);
+
+  /// Fridge tab: fridgeReplaced
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: quantity replaced'**
+  String fridgeReplaced(String name);
+
+  /// Fridge tab: fridgeError
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong, please try again'**
+  String get fridgeError;
+
+  /// Fridge tab: fridgeLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your fridge'**
+  String get fridgeLoadError;
+
+  /// Fridge tab: fridgeQuantity
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get fridgeQuantity;
+
+  /// Fridge tab: fridgeDecrease
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get fridgeDecrease;
+
+  /// Fridge tab: fridgeIncrease
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get fridgeIncrease;
+
+  /// Fridge tab: fridgeClose
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get fridgeClose;
+
+  /// Fridge tab: fridgeClear
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get fridgeClear;
+
+  /// Fridge tab: fridgeUnitPiece
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{piece} other{pieces}}'**
+  String fridgeUnitPiece(num count);
+
+  /// Fridge tab: fridgeUnitBowl
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{bowl} other{bowls}}'**
+  String fridgeUnitBowl(num count);
+
+  /// Fridge tab: fridgeUnitHeap
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{heap} other{heaps}}'**
+  String fridgeUnitHeap(num count);
+
+  /// Fridge tab: fridgeUnitBunch
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{bunch} other{bunches}}'**
+  String fridgeUnitBunch(num count);
+
+  /// Fridge tab: fridgeUnitBag
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{bag} other{bags}}'**
+  String fridgeUnitBag(num count);
+
+  /// Fridge tab: fridgeUnitCan
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{can} other{cans}}'**
+  String fridgeUnitCan(num count);
+
+  /// Fridge tab: fridgeUnitTablespoon
+  ///
+  /// In en, this message translates to:
+  /// **'tbsp'**
+  String get fridgeUnitTablespoon;
+
+  /// Profile: generated recipes stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Generated'**
+  String get profileStatGenerated;
+
+  /// Profile: favorite recipes stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get profileStatFavorites;
+
+  /// Profile: dietary preferences menu item
+  ///
+  /// In en, this message translates to:
+  /// **'My dietary preferences'**
+  String get profileDietaryPreferences;
+
+  /// Profile: help and contact menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Help & contact'**
+  String get profileHelpContact;
+
+  /// Notification settings: switch label
+  ///
+  /// In en, this message translates to:
+  /// **'Receive notifications'**
+  String get notificationSettingsReceive;
+
+  /// Notification settings: shown when the system permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked in your phone settings. Allow Eat\'Easy to receive them.'**
+  String get notificationSettingsBlocked;
 }
 
 class _AppLocalizationsDelegate
