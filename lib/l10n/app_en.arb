@@ -124,6 +124,10 @@
         "description": "Retry button label"
     },
     "retry": "Retry",
+    "@noRecipeGeneratedFromPhoto": {
+        "description": "Shown when the backend found no recipe for the submitted ingredient photo"
+    },
+    "noRecipeGeneratedFromPhoto": "No recipe was generated. Try again with a new photo",
     "@ingredients": {
         "description": "Ingredients section title"
     },

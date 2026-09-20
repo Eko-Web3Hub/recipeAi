@@ -284,6 +284,12 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get retry;
 
+  /// Shown when the backend found no recipe for the submitted ingredient photo
+  ///
+  /// In en, this message translates to:
+  /// **'No recipe was generated. Try again with a new photo'**
+  String get noRecipeGeneratedFromPhoto;
+
   /// Ingredients section title
   ///
   /// In en, this message translates to:
