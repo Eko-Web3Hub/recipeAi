@@ -19,6 +19,7 @@ import 'package:recipe_ai/receipe/domain/model/step.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
+import 'package:recipe_ai/receipe/presentation/cook_mode_controller.dart';
 import 'package:recipe_ai/receipe/presentation/food_fact_card.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_cook/recipe_cook_ship.dart';
@@ -971,33 +972,82 @@ class _CookModeButton extends StatelessWidget {
         builder: (context, summary) {
           final appTexts = di<TranslationController>().currentLanguage;
           final lastCookedAt = summary?.lastCookedAt;
+          final neverCooked = summary == null || summary.count == 0;
 
-          return Column(
-            children: [
-              PrimaryActionButton(
-                label: summary == null || summary.count == 0
-                    ? appTexts.recipeDetailsCookMode
-                    : appTexts.recipeDetailsCookAgain,
-                onTap: () => context.push(
-                  '/cook-mode',
-                  extra: {'receipe': receipe, 'userReceipeV2': userReceipeV2},
-                ),
+          return BlocProvider<CookModeController>(
+            create: (_) => CookModeController.inject(),
+            child: BlocListener<CookModeController, CookModeState>(
+              listener: (context, state) {
+                if (state is CookModeStateFinished) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(appTexts.cookModeFinishedMessage)),
+                  );
+                }
+                if (state is CookModeStateUserNotConnectedError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(appTexts.cookModeUserNotConnectedError),
+                    ),
+                  );
+                }
+              },
+              child: Builder(
+                builder: (context) {
+                  return Column(
+                    children: [
+                      PrimaryActionButton(
+                        label: neverCooked
+                            ? appTexts.recipeDetailsCookMode
+                            : appTexts.recipeDetailsCookAgain,
+                        onTap: () => context.push(
+                          '/cook-mode',
+                          extra: {
+                            'receipe': receipe,
+                            'userReceipeV2': userReceipeV2,
+                          },
+                        ),
+                      ),
+                      if (lastCookedAt != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          appTexts.recipeDetailsCookedSummary(
+                            summary!.count,
+                            lastCookedAt,
+                          ),
+                          style: TextStyle(
+                            fontFamily: robotoFontFamily,
+                            fontSize: 12,
+                            color: recipeLoaderInkColor.withValues(alpha: 0.55),
+                          ),
+                        ),
+                      ],
+                      if (neverCooked) ...[
+                        const SizedBox(height: 4),
+                        InkWell(
+                          onTap: () => context
+                              .read<CookModeController>()
+                              .markAsCooked(recipeId, 0),
+                          borderRadius: BorderRadius.circular(15),
+                          child: Container(
+                            height: 44,
+                            alignment: Alignment.center,
+                            child: Text(
+                              appTexts.recipeDetailsMarkAsCooked,
+                              style: const TextStyle(
+                                fontFamily: robotoFontFamily,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.5,
+                                color: recipeLoaderGreenColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  );
+                },
               ),
-              if (lastCookedAt != null) ...[
-                const SizedBox(height: 8),
-                Text(
-                  appTexts.recipeDetailsCookedSummary(
-                    summary!.count,
-                    lastCookedAt,
-                  ),
-                  style: TextStyle(
-                    fontFamily: robotoFontFamily,
-                    fontSize: 12,
-                    color: recipeLoaderInkColor.withValues(alpha: 0.55),
-                  ),
-                ),
-              ],
-            ],
+            ),
           );
         },
       ),
