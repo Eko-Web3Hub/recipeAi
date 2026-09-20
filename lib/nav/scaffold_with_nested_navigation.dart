@@ -243,14 +243,6 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                   ),
                   const Gap(12),
                   _ActionBtn(
-                    'assets/images/grocery_icon.svg',
-                    appText.generateRecipeWithLiveGroceriePhoto,
-                    onTap: () {
-                      _takeLivePicture();
-                    },
-                  ),
-                  const Gap(12),
-                  _ActionBtn(
                     'assets/images/groceryList.svg',
                     appText.generateRecipeWithGrocerieList,
                     onTap: () {
@@ -297,7 +289,10 @@ class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
 }
 
 class _GenRecipeFromIngredientPicture extends StatelessWidget {
-  const _GenRecipeFromIngredientPicture(this.file, {required this.onRetryWithNewPhoto});
+  const _GenRecipeFromIngredientPicture(
+    this.file, {
+    required this.onRetryWithNewPhoto,
+  });
 
   final File file;
   final VoidCallback onRetryWithNewPhoto;
