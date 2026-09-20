@@ -62,10 +62,19 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
 
   switch (authState) {
     case AuthNavigationState.loading:
+      // Auth hasn't resolved yet (e.g. a cold start triggered by the deep
+      // link itself) — remember the destination so it isn't lost once the
+      // real state comes in.
+      if (state.name == 'RecipeDetailsWithReceipeId') {
+        PendingDeepLink.path = state.uri.toString();
+      }
       return '/';
     case AuthNavigationState.loggedIn:
       return null;
     case AuthNavigationState.loggedInWithoutPreferences:
+      if (state.name == 'RecipeDetailsWithReceipeId') {
+        PendingDeepLink.path = state.uri.toString();
+      }
       return _onboardingQuizzEntry;
     case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
       if (state.name == 'RecipeDetailsWithReceipeId') {
@@ -436,6 +445,8 @@ bool hideNavBar(String? path) {
     case '/profil-screen/change-language':
     case '/profil-screen/settings':
     case '/home/notification':
+    case '/home/recipe-details':
+    case '/home/recipe-details/:language/:receipeId':
       return true;
     default:
       return false;

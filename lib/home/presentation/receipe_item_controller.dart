@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
@@ -88,15 +90,26 @@ class ReceipeItemController extends Cubit<ReceipeItemState> {
 
   Future<void> checkReceipeStatus() async {
     try {
-      _userRecipeService.isReceiptSaved(_receipe.id!).listen((isSaved) {
-        safeEmit(
-          isSaved
-              ? const ReceipeItemStateSaved()
-              : const ReceipeItemStateUnsaved(),
-        );
-      });
+      await _statusSubscription?.cancel();
+      _statusSubscription = _userRecipeService
+          .isReceiptSaved(_receipe.id!)
+          .listen((isSaved) {
+            safeEmit(
+              isSaved
+                  ? const ReceipeItemStateSaved()
+                  : const ReceipeItemStateUnsaved(),
+            );
+          });
     } on Exception catch (_) {
       emit(const ReceipeItemStateError("Error checking receipe status"));
     }
   }
+
+  @override
+  Future<void> close() {
+    _statusSubscription?.cancel();
+    return super.close();
+  }
+
+  StreamSubscription<bool>? _statusSubscription;
 }
