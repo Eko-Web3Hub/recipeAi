@@ -72,6 +72,24 @@ OnboardingAnswers answersFrom(
   );
 }
 
+/// The BMI of a stored document, for the profile card.
+///
+/// Older documents were written before the morphology step existed, and the
+/// stored `bmi` was rounded once already: the height and the weight are the
+/// source of truth when they are there.
+double? bmiOf(UserPreference userPreference) {
+  final preferences = userPreference.preferences;
+  final heightCm = _intFrom(preferences[heightPreferenceKey]);
+  final weightKg = _intFrom(preferences[weightPreferenceKey]);
+
+  if (heightCm != null && heightCm > 0 && weightKg != null) {
+    return OnboardingAnswers(heightCm: heightCm, weightKg: weightKg).bmi;
+  }
+
+  final storedBmi = preferences[bmiPreferenceKey];
+  return storedBmi is num ? storedBmi.toDouble() : null;
+}
+
 UserGender? _genderFrom(dynamic value) {
   if (value is! String) return null;
   for (final gender in UserGender.values) {

@@ -7,7 +7,10 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/profile/profile_controller.dart';
 import 'package:recipe_ai/home/presentation/setting/feedback_link.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/user_preferences/domain/model/onboarding_answers.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/bmi_gauge.dart';
 import 'package:recipe_ai/user_preferences/presentation/dietary_summary.dart';
+import 'package:recipe_ai/user_preferences/presentation/onboarding_preference_mapper.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
@@ -100,6 +103,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ],
                             ),
+                            if (state.preferences case final preferences?)
+                              if (bmiOf(preferences) case final bmi?) ...[
+                                const Gap(10),
+                                _BmiCard(
+                                  bmi: bmi,
+                                  onEdit: () => context.push(
+                                    '/profil-screen/update-user-preference',
+                                  ),
+                                ),
+                              ],
                             const Gap(10),
                             _ProfileMenu(
                               items: [
@@ -282,6 +295,123 @@ class _StatCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 10.5,
               color: onboardingSubtleTextColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// "Mon IMC": the body mass index computed from the morphology step, with a
+/// shortcut back to the preferences to change the height or the weight.
+class _BmiCard extends StatelessWidget {
+  const _BmiCard({required this.bmi, required this.onEdit});
+
+  final double bmi;
+  final VoidCallback onEdit;
+
+  @override
+  Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  appTexts.profileBmiTitle,
+                  style: const TextStyle(
+                    fontFamily: robotoSlabFontFamily,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    color: recipeLoaderInkColor,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: onEdit,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 2,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.edit_outlined,
+                        size: 14,
+                        color: recipeLoaderInkColor,
+                      ),
+                      const Gap(6),
+                      Text(
+                        appTexts.update,
+                        style: const TextStyle(
+                          fontFamily: robotoFontFamily,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12.5,
+                          color: recipeLoaderInkColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const Gap(12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: recipeLoaderMintColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  appTexts.bmiShort,
+                  style: const TextStyle(
+                    fontFamily: robotoFontFamily,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 10.5,
+                    letterSpacing: 0.6,
+                    color: onboardingSubtleTextColor,
+                  ),
+                ),
+                const Gap(8),
+                Text(
+                  formatBmi(bmi),
+                  style: const TextStyle(
+                    fontFamily: robotoSlabFontFamily,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22,
+                    color: recipeLoaderInkColor,
+                  ),
+                ),
+                const Gap(10),
+                Expanded(
+                  child: Text(
+                    bmiStatusLabel(bmiCategoryOf(bmi), appTexts),
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      fontFamily: robotoFontFamily,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12.5,
+                      color: recipeLoaderGreenColor,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

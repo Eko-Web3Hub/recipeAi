@@ -89,4 +89,55 @@ void main() {
       DisplayReceipesBasedOnIngredientUserPreferenceLoaded(recipes),
     ],
   );
+
+  blocTest<DisplayReceipesBasedOnIngredientUserPreferenceController,
+      DisplayReceipesBasedOnIngredientUserPreferenceState>(
+    'should be in error state when the generation fails',
+    build: () => buildSut(),
+    setUp: () {
+      when(() => retrieveRecipesBasedOnUserIngredientAndPreferencesUsecase
+              .retrieve(authUser.uid))
+          .thenAnswer(
+        (_) => Future.value(const Left(GenRecipeErrorCode.internalServerError)),
+      );
+    },
+    expect: () => [
+      DisplayReceipesBasedOnIngredientUserPreferenceError(
+        GenRecipeErrorCode.internalServerError,
+      ),
+    ],
+  );
+
+  blocTest<DisplayReceipesBasedOnIngredientUserPreferenceController,
+      DisplayReceipesBasedOnIngredientUserPreferenceState>(
+    'should go back to loading and retry after an error',
+    build: () => buildSut(),
+    setUp: () {
+      var callCount = 0;
+      when(() => retrieveRecipesBasedOnUserIngredientAndPreferencesUsecase
+              .retrieve(authUser.uid))
+          .thenAnswer((_) {
+        callCount++;
+        return Future.value(
+          callCount == 1
+              ? const Left(GenRecipeErrorCode.internalServerError)
+              : Right(recipes),
+        );
+      });
+    },
+    act: (controller) async {
+      // The retry only happens once the first generation has failed.
+      await controller.stream.firstWhere(
+        (state) => state is DisplayReceipesBasedOnIngredientUserPreferenceError,
+      );
+      await controller.load();
+    },
+    expect: () => [
+      DisplayReceipesBasedOnIngredientUserPreferenceError(
+        GenRecipeErrorCode.internalServerError,
+      ),
+      isA<DisplayReceipesBasedOnIngredientUserPreferenceLoading>(),
+      DisplayReceipesBasedOnIngredientUserPreferenceLoaded(recipes),
+    ],
+  );
 }

@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_ai/di/container.dart';
+import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_answers.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+
+/// "Corpulence normale", "Surpoids"… — the sentence next to the BMI value.
+String bmiStatusLabel(BmiCategory category, AppLocalizations appTexts) =>
+    switch (category) {
+      BmiCategory.underweight => appTexts.bmiStatusUnderweight,
+      BmiCategory.normal => appTexts.bmiStatusNormal,
+      BmiCategory.overweight => appTexts.bmiStatusOverweight,
+      BmiCategory.obesity => appTexts.bmiStatusObesity,
+    };
+
+/// The BMI value as the mockup writes it: one decimal, French comma ("23,5").
+String formatBmi(double bmi) => bmi.toStringAsFixed(1).replaceAll('.', ',');
 
 /// Cream card showing the computed BMI, its label and where it sits on the
 /// underweight → obesity scale.
@@ -33,12 +46,7 @@ class BmiGauge extends StatelessWidget {
       appTexts.bmiOverweight,
       appTexts.bmiObesity,
     ];
-    final status = switch (category) {
-      BmiCategory.underweight => appTexts.bmiStatusUnderweight,
-      BmiCategory.normal => appTexts.bmiStatusNormal,
-      BmiCategory.overweight => appTexts.bmiStatusOverweight,
-      BmiCategory.obesity => appTexts.bmiStatusObesity,
-    };
+    final status = bmiStatusLabel(category, appTexts);
     final ratio = ((bmi - _minBmi) / (_maxBmi - _minBmi)).clamp(0.0, 1.0);
 
     return Container(
@@ -66,7 +74,7 @@ class BmiGauge extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                bmi.toStringAsFixed(1).replaceAll('.', ','),
+                formatBmi(bmi),
                 style: const TextStyle(
                   fontFamily: robotoSlabFontFamily,
                   fontWeight: FontWeight.w700,

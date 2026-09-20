@@ -1826,6 +1826,18 @@ abstract class AppLocalizations {
   /// **'Help & contact'**
   String get profileHelpContact;
 
+  /// Profile: title of the BMI card
+  ///
+  /// In en, this message translates to:
+  /// **'My BMI'**
+  String get profileBmiTitle;
+
+  /// Profile: short BMI label, in front of the value
+  ///
+  /// In en, this message translates to:
+  /// **'BMI'**
+  String get bmiShort;
+
   /// Notification settings: switch label
   ///
   /// In en, this message translates to:

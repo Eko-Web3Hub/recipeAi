@@ -41,10 +41,15 @@ class DisplayReceipesBasedOnIngredientUserPreferenceController
     this._authUserService,
     this._receipesBasedOnIngredientUserPreferenceUsecase,
   ) : super(DisplayReceipesBasedOnIngredientUserPreferenceLoading()) {
-    _load();
+    load();
   }
 
-  Future<void> _load() async {
+  /// Also used by the retry button of the error screen.
+  Future<void> load() async {
+    if (state is! DisplayReceipesBasedOnIngredientUserPreferenceLoading) {
+      safeEmit(DisplayReceipesBasedOnIngredientUserPreferenceLoading());
+    }
+
     final receipes = await _receipesBasedOnIngredientUserPreferenceUsecase
         .retrieve(_authUserService.currentUser!.uid);
 

@@ -1261,6 +1261,14 @@
     "@profileHelpContact": {
         "description": "Profile: help and contact menu item"
     },
+    "profileBmiTitle": "My BMI",
+    "@profileBmiTitle": {
+        "description": "Profile: title of the BMI card"
+    },
+    "bmiShort": "BMI",
+    "@bmiShort": {
+        "description": "Profile: short BMI label, in front of the value"
+    },
     "notificationSettingsReceive": "Receive notifications",
     "@notificationSettingsReceive": {
         "description": "Notification settings: switch label"

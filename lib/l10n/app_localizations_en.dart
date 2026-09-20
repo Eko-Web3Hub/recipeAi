@@ -1000,6 +1000,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileHelpContact => 'Help & contact';
 
   @override
+  String get profileBmiTitle => 'My BMI';
+
+  @override
+  String get bmiShort => 'BMI';
+
+  @override
   String get notificationSettingsReceive => 'Receive notifications';
 
   @override

@@ -4,6 +4,14 @@ enum UserGender { female, male, other }
 
 enum BmiCategory { underweight, normal, overweight, obesity }
 
+/// Where a body mass index sits on the WHO scale.
+BmiCategory bmiCategoryOf(double bmi) {
+  if (bmi < 18.5) return BmiCategory.underweight;
+  if (bmi < 25) return BmiCategory.normal;
+  if (bmi < 30) return BmiCategory.overweight;
+  return BmiCategory.obesity;
+}
+
 /// Answers collected during the onboarding quizz, before they are flattened
 /// into a [UserPreference] document.
 class OnboardingAnswers extends Equatable {
@@ -45,12 +53,7 @@ class OnboardingAnswers extends Equatable {
     return double.parse((weightKg / (heightM * heightM)).toStringAsFixed(1));
   }
 
-  BmiCategory get bmiCategory {
-    if (bmi < 18.5) return BmiCategory.underweight;
-    if (bmi < 25) return BmiCategory.normal;
-    if (bmi < 30) return BmiCategory.overweight;
-    return BmiCategory.obesity;
-  }
+  BmiCategory get bmiCategory => bmiCategoryOf(bmi);
 
   OnboardingAnswers copyWith({
     Map<String, Set<String>>? selections,
