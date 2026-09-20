@@ -104,6 +104,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
+  String get noRecipeGeneratedFromPhoto =>
+      'No recipe was generated. Try again with a new photo';
+
+  @override
   String get ingredients => 'Ingredients';
 
   @override

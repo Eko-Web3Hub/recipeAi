@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
@@ -212,11 +213,29 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
       return (response.data['recipes'] as List)
           .map<UserRecipeV2>((recipe) => UserRecipeV2.fromJson(recipe))
           .toList();
-    } catch (e) {
+    } on DioException catch (e, stackTrace) {
+      final detail = e.response != null
+          ? 'status=${e.response?.statusCode} body=${e.response?.data}'
+          : e.message;
+      log(
+        'An error occurred while generating recipes with ingredients picture: $detail',
+      );
+      await FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'genererateRecipesWithIngredientPicture failed: $detail',
+      );
+      rethrow;
+    } catch (e, stackTrace) {
       log(
         'An error occurred while generating recipes with ingredients picture: $e',
       );
-      return [];
+      await FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'genererateRecipesWithIngredientPicture failed',
+      );
+      rethrow;
     }
   }
 

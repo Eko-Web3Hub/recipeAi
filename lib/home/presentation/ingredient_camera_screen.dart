@@ -16,8 +16,7 @@ class IngredientCameraScreen extends StatefulWidget {
   const IngredientCameraScreen({super.key});
 
   @override
-  State<IngredientCameraScreen> createState() =>
-      _IngredientCameraScreenState();
+  State<IngredientCameraScreen> createState() => _IngredientCameraScreenState();
 }
 
 class _IngredientCameraScreenState extends State<IngredientCameraScreen>
@@ -233,35 +232,33 @@ class _CameraHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 44,
-      child: Stack(
-        alignment: Alignment.center,
+      child: Row(
         children: [
+          const Gap(20),
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                color: cameraControlBackgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+                size: 26,
+              ),
+            ),
+          ),
+          const Gap(20),
           Text(
             title,
             style: const TextStyle(
-              fontFamily: poppinsFontFamily,
+              fontFamily: robotoFontFamily,
               fontWeight: FontWeight.w600,
               fontSize: 17,
               color: Colors.white,
-            ),
-          ),
-          Positioned(
-            left: 20,
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: cameraControlBackgroundColor,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.chevron_left,
-                  color: Colors.white,
-                  size: 26,
-                ),
-              ),
             ),
           ),
         ],
