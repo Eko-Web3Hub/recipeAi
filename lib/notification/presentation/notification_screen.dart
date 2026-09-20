@@ -139,7 +139,7 @@ class _NotificationCard extends StatelessWidget {
               ),
               blurRadius: 16,
               spreadRadius: 0,
-              color: Color(0xff063336).withOpacity(0.1),
+              color: Color(0xff063336).withValues(alpha: 0.1),
             ),
           ],
         ),

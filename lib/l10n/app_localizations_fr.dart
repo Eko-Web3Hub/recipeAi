@@ -102,6 +102,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Une erreur est survenue. Veuillez réessayer';
 
   @override
+  String get retry => 'Réessayer';
+
+  @override
+  String get noRecipeGeneratedFromPhoto =>
+      'Aucune recette générée. Essayez avec une nouvelle photo';
+
+  @override
   String get ingredients => 'Ingrédients';
 
   @override
@@ -796,6 +803,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String recipeCookedCount(int count) {
     return '✓ Cuisinée $count ×';
   }
+
+  @override
+  String get ingredientCameraTitle => 'Photo des ingrédients';
+
+  @override
+  String get ingredientCameraPlaceholder =>
+      'ingrédients sur le plan de travail';
+
+  @override
+  String get ingredientCameraHint => 'Cadre tes ingrédients dans la zone';
+
+  @override
+  String get ingredientCameraGallery => 'galerie';
+
+  @override
+  String get ingredientCameraPermissionDenied =>
+      'Autorise l\'accès à la caméra pour prendre une photo de tes ingrédients';
 
   @override
   String get fridgeAddHint => 'Ajouter un ingrédient';

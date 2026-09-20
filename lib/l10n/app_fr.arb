@@ -120,6 +120,14 @@
         "description": "Message d'erreur générique"
     },
     "somethingWentWrong": "Une erreur est survenue. Veuillez réessayer",
+    "@retry": {
+        "description": "Libellé du bouton de nouvel essai"
+    },
+    "retry": "Réessayer",
+    "@noRecipeGeneratedFromPhoto": {
+        "description": "Affiché quand le back-end ne trouve aucune recette pour la photo d'ingrédient envoyée"
+    },
+    "noRecipeGeneratedFromPhoto": "Aucune recette générée. Essayez avec une nouvelle photo",
     "@ingredients": {
         "description": "Titre de la section des ingrédients"
     },
@@ -984,6 +992,26 @@
                 "type": "int"
             }
         }
+    },
+    "ingredientCameraTitle": "Photo des ingrédients",
+    "@ingredientCameraTitle": {
+        "description": "Titre de l'écran caméra custom pour photographier des ingrédients"
+    },
+    "ingredientCameraPlaceholder": "ingrédients sur le plan de travail",
+    "@ingredientCameraPlaceholder": {
+        "description": "Texte affiché dans le cadre de l'écran caméra pendant l'initialisation de la caméra"
+    },
+    "ingredientCameraHint": "Cadre tes ingrédients dans la zone",
+    "@ingredientCameraHint": {
+        "description": "Texte d'aide sous le cadre de l'écran caméra custom"
+    },
+    "ingredientCameraGallery": "galerie",
+    "@ingredientCameraGallery": {
+        "description": "Libellé du bouton pour ouvrir la galerie depuis l'écran caméra custom"
+    },
+    "ingredientCameraPermissionDenied": "Autorise l'accès à la caméra pour prendre une photo de tes ingrédients",
+    "@ingredientCameraPermissionDenied": {
+        "description": "Message affiché quand la permission caméra est refusée sur l'écran caméra custom"
     },
     "fridgeAddHint": "Ajouter un ingrédient",
     "@fridgeAddHint": {

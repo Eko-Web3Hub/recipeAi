@@ -16,7 +16,11 @@ abstract class IUserReceipeRepositoryV2 {
 
   Future<List<UserRecipeV2>> suggestedRecipes(EntityId uid, String token);
 
-  Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(File file);
+  Future<List<UserRecipeV2>> genererateRecipesWithIngredientPicture(
+    EntityId uid,
+    String token,
+    File file,
+  );
 
   Future<RawRecipeFindWithImage> findRecipeWithImage(String recipePathImage);
 

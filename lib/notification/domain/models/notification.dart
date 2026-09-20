@@ -36,22 +36,4 @@ class NotificationData {
       data: json['data'] as Map<String, dynamic>,
     );
   }
-
-  NotificationData _copyWith({
-    EntityId? id,
-    String? title,
-    String? body,
-    DateTime? timestamp,
-    bool? isRead,
-    Map<String, dynamic>? data,
-  }) {
-    return NotificationData(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      body: body ?? this.body,
-      timestamp: timestamp ?? this.timestamp,
-      isRead: isRead ?? this.isRead,
-      data: data ?? this.data,
-    );
-  }
 }

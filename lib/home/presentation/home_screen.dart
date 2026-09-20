@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,11 +16,14 @@ import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/app_update.dart';
 import 'package:recipe_ai/home/presentation/home_screen_controller.dart';
+import 'package:recipe_ai/home/presentation/ingredient_camera_screen.dart';
 import 'package:recipe_ai/home/presentation/receipe_item_controller.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
 import 'package:recipe_ai/home/presentation/translated_text.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
+import 'package:recipe_ai/nav/hide_nav_bar.dart';
+import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_card.dart';
 import 'package:recipe_ai/notification/presentation/notification_user_controller.dart';
 import 'package:recipe_ai/receipe/application/user_recipe_service.dart';
@@ -62,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
       await di<IUserAccountMetaDataService>().saveRecentLoginDate(
         DateTime.now(),
       );
-      await showAppUpdatePopup(context);
+      if (mounted) {
+        await showAppUpdatePopup(context);
+      }
       notificationUserController.requestPermission(false);
     });
   }
@@ -240,12 +246,30 @@ void _showComingSoon(BuildContext context) {
   );
 }
 
+/// Opens the live camera, then hands the captured photo to the same
+/// ingredient-photo recipe generation flow used by the AI action sheet.
+Future<void> _openIngredientCamera(BuildContext context) async {
+  final hideNavBarProvider = context.read<HideNavBar>();
+  hideNavBarProvider.setHideNavBar(true);
+  final photo = await Navigator.of(context).push<File>(
+    MaterialPageRoute(builder: (_) => const IngredientCameraScreen()),
+  );
+  if (photo == null || !context.mounted) {
+    hideNavBarProvider.setHideNavBar(false);
+    return;
+  }
+
+  // Left true: showAiGenRecipeBottomSheet keeps it hidden until the sheet
+  // closes, avoiding a flash of the bar between the camera and the sheet.
+  showAiGenRecipeBottomSheet(context, initialImage: photo);
+}
+
 class _QuickActions extends StatelessWidget {
   const _QuickActions();
 
   @override
   Widget build(BuildContext context) {
-    // TODO(navigation): plug the list and photo redirections once decided.
+    // TODO(navigation): plug the list redirection once decided.
     // [IntrinsicHeight] keeps the three tiles the same height even when one
     // label wraps on two lines.
     return IntrinsicHeight(
@@ -278,7 +302,7 @@ class _QuickActions extends StatelessWidget {
               iconBackground: homePhotoIconBackgroundColor,
               icon: const _CameraGlyph(),
               labelSelector: (lang) => lang.homeQuickActionPhoto,
-              onTap: () => _showComingSoon(context),
+              onTap: () => _openIngredientCamera(context),
             ),
           ),
         ],
@@ -896,8 +920,10 @@ class UserFirstNameCharOnCapitalCase extends StatelessWidget {
 }
 
 class ExpandingCircleDemo extends StatefulWidget {
+  const ExpandingCircleDemo({super.key});
+
   @override
-  _ExpandingCircleDemoState createState() => _ExpandingCircleDemoState();
+  State<ExpandingCircleDemo> createState() => _ExpandingCircleDemoState();
 }
 
 class _ExpandingCircleDemoState extends State<ExpandingCircleDemo>

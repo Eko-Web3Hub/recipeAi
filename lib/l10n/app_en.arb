@@ -120,6 +120,14 @@
         "description": "Generic error message"
     },
     "somethingWentWrong": "Something went wrong. Please try again",
+    "@retry": {
+        "description": "Retry button label"
+    },
+    "retry": "Retry",
+    "@noRecipeGeneratedFromPhoto": {
+        "description": "Shown when the backend found no recipe for the submitted ingredient photo"
+    },
+    "noRecipeGeneratedFromPhoto": "No recipe was generated. Try again with a new photo",
     "@ingredients": {
         "description": "Ingredients section title"
     },
@@ -984,6 +992,26 @@
                 "type": "int"
             }
         }
+    },
+    "ingredientCameraTitle": "Ingredients photo",
+    "@ingredientCameraTitle": {
+        "description": "Title of the custom camera screen used to photograph ingredients"
+    },
+    "ingredientCameraPlaceholder": "ingredients on the countertop",
+    "@ingredientCameraPlaceholder": {
+        "description": "Text shown inside the frame of the camera screen while the camera is initializing"
+    },
+    "ingredientCameraHint": "Frame your ingredients in the zone",
+    "@ingredientCameraHint": {
+        "description": "Helper text under the frame of the custom camera screen"
+    },
+    "ingredientCameraGallery": "gallery",
+    "@ingredientCameraGallery": {
+        "description": "Label of the button opening the gallery from the custom camera screen"
+    },
+    "ingredientCameraPermissionDenied": "Allow camera access to take a photo of your ingredients",
+    "@ingredientCameraPermissionDenied": {
+        "description": "Message shown when the camera permission is denied on the custom camera screen"
     },
     "fridgeAddHint": "Add an ingredient",
     "@fridgeAddHint": {

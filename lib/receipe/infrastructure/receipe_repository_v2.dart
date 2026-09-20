@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
@@ -15,7 +16,7 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
       "$baseApiUrl/v2/gen-receipe-with-user-preference";
 
   static const String recipesSuggestionEngineBaseUrl =
-      'https://recipes-suggestions-v7duguwfla-ew.a.run.app/suggestions';
+      'https://recipes-suggestions-v7duguwfla-ew.a.run.app';
 
   static const String receipesCollection = "receipes";
 
@@ -48,7 +49,8 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     String token,
   ) async {
     try {
-      final apiRoute = "$recipesSuggestionEngineBaseUrl/${uid.value}";
+      final apiRoute =
+          "$recipesSuggestionEngineBaseUrl/suggestions/${uid.value}";
       final response = await _dio.get(
         apiRoute,
         options: Options(
@@ -186,30 +188,54 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
   }
 
   @override
-  Future<TranslatedRecipe?> genererateRecipesWithIngredientPicture(
+  Future<List<UserRecipeV2>> genererateRecipesWithIngredientPicture(
+    EntityId uid,
+    String token,
     File file,
   ) async {
     try {
-      final apiRoute = "$baseApiUrl/gen-receipe-with-ingredient-picture";
+      final apiRoute =
+          "$recipesSuggestionEngineBaseUrl/suggestions/${uid.value}/from-photo";
       final fileToSend = await MultipartFile.fromFile(
         file.path,
         filename: file.path.split("/").last,
       );
-      final formData = FormData.fromMap({"file": fileToSend});
+      final formData = FormData.fromMap({"photo": fileToSend});
       final response = await _dio.post(
         apiRoute,
         data: formData,
-        options: timeOutOptions,
+        options: Options(
+          receiveTimeout: timeOutDuration,
+          headers: {"Authorization": "Bearer $token"},
+        ),
       );
 
-      final json = response.data as Map<String, dynamic>;
-
-      return TranslatedRecipe.fromJson(json);
-    } catch (e) {
+      return (response.data['recipes'] as List)
+          .map<UserRecipeV2>((recipe) => UserRecipeV2.fromJson(recipe))
+          .toList();
+    } on DioException catch (e, stackTrace) {
+      final detail = e.response != null
+          ? 'status=${e.response?.statusCode} body=${e.response?.data}'
+          : e.message;
+      log(
+        'An error occurred while generating recipes with ingredients picture: $detail',
+      );
+      await FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'genererateRecipesWithIngredientPicture failed: $detail',
+      );
+      rethrow;
+    } catch (e, stackTrace) {
       log(
         'An error occurred while generating recipes with ingredients picture: $e',
       );
-      return null;
+      await FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'genererateRecipesWithIngredientPicture failed',
+      );
+      rethrow;
     }
   }
 

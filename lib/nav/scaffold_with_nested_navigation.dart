@@ -14,11 +14,13 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_bottom_nav.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/generate_recipe_with_ingredient_photo_controller.dart';
+import 'package:recipe_ai/home/presentation/ingredient_camera_screen.dart';
 import 'package:recipe_ai/nav/hide_nav_bar.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class NavigationItem extends Equatable {
@@ -97,10 +99,8 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       body: navigationShell,
       floatingActionButton:
           hideNavBar || context.watch<HideNavBar>().isNavBarHidden
-              ? null
-              : ChefFab(
-                  onPressed: () => _showAiActionRecipeBottomSheet(context),
-                ),
+          ? null
+          : ChefFab(onPressed: () => showAiGenRecipeBottomSheet(context)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Consumer<HideNavBar>(
         builder: (context, hideNavBar, child) {
@@ -128,17 +128,27 @@ final modalBottomSheetShape = RoundedRectangleBorder(
   ),
 );
 
-void _showAiActionRecipeBottomSheet(BuildContext context) =>
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) => _AiGenRecipeBottomSheet(),
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: modalBottomSheetShape,
-    );
+/// Opens the AI recipe generation sheet, optionally starting straight from
+/// an already-captured ingredients [initialImage] (e.g. from the home
+/// screen's "Photo" quick action) instead of the action picker.
+void showAiGenRecipeBottomSheet(BuildContext context, {File? initialImage}) {
+  final hideNavBarProvider = context.read<HideNavBar>();
+  hideNavBarProvider.setHideNavBar(true);
+
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) =>
+        _AiGenRecipeBottomSheet(initialImage: initialImage),
+    isScrollControlled: true,
+    backgroundColor: Colors.white,
+    shape: modalBottomSheetShape,
+  ).then((_) => hideNavBarProvider.setHideNavBar(false));
+}
 
 class _AiGenRecipeBottomSheet extends StatefulWidget {
-  const _AiGenRecipeBottomSheet();
+  const _AiGenRecipeBottomSheet({this.initialImage});
+
+  final File? initialImage;
 
   @override
   State<_AiGenRecipeBottomSheet> createState() =>
@@ -147,6 +157,12 @@ class _AiGenRecipeBottomSheet extends StatefulWidget {
 
 class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
   File? _ingredientsImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _ingredientsImage = widget.initialImage;
+  }
 
   void _takeCameraPicture() async {
     final ImagePicker picker = ImagePicker();
@@ -160,12 +176,12 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
   }
 
   void _takeLivePicture() async {
-    final ImagePicker picker = ImagePicker();
-    // change to ImageSource.camera
-    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+    final File? photo = await Navigator.of(context).push<File>(
+      MaterialPageRoute(builder: (_) => const IngredientCameraScreen()),
+    );
     if (photo != null) {
       setState(() {
-        _ingredientsImage = File(photo.path);
+        _ingredientsImage = photo;
       });
     }
   }
@@ -227,14 +243,6 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                   ),
                   const Gap(12),
                   _ActionBtn(
-                    'assets/images/grocery_icon.svg',
-                    appText.generateRecipeWithLiveGroceriePhoto,
-                    onTap: () {
-                      _takeLivePicture();
-                    },
-                  ),
-                  const Gap(12),
-                  _ActionBtn(
                     'assets/images/groceryList.svg',
                     appText.generateRecipeWithGrocerieList,
                     onTap: () {
@@ -249,7 +257,11 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
             ),
             if (_ingredientsImage != null)
               Center(
-                child: _GenRecipeFromIngredientPicture(_ingredientsImage!),
+                child: _GenRecipeFromIngredientPicture(
+                  _ingredientsImage!,
+                  onRetryWithNewPhoto: () =>
+                      setState(() => _ingredientsImage = null),
+                ),
               ),
             const Gap(50),
           ],
@@ -277,9 +289,13 @@ class RecipeIdeasNavigation implements IRecipeIdeasNavigation {
 }
 
 class _GenRecipeFromIngredientPicture extends StatelessWidget {
-  const _GenRecipeFromIngredientPicture(this.file);
+  const _GenRecipeFromIngredientPicture(
+    this.file, {
+    required this.onRetryWithNewPhoto,
+  });
 
   final File file;
+  final VoidCallback onRetryWithNewPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +320,93 @@ class _GenRecipeFromIngredientPicture extends StatelessWidget {
             di<IAuthUserService>(),
             file,
           ),
-          child: CustomCircularLoader(size: 20),
+          child:
+              BlocBuilder<
+                GenerateRecipeWithIngredientPhotoController,
+                GenerateRecipeWithIngredientPhotoState
+              >(
+                builder: (context, state) {
+                  if (state is GenerateRecipeWithIngredientPhotoFailure) {
+                    final appText = di<TranslationController>().currentLanguage;
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 28,
+                        ),
+                        const Gap(8),
+                        Text(
+                          appText.somethingWentWrong,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: poppinsFontFamily,
+                            fontSize: 13,
+                            color: Colors.red,
+                          ),
+                        ),
+                        const Gap(8),
+                        TextButton(
+                          onPressed: () => context
+                              .read<
+                                GenerateRecipeWithIngredientPhotoController
+                              >()
+                              .retry(),
+                          child: Text(
+                            appText.retry,
+                            style: TextStyle(
+                              fontFamily: poppinsFontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: greenPrimaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
+                  if (state is GenerateRecipeWithIngredientPhotoEmpty) {
+                    final appText = di<TranslationController>().currentLanguage;
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.no_food_outlined,
+                          color: Colors.orange,
+                          size: 28,
+                        ),
+                        const Gap(8),
+                        Text(
+                          appText.noRecipeGeneratedFromPhoto,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: poppinsFontFamily,
+                            fontSize: 13,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const Gap(8),
+                        TextButton(
+                          onPressed: onRetryWithNewPhoto,
+                          child: Text(
+                            appText.retry,
+                            style: TextStyle(
+                              fontFamily: poppinsFontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: greenPrimaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return CustomCircularLoader(size: 20);
+                },
+              ),
         ),
       ],
     );

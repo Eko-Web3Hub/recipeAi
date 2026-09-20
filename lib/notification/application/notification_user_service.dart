@@ -59,6 +59,7 @@ class NotificationUserService implements INotificationUserService {
     return newNotificationUser;
   }
 
+  @override
   Future<NotificationUser?> get() {
     final uid = _authUserService.currentUser!.uid;
 

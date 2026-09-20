@@ -101,6 +101,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get somethingWentWrong => 'Something went wrong. Please try again';
 
   @override
+  String get retry => 'Retry';
+
+  @override
+  String get noRecipeGeneratedFromPhoto =>
+      'No recipe was generated. Try again with a new photo';
+
+  @override
   String get ingredients => 'Ingredients';
 
   @override
@@ -778,6 +785,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String recipeCookedCount(int count) {
     return '✓ Cooked $count ×';
   }
+
+  @override
+  String get ingredientCameraTitle => 'Ingredients photo';
+
+  @override
+  String get ingredientCameraPlaceholder => 'ingredients on the countertop';
+
+  @override
+  String get ingredientCameraHint => 'Frame your ingredients in the zone';
+
+  @override
+  String get ingredientCameraGallery => 'gallery';
+
+  @override
+  String get ingredientCameraPermissionDenied =>
+      'Allow camera access to take a photo of your ingredients';
 
   @override
   String get fridgeAddHint => 'Add an ingredient';
