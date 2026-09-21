@@ -128,21 +128,31 @@ flutter:
           weight: 600
         - asset: assets/fonts/poppins/Poppins-Bold.ttf
           weight: 700
+    # Roboto et Roboto Slab sont livrés en fontes variables. Flutter ne rend que
+    # l'instance par défaut d'un tel fichier (wght 400) : déclarer le même .ttf
+    # sous plusieurs poids ne change rien au tracé. Chaque poids est donc une
+    # instance statique découpée dans le fichier variable (conservé à côté) :
+    #   python3 -m fontTools.varLib.instancer Roboto-Variable.ttf wght=500 wdth=100 \
+    #     -o Roboto-Medium.ttf
     - family: Roboto
       fonts:
-        - asset: assets/fonts/roboto/Roboto-Variable.ttf
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
           weight: 400
-        - asset: assets/fonts/roboto/Roboto-Variable.ttf
+        - asset: assets/fonts/roboto/Roboto-Medium.ttf
           weight: 500
-        - asset: assets/fonts/roboto/Roboto-Variable.ttf
+        - asset: assets/fonts/roboto/Roboto-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/roboto/Roboto-Bold.ttf
           weight: 700
     - family: RobotoSlab
       fonts:
-        - asset: assets/fonts/roboto/RobotoSlab-Variable.ttf
+        - asset: assets/fonts/roboto/RobotoSlab-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/roboto/RobotoSlab-Medium.ttf
           weight: 500
-        - asset: assets/fonts/roboto/RobotoSlab-Variable.ttf
+        - asset: assets/fonts/roboto/RobotoSlab-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/roboto/RobotoSlab-Variable.ttf
+        - asset: assets/fonts/roboto/RobotoSlab-Bold.ttf
           weight: 700
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
