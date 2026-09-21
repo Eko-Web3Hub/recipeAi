@@ -140,4 +140,19 @@ void main() {
       DisplayReceipesBasedOnIngredientUserPreferenceLoaded(recipes),
     ],
   );
+
+  blocTest<DisplayReceipesBasedOnIngredientUserPreferenceController,
+      DisplayReceipesBasedOnIngredientUserPreferenceState>(
+    'should leave the loader for an error when the generation throws',
+    build: () => buildSut(),
+    setUp: () {
+      when(() => retrieveRecipesBasedOnUserIngredientAndPreferencesUsecase
+          .retrieve(authUser.uid)).thenAnswer((_) async => throw TypeError());
+    },
+    expect: () => [
+      DisplayReceipesBasedOnIngredientUserPreferenceError(
+        GenRecipeErrorCode.internalServerError,
+      ),
+    ],
+  );
 }

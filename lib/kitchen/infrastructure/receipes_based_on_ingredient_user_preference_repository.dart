@@ -15,51 +15,40 @@ class FastApiReceipesBasedOnIngredientUserPreferenceRepository
   static const String path =
       "$baseApiUrl/v2/gen-receipe-with-user-preference-and-ingredient";
 
-  const FastApiReceipesBasedOnIngredientUserPreferenceRepository(
-    this._dio,
-  );
+  const FastApiReceipesBasedOnIngredientUserPreferenceRepository(this._dio);
 
   @override
   Future<Either<GenRecipeErrorCode, TranslatedRecipe>>
-      getReceipesBasedOnIngredientUserPreference(
-    EntityId uid,
-  ) async {
+  getReceipesBasedOnIngredientUserPreference(EntityId uid) async {
     try {
       final response = await _dio.get(
         '$path/${uid.value}',
         options: timeOutOptions,
       );
 
-      return Right(TranslatedRecipe.fromJson(
-        response.data,
-      ));
+      return Right(TranslatedRecipe.fromJson(response.data));
     } on DioException catch (e) {
-      final error =
-          'Error while fetching receipes based on ingredient and user preference: ${e.message}';
-      log(error);
-      final response = e.response;
-
-      if (response == null) {
-        return Left(
-          GenRecipeErrorCode.internalServerError,
-        );
-      }
-      final errorCode = genRecipeErrorCodefromString(
-          (response.data as Map<String, dynamic>)['code']);
       log(
-        'Error code: $errorCode',
+        'Error while fetching receipes based on ingredient and user preference: ${e.message}',
       );
-
-      if (errorCode == null) {
-        return Left(
-          GenRecipeErrorCode.internalServerError,
-        );
-      }
-
       return Left(
-        errorCode,
+        _errorCodeOf(e.response?.data) ??
+            GenRecipeErrorCode.internalServerError,
       );
+    } catch (e) {
+      // A 200 whose body is not the expected recipes: fail like a server
+      // error rather than let the exception leave the loader spinning.
+      log('Unexpected recipe generation response: $e');
+      return const Left(GenRecipeErrorCode.internalServerError);
     }
+  }
+
+  /// The `code` of an error body, when the server sent its JSON error. A
+  /// gateway or a missing service answers with an HTML page instead.
+  GenRecipeErrorCode? _errorCodeOf(Object? body) {
+    if (body is! Map) return null;
+    final code = body['code'];
+    return code is String ? genRecipeErrorCodefromString(code) : null;
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
@@ -50,19 +52,30 @@ class DisplayReceipesBasedOnIngredientUserPreferenceController
       safeEmit(DisplayReceipesBasedOnIngredientUserPreferenceLoading());
     }
 
-    final receipes = await _receipesBasedOnIngredientUserPreferenceUsecase
-        .retrieve(_authUserService.currentUser!.uid);
+    try {
+      final receipes = await _receipesBasedOnIngredientUserPreferenceUsecase
+          .retrieve(_authUserService.currentUser!.uid);
 
-    return receipes.fold(
-      (error) {
-        safeEmit(DisplayReceipesBasedOnIngredientUserPreferenceError(error));
-      },
-      (receipes) {
-        safeEmit(
-          DisplayReceipesBasedOnIngredientUserPreferenceLoaded(receipes),
-        );
-      },
-    );
+      receipes.fold(
+        (error) {
+          safeEmit(DisplayReceipesBasedOnIngredientUserPreferenceError(error));
+        },
+        (receipes) {
+          safeEmit(
+            DisplayReceipesBasedOnIngredientUserPreferenceLoaded(receipes),
+          );
+        },
+      );
+    } catch (e) {
+      // Whatever fails on the way (network, parsing, saving the recipes), the
+      // screen must leave its loader for the error and its retry button.
+      log('Recipe generation failed: $e');
+      safeEmit(
+        DisplayReceipesBasedOnIngredientUserPreferenceError(
+          GenRecipeErrorCode.internalServerError,
+        ),
+      );
+    }
   }
 
   final IAuthUserService _authUserService;
