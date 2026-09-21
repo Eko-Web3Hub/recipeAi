@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
@@ -6,6 +7,7 @@ import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/kitchen/domain/repositories/kitchen_inventory_repository.dart';
 import 'package:recipe_ai/receipe/domain/model/ingredient.dart';
+import 'package:recipe_ai/utils/safe_emit.dart';
 
 abstract class KitchenState extends Equatable {
   const KitchenState();
@@ -67,15 +69,16 @@ class KitchenInventoryController extends Cubit<KitchenState> {
   Future<void> loadIngredients() async {
     final uid = _authUserService.currentUser!.uid;
 
-    _kitchenInventoryRepository.watchIngredientsAddedByUser(uid).listen(
-      (ingredientsFetched) {
-        _ingredients = ingredientsFetched;
-        _ingredientsFiltered = _ingredients;
-        emit(KitchenStateLoaded(
-            ingredients: _ingredients,
-            ingredientsFiltered: _ingredientsFiltered));
-      },
-    );
+    await _subscription?.cancel();
+    _subscription = _kitchenInventoryRepository
+        .watchIngredientsAddedByUser(uid)
+        .listen((ingredientsFetched) {
+          _ingredients = ingredientsFetched;
+          _ingredientsFiltered = _ingredients;
+          safeEmit(KitchenStateLoaded(
+              ingredients: _ingredients,
+              ingredientsFiltered: _ingredientsFiltered));
+        });
   }
 
   Future<void> removeIngredient(EntityId id) async {
@@ -98,4 +101,12 @@ class KitchenInventoryController extends Cubit<KitchenState> {
       ingredientId: id,
     );
   }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
+
+  StreamSubscription<List<Ingredient>>? _subscription;
 }

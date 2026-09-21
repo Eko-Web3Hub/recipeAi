@@ -103,10 +103,10 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           : ChefFab(onPressed: () => showAiGenRecipeBottomSheet(context)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Consumer<HideNavBar>(
-        builder: (context, hideNavBar, child) {
-          return (hideNavBar.isNavBarHidden ||
-                  MediaQuery.of(context).viewInsets.bottom != 0 ||
-                  context.watch<HideNavBar>().isNavBarHidden)
+        builder: (context, hideNavBarNotifier, child) {
+          return (hideNavBar ||
+                  hideNavBarNotifier.isNavBarHidden ||
+                  MediaQuery.of(context).viewInsets.bottom != 0)
               ? SizedBox.shrink()
               : FancyBottomBar(
                   items: _navBarItems,

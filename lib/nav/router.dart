@@ -57,23 +57,47 @@ class PendingDeepLink {
 /// notification priming screen is skipped: it belongs to the sign up flow.
 const _onboardingQuizzEntry = '/user-preferences';
 
+/// Matches the recipe-details deep link path (`/home/recipe-details/:language/:receipeId`).
+///
+/// [_guardAuth] runs once per ancestor route while go_router resolves a
+/// location, including for the parent `Home` route — at that point
+/// `state.name` is `'Home'`, not `'RecipeDetailsWithReceipeId'`, even
+/// though the eventual target is the recipe-details screen. `state.uri`,
+/// however, always reflects the full originally-requested location, so
+/// matching on its path is what actually catches the deep link.
+final _recipeDetailsDeepLinkPattern = RegExp(
+  r'^/home/recipe-details/[^/]+/[^/]+$',
+);
+
+bool _isRecipeDetailsDeepLink(GoRouterState state) =>
+    _recipeDetailsDeepLinkPattern.hasMatch(state.uri.path);
+
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
   final authState = context.read<AuthNavigationController>().state;
 
   switch (authState) {
     case AuthNavigationState.loading:
+      // Auth hasn't resolved yet (e.g. a cold start triggered by the deep
+      // link itself) — remember the destination so it isn't lost once the
+      // real state comes in.
+      if (_isRecipeDetailsDeepLink(state)) {
+        PendingDeepLink.path = state.uri.toString();
+      }
       return '/';
     case AuthNavigationState.loggedIn:
       return null;
     case AuthNavigationState.loggedInWithoutPreferences:
+      if (_isRecipeDetailsDeepLink(state)) {
+        PendingDeepLink.path = state.uri.toString();
+      }
       return _onboardingQuizzEntry;
     case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
-      if (state.name == 'RecipeDetailsWithReceipeId') {
+      if (_isRecipeDetailsDeepLink(state)) {
         PendingDeepLink.path = state.uri.toString();
       }
       return '/onboarding/start';
     default:
-      if (state.name == 'RecipeDetailsWithReceipeId') {
+      if (_isRecipeDetailsDeepLink(state)) {
         PendingDeepLink.path = state.uri.toString();
       }
       return '/onboarding';
@@ -436,6 +460,8 @@ bool hideNavBar(String? path) {
     case '/profil-screen/change-language':
     case '/profil-screen/settings':
     case '/home/notification':
+    case '/home/recipe-details':
+    case '/home/recipe-details/:language/:receipeId':
       return true;
     default:
       return false;
