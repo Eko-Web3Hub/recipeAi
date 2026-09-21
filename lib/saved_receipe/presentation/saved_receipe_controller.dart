@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +43,9 @@ class SavedReceipeController extends Cubit<SavedReceipeState> {
 
   Future<void> _load() async {
     try {
-      _userReceipeService.watchAllSavedReceipes().listen((savedReceipes) {
+      _subscription = _userReceipeService.watchAllSavedReceipes().listen((
+        savedReceipes,
+      ) {
         safeEmit(SavedReceipeStateLoaded(savedReceipes));
       });
     } on Exception catch (e) {
@@ -50,4 +53,12 @@ class SavedReceipeController extends Cubit<SavedReceipeState> {
       emit(SavedReceipeStateError(e.toString()));
     }
   }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
+
+  StreamSubscription<List<UserRecipeV2>>? _subscription;
 }
