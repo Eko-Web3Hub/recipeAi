@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe_ai/receipe/domain/model/quantity_scaler.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_card.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,7 +99,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
     });
   }
 
-  int _portions = 2;
+  int _portions = recipeBasePortions;
   final Set<int> _checkedIngredientIndices = {};
 
   void _shareRecipe(BuildContext context, EntityId recipeId) {
@@ -342,7 +343,16 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                             final ingredient = receipe.ingredients[index];
                             return _IngredientRow(
                               name: ingredient.name,
-                              quantity: ingredient.quantity ?? '',
+                              quantity: scaleQuantity(
+                                ingredient.quantity ?? '',
+                                _portions / recipeBasePortions,
+                                decimalSeparator:
+                                    di<TranslationController>()
+                                            .currentLanguageEnum ==
+                                        AppLanguage.fr
+                                    ? ','
+                                    : '.',
+                              ),
                               checked: _checkedIngredientIndices.contains(
                                 index,
                               ),
