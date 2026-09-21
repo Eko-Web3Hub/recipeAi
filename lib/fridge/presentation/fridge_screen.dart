@@ -166,6 +166,9 @@ class _FridgeViewState extends State<_FridgeView> {
     backgroundColor: recipeLoaderInkColor,
     behavior: SnackBarBehavior.floating,
     duration: duration,
+    // Flutter keeps a snack bar with an action on screen until it is tapped
+    // (`persist` defaults to `action != null`): "Undo" must leave on its own.
+    persist: false,
     action: action,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
   );
