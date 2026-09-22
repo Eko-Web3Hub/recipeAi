@@ -794,6 +794,12 @@ abstract class AppLocalizations {
   /// **'Continue with email'**
   String get continueWithEmail;
 
+  /// Divider label shown above the social sign-in buttons on the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Or continue with'**
+  String get orContinueWith;
+
   /// Label for let's cook
   ///
   /// In en, this message translates to:

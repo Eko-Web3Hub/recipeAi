@@ -43,19 +43,17 @@ class _RegisterViewState extends State<RegisterView> {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_formKey.currentState!.validate() && isPasswordValid(password)) {
       context.read<RegisterController>().register(
-            name: _nameController.text,
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
+        name: _nameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
     }
   }
 
   @override
   void initState() {
     super.initState();
-    di<IAnalyticsRepository>().logEvent(
-      RegisterStartEvent(),
-    );
+    di<IAnalyticsRepository>().logEvent(RegisterStartEvent());
   }
 
   @override
@@ -63,18 +61,13 @@ class _RegisterViewState extends State<RegisterView> {
     final appTexts = di<TranslationController>().currentLanguage;
 
     return BlocProvider(
-      create: (_) => RegisterController(
-        di<RegisterUsecase>(),
-        di<IAnalyticsRepository>(),
-      ),
+      create: (_) =>
+          RegisterController(di<RegisterUsecase>(), di<IAnalyticsRepository>()),
       child: BlocListener<RegisterController, RegisterControllerState?>(
         listener: (context, state) {
           if (state is RegisterControllerSuccess) {
             context.go('/onboarding/notifications');
-            showSnackBar(
-              context,
-              appTexts.registerSuccess,
-            );
+            showSnackBar(context, appTexts.registerSuccess);
           } else if (state is RegisterControllerFailed) {
             var msg = '';
 
@@ -84,260 +77,274 @@ class _RegisterViewState extends State<RegisterView> {
               msg = state.message ?? appTexts.somethingWentWrong;
             }
 
-            showSnackBar(
-              context,
-              msg,
-              isError: true,
-            );
+            showSnackBar(context, msg, isError: true);
           }
         },
         child: Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            title: Text(
-              appTexts.createAnAccount,
-              style: appBarTextStyle,
-            ),
+            title: Text(appTexts.createAnAccount, style: appBarTextStyle),
             leading: BackButton(),
           ),
-          body: Builder(builder: (contextBuilder) {
-            return SafeArea(
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: horizontalScreenPadding,
-                      ),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Gap(20),
-                            OutlinedFormFieldWithLabel(
-                              label: appTexts.name,
-                              hintText: appTexts.enterName,
-                              controller: _nameController,
-                              validator: (value) =>
-                                  nonEmptyStringValidator(value, appTexts),
-                              keyboardType: TextInputType.name,
-                            ),
-                            const Gap(10),
-                            OutlinedFormFieldWithLabel(
-                              label: appTexts.email,
-                              hintText: appTexts.enterEmail,
-                              controller: _emailController,
-                              validator: (value) =>
-                                  emailValidator(value, appTexts),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                            const Gap(10),
-                            OutlinedFormFieldWithLabel(
-                              label: appTexts.password,
-                              hintText: appTexts.enterPassword,
-                              controller: _passwordController,
-                              validator: null,
-                              inputType: InputType.password,
-                              keyboardType: TextInputType.visiblePassword,
-                              onChange: (passwordValue) {
-                                setState(() {
-                                  password = passwordValue;
-                                });
-                              },
-                            ),
-                            const Gap(10),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    appTexts.passwordRequirement,
-                                    style: TextStyle(
-                                      fontFamily: poppinsFontFamily,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      height: 16.5 / 12,
-                                      color: isPasswordValid(password)
-                                          ? Colors.green
-                                          : Colors.red,
-                                    ),
-                                  ),
-                                  const Gap(4),
-                                  _PasswordCheck(
-                                    label: appTexts.passwordLength,
-                                    isCorrect:
-                                        password.length >= _passwordMinLength,
-                                  ),
-                                  _PasswordCheck(
-                                    label: appTexts.atLeastOneNumber,
-                                    isCorrect:
-                                        password.contains(RegExp(r'[0-9]')),
-                                  ),
-                                  _PasswordCheck(
-                                    label: appTexts.atLeastOneUpperCaseLetter,
-                                    isCorrect:
-                                        password.contains(RegExp(r'[A-Z]')),
-                                  ),
-                                ],
+          body: Builder(
+            builder: (contextBuilder) {
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: horizontalScreenPadding,
+                        ),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Gap(20),
+                              OutlinedFormFieldWithLabel(
+                                label: appTexts.name,
+                                hintText: appTexts.enterName,
+                                controller: _nameController,
+                                validator: (value) =>
+                                    nonEmptyStringValidator(value, appTexts),
+                                keyboardType: TextInputType.name,
                               ),
-                            ),
-                            _CheckBoxReglement(
-                              (value) {
+                              const Gap(10),
+                              OutlinedFormFieldWithLabel(
+                                label: appTexts.email,
+                                hintText: appTexts.enterEmail,
+                                controller: _emailController,
+                                validator: (value) =>
+                                    emailValidator(value, appTexts),
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+                              const Gap(10),
+                              OutlinedFormFieldWithLabel(
+                                label: appTexts.password,
+                                hintText: appTexts.enterPassword,
+                                controller: _passwordController,
+                                validator: null,
+                                inputType: InputType.password,
+                                keyboardType: TextInputType.visiblePassword,
+                                onChange: (passwordValue) {
+                                  setState(() {
+                                    password = passwordValue;
+                                  });
+                                },
+                              ),
+                              const Gap(10),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      appTexts.passwordRequirement,
+                                      style: TextStyle(
+                                        fontFamily: poppinsFontFamily,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        height: 16.5 / 12,
+                                        color: isPasswordValid(password)
+                                            ? Colors.green
+                                            : Colors.red,
+                                      ),
+                                    ),
+                                    const Gap(4),
+                                    _PasswordCheck(
+                                      label: appTexts.passwordLength,
+                                      isCorrect:
+                                          password.length >= _passwordMinLength,
+                                    ),
+                                    _PasswordCheck(
+                                      label: appTexts.atLeastOneNumber,
+                                      isCorrect: password.contains(
+                                        RegExp(r'[0-9]'),
+                                      ),
+                                    ),
+                                    _PasswordCheck(
+                                      label: appTexts.atLeastOneUpperCaseLetter,
+                                      isCorrect: password.contains(
+                                        RegExp(r'[A-Z]'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              _CheckBoxReglement((value) {
                                 setState(() {
                                   _acceptTerms = value;
                                 });
-                              },
-                            ),
-                            const Gap(10),
-                            BlocBuilder<RegisterController,
-                                RegisterControllerState?>(
-                              builder: (context, registerState) {
-                                return MainBtn(
-                                  text: appTexts.signUp,
-                                  backgroundColor: orangePrimaryColor,
-                                  showRightIcon: true,
-                                  isLoading: registerState
-                                      is RegisterControllerLoading,
-                                  onPressed: _acceptTerms
-                                      ? () => _handleRegister(contextBuilder)
-                                      : null,
-                                );
-                              },
-                            ),
-                            const Gap(10.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 50,
-                                  height: 1,
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xFFD9D9D9)),
-                                ),
-                                const Gap(7),
-                                Text(appTexts.signInWith,
-                                    style: TextStyle(
-                                        fontFamily: poppinsFontFamily,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 11,
-                                        color: const Color(0xFFD9D9D9))),
-                                const Gap(7),
-                                Container(
-                                  width: 50,
-                                  height: 1,
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xFFD9D9D9)),
-                                ),
-                              ],
-                            ),
-                            const Gap(10.0),
-                            BlocBuilder<RegisterController,
-                                RegisterControllerState?>(
-                              builder: (context, state) {
-                                final isLoading =
-                                    state is RegisterControllerLoading;
-
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: isLoading
-                                          ? null
-                                          : () {
-                                              context
-                                                  .read<RegisterController>()
-                                                  .googleSignIn();
-                                            },
-                                      child: Container(
-                                        width: 44,
-                                        height: 44,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: const Color(0xFF696969)
-                                                      .withValues(alpha: 0.1),
-                                                  offset: const Offset(0, 0),
-                                                  blurRadius: 5,
-                                                  spreadRadius: 3)
-                                            ]),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                              'assets/icon/google_btn.svg'),
-                                        ),
-                                      ),
+                              }),
+                              const Gap(10),
+                              BlocBuilder<
+                                RegisterController,
+                                RegisterControllerState?
+                              >(
+                                builder: (context, registerState) {
+                                  return MainBtn(
+                                    text: appTexts.signUp,
+                                    backgroundColor: orangePrimaryColor,
+                                    showRightIcon: true,
+                                    isLoading:
+                                        registerState
+                                            is RegisterControllerLoading,
+                                    onPressed: _acceptTerms
+                                        ? () => _handleRegister(contextBuilder)
+                                        : null,
+                                  );
+                                },
+                              ),
+                              const Gap(10.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 50,
+                                    height: 1,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFD9D9D9),
                                     ),
-                                    const Gap(25),
-                                    GestureDetector(
-                                      onTap: isLoading
-                                          ? null
-                                          : () {
-                                              context
-                                                  .read<RegisterController>()
-                                                  .appleSignIn();
-                                            },
-                                      child: Container(
-                                        width: 44,
-                                        height: 44,
-                                        decoration: BoxDecoration(
+                                  ),
+                                  const Gap(7),
+                                  Text(
+                                    appTexts.signInWith,
+                                    style: TextStyle(
+                                      fontFamily: poppinsFontFamily,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 11,
+                                      color: const Color(0xFFD9D9D9),
+                                    ),
+                                  ),
+                                  const Gap(7),
+                                  Container(
+                                    width: 50,
+                                    height: 1,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFD9D9D9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Gap(10.0),
+                              BlocBuilder<
+                                RegisterController,
+                                RegisterControllerState?
+                              >(
+                                builder: (context, state) {
+                                  final isLoading =
+                                      state is RegisterControllerLoading;
+
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: isLoading
+                                            ? null
+                                            : () {
+                                                context
+                                                    .read<RegisterController>()
+                                                    .googleSignIn();
+                                              },
+                                        child: Container(
+                                          width: 44,
+                                          height: 44,
+                                          decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
                                             boxShadow: [
                                               BoxShadow(
-                                                  color: const Color(0xFF696969)
-                                                      .withValues(alpha: 0.1),
-                                                  offset: const Offset(0, 0),
-                                                  blurRadius: 5,
-                                                  spreadRadius: 3)
-                                            ]),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                              'assets/icon/apple.svg'),
+                                                color: const Color(
+                                                  0xFF696969,
+                                                ).withValues(alpha: 0.1),
+                                                offset: const Offset(0, 0),
+                                                blurRadius: 5,
+                                                spreadRadius: 3,
+                                              ),
+                                            ],
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'assets/icon/google_btn.svg',
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                );
-                              },
-                            )
+                                      const Gap(25),
+                                      GestureDetector(
+                                        onTap: isLoading
+                                            ? null
+                                            : () {
+                                                context
+                                                    .read<RegisterController>()
+                                                    .appleSignIn();
+                                              },
+                                        child: Container(
+                                          width: 44,
+                                          height: 44,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color(
+                                                  0xFF696969,
+                                                ).withValues(alpha: 0.1),
+                                                offset: const Offset(0, 0),
+                                                blurRadius: 5,
+                                                spreadRadius: 3,
+                                              ),
+                                            ],
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'assets/icon/apple.svg',
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Visibility(
+                        visible: MediaQuery.of(context).viewInsets.bottom == 0,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Center(
+                              child: AuthBottomAction(
+                                firstText: '${appTexts.alreadyAMember} ',
+                                secondText: appTexts.signIn,
+                                onPressed: () {
+                                  context.go('/onboarding/start/login');
+                                },
+                              ),
+                            ),
+                            const Gap(8),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Visibility(
-                      visible: MediaQuery.of(context).viewInsets.bottom == 0,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Center(
-                            child: AuthBottomAction(
-                              firstText: '${appTexts.alreadyAMember} ',
-                              secondText: appTexts.signIn,
-                              onPressed: () {
-                                context.go('/onboarding/start/login');
-                              },
-                            ),
-                          ),
-                          const Gap(8),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -345,10 +352,7 @@ class _RegisterViewState extends State<RegisterView> {
 }
 
 class _PasswordCheck extends StatelessWidget {
-  const _PasswordCheck({
-    required this.label,
-    required this.isCorrect,
-  });
+  const _PasswordCheck({required this.label, required this.isCorrect});
 
   final String label;
   final bool isCorrect;
@@ -391,11 +395,7 @@ final headTitleStyle = TextStyle(
 );
 
 class HeadTitle extends StatelessWidget {
-  const HeadTitle({
-    super.key,
-    required this.title,
-    required this.subTitle,
-  });
+  const HeadTitle({super.key, required this.title, required this.subTitle});
 
   final String title;
   final String subTitle;
@@ -412,9 +412,7 @@ class HeadTitle extends StatelessWidget {
             fontFamily: poppinsFontFamily,
             fontWeight: FontWeight.w600,
             fontSize: 20,
-            color: Color(
-              0xff333333,
-            ),
+            color: Color(0xff333333),
           ),
         ),
         const SizedBox(height: 5),
@@ -433,9 +431,7 @@ class HeadTitle extends StatelessWidget {
 }
 
 class _CheckBoxReglement extends StatefulWidget {
-  const _CheckBoxReglement(
-    this.onChanged,
-  );
+  const _CheckBoxReglement(this.onChanged);
 
   final Function(bool) onChanged;
 
@@ -461,10 +457,7 @@ class _CheckBoxReglementState extends State<_CheckBoxReglement> {
           activeColor: orangeVariantColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
-            side: const BorderSide(
-              width: 1,
-              color: orangeVariantColor,
-            ),
+            side: const BorderSide(width: 1, color: orangeVariantColor),
           ),
           onChanged: (bool? newValue) {
             setState(() {

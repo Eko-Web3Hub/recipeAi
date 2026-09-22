@@ -464,6 +464,10 @@
     "@continueWithEmail": {
         "description": "Label for continue with email"
     },
+    "orContinueWith": "Ou continuer avec",
+    "@orContinueWith": {
+        "description": "Divider label shown above the social sign-in buttons on the login screen"
+    },
     "letsCook": "Cuisinons!",
     "@letsCook": {
         "description": "Label for let's cook"

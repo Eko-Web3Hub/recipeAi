@@ -50,9 +50,7 @@ class SavedReceipeScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalScreenPadding,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: BlocBuilder<SavedReceipeController, SavedReceipeState>(
               builder: (context, state) {
                 if (state is SavedReceipeStateLoading) {

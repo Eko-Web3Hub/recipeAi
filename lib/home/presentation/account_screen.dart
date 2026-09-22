@@ -492,9 +492,7 @@ final _formBorder = OutlineInputBorder(
   ),
   borderSide: BorderSide(
     width: 1.5,
-    color: Color(
-      0xffE6EBF2,
-    ),
+    color: Colors.black,
   ),
 );
 

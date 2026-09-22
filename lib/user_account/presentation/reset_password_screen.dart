@@ -4,14 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_service.dart';
+import 'package:recipe_ai/auth/presentation/components/auth_app_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
 import 'package:recipe_ai/auth/presentation/components/main_btn.dart';
 import 'package:recipe_ai/auth/presentation/components/outlined_form_field_with_label.dart';
-import 'package:recipe_ai/auth/presentation/register/register_view.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/user_account/presentation/reset_password_controller.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/functions.dart';
 
@@ -31,105 +31,85 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final appTexts = di<TranslationController>().currentLanguage;
 
     return BlocProvider(
-      create: (context) => ResetPasswordController(
-        di<IAuthService>(),
-      ),
-      child: Builder(builder: (context) {
-        return Scaffold(
-          body: BlocListener<ResetPasswordController, ResetPasswordState>(
-            listener: (context, resetPasswordState) {
-              if (resetPasswordState is ResetPasswordSuccess) {
-                // Hidden the current snackbar
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                showSnackBar(
-                  context,
-                  appTexts.resetPasswordSuccess,
-                );
-                context.go('/onboarding/start/login');
-              } else if (resetPasswordState is ResetPasswordFailure) {
-                var msg = '';
-                if (resetPasswordState.message == AuthError.userNotFound.name) {
-                  msg = appTexts.userNotFound;
-                } else if (resetPasswordState.message ==
-                    AuthError.somethingWentWrong.name) {
-                  msg = appTexts.somethingWentWrong;
-                } else {
-                  msg = resetPasswordState.message;
-                }
+      create: (context) => ResetPasswordController(di<IAuthService>()),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AuthAppBar(
+              title: appTexts.forgotternPassword,
+              redirectPath: '/onboarding/start/login',
+            ),
+            body: BlocListener<ResetPasswordController, ResetPasswordState>(
+              listener: (context, resetPasswordState) {
+                if (resetPasswordState is ResetPasswordSuccess) {
+                  // Hidden the current snackbar
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  showSnackBar(context, appTexts.resetPasswordSuccess);
+                  context.go('/onboarding/start/login');
+                } else if (resetPasswordState is ResetPasswordFailure) {
+                  var msg = '';
+                  if (resetPasswordState.message ==
+                      AuthError.userNotFound.name) {
+                    msg = appTexts.userNotFound;
+                  } else if (resetPasswordState.message ==
+                      AuthError.somethingWentWrong.name) {
+                    msg = appTexts.somethingWentWrong;
+                  } else {
+                    msg = resetPasswordState.message;
+                  }
 
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                showSnackBar(
-                  context,
-                  msg,
-                  isError: true,
-                );
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizontalScreenPadding,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Gap(80),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppBackIcon(
-                          arrowLeftOnPressed: () => context.go(
-                            '/onboarding/start/login',
-                          ),
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  showSnackBar(context, msg, isError: true);
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: horizontalScreenPadding,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Gap(30),
+
+                      OutlinedFormFieldWithLabel(
+                        keyboardType: TextInputType.emailAddress,
+                        label: appTexts.email,
+                        hintText: appTexts.enterEmail,
+                        prefixIcon: SvgPicture.asset(
+                          'assets/icon/message.svg',
+                          width: 20,
+                          height: 20,
+                          fit: BoxFit.cover,
                         ),
-                        const Spacer(),
-                        Text(
-                          appTexts.forgotternPassword,
-                          style: headTitleStyle,
-                          textAlign: TextAlign.center,
+                        controller: _emailController,
+                        validator: (value) => emailValidator(value, appTexts),
+                      ),
+                      const Spacer(),
+                      BlocBuilder<ResetPasswordController, ResetPasswordState>(
+                        builder: (context, resetPasswordState) => MainBtn(
+                          backgroundColor: yellowBrandColor,
+                          isLoading: resetPasswordState is ResetPasswordLoading,
+                          text: appTexts.validate,
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context
+                                  .read<ResetPasswordController>()
+                                  .resetPassword(_emailController.text);
+                            }
+                          },
                         ),
-                        const Spacer(),
-                      ],
-                    ),
-                    const Gap(70),
-                    OutlinedFormFieldWithLabel(
-                      keyboardType: TextInputType.emailAddress,
-                      label: appTexts.email,
-                      hintText: appTexts.enterEmail,
-                      prefixIcon: SvgPicture.asset(
-                        'assets/icon/message.svg',
-                        width: 20,
-                        height: 20,
-                        fit: BoxFit.cover,
                       ),
-                      controller: _emailController,
-                      validator: (value) => emailValidator(value, appTexts),
-                    ),
-                    const Spacer(),
-                    BlocBuilder<ResetPasswordController, ResetPasswordState>(
-                      builder: (context, resetPasswordState) => MainBtn(
-                        isLoading: resetPasswordState is ResetPasswordLoading,
-                        text: appTexts.validate,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context
-                                .read<ResetPasswordController>()
-                                .resetPassword(
-                                  _emailController.text,
-                                );
-                          }
-                        },
-                      ),
-                    ),
-                    const Gap(80),
-                  ],
+                      const Gap(80),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }
