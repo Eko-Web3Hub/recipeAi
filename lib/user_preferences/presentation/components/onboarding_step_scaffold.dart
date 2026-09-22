@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_progress_bar.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_primary_button.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -123,6 +124,7 @@ class OnboardingStepScaffold extends StatelessWidget {
                 onPressed: onCta,
                 isLoading: isLoading,
               ),
+              const Gap(50),
             ],
           ),
         ),

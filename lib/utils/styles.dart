@@ -19,10 +19,11 @@ TextStyle normalSmallTextStyle = TextStyle(
 );
 
 TextStyle appBarTextStyle = TextStyle(
-    fontFamily: poppinsFontFamily,
-    fontWeight: FontWeight.w600,
-    fontSize: 24,
-    color: const Color(0xFF0A2533));
+  fontFamily: poppinsFontFamily,
+  fontWeight: FontWeight.w600,
+  fontSize: 24,
+  color: const Color(0xFF0A2533),
+);
 
 TextStyle titleDialogStyle = TextStyle(
   fontFamily: poppinsFontFamily,
@@ -34,4 +35,11 @@ TextStyle descriptionPlaceHolderStyle = TextStyle(
   fontFamily: poppinsFontFamily,
   fontSize: 16,
   fontWeight: FontWeight.w600,
+);
+
+TextStyle appBarTitleStyle = TextStyle(
+  fontFamily: robotoSlabFontFamily,
+  fontWeight: FontWeight.w600,
+  fontSize: 18,
+  color: recipeLoaderInkColor,
 );

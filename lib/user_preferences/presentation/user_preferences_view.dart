@@ -79,8 +79,8 @@ class _UserPreferencesBody extends StatelessWidget {
             if (!didPop) controller.previous();
           },
           child: Scaffold(
-            backgroundColor: Colors.white,
-            body: SafeArea(
+            body: Padding(
+              padding: EdgeInsetsGeometry.only(top: 50.0),
               child: OnboardingStepScaffold(
                 currentStep: state.currentIndex + 1,
                 totalSteps: controller.steps.length,

@@ -383,6 +383,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueWithEmail => 'Continue with email';
 
   @override
+  String get orContinueWith => 'Or continue with';
+
+  @override
   String get letsCook => 'Let\'s cook!';
 
   @override

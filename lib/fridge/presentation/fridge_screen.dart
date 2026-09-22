@@ -17,6 +17,7 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/styles.dart';
 import 'package:recipe_ai/utils/widgets/empty_state_view.dart';
 
 const _fieldTop = 16.0;
@@ -184,88 +185,79 @@ class _FridgeViewState extends State<_FridgeView> {
       listenWhen: (previous, current) =>
           current.feedback != null && previous.feedback != current.feedback,
       listener: (context, state) => _showFeedback(state.feedback!),
-      child: ColoredBox(
-        color: Colors.white,
-        child: SafeArea(
-          bottom: false,
-          child: BlocBuilder<FridgeController, FridgeState>(
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    height: 36,
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.fromLTRB(20, 22, 20, 0),
-                    child: Text(
-                      appTexts.homeQuickActionFridge,
-                      style: const TextStyle(
-                        fontFamily: robotoSlabFontFamily,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: recipeLoaderInkColor,
-                      ),
-                    ),
+      child: SafeArea(
+        bottom: false,
+        child: BlocBuilder<FridgeController, FridgeState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 36,
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.fromLTRB(20, 22, 20, 0),
+                  child: Text(
+                    appTexts.homeQuickActionFridge,
+                    style: appBarTitleStyle,
                   ),
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                20,
-                                _fieldTop,
-                                20,
-                                4,
-                              ),
-                              child: _AddField(
-                                controller: _queryController,
-                                focusNode: _queryFocus,
-                                onChanged: context
-                                    .read<FridgeController>()
-                                    .onQueryChanged,
-                                onSubmit: _submitQuery,
-                              ),
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              20,
+                              _fieldTop,
+                              20,
+                              4,
                             ),
-                            Expanded(
-                              child: _FridgeContent(
-                                state: state,
-                                bottomPadding: bottomInset + _ctaHeight + 36,
-                                onEdit: (item) =>
-                                    _openSheet(item, isEdit: true),
-                                onPickUsual: _pickUsual,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          bottom: bottomInset,
-                          child: _GenerateButton(count: state.items.length),
-                        ),
-                        if (_queryFocus.hasFocus)
-                          Positioned(
-                            left: 20,
-                            right: 20,
-                            top: _fieldTop + _fieldHeight + 4,
-                            child: TextFieldTapRegion(
-                              child: _SuggestionsDropdown(
-                                state: state,
-                                onPickSuggestion: _pickSuggestion,
-                                onPickUsual: _pickUsual,
-                              ),
+                            child: _AddField(
+                              controller: _queryController,
+                              focusNode: _queryFocus,
+                              onChanged: context
+                                  .read<FridgeController>()
+                                  .onQueryChanged,
+                              onSubmit: _submitQuery,
                             ),
                           ),
-                      ],
-                    ),
+                          Expanded(
+                            child: _FridgeContent(
+                              state: state,
+                              bottomPadding: bottomInset + _ctaHeight + 36,
+                              onEdit: (item) => _openSheet(item, isEdit: true),
+                              onPickUsual: _pickUsual,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: bottomInset,
+                        child: _GenerateButton(count: state.items.length),
+                      ),
+                      if (_queryFocus.hasFocus)
+                        Positioned(
+                          left: 20,
+                          right: 20,
+                          top: _fieldTop + _fieldHeight + 4,
+                          child: TextFieldTapRegion(
+                            child: _SuggestionsDropdown(
+                              state: state,
+                              onPickSuggestion: _pickSuggestion,
+                              onPickUsual: _pickUsual,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                ],
-              );
-            },
-          ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -870,26 +862,16 @@ class _GenerateButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          stops: const [0.66, 1],
-          colors: [Colors.white, Colors.white.withValues(alpha: 0)],
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 28, 20, 8),
-        child: PrimaryActionButton(
-          label: appTexts.fridgeGenerate,
-          badge: count > 0 ? appTexts.fridgeIngredientCount(count) : null,
-          onTap: count == 0
-              ? null
-              : () => context.push(
-                  '/display-receipes-based-on-ingredient-user-preference',
-                ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 28, 20, 8),
+      child: PrimaryActionButton(
+        label: appTexts.fridgeGenerate,
+        badge: count > 0 ? appTexts.fridgeIngredientCount(count) : null,
+        onTap: count == 0
+            ? null
+            : () => context.push(
+                '/display-receipes-based-on-ingredient-user-preference',
+              ),
       ),
     );
   }

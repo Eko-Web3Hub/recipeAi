@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
@@ -22,6 +21,7 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
+import 'package:recipe_ai/utils/styles.dart';
 
 class NavigationItem extends Equatable {
   const NavigationItem({required this.icon});
@@ -84,14 +84,10 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       extendBody: true,
       appBar: appBarTitle != null
           ? AppBar(
-              surfaceTintColor: Colors.white,
-              backgroundColor: Colors.white,
-              title: Text(
-                appBarTitle!,
-                style: Theme.of(
-                  context,
-                ).textTheme.displayLarge?.copyWith(fontSize: 17),
-              ),
+              centerTitle: false,
+              surfaceTintColor: Colors.transparent,
+              backgroundColor: recipeLoaderCreamColor,
+              title: Text(appBarTitle ?? '', style: appBarTitleStyle),
               actions: actions,
             )
           : null,
@@ -164,17 +160,6 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
     _ingredientsImage = widget.initialImage;
   }
 
-  void _takeCameraPicture() async {
-    final ImagePicker picker = ImagePicker();
-    // change to ImageSource.camera
-    final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
-    if (photo != null) {
-      setState(() {
-        _ingredientsImage = File(photo.path);
-      });
-    }
-  }
-
   void _takeLivePicture() async {
     final File? photo = await Navigator.of(context).push<File>(
       MaterialPageRoute(builder: (_) => const IngredientCameraScreen()),
@@ -238,7 +223,7 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                     'assets/images/grocery_icon.svg',
                     appText.generateRecipeWithGroceriePhoto,
                     onTap: () {
-                      _takeCameraPicture();
+                      _takeLivePicture();
                     },
                   ),
                   const Gap(12),

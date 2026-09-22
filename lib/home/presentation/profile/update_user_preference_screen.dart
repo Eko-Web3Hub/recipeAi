@@ -13,14 +13,11 @@ class UpdateUserPreferenceScreen extends StatelessWidget {
     final appTexts = di<TranslationController>().currentLanguage;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: KitchenInventoryAppBar(
         title: appTexts.updateUserPreference,
         arrowLeftOnPressed: () => context.pop(),
       ),
-      body: SafeArea(
-        child: const UserPreferenceUpdateWidget(),
-      ),
+      body: SafeArea(child: const UserPreferenceUpdateWidget()),
     );
   }
 }
