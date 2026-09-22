@@ -1,0 +1,22 @@
+# App icon: the green mono "eat easy" logo on the app's cream background, the
+# same as the launch screen (flutter_native_splash.yaml).
+#
+# The PNGs are rendered from assets/images/logo_eateasy_mono.svg in #49A525.
+# They sit outside the bundled assets: only this generator reads them.
+# Regenerate the native icons after any change with
+#   dart run flutter_launcher_icons
+flutter_launcher_icons:
+  # 1024×1024, opaque cream background, logo at 64 % of the width.
+  image_path: "assets/launcher/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "ic_launcher"
+  min_sdk_android: 21
+  # Adaptive icon (Android 8+): transparent foreground whose logo fits the
+  # 66/108 safe circle every launcher mask keeps, on the cream background.
+  adaptive_icon_background: "#F2EFE8"
+  adaptive_icon_foreground: "assets/launcher/icon_foreground.png"
+  # The logo is already sized for the safe circle: no extra inset.
+  adaptive_icon_foreground_inset: 0
+  # Themed icon (Android 13+): only the alpha of the logo is used.
+  adaptive_icon_monochrome: "assets/launcher/icon_foreground.png"

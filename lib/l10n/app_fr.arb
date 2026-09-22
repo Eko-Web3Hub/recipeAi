@@ -1261,6 +1261,14 @@
     "@profileHelpContact": {
         "description": "Profile: help and contact menu item"
     },
+    "profileBmiTitle": "Mon IMC",
+    "@profileBmiTitle": {
+        "description": "Profile: title of the BMI card"
+    },
+    "bmiShort": "IMC",
+    "@bmiShort": {
+        "description": "Profile: short BMI label, in front of the value"
+    },
     "notificationSettingsReceive": "Recevoir les notifications",
     "@notificationSettingsReceive": {
         "description": "Notification settings: switch label"

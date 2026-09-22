@@ -1,10 +1,19 @@
+# Launch screen: the green mono "eat easy" logo on the app's cream background,
+# the same as the Flutter SplashScreen and the welcome screen that follow.
+#
+# The PNGs are rendered from assets/images/logo_eateasy_mono.svg in
+# #49A525. They sit outside the bundled assets: only this generator reads
+# them. Regenerate the native files after any change with
+#   dart run flutter_native_splash:create
 flutter_native_splash:
-  color: "#ffffff"
-  color_dark: "#ffffff"
-  image: "assets/icon/icon.png"
+  color: "#F2EFE8"
+  color_dark: "#F2EFE8"
+  # 4x density: 600 px = 150 dp, the logo width of the welcome screen.
+  image: "assets/splash/splash_logo.png"
   android_12:
-    color: "#ffffff"
-    color_dark: "#ffffff"
-    image: "assets/icon/icon.png"
+    color: "#F2EFE8"
+    color_dark: "#F2EFE8"
+    # 1152×1152, the logo fitting within the 768 px circle Android 12 keeps.
+    image: "assets/splash/splash_logo_android12.png"
   android: true
   ios: true

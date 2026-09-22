@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/remote_config_data_source.dart';
 
@@ -31,13 +33,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Same logo, size and background as the native launch screen, so the
+    // hand-over from the native splash to Flutter does not show.
     return Scaffold(
+      backgroundColor: recipeLoaderCreamColor,
       body: Center(
-        child: Image.asset(
-          'assets/images/newLogo.png',
-          width: 275,
-          height: 275,
-          fit: BoxFit.cover,
+        child: SvgPicture.asset(
+          'assets/images/logo_eateasy_mono.svg',
+          width: 150,
+          colorFilter: const ColorFilter.mode(
+            recipeLoaderGreenColor,
+            BlendMode.srcIn,
+          ),
         ),
       ),
     );
@@ -48,9 +55,7 @@ void _registerTranslaterController(BuildContext context) {
   di.registerSingleton<TranslationController>(
     TranslationController(
       appLanguages,
-      appLanguageFromString(
-        AppLocalizations.of(context)!.localeName,
-      ),
+      appLanguageFromString(AppLocalizations.of(context)!.localeName),
       di<IUserAccountMetaDataRepository>(),
       di<IAuthUserService>(),
     ),
@@ -69,6 +74,7 @@ Future<void> _initRemoteConfig() async {
     kiOSRemoteConfigVersionKey: currentAppVersion,
   };
 
-  await di<RemoteConfigDataSource>()
-      .initializeFirebaseRemoteConfig(defaultValues);
+  await di<RemoteConfigDataSource>().initializeFirebaseRemoteConfig(
+    defaultValues,
+  );
 }

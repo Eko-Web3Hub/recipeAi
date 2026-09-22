@@ -1019,6 +1019,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileHelpContact => 'Aide & contact';
 
   @override
+  String get profileBmiTitle => 'Mon IMC';
+
+  @override
+  String get bmiShort => 'IMC';
+
+  @override
   String get notificationSettingsReceive => 'Recevoir les notifications';
 
   @override
