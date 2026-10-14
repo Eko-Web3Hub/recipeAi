@@ -1,4 +1,5 @@
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/fridge/domain/model/catalog_category.dart';
 import 'package:recipe_ai/fridge/domain/model/catalog_ingredient.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
 
@@ -24,4 +25,7 @@ abstract class IFridgeRepository {
 abstract class IIngredientCatalogRepository {
   /// Every catalog ingredient. Loaded once, then served from memory.
   Future<List<CatalogIngredient>> loadCatalog();
+
+  /// Every catalog category, in aisle order. Loaded with the catalog.
+  Future<List<CatalogCategory>> loadCategories();
 }

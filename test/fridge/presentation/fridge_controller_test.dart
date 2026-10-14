@@ -7,6 +7,7 @@ import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/fridge/domain/fridge_quantity.dart';
+import 'package:recipe_ai/fridge/domain/ingredient_search.dart';
 import 'package:recipe_ai/fridge/domain/model/catalog_ingredient.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_unit.dart';
@@ -175,7 +176,7 @@ void main() {
       expect(controller.state.suggestions.first.draft.catalogId, 'okra');
 
       controller.onQueryChanged('tomate');
-      expect(controller.state.suggestions.first.isInFridge, isTrue);
+      expect(controller.state.suggestions.first.isAlreadyAdded, isTrue);
       await controller.close();
     });
 

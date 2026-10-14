@@ -8,7 +8,9 @@ import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/setting/setting_screen.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recipe_ai/shopping/presentation/shopping_screen.dart';
+import 'package:recipe_ai/shopping/presentation/join_shopping_list_screen.dart';
+import 'package:recipe_ai/shopping/presentation/shopping_list_screen.dart';
+import 'package:recipe_ai/shopping/presentation/shopping_lists_screen.dart';
 import 'package:recipe_ai/auth/presentation/auth_navigation_controller.dart';
 import 'package:recipe_ai/auth/presentation/login_view.dart';
 import 'package:recipe_ai/auth/presentation/register/register_view.dart';
@@ -46,9 +48,10 @@ import 'package:recipe_ai/user_account/presentation/translation_controller.dart'
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-/// Holds a recipe-details deep link that couldn't be reached because the
-/// user wasn't authenticated yet, so it can be resumed once they log in
-/// (see the `AuthNavigationController` listener in `main.dart`).
+/// Holds a deep link (recipe details, list invitation) that couldn't be
+/// reached because the user wasn't authenticated yet, so it can be resumed
+/// once they log in (see the `AuthNavigationController` listener in
+/// `main.dart`).
 class PendingDeepLink {
   static String? path;
 }
@@ -57,7 +60,9 @@ class PendingDeepLink {
 /// notification priming screen is skipped: it belongs to the sign up flow.
 const _onboardingQuizzEntry = '/user-preferences';
 
-/// Matches the recipe-details deep link path (`/home/recipe-details/:language/:receipeId`).
+/// Matches the deep links resumed after sign in: the recipe details
+/// (`/home/recipe-details/:language/:receipeId`) and the shopping list
+/// invitations (`/shopping-lists/join/:token`).
 ///
 /// [_guardAuth] runs once per ancestor route while go_router resolves a
 /// location, including for the parent `Home` route — at that point
@@ -65,12 +70,12 @@ const _onboardingQuizzEntry = '/user-preferences';
 /// though the eventual target is the recipe-details screen. `state.uri`,
 /// however, always reflects the full originally-requested location, so
 /// matching on its path is what actually catches the deep link.
-final _recipeDetailsDeepLinkPattern = RegExp(
-  r'^/home/recipe-details/[^/]+/[^/]+$',
+final _resumableDeepLinkPattern = RegExp(
+  r'^(/home/recipe-details/[^/]+/[^/]+|/shopping-lists/join/[^/]+)$',
 );
 
-bool _isRecipeDetailsDeepLink(GoRouterState state) =>
-    _recipeDetailsDeepLinkPattern.hasMatch(state.uri.path);
+bool _isResumableDeepLink(GoRouterState state) =>
+    _resumableDeepLinkPattern.hasMatch(state.uri.path);
 
 FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
   final authState = context.read<AuthNavigationController>().state;
@@ -80,24 +85,24 @@ FutureOr<String?> _guardAuth(BuildContext context, GoRouterState state) {
       // Auth hasn't resolved yet (e.g. a cold start triggered by the deep
       // link itself) — remember the destination so it isn't lost once the
       // real state comes in.
-      if (_isRecipeDetailsDeepLink(state)) {
+      if (_isResumableDeepLink(state)) {
         PendingDeepLink.path = state.uri.toString();
       }
       return '/';
     case AuthNavigationState.loggedIn:
       return null;
     case AuthNavigationState.loggedInWithoutPreferences:
-      if (_isRecipeDetailsDeepLink(state)) {
+      if (_isResumableDeepLink(state)) {
         PendingDeepLink.path = state.uri.toString();
       }
       return _onboardingQuizzEntry;
     case AuthNavigationState.loggedOutButHasSeenTheOnboarding:
-      if (_isRecipeDetailsDeepLink(state)) {
+      if (_isResumableDeepLink(state)) {
         PendingDeepLink.path = state.uri.toString();
       }
       return '/onboarding/start';
     default:
-      if (_isRecipeDetailsDeepLink(state)) {
+      if (_isResumableDeepLink(state)) {
         PendingDeepLink.path = state.uri.toString();
       }
       return '/onboarding';
@@ -214,6 +219,30 @@ GoRouter createRouter() => GoRouter(
           appLanguage: null,
         );
       },
+    ),
+
+    GoRoute(
+      name: 'ShoppingListsScreen',
+      path: '/shopping-lists',
+      redirect: _guardAuth,
+      builder: (context, state) => const ShoppingListsScreen(),
+      routes: <RouteBase>[
+        GoRoute(
+          name: 'JoinShoppingListScreen',
+          path: 'join/:token',
+          redirect: _guardAuth,
+          builder: (context, state) =>
+              JoinShoppingListScreen(token: state.pathParameters['token']!),
+        ),
+        GoRoute(
+          name: 'ShoppingListScreen',
+          path: ':listId',
+          redirect: _guardAuth,
+          builder: (context, state) => ShoppingListScreen(
+            listId: EntityId(state.pathParameters['listId']!),
+          ),
+        ),
+      ],
     ),
 
     GoRoute(
@@ -378,12 +407,6 @@ GoRouter createRouter() => GoRouter(
                   path: 'settings',
                   redirect: _guardAuth,
                   builder: (context, state) => const SettingScreen(),
-                ),
-                GoRoute(
-                  name: 'ShoppingScreen',
-                  path: '/shopping',
-                  redirect: _guardAuth,
-                  builder: (context, state) => const ShoppingScreen(),
                 ),
                 GoRoute(
                   name: 'MyAccountScreen',

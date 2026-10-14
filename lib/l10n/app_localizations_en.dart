@@ -1014,4 +1014,196 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notificationSettingsBlocked =>
       'Notifications are blocked in your phone settings. Allow Eat\'Easy to receive them.';
+
+  @override
+  String get shoppingListsTitle => 'My shopping lists';
+
+  @override
+  String get shoppingListsEmptyTitle => 'No list yet';
+
+  @override
+  String get shoppingListsEmptySubtitle =>
+      'Create a list to plan your shopping, aisle by aisle.';
+
+  @override
+  String get shoppingListsLoadError => 'Could not load your lists';
+
+  @override
+  String get shoppingListNew => 'New list';
+
+  @override
+  String get shoppingListEdit => 'Edit the list';
+
+  @override
+  String get shoppingListNameHint => 'List name';
+
+  @override
+  String get shoppingListDateLabel => 'Shopping date';
+
+  @override
+  String get shoppingListCreate => 'Create the list';
+
+  @override
+  String get shoppingListRename => 'Edit';
+
+  @override
+  String get shoppingListDelete => 'Delete';
+
+  @override
+  String shoppingListDeleteTitle(String name) {
+    return 'Delete “$name”?';
+  }
+
+  @override
+  String get shoppingListDeleteBody =>
+      'The list and all its items will be deleted.';
+
+  @override
+  String get shoppingListCancel => 'Cancel';
+
+  @override
+  String get shoppingListMore => 'More options';
+
+  @override
+  String shoppingListItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+      zero: 'No item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingListEmptyTitle => 'Your list is empty';
+
+  @override
+  String get shoppingListEmptySubtitle =>
+      'Add the ingredients to buy, they will be sorted by aisle.';
+
+  @override
+  String get shoppingListLoadError => 'Could not load your list';
+
+  @override
+  String get shoppingListDeleted => 'This list no longer exists';
+
+  @override
+  String get shoppingListAlreadyIn => 'already in your list';
+
+  @override
+  String shoppingListAlreadyInToast(String name) {
+    return '$name is already in your list';
+  }
+
+  @override
+  String get shoppingListAddToList => 'Add to the list';
+
+  @override
+  String get shoppingListOtherAisle => 'Others';
+
+  @override
+  String shoppingListBought(String name) {
+    return '$name added to your fridge';
+  }
+
+  @override
+  String shoppingListMarkBought(String name) {
+    return 'Mark $name as bought';
+  }
+
+  @override
+  String get shoppingListMembers => 'List members';
+
+  @override
+  String get shoppingListYou => 'You';
+
+  @override
+  String get shoppingListBack => 'Back';
+
+  @override
+  String get shoppingListInvite => 'Invite';
+
+  @override
+  String shoppingListInviteShareText(String name, String url) {
+    return 'Join my shopping list “$name” on Eat\'Easy 👇\n$url';
+  }
+
+  @override
+  String shoppingListMemberCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingListOwner => 'Owner';
+
+  @override
+  String get shoppingListMemberUnknown => 'Member';
+
+  @override
+  String get shoppingListRemoveMember => 'Remove';
+
+  @override
+  String shoppingListRemoveMemberTitle(String name) {
+    return 'Remove $name from the list?';
+  }
+
+  @override
+  String shoppingListRemoveMemberBody(String name) {
+    return '$name will lose access to the list, and the current invitation link will stop working.';
+  }
+
+  @override
+  String get shoppingListLeave => 'Leave the list';
+
+  @override
+  String shoppingListLeaveTitle(String name) {
+    return 'Leave “$name”?';
+  }
+
+  @override
+  String get shoppingListLeaveBody =>
+      'The list will disappear from your lists. You will need a new invitation to join it again.';
+
+  @override
+  String get shoppingListLeaveAction => 'Leave';
+
+  @override
+  String get shoppingListShared => 'Shared';
+
+  @override
+  String get shoppingListJoinTitle => 'Invitation';
+
+  @override
+  String shoppingListJoinMessage(String inviter) {
+    return '$inviter invites you to join their shopping list';
+  }
+
+  @override
+  String get shoppingListJoinMessageAnonymous =>
+      'You are invited to join a shopping list';
+
+  @override
+  String get shoppingListJoinAction => 'Join the list';
+
+  @override
+  String get shoppingListJoinInvalid =>
+      'This invitation link is no longer valid';
+
+  @override
+  String get shoppingListJoinInvalidSubtitle =>
+      'Ask the person who invited you for a new link.';
+
+  @override
+  String get shoppingListJoinError => 'Could not load the invitation';
+
+  @override
+  String get shoppingListRemoved => 'You are no longer a member of this list';
 }

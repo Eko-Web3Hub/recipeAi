@@ -1855,6 +1855,306 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications are blocked in your phone settings. Allow Eat\'Easy to receive them.'**
   String get notificationSettingsBlocked;
+
+  /// Shopping list: shoppingListsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'My shopping lists'**
+  String get shoppingListsTitle;
+
+  /// Shopping list: shoppingListsEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No list yet'**
+  String get shoppingListsEmptyTitle;
+
+  /// Shopping list: shoppingListsEmptySubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Create a list to plan your shopping, aisle by aisle.'**
+  String get shoppingListsEmptySubtitle;
+
+  /// Shopping list: shoppingListsLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your lists'**
+  String get shoppingListsLoadError;
+
+  /// Shopping list: shoppingListNew
+  ///
+  /// In en, this message translates to:
+  /// **'New list'**
+  String get shoppingListNew;
+
+  /// Shopping list: shoppingListEdit
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the list'**
+  String get shoppingListEdit;
+
+  /// Shopping list: shoppingListNameHint
+  ///
+  /// In en, this message translates to:
+  /// **'List name'**
+  String get shoppingListNameHint;
+
+  /// Shopping list: shoppingListDateLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping date'**
+  String get shoppingListDateLabel;
+
+  /// Shopping list: shoppingListCreate
+  ///
+  /// In en, this message translates to:
+  /// **'Create the list'**
+  String get shoppingListCreate;
+
+  /// Shopping list: shoppingListRename
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get shoppingListRename;
+
+  /// Shopping list: shoppingListDelete
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get shoppingListDelete;
+
+  /// Shopping list: shoppingListDeleteTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}”?'**
+  String shoppingListDeleteTitle(String name);
+
+  /// Shopping list: shoppingListDeleteBody
+  ///
+  /// In en, this message translates to:
+  /// **'The list and all its items will be deleted.'**
+  String get shoppingListDeleteBody;
+
+  /// Shopping list: shoppingListCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get shoppingListCancel;
+
+  /// Shopping list: shoppingListMore
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get shoppingListMore;
+
+  /// Shopping list: shoppingListItemCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No item} =1{1 item} other{{count} items}}'**
+  String shoppingListItemCount(int count);
+
+  /// Shopping list: shoppingListEmptyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your list is empty'**
+  String get shoppingListEmptyTitle;
+
+  /// Shopping list: shoppingListEmptySubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add the ingredients to buy, they will be sorted by aisle.'**
+  String get shoppingListEmptySubtitle;
+
+  /// Shopping list: shoppingListLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your list'**
+  String get shoppingListLoadError;
+
+  /// Shopping list: shoppingListDeleted
+  ///
+  /// In en, this message translates to:
+  /// **'This list no longer exists'**
+  String get shoppingListDeleted;
+
+  /// Shopping list: shoppingListAlreadyIn
+  ///
+  /// In en, this message translates to:
+  /// **'already in your list'**
+  String get shoppingListAlreadyIn;
+
+  /// Shopping list: shoppingListAlreadyInToast
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is already in your list'**
+  String shoppingListAlreadyInToast(String name);
+
+  /// Shopping list: shoppingListAddToList
+  ///
+  /// In en, this message translates to:
+  /// **'Add to the list'**
+  String get shoppingListAddToList;
+
+  /// Shopping list: shoppingListOtherAisle
+  ///
+  /// In en, this message translates to:
+  /// **'Others'**
+  String get shoppingListOtherAisle;
+
+  /// Shopping list: shoppingListBought
+  ///
+  /// In en, this message translates to:
+  /// **'{name} added to your fridge'**
+  String shoppingListBought(String name);
+
+  /// Shopping list: shoppingListMarkBought
+  ///
+  /// In en, this message translates to:
+  /// **'Mark {name} as bought'**
+  String shoppingListMarkBought(String name);
+
+  /// Shopping list: shoppingListMembers
+  ///
+  /// In en, this message translates to:
+  /// **'List members'**
+  String get shoppingListMembers;
+
+  /// Shopping list: shoppingListYou
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get shoppingListYou;
+
+  /// Shopping list: shoppingListBack
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get shoppingListBack;
+
+  /// Shopping list: shoppingListInvite
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get shoppingListInvite;
+
+  /// Shopping list: shoppingListInviteShareText
+  ///
+  /// In en, this message translates to:
+  /// **'Join my shopping list “{name}” on Eat\'Easy 👇\n{url}'**
+  String shoppingListInviteShareText(String name, String url);
+
+  /// Shopping list: shoppingListMemberCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 member} other{{count} members}}'**
+  String shoppingListMemberCount(int count);
+
+  /// Shopping list: shoppingListOwner
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get shoppingListOwner;
+
+  /// Shopping list: shoppingListMemberUnknown
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get shoppingListMemberUnknown;
+
+  /// Shopping list: shoppingListRemoveMember
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get shoppingListRemoveMember;
+
+  /// Shopping list: shoppingListRemoveMemberTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the list?'**
+  String shoppingListRemoveMemberTitle(String name);
+
+  /// Shopping list: shoppingListRemoveMemberBody
+  ///
+  /// In en, this message translates to:
+  /// **'{name} will lose access to the list, and the current invitation link will stop working.'**
+  String shoppingListRemoveMemberBody(String name);
+
+  /// Shopping list: shoppingListLeave
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the list'**
+  String get shoppingListLeave;
+
+  /// Shopping list: shoppingListLeaveTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Leave “{name}”?'**
+  String shoppingListLeaveTitle(String name);
+
+  /// Shopping list: shoppingListLeaveBody
+  ///
+  /// In en, this message translates to:
+  /// **'The list will disappear from your lists. You will need a new invitation to join it again.'**
+  String get shoppingListLeaveBody;
+
+  /// Shopping list: shoppingListLeaveAction
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get shoppingListLeaveAction;
+
+  /// Shopping list: shoppingListShared
+  ///
+  /// In en, this message translates to:
+  /// **'Shared'**
+  String get shoppingListShared;
+
+  /// Shopping list: shoppingListJoinTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation'**
+  String get shoppingListJoinTitle;
+
+  /// Shopping list: shoppingListJoinMessage
+  ///
+  /// In en, this message translates to:
+  /// **'{inviter} invites you to join their shopping list'**
+  String shoppingListJoinMessage(String inviter);
+
+  /// Shopping list: shoppingListJoinMessageAnonymous
+  ///
+  /// In en, this message translates to:
+  /// **'You are invited to join a shopping list'**
+  String get shoppingListJoinMessageAnonymous;
+
+  /// Shopping list: shoppingListJoinAction
+  ///
+  /// In en, this message translates to:
+  /// **'Join the list'**
+  String get shoppingListJoinAction;
+
+  /// Shopping list: shoppingListJoinInvalid
+  ///
+  /// In en, this message translates to:
+  /// **'This invitation link is no longer valid'**
+  String get shoppingListJoinInvalid;
+
+  /// Shopping list: shoppingListJoinInvalidSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the person who invited you for a new link.'**
+  String get shoppingListJoinInvalidSubtitle;
+
+  /// Shopping list: shoppingListJoinError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the invitation'**
+  String get shoppingListJoinError;
+
+  /// Shopping list: shoppingListRemoved
+  ///
+  /// In en, this message translates to:
+  /// **'You are no longer a member of this list'**
+  String get shoppingListRemoved;
 }
 
 class _AppLocalizationsDelegate

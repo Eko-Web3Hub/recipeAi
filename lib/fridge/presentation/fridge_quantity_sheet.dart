@@ -30,13 +30,15 @@ class FridgeSheetRemoved extends FridgeSheetResult {
 
 /// Opens the light quantity sheet of [item]. [isEdit] shows "Remove" and
 /// saves in place, [mergesIntoExisting] tells the user the quantity will be
-/// added to the line already in the fridge.
+/// added to the line already in the fridge. [addLabel] replaces "Add to my
+/// fridge" on the button of a new item (e.g. "Add to the list").
 Future<FridgeSheetResult?> showFridgeQuantitySheet(
   BuildContext context, {
   required FridgeItem item,
   required List<FridgeUnit> units,
   bool isEdit = false,
   bool mergesIntoExisting = false,
+  String? addLabel,
 }) => showModalBottomSheet<FridgeSheetResult>(
   context: context,
   useRootNavigator: true,
@@ -51,6 +53,7 @@ Future<FridgeSheetResult?> showFridgeQuantitySheet(
     units: units,
     isEdit: isEdit,
     mergesIntoExisting: mergesIntoExisting,
+    addLabel: addLabel,
   ),
 );
 
@@ -61,12 +64,14 @@ class FridgeQuantitySheet extends StatefulWidget {
     required this.units,
     required this.isEdit,
     required this.mergesIntoExisting,
+    this.addLabel,
   });
 
   final FridgeItem item;
   final List<FridgeUnit> units;
   final bool isEdit;
   final bool mergesIntoExisting;
+  final String? addLabel;
 
   @override
   State<FridgeQuantitySheet> createState() => _FridgeQuantitySheetState();
@@ -210,7 +215,7 @@ class _FridgeQuantitySheetState extends State<FridgeQuantitySheet> {
         ? appTexts.fridgeSave
         : widget.mergesIntoExisting
         ? appTexts.fridgeAddToExisting
-        : appTexts.fridgeAddToFridge;
+        : widget.addLabel ?? appTexts.fridgeAddToFridge;
 
     return Padding(
       padding: EdgeInsets.only(

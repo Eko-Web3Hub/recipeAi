@@ -1280,5 +1280,263 @@
     "notificationSettingsBlocked": "Les notifications sont bloquées dans les réglages de ton téléphone. Autorise Eat'Easy pour les recevoir.",
     "@notificationSettingsBlocked": {
         "description": "Notification settings: shown when the system permission is denied"
+    },
+    "shoppingListsTitle": "Mes listes de courses",
+    "@shoppingListsTitle": {
+        "description": "Shopping list: shoppingListsTitle"
+    },
+    "shoppingListsEmptyTitle": "Aucune liste pour l'instant",
+    "@shoppingListsEmptyTitle": {
+        "description": "Shopping list: shoppingListsEmptyTitle"
+    },
+    "shoppingListsEmptySubtitle": "Crée une liste pour préparer tes courses, rayon par rayon.",
+    "@shoppingListsEmptySubtitle": {
+        "description": "Shopping list: shoppingListsEmptySubtitle"
+    },
+    "shoppingListsLoadError": "Impossible de charger tes listes",
+    "@shoppingListsLoadError": {
+        "description": "Shopping list: shoppingListsLoadError"
+    },
+    "shoppingListNew": "Nouvelle liste",
+    "@shoppingListNew": {
+        "description": "Shopping list: shoppingListNew"
+    },
+    "shoppingListEdit": "Modifier la liste",
+    "@shoppingListEdit": {
+        "description": "Shopping list: shoppingListEdit"
+    },
+    "shoppingListNameHint": "Nom de la liste",
+    "@shoppingListNameHint": {
+        "description": "Shopping list: shoppingListNameHint"
+    },
+    "shoppingListDateLabel": "Date des courses",
+    "@shoppingListDateLabel": {
+        "description": "Shopping list: shoppingListDateLabel"
+    },
+    "shoppingListCreate": "Créer la liste",
+    "@shoppingListCreate": {
+        "description": "Shopping list: shoppingListCreate"
+    },
+    "shoppingListRename": "Modifier",
+    "@shoppingListRename": {
+        "description": "Shopping list: shoppingListRename"
+    },
+    "shoppingListDelete": "Supprimer",
+    "@shoppingListDelete": {
+        "description": "Shopping list: shoppingListDelete"
+    },
+    "shoppingListDeleteTitle": "Supprimer « {name} » ?",
+    "@shoppingListDeleteTitle": {
+        "description": "Shopping list: shoppingListDeleteTitle",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListDeleteBody": "La liste et tous ses articles seront supprimés.",
+    "@shoppingListDeleteBody": {
+        "description": "Shopping list: shoppingListDeleteBody"
+    },
+    "shoppingListCancel": "Annuler",
+    "@shoppingListCancel": {
+        "description": "Shopping list: shoppingListCancel"
+    },
+    "shoppingListMore": "Plus d'options",
+    "@shoppingListMore": {
+        "description": "Shopping list: shoppingListMore"
+    },
+    "shoppingListItemCount": "{count, plural, =0{Aucun article} =1{1 article} other{{count} articles}}",
+    "@shoppingListItemCount": {
+        "description": "Shopping list: shoppingListItemCount",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "shoppingListEmptyTitle": "Ta liste est vide",
+    "@shoppingListEmptyTitle": {
+        "description": "Shopping list: shoppingListEmptyTitle"
+    },
+    "shoppingListEmptySubtitle": "Ajoute les ingrédients à acheter, ils seront rangés par rayon.",
+    "@shoppingListEmptySubtitle": {
+        "description": "Shopping list: shoppingListEmptySubtitle"
+    },
+    "shoppingListLoadError": "Impossible de charger ta liste",
+    "@shoppingListLoadError": {
+        "description": "Shopping list: shoppingListLoadError"
+    },
+    "shoppingListDeleted": "Cette liste n'existe plus",
+    "@shoppingListDeleted": {
+        "description": "Shopping list: shoppingListDeleted"
+    },
+    "shoppingListAlreadyIn": "déjà dans ta liste",
+    "@shoppingListAlreadyIn": {
+        "description": "Shopping list: shoppingListAlreadyIn"
+    },
+    "shoppingListAlreadyInToast": "{name} est déjà dans ta liste",
+    "@shoppingListAlreadyInToast": {
+        "description": "Shopping list: shoppingListAlreadyInToast",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListAddToList": "Ajouter à la liste",
+    "@shoppingListAddToList": {
+        "description": "Shopping list: shoppingListAddToList"
+    },
+    "shoppingListOtherAisle": "Autres",
+    "@shoppingListOtherAisle": {
+        "description": "Shopping list: shoppingListOtherAisle"
+    },
+    "shoppingListBought": "{name} ajouté à ton frigo",
+    "@shoppingListBought": {
+        "description": "Shopping list: shoppingListBought",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListMarkBought": "Marquer {name} comme acheté",
+    "@shoppingListMarkBought": {
+        "description": "Shopping list: shoppingListMarkBought",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListMembers": "Membres de la liste",
+    "@shoppingListMembers": {
+        "description": "Shopping list: shoppingListMembers"
+    },
+    "shoppingListYou": "Toi",
+    "@shoppingListYou": {
+        "description": "Shopping list: shoppingListYou"
+    },
+    "shoppingListBack": "Retour",
+    "@shoppingListBack": {
+        "description": "Shopping list: shoppingListBack"
+    },
+    "shoppingListInvite": "Inviter",
+    "@shoppingListInvite": {
+        "description": "Shopping list: shoppingListInvite"
+    },
+    "shoppingListInviteShareText": "Rejoins ma liste de courses « {name} » sur Eat'Easy 👇\n{url}",
+    "@shoppingListInviteShareText": {
+        "description": "Shopping list: shoppingListInviteShareText",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListMemberCount": "{count, plural, =1{1 membre} other{{count} membres}}",
+    "@shoppingListMemberCount": {
+        "description": "Shopping list: shoppingListMemberCount",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "shoppingListOwner": "Propriétaire",
+    "@shoppingListOwner": {
+        "description": "Shopping list: shoppingListOwner"
+    },
+    "shoppingListMemberUnknown": "Membre",
+    "@shoppingListMemberUnknown": {
+        "description": "Shopping list: shoppingListMemberUnknown"
+    },
+    "shoppingListRemoveMember": "Retirer",
+    "@shoppingListRemoveMember": {
+        "description": "Shopping list: shoppingListRemoveMember"
+    },
+    "shoppingListRemoveMemberTitle": "Retirer {name} de la liste ?",
+    "@shoppingListRemoveMemberTitle": {
+        "description": "Shopping list: shoppingListRemoveMemberTitle",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListRemoveMemberBody": "{name} n'aura plus accès à la liste, et le lien d'invitation actuel ne fonctionnera plus.",
+    "@shoppingListRemoveMemberBody": {
+        "description": "Shopping list: shoppingListRemoveMemberBody",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListLeave": "Quitter la liste",
+    "@shoppingListLeave": {
+        "description": "Shopping list: shoppingListLeave"
+    },
+    "shoppingListLeaveTitle": "Quitter « {name} » ?",
+    "@shoppingListLeaveTitle": {
+        "description": "Shopping list: shoppingListLeaveTitle",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListLeaveBody": "La liste disparaîtra de tes listes. Il te faudra une nouvelle invitation pour la rejoindre.",
+    "@shoppingListLeaveBody": {
+        "description": "Shopping list: shoppingListLeaveBody"
+    },
+    "shoppingListLeaveAction": "Quitter",
+    "@shoppingListLeaveAction": {
+        "description": "Shopping list: shoppingListLeaveAction"
+    },
+    "shoppingListShared": "Partagée",
+    "@shoppingListShared": {
+        "description": "Shopping list: shoppingListShared"
+    },
+    "shoppingListJoinTitle": "Invitation",
+    "@shoppingListJoinTitle": {
+        "description": "Shopping list: shoppingListJoinTitle"
+    },
+    "shoppingListJoinMessage": "{inviter} t'invite à rejoindre sa liste de courses",
+    "@shoppingListJoinMessage": {
+        "description": "Shopping list: shoppingListJoinMessage",
+        "placeholders": {
+            "inviter": {
+                "type": "String"
+            }
+        }
+    },
+    "shoppingListJoinMessageAnonymous": "On t'invite à rejoindre une liste de courses",
+    "@shoppingListJoinMessageAnonymous": {
+        "description": "Shopping list: shoppingListJoinMessageAnonymous"
+    },
+    "shoppingListJoinAction": "Rejoindre la liste",
+    "@shoppingListJoinAction": {
+        "description": "Shopping list: shoppingListJoinAction"
+    },
+    "shoppingListJoinInvalid": "Ce lien d'invitation n'est plus valide",
+    "@shoppingListJoinInvalid": {
+        "description": "Shopping list: shoppingListJoinInvalid"
+    },
+    "shoppingListJoinInvalidSubtitle": "Demande un nouveau lien à la personne qui t'a invité.",
+    "@shoppingListJoinInvalidSubtitle": {
+        "description": "Shopping list: shoppingListJoinInvalidSubtitle"
+    },
+    "shoppingListJoinError": "Impossible de charger l'invitation",
+    "@shoppingListJoinError": {
+        "description": "Shopping list: shoppingListJoinError"
+    },
+    "shoppingListRemoved": "Tu ne fais plus partie de cette liste",
+    "@shoppingListRemoved": {
+        "description": "Shopping list: shoppingListRemoved"
     }
 }
