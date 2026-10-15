@@ -1123,11 +1123,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shoppingListOtherAisle => 'Autres';
 
   @override
-  String shoppingListBought(String name) {
-    return '$name ajouté à ton frigo';
-  }
-
-  @override
   String shoppingListMarkBought(String name) {
     return 'Marquer $name comme acheté';
   }
@@ -1225,4 +1220,26 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get shoppingListRemoved => 'Tu ne fais plus partie de cette liste';
+
+  @override
+  String get shoppingListCheckedSection => 'Déjà acheté';
+
+  @override
+  String get shoppingListMoveToFridge => 'Ajouter les ingrédients à mon frigo';
+
+  @override
+  String shoppingListMovedToFridge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ingrédients ajoutés à ton frigo',
+      one: '1 ingrédient ajouté à ton frigo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shoppingListUncheck(String name) {
+    return 'Remettre $name dans la liste';
+  }
 }

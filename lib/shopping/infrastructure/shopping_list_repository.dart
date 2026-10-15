@@ -245,6 +245,41 @@ class ShoppingListRepository implements IShoppingListRepository {
   Future<void> restoreItem(EntityId listId, ShoppingItem item) =>
       _writeItem(listId, item, countDelta: 1);
 
+  @override
+  Future<void> setChecked(
+    EntityId listId,
+    EntityId itemId, {
+    required bool checked,
+    required EntityId uid,
+  }) => _items(listId)
+      .doc(itemId.value)
+      .update(ShoppingItemSerialization.checkedToJson(checked, uid));
+
+  @override
+  Future<void> removeItems(EntityId listId, List<EntityId> itemIds) async {
+    if (itemIds.isEmpty) return;
+    final batch = _firestore.batch();
+    for (final itemId in itemIds) {
+      batch.delete(_items(listId).doc(itemId.value));
+    }
+    batch.update(_list(listId), _countUpdate(-itemIds.length));
+    await batch.commit();
+  }
+
+  @override
+  Future<void> restoreItems(EntityId listId, List<ShoppingItem> items) async {
+    if (items.isEmpty) return;
+    final batch = _firestore.batch();
+    for (final item in items) {
+      batch.set(
+        _items(listId).doc(item.id!.value),
+        ShoppingItemSerialization.toJson(item),
+      );
+    }
+    batch.update(_list(listId), _countUpdate(items.length));
+    await batch.commit();
+  }
+
   /// Writes [item] and keeps the list's `itemCount` in step, in one batch.
   Future<void> _writeItem(
     EntityId listId,

@@ -83,6 +83,8 @@ void main() {
   setUpAll(() {
     registerFallbackValue(const EntityId('fallback'));
     registerFallbackValue(shoppingList);
+    registerFallbackValue(<EntityId>[]);
+    registerFallbackValue(<ShoppingItem>[]);
     registerFallbackValue(FridgeItem.draft(name: 'fallback'));
     registerFallbackValue(
       ShoppingItem(ingredient: FridgeItem.draft(name: 'fallback')),
@@ -268,89 +270,181 @@ void main() {
     });
   });
 
-  group('buy', () {
-    final change = FridgeStockChange(
+  group('cart', () {
+    final checkedTomatoes = tomatoes.withChecked(true, by: uid);
+    final rice = ShoppingItem(
+      ingredient: FridgeItem.draft(
+        name: 'Rice',
+        amount: 500,
+        unit: FridgeUnit.g,
+      ).copyWith(id: const EntityId('r1')),
+      checked: true,
+      checkedBy: uid,
+    );
+    final tomatoChange = FridgeStockChange(
       result: tomatoes.fridgeDraft.copyWith(id: const EntityId('f1')),
     );
+    final riceChange = FridgeStockChange(
+      result: rice.fridgeDraft.copyWith(id: const EntityId('f2')),
+    );
 
-    test('moves the item to the fridge with its quantity', () async {
+    setUp(() {
       when(
-        () => stockService.addOrMerge(uid, any()),
-      ).thenAnswer((_) async => change);
-      final controller = await sut(initial: [tomatoes]);
-
-      await controller.buy(tomatoes);
-
-      final draft =
-          verify(
-                () => stockService.addOrMerge(uid, captureAny()),
-              ).captured.single
-              as FridgeItem;
-      expect(draft.id, isNull);
-      expect(draft.amount, 1);
-      expect(draft.unit, FridgeUnit.kg);
-      expect(draft.catalogId, 'tomato');
-      verify(() => repository.removeItem(listId, tomatoes.id!)).called(1);
-      expect(
-        controller.state.feedback,
-        isA<ShoppingItemBoughtFeedback>().having(
-          (f) => f.change,
-          'change',
-          change,
+        () => repository.setChecked(
+          listId,
+          any(),
+          checked: any(named: 'checked'),
+          uid: uid,
         ),
+      ).thenAnswer((_) async {});
+      when(
+        () => repository.removeItems(listId, any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => repository.restoreItems(listId, any()),
+      ).thenAnswer((_) async {});
+      when(() => stockService.addOrMerge(uid, any())).thenAnswer((invocation) {
+        final draft = invocation.positionalArguments[1] as FridgeItem;
+        return Future.value(draft.name == 'Rice' ? riceChange : tomatoChange);
+      });
+    });
+
+    test('checking an item keeps it in the list, in the cart', () async {
+      final controller = await sut(initial: [tomatoes]);
+
+      await controller.toggleChecked(tomatoes);
+      verify(
+        () => repository.setChecked(
+          listId,
+          tomatoes.id!,
+          checked: true,
+          uid: uid,
+        ),
+      ).called(1);
+
+      await controller.toggleChecked(checkedTomatoes);
+      verify(
+        () => repository.setChecked(
+          listId,
+          tomatoes.id!,
+          checked: false,
+          uid: uid,
+        ),
+      ).called(1);
+      verifyNever(() => stockService.addOrMerge(uid, any()));
+      await controller.close();
+    });
+
+    test('checked items leave the aisles for "déjà acheté"', () async {
+      final controller = await sut(initial: [checkedTomatoes, rice]);
+
+      expect(controller.state.sections, isEmpty);
+      expect(controller.state.checkedItems, [checkedTomatoes, rice]);
+      await controller.close();
+    });
+
+    test('a checked item is not merged with a new one', () async {
+      final controller = await sut(initial: [checkedTomatoes]);
+
+      expect(controller.existingFor(tomatoes.fridgeDraft), isNull);
+      await controller.close();
+    });
+
+    test(
+      'moves the checked items to the fridge, then out of the list',
+      () async {
+        final controller = await sut(initial: [checkedTomatoes, rice]);
+
+        await controller.moveCheckedToFridge();
+
+        final drafts = verify(
+          () => stockService.addOrMerge(uid, captureAny()),
+        ).captured.cast<FridgeItem>();
+        expect(drafts.map((draft) => draft.name), ['Tomatoes', 'Rice']);
+        expect(drafts.every((draft) => draft.id == null), isTrue);
+        verify(
+          () => repository.removeItems(listId, [tomatoes.id!, rice.id!]),
+        ).called(1);
+        expect(
+          controller.state.feedback,
+          isA<ShoppingItemsMovedToFridgeFeedback>().having(
+            (f) => f.changes,
+            'changes',
+            [tomatoChange, riceChange],
+          ),
+        );
+        expect(controller.state.isMovingToFridge, isFalse);
+        await controller.close();
+      },
+    );
+
+    test('only the checked items go to the fridge', () async {
+      final controller = await sut(initial: [tomatoes, rice]);
+
+      await controller.moveCheckedToFridge();
+
+      verify(() => stockService.addOrMerge(uid, any())).called(1);
+      verify(() => repository.removeItems(listId, [rice.id!])).called(1);
+      await controller.close();
+    });
+
+    test('undo takes them out of the fridge and back in the cart', () async {
+      final controller = await sut();
+
+      await controller.undoMoveToFridge(
+        [checkedTomatoes, rice],
+        [tomatoChange, riceChange],
       );
+
+      verifyInOrder([
+        () => stockService.undo(uid, riceChange),
+        () => stockService.undo(uid, tomatoChange),
+        () => repository.restoreItems(listId, [checkedTomatoes, rice]),
+      ]);
       await controller.close();
     });
 
-    test('undo takes it out of the fridge and back in the list', () async {
-      final controller = await sut(initial: [tomatoes]);
+    test('all or nothing: a failure undoes the fridge changes', () async {
+      when(() => stockService.addOrMerge(uid, any())).thenAnswer((invocation) {
+        final draft = invocation.positionalArguments[1] as FridgeItem;
+        if (draft.name == 'Rice') throw Exception('offline');
+        return Future.value(tomatoChange);
+      });
+      final controller = await sut(initial: [checkedTomatoes, rice]);
 
-      await controller.undoBuy(tomatoes, change);
+      await controller.moveCheckedToFridge();
 
-      verify(() => stockService.undo(uid, change)).called(1);
-      verify(() => repository.restoreItem(listId, tomatoes)).called(1);
+      verify(() => stockService.undo(uid, tomatoChange)).called(1);
+      verifyNever(() => repository.removeItems(listId, any()));
+      expect(controller.state.feedback, isA<ShoppingListErrorFeedback>());
+      expect(controller.state.isMovingToFridge, isFalse);
       await controller.close();
     });
 
-    test('keeps the item in the list when the fridge write fails', () async {
+    test('the list write failing undoes the fridge changes', () async {
       when(
-        () => stockService.addOrMerge(uid, any()),
+        () => repository.removeItems(listId, any()),
       ).thenThrow(Exception('offline'));
-      final controller = await sut(initial: [tomatoes]);
+      final controller = await sut(initial: [checkedTomatoes, rice]);
 
-      await controller.buy(tomatoes);
+      await controller.moveCheckedToFridge();
 
-      verifyNever(() => repository.removeItem(listId, any()));
+      verify(() => stockService.undo(uid, riceChange)).called(1);
+      verify(() => stockService.undo(uid, tomatoChange)).called(1);
       expect(controller.state.feedback, isA<ShoppingListErrorFeedback>());
       await controller.close();
     });
 
-    test('takes it back out of the fridge when the list write fails', () async {
-      when(
-        () => stockService.addOrMerge(uid, any()),
-      ).thenAnswer((_) async => change);
-      when(
-        () => repository.removeItem(listId, any()),
-      ).thenThrow(Exception('offline'));
-      final controller = await sut(initial: [tomatoes]);
-
-      await controller.buy(tomatoes);
-
-      verify(() => stockService.undo(uid, change)).called(1);
-      expect(controller.state.feedback, isA<ShoppingListErrorFeedback>());
-      await controller.close();
-    });
-
-    test('a second tap while buying does not buy twice', () async {
+    test('a second tap while moving does not move twice', () async {
       final pending = Completer<FridgeStockChange>();
       when(
         () => stockService.addOrMerge(uid, any()),
       ).thenAnswer((_) => pending.future);
-      final controller = await sut(initial: [tomatoes]);
+      final controller = await sut(initial: [checkedTomatoes]);
 
-      final first = controller.buy(tomatoes);
-      await controller.buy(tomatoes);
-      pending.complete(change);
+      final first = controller.moveCheckedToFridge();
+      await controller.moveCheckedToFridge();
+      pending.complete(tomatoChange);
       await first;
 
       verify(() => stockService.addOrMerge(uid, any())).called(1);

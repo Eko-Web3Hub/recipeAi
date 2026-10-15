@@ -84,14 +84,17 @@ abstract class ShoppingListInviteSerialization {
 }
 
 /// Document of `ShoppingLists/{listId}/items/{id}`: the fridge item fields,
-/// plus the aisle and the member who added it.
+/// plus the aisle, the member who added it and whether it is in the cart.
 abstract class ShoppingItemSerialization {
   static ShoppingItem fromJson(Map<String, dynamic> json, {String? docId}) {
     final addedBy = json['addedBy'] as String?;
+    final checkedBy = json['checkedBy'] as String?;
     return ShoppingItem(
       ingredient: FridgeItemSerialization.fromJson(json, docId: docId),
       categoryId: json['categoryId'] as String?,
       addedBy: addedBy == null ? null : EntityId(addedBy),
+      checked: json['checked'] == true,
+      checkedBy: checkedBy == null ? null : EntityId(checkedBy),
     );
   }
 
@@ -99,5 +102,11 @@ abstract class ShoppingItemSerialization {
     ...FridgeItemSerialization.toJson(item.ingredient),
     'categoryId': item.categoryId,
     'addedBy': item.addedBy?.value,
+    ...checkedToJson(item.checked, item.checkedBy),
+  };
+
+  static Map<String, dynamic> checkedToJson(bool checked, EntityId? by) => {
+    'checked': checked,
+    'checkedBy': checked ? by?.value : null,
   };
 }

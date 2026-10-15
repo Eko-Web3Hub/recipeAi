@@ -2000,12 +2000,6 @@ abstract class AppLocalizations {
   /// **'Others'**
   String get shoppingListOtherAisle;
 
-  /// Shopping list: shoppingListBought
-  ///
-  /// In en, this message translates to:
-  /// **'{name} added to your fridge'**
-  String shoppingListBought(String name);
-
   /// Shopping list: shoppingListMarkBought
   ///
   /// In en, this message translates to:
@@ -2155,6 +2149,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You are no longer a member of this list'**
   String get shoppingListRemoved;
+
+  /// Shopping list: shoppingListCheckedSection
+  ///
+  /// In en, this message translates to:
+  /// **'Already bought'**
+  String get shoppingListCheckedSection;
+
+  /// Shopping list: shoppingListMoveToFridge
+  ///
+  /// In en, this message translates to:
+  /// **'Add the ingredients to my fridge'**
+  String get shoppingListMoveToFridge;
+
+  /// Shopping list: shoppingListMovedToFridge
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 ingredient added to your fridge} other{{count} ingredients added to your fridge}}'**
+  String shoppingListMovedToFridge(int count);
+
+  /// Shopping list: shoppingListUncheck
+  ///
+  /// In en, this message translates to:
+  /// **'Put {name} back on the list'**
+  String shoppingListUncheck(String name);
 }
 
 class _AppLocalizationsDelegate

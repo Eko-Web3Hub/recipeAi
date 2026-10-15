@@ -14,10 +14,10 @@ import 'package:recipe_ai/fridge/domain/repositories/fridge_repository.dart';
 import 'package:recipe_ai/fridge/presentation/fridge_labels.dart';
 import 'package:recipe_ai/fridge/presentation/fridge_quantity_sheet.dart';
 import 'package:recipe_ai/fridge/presentation/widgets/ingredient_widgets.dart';
+import 'package:recipe_ai/receipe/presentation/widget/primary_action_button.dart';
 import 'package:recipe_ai/shopping/domain/model/shopping_item.dart';
 import 'package:recipe_ai/shopping/domain/model/shopping_list.dart';
 import 'package:recipe_ai/shopping/domain/repositories/shopping_list_repository.dart';
-import 'package:recipe_ai/shopping/domain/shopping_aisles.dart';
 import 'package:recipe_ai/shopping/presentation/shopping_list_controller.dart';
 import 'package:recipe_ai/shopping/presentation/shopping_members_sheet.dart';
 import 'package:recipe_ai/shopping/presentation/shopping_widgets.dart';
@@ -27,6 +27,9 @@ import 'package:recipe_ai/user_preferences/presentation/components/custom_progre
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 import 'package:recipe_ai/utils/widgets/empty_state_view.dart';
+
+/// Height of [PrimaryActionButton].
+const _ctaHeight = 52.0;
 
 /// One shopping list: its members at the top, then its items grouped by
 /// aisle, added and edited like in the fridge. Checking an item moves it to
@@ -203,12 +206,12 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
             action: undo(() => _controller.undoRemove(item)),
           ),
         );
-      case ShoppingItemBoughtFeedback(:final item, :final change):
+      case ShoppingItemsMovedToFridgeFeedback(:final items, :final changes):
         messenger.showSnackBar(
           inkSnackBar(
-            appTexts.shoppingListBought(item.ingredient.displayName(lang)),
+            appTexts.shoppingListMovedToFridge(items.length),
             duration: const Duration(milliseconds: 4500),
-            action: undo(() => _controller.undoBuy(item, change)),
+            action: undo(() => _controller.undoMoveToFridge(items, changes)),
           ),
         );
       case ShoppingItemMergedFeedback(:final item, :final outcome):
@@ -233,7 +236,7 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
-    final bottomInset = MediaQuery.paddingOf(context).bottom + 24;
+    final safeBottom = MediaQuery.paddingOf(context).bottom;
 
     return Scaffold(
       body: BlocListener<ShoppingListController, ShoppingListState>(
@@ -247,6 +250,10 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
               final list = state.list;
               final isReady =
                   state.status == ShoppingListStatus.loaded && list != null;
+              final checkedCount = state.checkedItems.length;
+              // Hidden while typing: the keyboard would push it over the
+              // suggestions.
+              final showMoveButton = checkedCount > 0 && !_queryFocus.hasFocus;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -294,14 +301,32 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
                                   Expanded(
                                     child: _ShoppingContent(
                                       state: state,
-                                      bottomPadding: bottomInset,
+                                      // Room for the sticky button.
+                                      bottomPadding:
+                                          safeBottom +
+                                          (showMoveButton
+                                              ? _ctaHeight + 52
+                                              : 24),
                                       onEdit: _openEditSheet,
-                                      onBuy: _controller.buy,
+                                      onToggleChecked:
+                                          _controller.toggleChecked,
                                       onPickUsual: _pickUsual,
                                     ),
                                   ),
                                 ],
                               ),
+                              if (showMoveButton)
+                                Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: safeBottom,
+                                  child: _MoveToFridgeButton(
+                                    count: checkedCount,
+                                    onTap: state.isMovingToFridge
+                                        ? null
+                                        : _controller.moveCheckedToFridge,
+                                  ),
+                                ),
                               if (_queryFocus.hasFocus)
                                 Positioned(
                                   left: 20,
@@ -452,14 +477,14 @@ class _ShoppingContent extends StatelessWidget {
     required this.state,
     required this.bottomPadding,
     required this.onEdit,
-    required this.onBuy,
+    required this.onToggleChecked,
     required this.onPickUsual,
   });
 
   final ShoppingListState state;
   final double bottomPadding;
   final ValueChanged<ShoppingItem> onEdit;
-  final Future<void> Function(ShoppingItem item) onBuy;
+  final ValueChanged<ShoppingItem> onToggleChecked;
   final ValueChanged<FridgeItem> onPickUsual;
 
   @override
@@ -483,51 +508,68 @@ class _ShoppingContent extends StatelessWidget {
       );
     }
 
-    final sections = state.sections;
+    Widget row(ShoppingItem item) {
+      final name = item.ingredient.displayName(appTexts.localeName);
+      return IngredientRow(
+        key: ValueKey(item.id?.value ?? item.ingredient.nameKey),
+        item: item.ingredient,
+        crossedOut: item.checked,
+        flashToken: item.id?.value == state.highlightedId
+            ? state.highlightToken
+            : null,
+        onTap: () => onEdit(item),
+        leading: _CheckToggle(
+          checked: item.checked,
+          label: item.checked
+              ? appTexts.shoppingListUncheck(name)
+              : appTexts.shoppingListMarkBought(name),
+          onTap: () => onToggleChecked(item),
+        ),
+      );
+    }
+
+    final checkedItems = state.checkedItems;
     return ListView(
       padding: EdgeInsets.fromLTRB(20, 6, 20, bottomPadding),
       children: [
-        for (final section in sections) ...[
-          _AisleTitle(section: section),
-          for (final item in section.items)
-            IngredientRow(
-              key: ValueKey(item.id?.value ?? item.ingredient.nameKey),
-              item: item.ingredient,
-              flashToken: item.id?.value == state.highlightedId
-                  ? state.highlightToken
-                  : null,
-              onTap: () => onEdit(item),
-              leading: _BuyCheck(
-                label: appTexts.shoppingListMarkBought(
-                  item.ingredient.displayName(appTexts.localeName),
-                ),
-                onBuy: () => onBuy(item),
-              ),
-            ),
+        for (final section in state.sections) ...[
+          _SectionTitle(
+            label:
+                section.category?.displayName(appTexts.localeName) ??
+                appTexts.shoppingListOtherAisle,
+          ),
+          for (final item in section.items) row(item),
+        ],
+        if (checkedItems.isNotEmpty) ...[
+          _SectionTitle(
+            label:
+                '${appTexts.shoppingListCheckedSection} · '
+                '${checkedItems.length}',
+            spaced: true,
+          ),
+          for (final item in checkedItems) row(item),
         ],
       ],
     );
   }
 }
 
-class _AisleTitle extends StatelessWidget {
-  const _AisleTitle({required this.section});
+/// Title of an aisle, or of the "Déjà acheté" section ([spaced] sets it
+/// further apart from the aisles above).
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle({required this.label, this.spaced = false});
 
-  final AisleSection section;
+  final String label;
+  final bool spaced;
 
   @override
   Widget build(BuildContext context) {
-    final appTexts = di<TranslationController>().currentLanguage;
-    final name =
-        section.category?.displayName(appTexts.localeName) ??
-        appTexts.shoppingListOtherAisle;
-
     return Padding(
-      padding: const EdgeInsets.only(top: 18, bottom: 2),
+      padding: EdgeInsets.only(top: spaced ? 28 : 18, bottom: 2),
       child: Semantics(
         header: true,
         child: Text(
-          name.toUpperCase(),
+          label.toUpperCase(),
           style: TextStyle(
             fontFamily: robotoFontFamily,
             fontWeight: FontWeight.w600,
@@ -541,56 +583,82 @@ class _AisleTitle extends StatelessWidget {
   }
 }
 
-/// Round checkbox in front of an item: ticks, then the item leaves the list
-/// for the fridge.
-class _BuyCheck extends StatefulWidget {
-  const _BuyCheck({required this.label, required this.onBuy});
+/// Round checkbox in front of an item: puts it in the cart ("Déjà acheté")
+/// or takes it out.
+class _CheckToggle extends StatelessWidget {
+  const _CheckToggle({
+    required this.checked,
+    required this.label,
+    required this.onTap,
+  });
 
+  final bool checked;
   final String label;
-  final Future<void> Function() onBuy;
-
-  @override
-  State<_BuyCheck> createState() => _BuyCheckState();
-}
-
-class _BuyCheckState extends State<_BuyCheck> {
-  bool _checked = false;
-
-  Future<void> _onTap() async {
-    if (_checked) return;
-    setState(() => _checked = true);
-    await widget.onBuy();
-    // Bought, the row is gone; still here, the purchase failed: untick.
-    if (mounted) setState(() => _checked = false);
-  }
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      checked: _checked,
-      label: widget.label,
+      checked: checked,
+      label: label,
       child: InkResponse(
-        onTap: _onTap,
+        onTap: onTap,
         radius: 20,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           width: 22,
           height: 22,
           decoration: BoxDecoration(
-            color: _checked ? recipeLoaderGreenColor : Colors.transparent,
+            color: checked ? recipeLoaderGreenColor : Colors.transparent,
             shape: BoxShape.circle,
             border: Border.all(
-              color: _checked
+              color: checked
                   ? recipeLoaderGreenColor
                   : onboardingCheckBorderColor,
               width: 1.6,
             ),
           ),
-          child: _checked
+          child: checked
               ? const Icon(Icons.check_rounded, size: 15, color: Colors.white)
               : null,
         ),
+      ),
+    );
+  }
+}
+
+/// "Ajouter les ingrédients à mon frigo", sticky at the bottom while items
+/// are checked.
+class _MoveToFridgeButton extends StatelessWidget {
+  const _MoveToFridgeButton({required this.count, required this.onTap});
+
+  final int count;
+
+  /// Null while the items are being moved.
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 28, 20, 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          stops: const [0.6, 1],
+          colors: [
+            recipeLoaderCreamColor,
+            recipeLoaderCreamColor.withValues(alpha: 0),
+          ],
+        ),
+      ),
+      child: PrimaryActionButton(
+        label: appTexts.shoppingListMoveToFridge,
+        badge: appTexts.fridgeIngredientCount(count),
+        onTap: onTap,
       ),
     );
   }

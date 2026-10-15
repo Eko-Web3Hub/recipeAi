@@ -66,4 +66,18 @@ abstract class IShoppingListRepository {
 
   /// Writes back a removed [item] under its former id (undo).
   Future<void> restoreItem(EntityId listId, ShoppingItem item);
+
+  /// Checks [itemId] (in the cart) or unchecks it, on behalf of [uid].
+  Future<void> setChecked(
+    EntityId listId,
+    EntityId itemId, {
+    required bool checked,
+    required EntityId uid,
+  });
+
+  /// Removes [itemIds] at once (moved to the fridge).
+  Future<void> removeItems(EntityId listId, List<EntityId> itemIds);
+
+  /// Writes back removed [items] under their former ids (undo).
+  Future<void> restoreItems(EntityId listId, List<ShoppingItem> items);
 }

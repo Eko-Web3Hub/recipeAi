@@ -361,9 +361,13 @@ class IngredientRow extends StatefulWidget {
     required this.flashToken,
     required this.onTap,
     this.leading,
+    this.crossedOut = false,
   });
 
   final FridgeItem item;
+
+  /// Struck through and dimmed (an item already in the cart).
+  final bool crossedOut;
 
   /// Replaces the green dot in front of the name (e.g. a checkbox).
   final Widget? leading;
@@ -470,19 +474,30 @@ class _IngredientRowState extends State<IngredientRow>
                     name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: robotoFontFamily,
                       fontWeight: FontWeight.w500,
                       // Roboto ships as a variable font: the weight axis has
                       // to be set explicitly.
-                      fontVariations: [FontVariation.weight(500)],
+                      fontVariations: const [FontVariation.weight(500)],
                       fontSize: 14,
-                      color: recipeLoaderInkColor,
+                      color: widget.crossedOut
+                          ? recipeLoaderInkColor.withValues(alpha: 0.45)
+                          : recipeLoaderInkColor,
+                      decoration: widget.crossedOut
+                          ? TextDecoration.lineThrough
+                          : null,
+                      decorationColor: recipeLoaderInkColor.withValues(
+                        alpha: 0.45,
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 12),
-                _QuantityPill(appTexts: appTexts, item: item),
+                Opacity(
+                  opacity: widget.crossedOut ? 0.55 : 1,
+                  child: _QuantityPill(appTexts: appTexts, item: item),
+                ),
               ],
             ),
           ),

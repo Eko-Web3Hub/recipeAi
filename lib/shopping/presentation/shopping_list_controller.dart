@@ -55,15 +55,15 @@ class ShoppingItemMergedFeedback extends ShoppingListFeedback {
   List<Object?> get props => [id, item, outcome];
 }
 
-/// [item] was bought: it left the list and [change] put it in the fridge.
-class ShoppingItemBoughtFeedback extends ShoppingListFeedback {
-  const ShoppingItemBoughtFeedback(super.id, this.item, this.change);
+/// The checked [items] left the list: [changes] put them in the fridge.
+class ShoppingItemsMovedToFridgeFeedback extends ShoppingListFeedback {
+  const ShoppingItemsMovedToFridgeFeedback(super.id, this.items, this.changes);
 
-  final ShoppingItem item;
-  final FridgeStockChange change;
+  final List<ShoppingItem> items;
+  final List<FridgeStockChange> changes;
 
   @override
-  List<Object?> get props => [id, item, change];
+  List<Object?> get props => [id, items, changes];
 }
 
 class ShoppingListErrorFeedback extends ShoppingListFeedback {
@@ -82,6 +82,7 @@ final class ShoppingListState extends Equatable {
     this.queryHasAmount = false,
     this.highlightedId,
     this.highlightToken = 0,
+    this.isMovingToFridge = false,
     this.feedback,
   });
 
@@ -101,9 +102,22 @@ final class ShoppingListState extends Equatable {
   final bool queryHasAmount;
   final String? highlightedId;
   final int highlightToken;
+
+  /// The checked items are being put in the fridge.
+  final bool isMovingToFridge;
   final ShoppingListFeedback? feedback;
 
-  List<AisleSection> get sections => groupByAisle(items, categories);
+  /// The items still to buy, grouped by aisle.
+  List<AisleSection> get sections => groupByAisle([
+    for (final item in items)
+      if (!item.checked) item,
+  ], categories);
+
+  /// The items in the cart ("Déjà acheté"), waiting to go to the fridge.
+  List<ShoppingItem> get checkedItems => [
+    for (final item in items)
+      if (item.checked) item,
+  ];
 
   ShoppingListState copyWith({
     ShoppingListStatus? status,
@@ -116,6 +130,7 @@ final class ShoppingListState extends Equatable {
     bool? queryHasAmount,
     String? highlightedId,
     int? highlightToken,
+    bool? isMovingToFridge,
     ShoppingListFeedback? feedback,
   }) => ShoppingListState(
     status: status ?? this.status,
@@ -128,6 +143,7 @@ final class ShoppingListState extends Equatable {
     queryHasAmount: queryHasAmount ?? this.queryHasAmount,
     highlightedId: highlightedId ?? this.highlightedId,
     highlightToken: highlightToken ?? this.highlightToken,
+    isMovingToFridge: isMovingToFridge ?? this.isMovingToFridge,
     feedback: feedback ?? this.feedback,
   );
 
@@ -143,12 +159,13 @@ final class ShoppingListState extends Equatable {
     queryHasAmount,
     highlightedId,
     highlightToken,
+    isMovingToFridge,
     feedback,
   ];
 }
 
 /// One shopping list: its items grouped by aisle, added like in the fridge,
-/// and moved to the fridge once bought.
+/// checked in the shop, then moved together to the fridge.
 class ShoppingListController extends Cubit<ShoppingListState> {
   ShoppingListController(
     this._listId,
@@ -179,8 +196,6 @@ class ShoppingListController extends Cubit<ShoppingListState> {
   IngredientSearch _search = const IngredientSearch();
   List<FridgeItem> _usualsHistory = const [];
 
-  /// Items being moved to the fridge: a second tap must not buy them twice.
-  final _buying = <EntityId>{};
   int _feedbackCount = 0;
   bool _memberNameChecked = false;
 
@@ -282,9 +297,13 @@ class ShoppingListController extends Cubit<ShoppingListState> {
           .take(_maxUsuals)
           .toList();
 
+  /// The same ingredient still to buy. A checked one is already in the cart:
+  /// adding it again makes a new line.
   ShoppingItem? existingFor(FridgeItem draft) {
     for (final item in state.items) {
-      if (item.ingredient.sameIngredientAs(draft)) return item;
+      if (!item.checked && item.ingredient.sameIngredientAs(draft)) {
+        return item;
+      }
     }
     return null;
   }
@@ -409,46 +428,89 @@ class ShoppingListController extends Cubit<ShoppingListState> {
 
   Future<void> undoRemove(ShoppingItem item) => _restore(item);
 
-  /// Checks [item] as bought: it goes to the fridge with its quantity and
-  /// leaves the list.
-  Future<void> buy(ShoppingItem item) async {
+  /// Puts [item] in the cart ("Déjà acheté"), or takes it out. Every member
+  /// sees it.
+  Future<void> toggleChecked(ShoppingItem item) async {
     final id = item.id;
-    if (id == null || !_buying.add(id)) return;
+    if (id == null) return;
     try {
-      final change = await _fridgeStockService.addOrMerge(
-        _uid,
-        item.fridgeDraft,
-      );
-      try {
-        await _repository.removeItem(_listId, id);
-      } catch (_) {
-        // Still in the list: take it back out of the fridge.
-        await _fridgeStockService.undo(_uid, change);
-        rethrow;
-      }
-      safeEmit(
-        state.copyWith(
-          feedback: ShoppingItemBoughtFeedback(++_feedbackCount, item, change),
-        ),
+      await _repository.setChecked(
+        _listId,
+        id,
+        checked: !item.checked,
+        uid: _uid,
       );
     } catch (error) {
-      log('Shopping item buy failed: $error');
+      log('Shopping item check failed: $error');
       _failed();
-    } finally {
-      _buying.remove(id);
     }
   }
 
-  /// Puts a bought [item] back in the list and takes it out of the fridge.
-  Future<void> undoBuy(ShoppingItem item, FridgeStockChange change) async {
+  /// Puts the checked items in the user's fridge with their quantity, then
+  /// takes them out of the list. All or nothing: a failure undoes what was
+  /// already put in the fridge.
+  Future<void> moveCheckedToFridge() async {
+    final items = state.checkedItems;
+    if (items.isEmpty || state.isMovingToFridge) return;
+    safeEmit(state.copyWith(isMovingToFridge: true));
+
+    final changes = <FridgeStockChange>[];
     try {
-      await _fridgeStockService.undo(_uid, change);
+      for (final item in items) {
+        changes.add(
+          await _fridgeStockService.addOrMerge(_uid, item.fridgeDraft),
+        );
+      }
+      await _repository.removeItems(_listId, [
+        for (final item in items) item.id!,
+      ]);
+      safeEmit(
+        state.copyWith(
+          isMovingToFridge: false,
+          feedback: ShoppingItemsMovedToFridgeFeedback(
+            ++_feedbackCount,
+            items,
+            changes,
+          ),
+        ),
+      );
     } catch (error) {
-      log('Fridge undo failed: $error');
+      log('Shopping items move to fridge failed: $error');
+      await _undoFridgeChanges(changes);
+      safeEmit(state.copyWith(isMovingToFridge: false));
       _failed();
-      return;
     }
-    await _restore(item);
+  }
+
+  /// Takes the moved [items] out of the fridge and puts them back in the
+  /// list, still checked.
+  Future<void> undoMoveToFridge(
+    List<ShoppingItem> items,
+    List<FridgeStockChange> changes,
+  ) async {
+    try {
+      await _undoFridgeChanges(changes, rethrowErrors: true);
+      await _repository.restoreItems(_listId, items);
+    } catch (error) {
+      log('Shopping items move undo failed: $error');
+      _failed();
+    }
+  }
+
+  /// Latest change first: two items merged into the same fridge line are
+  /// undone in the reverse order they were made.
+  Future<void> _undoFridgeChanges(
+    List<FridgeStockChange> changes, {
+    bool rethrowErrors = false,
+  }) async {
+    for (final change in changes.reversed) {
+      try {
+        await _fridgeStockService.undo(_uid, change);
+      } catch (error) {
+        log('Fridge undo failed: $error');
+        if (rethrowErrors) rethrow;
+      }
+    }
   }
 
   Future<void> _restore(ShoppingItem item) async {

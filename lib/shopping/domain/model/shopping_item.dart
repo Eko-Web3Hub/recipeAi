@@ -6,8 +6,17 @@ import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
 ///
 /// The ingredient itself is a [FridgeItem]: a bought item goes to the fridge
 /// as is, and the fridge quantity sheet, merge and search rules apply.
+///
+/// A [checked] item is in the cart: it stays in the list ("Déjà acheté")
+/// until a member moves the checked items to their fridge.
 class ShoppingItem extends Equatable {
-  const ShoppingItem({required this.ingredient, this.categoryId, this.addedBy});
+  const ShoppingItem({
+    required this.ingredient,
+    this.categoryId,
+    this.addedBy,
+    this.checked = false,
+    this.checkedBy,
+  });
 
   final FridgeItem ingredient;
 
@@ -17,6 +26,11 @@ class ShoppingItem extends Equatable {
 
   /// The member who added the item.
   final EntityId? addedBy;
+
+  final bool checked;
+
+  /// The member who checked the item.
+  final EntityId? checkedBy;
 
   EntityId? get id => ingredient.id;
 
@@ -33,8 +47,24 @@ class ShoppingItem extends Equatable {
     ingredient: ingredient,
     categoryId: categoryId,
     addedBy: addedBy,
+    checked: checked,
+    checkedBy: checkedBy,
+  );
+
+  ShoppingItem withChecked(bool checked, {EntityId? by}) => ShoppingItem(
+    ingredient: ingredient,
+    categoryId: categoryId,
+    addedBy: addedBy,
+    checked: checked,
+    checkedBy: checked ? by : null,
   );
 
   @override
-  List<Object?> get props => [ingredient, categoryId, addedBy];
+  List<Object?> get props => [
+    ingredient,
+    categoryId,
+    addedBy,
+    checked,
+    checkedBy,
+  ];
 }

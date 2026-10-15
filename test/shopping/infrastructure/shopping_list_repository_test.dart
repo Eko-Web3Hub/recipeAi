@@ -120,6 +120,42 @@ void main() {
     expect((await listDoc(list.id))['itemCount'], 1);
   });
 
+  test('checks items, then removes and restores them at once', () async {
+    final list = await repository.createList(
+      uid,
+      'Ana',
+      'Week',
+      DateTime(2026, 10),
+    );
+    final first = await repository.addItem(list.id, tomatoes);
+    final second = await repository.addItem(
+      list.id,
+      ShoppingItem(ingredient: FridgeItem.draft(name: 'Rice')),
+    );
+
+    await repository.setChecked(list.id, first.id!, checked: true, uid: uid);
+    var items = await repository.watchItems(list.id).first;
+    expect(items.first.checked, isTrue);
+    expect(items.first.checkedBy, uid);
+    expect(items.last.checked, isFalse);
+
+    await repository.setChecked(list.id, first.id!, checked: false, uid: uid);
+    items = await repository.watchItems(list.id).first;
+    expect(items.first.checked, isFalse);
+    expect(items.first.checkedBy, isNull);
+
+    await repository.removeItems(list.id, [first.id!, second.id!]);
+    expect(await repository.watchItems(list.id).first, isEmpty);
+    expect((await listDoc(list.id))['itemCount'], 0);
+
+    final checked = first.withChecked(true, by: uid);
+    await repository.restoreItems(list.id, [checked, second]);
+    items = await repository.watchItems(list.id).first;
+    expect(items.map((item) => item.id), [first.id, second.id]);
+    expect(items.first.checked, isTrue);
+    expect((await listDoc(list.id))['itemCount'], 2);
+  });
+
   group('collaboration', () {
     test('an invitation link lets another user join the list', () async {
       final list = await repository.createList(

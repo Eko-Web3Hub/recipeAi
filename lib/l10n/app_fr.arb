@@ -1392,15 +1392,6 @@
     "@shoppingListOtherAisle": {
         "description": "Shopping list: shoppingListOtherAisle"
     },
-    "shoppingListBought": "{name} ajouté à ton frigo",
-    "@shoppingListBought": {
-        "description": "Shopping list: shoppingListBought",
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
     "shoppingListMarkBought": "Marquer {name} comme acheté",
     "@shoppingListMarkBought": {
         "description": "Shopping list: shoppingListMarkBought",
@@ -1538,5 +1529,31 @@
     "shoppingListRemoved": "Tu ne fais plus partie de cette liste",
     "@shoppingListRemoved": {
         "description": "Shopping list: shoppingListRemoved"
+    },
+    "shoppingListCheckedSection": "Déjà acheté",
+    "@shoppingListCheckedSection": {
+        "description": "Shopping list: shoppingListCheckedSection"
+    },
+    "shoppingListMoveToFridge": "Ajouter les ingrédients à mon frigo",
+    "@shoppingListMoveToFridge": {
+        "description": "Shopping list: shoppingListMoveToFridge"
+    },
+    "shoppingListMovedToFridge": "{count, plural, =1{1 ingrédient ajouté à ton frigo} other{{count} ingrédients ajoutés à ton frigo}}",
+    "@shoppingListMovedToFridge": {
+        "description": "Shopping list: shoppingListMovedToFridge",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "shoppingListUncheck": "Remettre {name} dans la liste",
+    "@shoppingListUncheck": {
+        "description": "Shopping list: shoppingListUncheck",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     }
 }
