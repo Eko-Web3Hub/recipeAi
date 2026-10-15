@@ -3,10 +3,14 @@ import 'package:recipe_ai/user_preferences/domain/model/user_preference.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 const dietProfileStepKey = 'diet_profile';
+
+/// The "Un point d'attention pour tes repas ?" step. It kept the key (and the
+/// option keys) of the former chronic disease step, read by the backend.
 const chronicDiseaseStepKey = 'chronic_disease';
 
 /// Steps whose answers describe the user's diet on the home screen
-/// ("Adaptées à tes préférences · Végétarien, Diabète") and the profile badges.
+/// ("Adaptées à tes préférences · Végétarien, Limiter le sel") and the profile
+/// badges.
 const dietarySummaryStepKeys = [dietProfileStepKey, chronicDiseaseStepKey];
 
 /// A picked diet or chronic disease option, with the step it answers so the

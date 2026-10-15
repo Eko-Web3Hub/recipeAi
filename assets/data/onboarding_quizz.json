@@ -357,75 +357,110 @@
     "kind": "options",
     "selectionMode": "multiple",
     "tileStyle": "smallDot",
-    "isRequired": true,
-    "exclusiveOptionKey": "no_chronic_disease",
+    "isRequired": false,
     "title": {
-      "fr": "As-tu une maladie chronique ?",
-      "en": "Do you have a chronic condition?"
+      "fr": "Un point d'attention pour tes repas ?",
+      "en": "Anything to watch in your meals?"
     },
     "helper": {
-      "fr": "Pour adapter les apports en sucre, sel et matières grasses. Cette information reste confidentielle.",
-      "en": "To adjust sugar, salt and fat intake. This stays confidential."
+      "fr": "On filtre simplement les recettes proposées. Ce n'est ni un régime, ni un conseil médical.",
+      "en": "We simply filter the suggested recipes. It is neither a diet nor medical advice."
     },
     "footnote": {
-      "fr": "Eat'Easy n'est pas un dispositif médical. Consulte un professionnel de santé pour tout suivi.",
-      "en": "Eat'Easy is not a medical device. Talk to a healthcare professional for any follow-up."
+      "fr": "Eat'Easy n'est pas un dispositif médical. Pour un suivi, parles-en à un professionnel de santé.",
+      "en": "Eat'Easy is not a medical device. For any follow-up, talk to a healthcare professional."
     },
-    "otherField": {
-      "preferenceKey": "chronicDiseaseOther",
-      "hint": {
-        "fr": "Autre",
-        "en": "Other"
+    "consent": {
+      "preferenceKey": "healthDataConsent",
+      "label": {
+        "fr": "J'accepte qu'Eat'Easy utilise cette donnée de santé uniquement pour filtrer mes recettes. Supprimable à tout moment depuis mon profil.",
+        "en": "I agree that Eat'Easy uses this health data only to filter my recipes. It can be deleted at any time from my profile."
       }
     },
     "options": [
       {
-        "key": "no_chronic_disease",
-        "label": {
-          "fr": "Aucune",
-          "en": "None"
-        },
-        "color": "#49A525"
-      },
-      {
         "key": "diabetes",
         "label": {
-          "fr": "Diabète",
-          "en": "Diabetes"
+          "fr": "Surveiller ma glycémie",
+          "en": "Watch my blood sugar"
+        },
+        "description": {
+          "fr": "Recettes à index glycémique modéré",
+          "en": "Recipes with a moderate glycemic index"
         },
         "color": "#D8A13A"
       },
       {
+        "key": "hypertension",
+        "label": {
+          "fr": "Limiter le sel",
+          "en": "Limit salt"
+        },
+        "description": {
+          "fr": "Moins de sel ajouté, plus d’épices et d’herbes",
+          "en": "Less added salt, more spices and herbs"
+        },
+        "color": "#A5761F"
+      },
+      {
         "key": "cardiovascular_disease",
         "label": {
-          "fr": "Maladie cardiovasculaire",
-          "en": "Cardiovascular disease"
+          "fr": "Limiter les graisses",
+          "en": "Limit fat"
+        },
+        "description": {
+          "fr": "Moins de graisses saturées",
+          "en": "Less saturated fat"
         },
         "color": "#C96F4A"
       },
       {
         "key": "overweight",
         "label": {
-          "fr": "Surpoids",
-          "en": "Overweight"
+          "fr": "Manger plus léger",
+          "en": "Eat lighter"
+        },
+        "description": {
+          "fr": "Portions et apports allégés",
+          "en": "Lighter portions and intake"
         },
         "color": "#7A9B3F"
       },
       {
-        "key": "hypertension",
-        "label": {
-          "fr": "Hypertension artérielle élevée",
-          "en": "High blood pressure"
-        },
-        "color": "#A5761F"
-      },
-      {
         "key": "smop",
         "label": {
-          "fr": "SMOP (ex SOPK)",
-          "en": "PCOS"
+          "fr": "Limiter les sucres rapides",
+          "en": "Limit fast sugars"
         },
-        "color": "#8CA0C9"
+        "description": {
+          "fr": "Glucides complets privilégiés",
+          "en": "Whole carbohydrates preferred"
+        },
+        "color": "#8EA9C9"
+      },
+      {
+        "key": "anti_inflammatory",
+        "label": {
+          "fr": "Alimentation anti-inflammatoire",
+          "en": "Anti-inflammatory diet"
+        },
+        "description": {
+          "fr": "Oméga-3, légumes colorés, moins de produits ultra-transformés",
+          "en": "Omega-3, colorful vegetables, fewer ultra-processed foods"
+        },
+        "color": "#5F8F7A"
+      },
+      {
+        "key": "mass_gain",
+        "label": {
+          "fr": "Prise de masse",
+          "en": "Muscle gain"
+        },
+        "description": {
+          "fr": "Plus de protéines, portions et apports renforcés",
+          "en": "More protein, bigger portions and intake"
+        },
+        "color": "#B0645C"
       }
     ]
   }

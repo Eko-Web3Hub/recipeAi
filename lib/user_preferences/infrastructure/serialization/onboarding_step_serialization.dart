@@ -61,6 +61,7 @@ abstract class OnboardingStepSerialization {
       otherField: _otherField(json['otherField']),
       isRequired: json['isRequired'] != false,
       footnote: _localized(json['footnote']),
+      consent: _consent(json['consent']),
     );
   }
 
@@ -108,6 +109,16 @@ abstract class OnboardingStepSerialization {
       hint: _localized(json['hint']) ?? const LocalizedString({}),
       title: _localized(json['title']),
     );
+  }
+
+  static OnboardingConsent? _consent(dynamic raw) {
+    final json = _map(raw);
+    if (json == null) return null;
+    final preferenceKey = _string(json['preferenceKey']);
+    final label = _localized(json['label']);
+    if (preferenceKey == null || label == null) return null;
+
+    return OnboardingConsent(preferenceKey: preferenceKey, label: label);
   }
 
   /// `{fr: …, en: …}`, or a plain string used for every language.

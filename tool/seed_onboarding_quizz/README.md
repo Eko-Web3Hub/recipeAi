@@ -16,6 +16,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json node seed.mjs
 
 - Only the missing steps are created: console edits are kept.
 - `--overwrite` replaces every step with the bundled version.
+- `--only <stepKey>` limits the run to one step, e.g. `--only chronic_disease --overwrite` to push a single step without touching the others.
 - `FIREBASE_PROJECT_ID` overrides the project (default `recipe-ai-5e261`).
 - The service account key comes from Firebase console › Project settings ›
   Service accounts. Never commit it.
@@ -47,6 +48,7 @@ A step document:
 | `exclusiveOptionKey` | Option that clears the others ("Aucune"). |
 | `title`, `helper`, `footnote` | `{fr: "…", en: "…"}`. |
 | `otherField` | Free text field: `{preferenceKey, hint: {fr, en}, title?: {fr, en}}`. |
+| `consent` | Consent asked once an option is picked (health data): `{preferenceKey, label: {fr, en}}`. The step cannot be validated with a selection and without it. Saved as `<preferenceKey>: bool` and `<preferenceKey>At` (ISO date). |
 | `options` | `[{key, label: {fr, en}, description?: {fr, en}, color?: "#RRGGBB", icon?: "name"}]`, in display order. |
 | `sections` | `chips` steps only: `[{title: {fr, en}, options: [...]}]`. |
 

@@ -60,8 +60,10 @@ class OnboardingQuizzController extends Cubit<OnboardingQuizzState> {
 
   /// Whether [step] is answered enough to move past it.
   bool isStepComplete(OnboardingStep step) {
-    if (!step.isRequired) return true;
     final answers = state.answers;
+    // Even an optional step needs its consent once an option is picked.
+    if (isConsentMissing(step)) return false;
+    if (!step.isRequired) return true;
 
     switch (step.kind) {
       case OnboardingStepKind.morphology:
@@ -74,6 +76,15 @@ class OnboardingQuizzController extends Cubit<OnboardingQuizzState> {
             (otherField != null &&
                 answers.textOf(otherField.preferenceKey).trim().isNotEmpty);
     }
+  }
+
+  /// Whether an option of [step] is picked without the consent it asks
+  /// for (health data).
+  bool isConsentMissing(OnboardingStep step) {
+    final consent = step.consent;
+    return consent != null &&
+        state.answers.selectionsOf(step.key).isNotEmpty &&
+        !state.answers.hasConsented(consent.preferenceKey);
   }
 
   bool get canContinue => isStepComplete(currentStep);
@@ -129,6 +140,17 @@ class OnboardingQuizzController extends Cubit<OnboardingQuizzState> {
       texts: {...state.answers.texts, preferenceKey: value},
     ),
   );
+
+  /// Gives or withdraws the consent [preferenceKey], dated now when given.
+  void setConsent(String preferenceKey, bool accepted) {
+    final consents = {...state.answers.consents};
+    if (accepted) {
+      consents[preferenceKey] = DateTime.now().toUtc().toIso8601String();
+    } else {
+      consents.remove(preferenceKey);
+    }
+    _emitAnswers(state.answers.copyWith(consents: consents));
+  }
 
   void next() {
     if (isLastStep || !canContinue) return;

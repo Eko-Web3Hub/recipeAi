@@ -20,6 +20,7 @@ class OnboardingStepScaffold extends StatelessWidget {
     this.onBack,
     this.isLoading = false,
     this.footnote,
+    this.bottomAccessory,
   });
 
   /// 1 based.
@@ -35,6 +36,10 @@ class OnboardingStepScaffold extends StatelessWidget {
   final VoidCallback? onBack;
   final bool isLoading;
   final String? footnote;
+
+  /// Shown above the footnote, always in sight next to the CTA (the consent
+  /// a selection asks for, which blocks the CTA until given).
+  final Widget? bottomAccessory;
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +110,17 @@ class OnboardingStepScaffold extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              AnimatedSize(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOut,
+                alignment: Alignment.bottomCenter,
+                child: bottomAccessory == null
+                    ? const SizedBox(width: double.infinity)
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: bottomAccessory,
+                      ),
+              ),
               if (footnote != null) ...[
                 Text(
                   footnote!,
