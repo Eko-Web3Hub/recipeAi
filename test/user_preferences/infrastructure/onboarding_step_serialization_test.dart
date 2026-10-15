@@ -57,6 +57,7 @@ void main() {
           ?step.footnote,
           ?step.otherField?.hint,
           ?step.otherField?.title,
+          ?step.consent?.label,
           for (final section in step.sections) section.title,
           for (final option in step.allOptions) ...[
             option.label,
@@ -168,6 +169,74 @@ void main() {
       expect(onboardingColorOf('#C96F4A').toARGB32(), 0xFFC96F4A);
       expect(onboardingColorOf('C96F4A').toARGB32(), 0xFFC96F4A);
       expect(onboardingColorOf('#zzz'), onboardingColorOf(null));
+    });
+  });
+
+  group('meal focus step', () {
+    final step = bundledCatalogue().firstWhere(
+      (step) => step.key == chronicDiseaseStepKey,
+    );
+
+    test('is optional, without "aucune" nor free text', () {
+      expect(step.isRequired, isFalse);
+      expect(step.exclusiveOptionKey, isNull);
+      expect(step.otherField, isNull);
+    });
+
+    test('keeps the option keys read by the backend', () {
+      expect(step.options.map((option) => option.key), [
+        'diabetes',
+        'hypertension',
+        'cardiovascular_disease',
+        'overweight',
+        'smop',
+        'anti_inflammatory',
+        'mass_gain',
+      ]);
+      for (final option in step.options) {
+        expect(option.description, isNotNull, reason: option.key);
+      }
+    });
+
+    test('asks for the health data consent', () {
+      expect(step.consent?.preferenceKey, healthDataConsentKey);
+    });
+  });
+
+  group('consent', () {
+    test('is read with its preference key and label', () {
+      final step = OnboardingStepSerialization.fromJson('health', {
+        ..._optionStep(),
+        'consent': {
+          'preferenceKey': 'healthDataConsent',
+          'label': {'fr': "J'accepte", 'en': 'I agree'},
+        },
+      });
+
+      expect(
+        step!.consent,
+        const OnboardingConsent(
+          preferenceKey: 'healthDataConsent',
+          label: LocalizedString({'fr': "J'accepte", 'en': 'I agree'}),
+        ),
+      );
+    });
+
+    test('is dropped when it misses its key or label', () {
+      for (final consent in [
+        {'preferenceKey': 'healthDataConsent'},
+        {
+          'label': {'fr': "J'accepte"},
+        },
+        'yes',
+      ]) {
+        final step = OnboardingStepSerialization.fromJson('health', {
+          ..._optionStep(),
+          'consent': consent,
+        });
+
+        expect(step!.consent, isNull, reason: '$consent');
+      }
     });
   });
 }

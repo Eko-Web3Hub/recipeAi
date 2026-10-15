@@ -9,9 +9,12 @@ const dietStepKey = 'diet_profile';
 const activityStepKey = 'activity_level';
 const goalsStepKey = 'goals';
 const dietaryPreferencesStepKey = 'dietary_preferences';
+
+/// The "Un point d'attention pour tes repas ?" step, which kept the key of
+/// the former chronic disease step.
 const chronicDiseaseStepKey = 'chronic_disease';
 
-const chronicDiseaseOtherPreferenceKey = 'chronicDiseaseOther';
+const healthDataConsentKey = 'healthDataConsent';
 const dislikedFoodsPreferenceKey = 'dislikedFoods';
 
 /// Raw content of the catalogue bundled with the app (and seeded to

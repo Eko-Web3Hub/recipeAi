@@ -10,6 +10,7 @@ import 'package:recipe_ai/user_preferences/application/user_preference_service.d
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
 import 'package:recipe_ai/user_preferences/domain/repositories/onboarding_quizz_repository.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/onboarding_consent_tile.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_step_scaffold.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_catalogue_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_display.dart';
@@ -87,6 +88,21 @@ class _UserPreferencesBody extends StatelessWidget {
                 title: step.title.text,
                 helper: step.helper.text,
                 footnote: step.footnote?.text,
+                bottomAccessory: switch (step.consent) {
+                  final consent?
+                      when state.answers.selectionsOf(step.key).isNotEmpty =>
+                    OnboardingConsentTile(
+                      label: consent.label.text,
+                      accepted: state.answers.hasConsented(
+                        consent.preferenceKey,
+                      ),
+                      onChanged: (accepted) => controller.setConsent(
+                        consent.preferenceKey,
+                        accepted,
+                      ),
+                    ),
+                  _ => null,
+                },
                 onBack: state.currentIndex == 0 ? null : controller.previous,
                 isLoading: state.status == OnboardingQuizzStatus.submitting,
                 ctaLabel: isLast
@@ -137,6 +153,9 @@ class _StepContent extends StatelessWidget {
           answers: state.answers,
           onToggle: (optionKey) => controller.toggleOption(step.key, optionKey),
           onTextChanged: controller.setText,
+          onConsentChanged: controller.setConsent,
+          // Shown by the scaffold, next to "Terminer".
+          showConsent: false,
         );
       case OnboardingStepKind.chips:
         return ChipsStep(

@@ -27,6 +27,10 @@ void main() {
   const uid = EntityId('uid');
   final catalogue = bundledCatalogue();
 
+  final mealFocusStep = catalogue.firstWhere(
+    (step) => step.key == chronicDiseaseStepKey,
+  );
+
   setUpAll(() {
     registerFallbackValue(uid);
     registerFallbackValue(const UserPreference({}));
@@ -57,7 +61,6 @@ void main() {
     sut.setGender(UserGender.female);
     sut.toggleOption(activityStepKey, 'sedentary');
     sut.toggleOption(goalsStepKey, 'detox');
-    sut.toggleOption(chronicDiseaseStepKey, 'no_chronic_disease');
   }
 
   group('navigation', () {
@@ -116,27 +119,38 @@ void main() {
       expect(sut.canContinue, isFalse);
     });
 
-    test('the chronic disease step accepts "aucune" or a free text', () {
+    test('the meal focus step is optional', () {
       final sut = buildSut();
-      final step = catalogue.firstWhere(
-        (step) => step.key == chronicDiseaseStepKey,
-      );
 
-      expect(sut.isStepComplete(step), isFalse);
+      expect(sut.isStepComplete(mealFocusStep), isTrue);
+    });
 
-      sut.setText(chronicDiseaseOtherPreferenceKey, '   ');
-      expect(sut.isStepComplete(step), isFalse);
+    test('a picked meal focus needs the health data consent', () {
+      final sut = buildSut();
 
-      sut.setText(chronicDiseaseOtherPreferenceKey, 'asthme');
-      expect(sut.isStepComplete(step), isTrue);
-
-      sut.setText(chronicDiseaseOtherPreferenceKey, '');
       sut.toggleOption(chronicDiseaseStepKey, 'diabetes');
-      sut.toggleOption(chronicDiseaseStepKey, 'no_chronic_disease');
-      expect(sut.state.answers.selectionsOf(chronicDiseaseStepKey), {
-        'no_chronic_disease',
-      });
-      expect(sut.isStepComplete(step), isTrue);
+      expect(sut.isStepComplete(mealFocusStep), isFalse);
+      expect(sut.isConsentMissing(mealFocusStep), isTrue);
+
+      sut.setConsent(healthDataConsentKey, true);
+      expect(sut.isStepComplete(mealFocusStep), isTrue);
+
+      sut.setConsent(healthDataConsentKey, false);
+      expect(sut.isStepComplete(mealFocusStep), isFalse);
+
+      // Nothing picked: no health data, no consent needed.
+      sut.toggleOption(chronicDiseaseStepKey, 'diabetes');
+      expect(sut.isStepComplete(mealFocusStep), isTrue);
+    });
+
+    test('does not submit a meal focus without the consent', () async {
+      final sut = buildSut();
+      answerRequiredSteps(sut);
+      sut.toggleOption(chronicDiseaseStepKey, 'mass_gain');
+
+      await sut.submit();
+
+      verifyNever(() => repository.save(any(), any()));
     });
 
     test('the dietary preferences step is optional', () {
@@ -231,7 +245,8 @@ void main() {
       sut.toggleOption(dietStepKey, 'vegan');
       sut.toggleOption(activityStepKey, 'athlete');
       sut.toggleOption(dietaryPreferencesStepKey, 'halal');
-      sut.setText(chronicDiseaseOtherPreferenceKey, '  asthme ');
+      sut.toggleOption(chronicDiseaseStepKey, 'hypertension');
+      sut.setConsent(healthDataConsentKey, true);
       sut.setText(dislikedFoodsPreferenceKey, ' olives ');
 
       await sut.submit();
@@ -247,7 +262,16 @@ void main() {
       expect(saved.preferences[genderPreferenceKey], 'female');
       expect(saved.preferences[heightPreferenceKey], 170);
       expect(saved.preferences[bmiPreferenceKey], 23.5);
-      expect(saved.preferences[chronicDiseaseOtherPreferenceKey], 'asthme');
+      expect(saved.preferences['hypertension'], true);
+      expect(saved.preferences['mass_gain'], false);
+      expect(saved.preferences[healthDataConsentKey], true);
+      expect(
+        DateTime.tryParse(
+          saved.preferences[consentDatePreferenceKey(healthDataConsentKey)]
+              as String,
+        ),
+        isNotNull,
+      );
       expect(saved.preferences['halal'], true);
       expect(saved.preferences['allergy_egg'], false);
       expect(saved.preferences[dislikedFoodsPreferenceKey], 'olives');
@@ -258,6 +282,22 @@ void main() {
       for (final key in allOptionKeysOf(catalogue)) {
         expect(saved.preferences.containsKey(key), isTrue, reason: key);
       }
+    });
+
+    test('writes no consent without a meal focus', () async {
+      final sut = buildSut();
+      answerRequiredSteps(sut);
+
+      await sut.submit();
+
+      final saved =
+          verify(() => repository.save(uid, captureAny())).captured.single
+              as UserPreference;
+      expect(saved.preferences[healthDataConsentKey], false);
+      expect(
+        saved.preferences[consentDatePreferenceKey(healthDataConsentKey)],
+        isNull,
+      );
     });
 
     test('reports an error and stays editable when the save fails', () async {
@@ -276,10 +316,10 @@ void main() {
       final sut = buildSut();
       sut.toggleOption(dietStepKey, 'lactose_free');
       sut.toggleOption(chronicDiseaseStepKey, 'diabetes');
+      sut.setConsent(healthDataConsentKey, true);
       sut.setGender(UserGender.other);
       sut.setHeight(180);
       sut.setWeight(75);
-      sut.setText(chronicDiseaseOtherPreferenceKey, 'asthme');
       sut.toggleOption(dietaryPreferencesStepKey, 'allergy_soy');
       sut.setText(dislikedFoodsPreferenceKey, 'coriandre');
 
@@ -289,6 +329,22 @@ void main() {
       );
 
       expect(restored, sut.state.answers);
+    });
+
+    test('unpicking every meal focus withdraws the consent', () {
+      final sut = buildSut();
+      sut.toggleOption(chronicDiseaseStepKey, 'smop');
+      sut.setConsent(healthDataConsentKey, true);
+      sut.toggleOption(chronicDiseaseStepKey, 'smop');
+
+      final saved = buildUserPreferenceFrom(
+        sut.state.answers,
+        steps: catalogue,
+      );
+      final restored = answersFrom(saved, steps: catalogue);
+
+      expect(saved.preferences[healthDataConsentKey], false);
+      expect(restored.hasConsented(healthDataConsentKey), isFalse);
     });
 
     test('falls back to the defaults on a legacy document', () {

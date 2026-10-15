@@ -21,6 +21,7 @@ class OnboardingAnswers extends Equatable {
     this.heightCm = defaultHeightCm,
     this.weightKg = defaultWeightKg,
     this.texts = const {},
+    this.consents = const {},
   });
 
   static const defaultHeightCm = 170;
@@ -40,12 +41,19 @@ class OnboardingAnswers extends Equatable {
   /// Free text fields, per `OnboardingOtherField.preferenceKey`.
   final Map<String, String> texts;
 
+  /// Consents given, per `OnboardingConsent.preferenceKey`: the ISO-8601
+  /// date they were given at (empty when unknown).
+  final Map<String, String> consents;
+
   Set<String> selectionsOf(String stepKey) => selections[stepKey] ?? const {};
 
   bool isSelected(String stepKey, String optionKey) =>
       selectionsOf(stepKey).contains(optionKey);
 
   String textOf(String preferenceKey) => texts[preferenceKey] ?? '';
+
+  bool hasConsented(String preferenceKey) =>
+      consents.containsKey(preferenceKey);
 
   /// Body mass index, rounded to one decimal like the mockup ("23,5").
   double get bmi {
@@ -61,6 +69,7 @@ class OnboardingAnswers extends Equatable {
     int? heightCm,
     int? weightKg,
     Map<String, String>? texts,
+    Map<String, String>? consents,
   }) {
     return OnboardingAnswers(
       selections: selections ?? this.selections,
@@ -68,6 +77,7 @@ class OnboardingAnswers extends Equatable {
       heightCm: heightCm ?? this.heightCm,
       weightKg: weightKg ?? this.weightKg,
       texts: texts ?? this.texts,
+      consents: consents ?? this.consents,
     );
   }
 
@@ -88,5 +98,6 @@ class OnboardingAnswers extends Equatable {
       for (final entry in texts.entries)
         if (entry.value.isNotEmpty) entry.key: entry.value,
     },
+    consents,
   ];
 }

@@ -126,6 +126,19 @@ class _UserPreferenceForm extends StatelessWidget {
                                 answers: quizzState.answers,
                                 controller: quizzController,
                               ),
+                              if (step.footnote case final footnote?) ...[
+                                const SizedBox(height: 10),
+                                Text(
+                                  footnote.text,
+                                  style: const TextStyle(
+                                    fontFamily: robotoFontFamily,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 11,
+                                    height: 1.45,
+                                    color: onboardingSubtleTextColor,
+                                  ),
+                                ),
+                              ],
                             ],
                           ],
                         ),
@@ -143,15 +156,24 @@ class _UserPreferenceForm extends StatelessWidget {
                                 label: appTexts.update,
                                 isLoading:
                                     state is UserPreferenceUpdateBtnLoading,
-                                onPressed: () => context
-                                    .read<UserPreferenceUpdateBtnController>()
-                                    .update(
-                                      buildUserPreferenceFrom(
-                                        quizzState.answers,
-                                        steps: quizzController.steps,
-                                      ),
-                                      DateTime.now(),
-                                    ),
+                                // A health option picked without its
+                                // consent cannot be saved.
+                                onPressed:
+                                    quizzController.steps.any(
+                                      quizzController.isConsentMissing,
+                                    )
+                                    ? null
+                                    : () => context
+                                          .read<
+                                            UserPreferenceUpdateBtnController
+                                          >()
+                                          .update(
+                                            buildUserPreferenceFrom(
+                                              quizzState.answers,
+                                              steps: quizzController.steps,
+                                            ),
+                                            DateTime.now(),
+                                          ),
                               );
                             },
                           ),
@@ -230,6 +252,7 @@ class _SectionContent extends StatelessWidget {
           answers: answers,
           onToggle: (optionKey) => controller.toggleOption(step.key, optionKey),
           onTextChanged: controller.setText,
+          onConsentChanged: controller.setConsent,
         );
       case OnboardingStepKind.chips:
         return ChipsStep(

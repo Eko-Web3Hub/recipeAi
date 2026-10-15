@@ -30,7 +30,8 @@ enum OptionTileStyle {
   /// 40px rounded icon tile (steps "activité" and "objectifs").
   iconTile,
 
-  /// 8px colored dot, square checkbox (step "maladies chroniques").
+  /// 8px colored dot, square checkbox (step "point d'attention pour tes
+  /// repas").
   smallDot,
 }
 
@@ -106,6 +107,20 @@ class OnboardingOtherField extends Equatable {
   List<Object?> get props => [preferenceKey, hint, title];
 }
 
+/// Consent asked once an option of the step is picked (health data). The
+/// step cannot be validated with a selection and without it.
+class OnboardingConsent extends Equatable {
+  const OnboardingConsent({required this.preferenceKey, required this.label});
+
+  /// Key the consent is written under in the user preferences, next to its
+  /// date under `<preferenceKey>At`.
+  final String preferenceKey;
+  final LocalizedString label;
+
+  @override
+  List<Object?> get props => [preferenceKey, label];
+}
+
 class OnboardingStep extends Equatable {
   const OnboardingStep({
     required this.key,
@@ -120,6 +135,7 @@ class OnboardingStep extends Equatable {
     this.otherField,
     this.isRequired = true,
     this.footnote,
+    this.consent,
   });
 
   final String key;
@@ -142,6 +158,7 @@ class OnboardingStep extends Equatable {
   /// A required step has to be answered before moving on.
   final bool isRequired;
   final LocalizedString? footnote;
+  final OnboardingConsent? consent;
 
   /// Options of the step, whether listed flat or grouped in sections.
   List<OnboardingOption> get allOptions => [
@@ -163,5 +180,6 @@ class OnboardingStep extends Equatable {
     otherField,
     isRequired,
     footnote,
+    consent,
   ];
 }
