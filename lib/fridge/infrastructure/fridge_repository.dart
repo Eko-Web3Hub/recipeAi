@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/fridge/domain/model/catalog_category.dart';
 import 'package:recipe_ai/fridge/domain/model/catalog_ingredient.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_unit.dart';
@@ -84,13 +85,20 @@ class IngredientCatalogRepository implements IIngredientCatalogRepository {
   static const String ingredientsCollection = 'ingredients';
 
   final FirebaseFirestore _firestore;
-  Future<List<CatalogIngredient>>? _catalog;
+  Future<_Catalog>? _catalog;
 
   IngredientCatalogRepository({required FirebaseFirestore firestore})
     : _firestore = firestore;
 
   @override
-  Future<List<CatalogIngredient>> loadCatalog() {
+  Future<List<CatalogIngredient>> loadCatalog() async =>
+      (await _load()).ingredients;
+
+  @override
+  Future<List<CatalogCategory>> loadCategories() async =>
+      (await _load()).categories;
+
+  Future<_Catalog> _load() {
     return _catalog ??= _fetchCatalog().catchError((Object error) {
       // Let the next call retry instead of caching the failure.
       _catalog = null;
@@ -98,7 +106,7 @@ class IngredientCatalogRepository implements IIngredientCatalogRepository {
     });
   }
 
-  Future<List<CatalogIngredient>> _fetchCatalog() async {
+  Future<_Catalog> _fetchCatalog() async {
     final categories = await _firestore.collection(categoriesCollection).get();
     final ingredientsByCategory = await Future.wait(
       categories.docs.map(
@@ -107,16 +115,45 @@ class IngredientCatalogRepository implements IIngredientCatalogRepository {
       ),
     );
 
-    return [
-      for (final snapshot in ingredientsByCategory)
-        for (final doc in snapshot.docs) _catalogIngredient(doc.id, doc.data()),
-    ];
+    return (
+      categories: _sorted(
+        categories.docs.map((doc) => _catalogCategory(doc.id, doc.data())),
+      ),
+      ingredients: [
+        for (final (index, snapshot) in ingredientsByCategory.indexed)
+          for (final doc in snapshot.docs)
+            _catalogIngredient(
+              doc.id,
+              doc.data(),
+              categoryId: categories.docs[index].id,
+            ),
+      ],
+    );
   }
+
+  /// Categories with an `order` first, then the others by name.
+  static List<CatalogCategory> _sorted(Iterable<CatalogCategory> categories) =>
+      categories.toList()..sort((a, b) {
+        final byOrder = (a.order ?? 1 << 30).compareTo(b.order ?? 1 << 30);
+        if (byOrder != 0) return byOrder;
+        return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+      });
+
+  static CatalogCategory _catalogCategory(
+    String id,
+    Map<String, dynamic> json,
+  ) => CatalogCategory(
+    id: id,
+    name: json['name'] as String? ?? id,
+    nameFr: json['nameFr'] as String?,
+    order: (json['order'] as num?)?.toInt(),
+  );
 
   static CatalogIngredient _catalogIngredient(
     String id,
-    Map<String, dynamic> json,
-  ) => CatalogIngredient(
+    Map<String, dynamic> json, {
+    required String categoryId,
+  }) => CatalogIngredient(
     id: id,
     name: json['name'] as String? ?? '',
     nameFr: json['nameFr'] as String?,
@@ -129,5 +166,11 @@ class IngredientCatalogRepository implements IIngredientCatalogRepository {
     aliases: (json['aliases'] as List<dynamic>? ?? const [])
         .whereType<String>()
         .toList(),
+    categoryId: categoryId,
   );
 }
+
+typedef _Catalog = ({
+  List<CatalogCategory> categories,
+  List<CatalogIngredient> ingredients,
+});

@@ -8,7 +8,7 @@ import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/fridge/domain/fridge_quantity.dart';
-import 'package:recipe_ai/fridge/domain/model/catalog_ingredient.dart';
+import 'package:recipe_ai/fridge/domain/ingredient_search.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_unit.dart';
 import 'package:recipe_ai/fridge/domain/repositories/fridge_repository.dart';
@@ -50,23 +50,6 @@ class FridgeErrorFeedback extends FridgeFeedback {
   const FridgeErrorFeedback(super.id);
 }
 
-class FridgeSuggestion extends Equatable {
-  const FridgeSuggestion({
-    required this.draft,
-    required this.isCustom,
-    required this.isInFridge,
-  });
-
-  final FridgeItem draft;
-
-  /// "Add « xxx »": no catalog ingredient matches the typed name.
-  final bool isCustom;
-  final bool isInFridge;
-
-  @override
-  List<Object?> get props => [draft, isCustom, isInFridge];
-}
-
 final class FridgeState extends Equatable {
   const FridgeState({
     this.status = FridgeStatus.loading,
@@ -86,7 +69,7 @@ final class FridgeState extends Equatable {
   /// Usual ingredients to offer as chips, already filtered out of [items].
   final List<FridgeItem> usuals;
   final String query;
-  final List<FridgeSuggestion> suggestions;
+  final List<IngredientSuggestion> suggestions;
 
   /// The query holds a quantity ("500 g tomates"): Enter adds it directly.
   final bool queryHasAmount;
@@ -99,7 +82,7 @@ final class FridgeState extends Equatable {
     List<FridgeItem>? items,
     List<FridgeItem>? usuals,
     String? query,
-    List<FridgeSuggestion>? suggestions,
+    List<IngredientSuggestion>? suggestions,
     bool? queryHasAmount,
     String? highlightedId,
     int? highlightToken,
@@ -130,41 +113,6 @@ final class FridgeState extends Equatable {
   ];
 }
 
-/// Offered while the user has no history of added ingredients.
-final defaultFridgeUsuals = [
-  FridgeItem.draft(name: 'Milk', nameFr: 'Lait', amount: 1, unit: FridgeUnit.l),
-  FridgeItem.draft(
-    name: 'Eggs',
-    nameFr: 'Œufs',
-    amount: 6,
-    unit: FridgeUnit.piece,
-  ),
-  FridgeItem.draft(
-    name: 'Chicken',
-    nameFr: 'Poulet',
-    amount: 1,
-    unit: FridgeUnit.kg,
-  ),
-  FridgeItem.draft(
-    name: 'Chili pepper',
-    nameFr: 'Piment',
-    amount: 5,
-    unit: FridgeUnit.piece,
-  ),
-  FridgeItem.draft(
-    name: 'Okra',
-    nameFr: 'Gombo',
-    amount: 1,
-    unit: FridgeUnit.tas,
-  ),
-  FridgeItem.draft(
-    name: 'Peanut oil',
-    nameFr: "Huile d'arachide",
-    amount: 1,
-    unit: FridgeUnit.l,
-  ),
-];
-
 class FridgeController extends Cubit<FridgeState> {
   FridgeController(
     this._fridgeRepository,
@@ -176,7 +124,6 @@ class FridgeController extends Cubit<FridgeState> {
     _loadCatalog();
   }
 
-  static const _maxSuggestions = 4;
   static const _maxUsuals = 5;
 
   final IFridgeRepository _fridgeRepository;
@@ -186,7 +133,7 @@ class FridgeController extends Cubit<FridgeState> {
 
   StreamSubscription<List<FridgeItem>>? _itemsSubscription;
   StreamSubscription<List<FridgeItem>>? _usualsSubscription;
-  List<CatalogIngredient> _catalog = const [];
+  IngredientSearch _search = const IngredientSearch();
   List<FridgeItem> _usualsHistory = const [];
   int _feedbackCount = 0;
 
@@ -220,7 +167,7 @@ class FridgeController extends Cubit<FridgeState> {
 
   Future<void> _loadCatalog() async {
     try {
-      _catalog = await _catalogRepository.loadCatalog();
+      _search = IngredientSearch(await _catalogRepository.loadCatalog());
       if (state.query.isNotEmpty) onQueryChanged(state.query);
     } catch (error) {
       // Search still works with free-text entries.
@@ -241,102 +188,27 @@ class FridgeController extends Cubit<FridgeState> {
     return null;
   }
 
-  CatalogIngredient? _catalogFor(FridgeItem item) {
-    for (final ingredient in _catalog) {
-      if (item.catalogId != null && ingredient.id == item.catalogId) {
-        return ingredient;
-      }
-    }
-    for (final ingredient in _catalog) {
-      if (ingredient.searchKeys.any(item.matchKeys.contains)) {
-        return ingredient;
-      }
-    }
-    return null;
-  }
-
-  CatalogIngredient? _exactMatch(String key) {
-    for (final ingredient in _catalog) {
-      if (ingredient.searchKeys.contains(key)) return ingredient;
-    }
-    return null;
-  }
-
   /// Units offered first in the quantity sheet of [item], starting with its
   /// current unit.
-  List<FridgeUnit> unitsFor(FridgeItem item) {
-    final units =
-        _catalogFor(item)?.suggestedUnits ?? FridgeUnit.related(item.unit);
-    return [item.unit, ...units.where((unit) => unit != item.unit)];
-  }
+  List<FridgeUnit> unitsFor(FridgeItem item) => _search.unitsFor(item);
 
   /// A usual chip turned into a draft, completed with the catalog when the
   /// ingredient is found in it.
-  FridgeItem draftForUsual(FridgeItem usual) {
-    final ingredient = _catalogFor(usual);
-    if (ingredient == null) return usual;
-    return FridgeItem.draft(
-      name: ingredient.name,
-      nameFr: ingredient.nameFr ?? usual.nameFr,
-      amount: usual.amount,
-      unit: usual.unit,
-      catalogId: ingredient.id,
-    );
-  }
+  FridgeItem draftForUsual(FridgeItem usual) => _search.draftForUsual(usual);
 
   void onQueryChanged(String query) {
-    final parsed = parseExpress(query);
-    final key = normalizeKey(parsed.name);
-    if (key.isEmpty) {
-      safeEmit(
-        state.copyWith(query: query, suggestions: [], queryHasAmount: false),
-      );
-      return;
-    }
-
-    final exact = _exactMatch(key);
-    final startsWith = <CatalogIngredient>[];
-    final wordStartsWith = <CatalogIngredient>[];
-    for (final ingredient in _catalog) {
-      if (ingredient == exact) continue;
-      final keys = ingredient.searchKeys;
-      if (keys.any((name) => name.startsWith(key))) {
-        startsWith.add(ingredient);
-      } else if (keys.any(
-        (name) => name.split(' ').any((word) => word.startsWith(key)),
-      )) {
-        wordStartsWith.add(ingredient);
-      }
-    }
-
-    final matches = [
-      if (exact != null) exact,
-      ...startsWith,
-      ...wordStartsWith,
-    ].take(_maxSuggestions);
-
-    final suggestions = [
-      for (final ingredient in matches)
-        _suggestion(resolveDraft(parsed, ingredient), isCustom: false),
-      if (exact == null && parsed.name.trim().length > 1)
-        _suggestion(resolveDraft(parsed, null), isCustom: true),
-    ];
-
+    final result = _search.search(
+      query,
+      isAlreadyAdded: (draft) => existingFor(draft) != null,
+    );
     safeEmit(
       state.copyWith(
         query: query,
-        suggestions: suggestions,
-        queryHasAmount: parsed.hasAmount,
+        suggestions: result.suggestions,
+        queryHasAmount: result.hasAmount,
       ),
     );
   }
-
-  FridgeSuggestion _suggestion(FridgeItem draft, {required bool isCustom}) =>
-      FridgeSuggestion(
-        draft: draft,
-        isCustom: isCustom,
-        isInFridge: existingFor(draft) != null,
-      );
 
   void clearQuery() => safeEmit(
     state.copyWith(query: '', suggestions: [], queryHasAmount: false),

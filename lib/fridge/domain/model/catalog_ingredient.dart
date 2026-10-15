@@ -15,6 +15,7 @@ class CatalogIngredient extends Equatable {
     this.defaultAmount,
     this.units = const [],
     this.aliases = const [],
+    this.categoryId,
   });
 
   final String id;
@@ -24,6 +25,9 @@ class CatalogIngredient extends Equatable {
   final double? defaultAmount;
   final List<FridgeUnit> units;
   final List<String> aliases;
+
+  /// The catalog category the ingredient belongs to, used as its aisle.
+  final String? categoryId;
 
   String displayName(String languageCode) =>
       languageCode == 'fr' && (nameFr?.isNotEmpty ?? false) ? nameFr! : name;
@@ -49,5 +53,6 @@ class CatalogIngredient extends Equatable {
     defaultAmount,
     units,
     aliases,
+    categoryId,
   ];
 }

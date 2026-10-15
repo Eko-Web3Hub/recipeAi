@@ -1033,4 +1033,213 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get notificationSettingsBlocked =>
       'Les notifications sont bloquées dans les réglages de ton téléphone. Autorise Eat\'Easy pour les recevoir.';
+
+  @override
+  String get shoppingListsTitle => 'Mes listes de courses';
+
+  @override
+  String get shoppingListsEmptyTitle => 'Aucune liste pour l\'instant';
+
+  @override
+  String get shoppingListsEmptySubtitle =>
+      'Crée une liste pour préparer tes courses, rayon par rayon.';
+
+  @override
+  String get shoppingListsLoadError => 'Impossible de charger tes listes';
+
+  @override
+  String get shoppingListNew => 'Nouvelle liste';
+
+  @override
+  String get shoppingListEdit => 'Modifier la liste';
+
+  @override
+  String get shoppingListNameHint => 'Nom de la liste';
+
+  @override
+  String get shoppingListDateLabel => 'Date des courses';
+
+  @override
+  String get shoppingListCreate => 'Créer la liste';
+
+  @override
+  String get shoppingListRename => 'Modifier';
+
+  @override
+  String get shoppingListDelete => 'Supprimer';
+
+  @override
+  String shoppingListDeleteTitle(String name) {
+    return 'Supprimer « $name » ?';
+  }
+
+  @override
+  String get shoppingListDeleteBody =>
+      'La liste et tous ses articles seront supprimés.';
+
+  @override
+  String get shoppingListCancel => 'Annuler';
+
+  @override
+  String get shoppingListMore => 'Plus d\'options';
+
+  @override
+  String shoppingListItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count articles',
+      one: '1 article',
+      zero: 'Aucun article',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingListEmptyTitle => 'Ta liste est vide';
+
+  @override
+  String get shoppingListEmptySubtitle =>
+      'Ajoute les ingrédients à acheter, ils seront rangés par rayon.';
+
+  @override
+  String get shoppingListLoadError => 'Impossible de charger ta liste';
+
+  @override
+  String get shoppingListDeleted => 'Cette liste n\'existe plus';
+
+  @override
+  String get shoppingListAlreadyIn => 'déjà dans ta liste';
+
+  @override
+  String shoppingListAlreadyInToast(String name) {
+    return '$name est déjà dans ta liste';
+  }
+
+  @override
+  String get shoppingListAddToList => 'Ajouter à la liste';
+
+  @override
+  String get shoppingListOtherAisle => 'Autres';
+
+  @override
+  String shoppingListMarkBought(String name) {
+    return 'Marquer $name comme acheté';
+  }
+
+  @override
+  String get shoppingListMembers => 'Membres de la liste';
+
+  @override
+  String get shoppingListYou => 'Toi';
+
+  @override
+  String get shoppingListBack => 'Retour';
+
+  @override
+  String get shoppingListInvite => 'Inviter';
+
+  @override
+  String shoppingListInviteShareText(String name, String url) {
+    return 'Rejoins ma liste de courses « $name » sur Eat\'Easy 👇\n$url';
+  }
+
+  @override
+  String shoppingListMemberCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membres',
+      one: '1 membre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingListOwner => 'Propriétaire';
+
+  @override
+  String get shoppingListMemberUnknown => 'Membre';
+
+  @override
+  String get shoppingListRemoveMember => 'Retirer';
+
+  @override
+  String shoppingListRemoveMemberTitle(String name) {
+    return 'Retirer $name de la liste ?';
+  }
+
+  @override
+  String shoppingListRemoveMemberBody(String name) {
+    return '$name n\'aura plus accès à la liste, et le lien d\'invitation actuel ne fonctionnera plus.';
+  }
+
+  @override
+  String get shoppingListLeave => 'Quitter la liste';
+
+  @override
+  String shoppingListLeaveTitle(String name) {
+    return 'Quitter « $name » ?';
+  }
+
+  @override
+  String get shoppingListLeaveBody =>
+      'La liste disparaîtra de tes listes. Il te faudra une nouvelle invitation pour la rejoindre.';
+
+  @override
+  String get shoppingListLeaveAction => 'Quitter';
+
+  @override
+  String get shoppingListShared => 'Partagée';
+
+  @override
+  String get shoppingListJoinTitle => 'Invitation';
+
+  @override
+  String shoppingListJoinMessage(String inviter) {
+    return '$inviter t\'invite à rejoindre sa liste de courses';
+  }
+
+  @override
+  String get shoppingListJoinMessageAnonymous =>
+      'On t\'invite à rejoindre une liste de courses';
+
+  @override
+  String get shoppingListJoinAction => 'Rejoindre la liste';
+
+  @override
+  String get shoppingListJoinInvalid =>
+      'Ce lien d\'invitation n\'est plus valide';
+
+  @override
+  String get shoppingListJoinInvalidSubtitle =>
+      'Demande un nouveau lien à la personne qui t\'a invité.';
+
+  @override
+  String get shoppingListJoinError => 'Impossible de charger l\'invitation';
+
+  @override
+  String get shoppingListRemoved => 'Tu ne fais plus partie de cette liste';
+
+  @override
+  String get shoppingListCheckedSection => 'Déjà acheté';
+
+  @override
+  String get shoppingListMoveToFridge => 'Ajouter les ingrédients à mon frigo';
+
+  @override
+  String shoppingListMovedToFridge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ingrédients ajoutés à ton frigo',
+      one: '1 ingrédient ajouté à ton frigo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String shoppingListUncheck(String name) {
+    return 'Remettre $name dans la liste';
+  }
 }

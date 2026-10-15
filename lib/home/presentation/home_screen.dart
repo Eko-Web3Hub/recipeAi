@@ -233,19 +233,6 @@ class _HomeAvatar extends StatelessWidget {
   }
 }
 
-void _showComingSoon(BuildContext context) {
-  final appTexts = di<TranslationController>().currentLanguage;
-
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        appTexts.recipeDetailsComingSoon,
-        style: const TextStyle(fontFamily: robotoFontFamily),
-      ),
-    ),
-  );
-}
-
 /// Opens the live camera, then hands the captured photo to the same
 /// ingredient-photo recipe generation flow used by the AI action sheet.
 Future<void> _openIngredientCamera(BuildContext context) async {
@@ -269,7 +256,6 @@ class _QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(navigation): plug the list redirection once decided.
     // [IntrinsicHeight] keeps the three tiles the same height even when one
     // label wraps on two lines.
     return IntrinsicHeight(
@@ -282,7 +268,7 @@ class _QuickActions extends StatelessWidget {
               iconBackground: recipeLoaderGreenColor,
               icon: const _ShoppingListGlyph(),
               labelSelector: (lang) => lang.homeQuickActionList,
-              onTap: () => _showComingSoon(context),
+              onTap: () => context.push('/shopping-lists'),
             ),
           ),
           const Gap(10),
