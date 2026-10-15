@@ -80,7 +80,7 @@ class OnboardingOptionTile extends StatelessWidget {
             ),
             if (showCheckbox) ...[
               const SizedBox(width: 12),
-              _Checkbox(
+              OnboardingCheckbox(
                 selected: selected,
                 square: style == OptionTileStyle.smallDot,
               ),
@@ -129,8 +129,13 @@ class OnboardingOptionTile extends StatelessWidget {
   }
 }
 
-class _Checkbox extends StatelessWidget {
-  const _Checkbox({required this.selected, required this.square});
+/// Round or square checkbox of the quizz tiles.
+class OnboardingCheckbox extends StatelessWidget {
+  const OnboardingCheckbox({
+    super.key,
+    required this.selected,
+    required this.square,
+  });
 
   final bool selected;
   final bool square;

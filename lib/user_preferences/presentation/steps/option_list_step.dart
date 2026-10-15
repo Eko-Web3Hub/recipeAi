@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_answers.dart';
 import 'package:recipe_ai/user_preferences/domain/model/onboarding_step.dart';
+import 'package:recipe_ai/user_preferences/presentation/components/onboarding_consent_tile.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_option_tile.dart';
 import 'package:recipe_ai/user_preferences/presentation/onboarding_display.dart';
 import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-/// Options of a step, plus the free text field when the step has one
-/// ("Autre" on the chronic disease step).
+/// Options of a step, plus the free text field when the step has one, and
+/// its consent once an option is picked (health data).
 class OptionListStep extends StatefulWidget {
   const OptionListStep({
     super.key,
@@ -15,6 +16,8 @@ class OptionListStep extends StatefulWidget {
     required this.answers,
     required this.onToggle,
     required this.onTextChanged,
+    required this.onConsentChanged,
+    this.showConsent = true,
   });
 
   final OnboardingStep step;
@@ -23,6 +26,13 @@ class OptionListStep extends StatefulWidget {
 
   /// `(preferenceKey, text)` of the free text field.
   final void Function(String preferenceKey, String text) onTextChanged;
+
+  /// `(preferenceKey, accepted)` of the step consent.
+  final void Function(String preferenceKey, bool accepted) onConsentChanged;
+
+  /// False when the screen shows the consent itself, next to its CTA (see
+  /// `OnboardingStepScaffold.bottomAccessory`).
+  final bool showConsent;
 
   @override
   State<OptionListStep> createState() => _OptionListStepState();
@@ -65,6 +75,17 @@ class _OptionListStepState extends State<OptionListStep> {
             selected: widget.answers.isSelected(step.key, option.key),
             showCheckbox: showCheckbox,
             onTap: () => widget.onToggle(option.key),
+          ),
+        ],
+        if (step.consent case final consent?
+            when widget.showConsent &&
+                widget.answers.selectionsOf(step.key).isNotEmpty) ...[
+          const SizedBox(height: 14),
+          OnboardingConsentTile(
+            label: consent.label.text,
+            accepted: widget.answers.hasConsented(consent.preferenceKey),
+            onChanged: (accepted) =>
+                widget.onConsentChanged(consent.preferenceKey, accepted),
           ),
         ],
         if ((_otherController, step.otherField) case (

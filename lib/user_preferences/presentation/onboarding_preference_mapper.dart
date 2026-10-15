@@ -9,6 +9,9 @@ const heightPreferenceKey = 'heightCm';
 const weightPreferenceKey = 'weightKg';
 const bmiPreferenceKey = 'bmi';
 
+/// Key of the date a consent was given at, next to the consent itself.
+String consentDatePreferenceKey(String consentKey) => '${consentKey}At';
+
 /// Every option key of the catalogue, used to write the flat `{key: bool}` map
 /// the recipe backend reads.
 List<String> allOptionKeysOf(List<OnboardingStep> steps) => [
@@ -17,8 +20,11 @@ List<String> allOptionKeysOf(List<OnboardingStep> steps) => [
 ];
 
 /// Flattens the answers into the document the recipe backend reads:
-/// every option key with its boolean, the free texts, plus the typed
-/// morphology fields.
+/// every option key with its boolean, the free texts, the consents, plus the
+/// typed morphology fields.
+///
+/// A consent only stands while an option of its step is picked: unpicking
+/// them all withdraws it (and clears its date).
 UserPreference buildUserPreferenceFrom(
   OnboardingAnswers answers, {
   required List<OnboardingStep> steps,
@@ -32,11 +38,30 @@ UserPreference buildUserPreferenceFrom(
     for (final step in steps)
       if (step.otherField case final field?)
         field.preferenceKey: answers.textOf(field.preferenceKey).trim(),
+    for (final step in steps)
+      if (step.consent case final consent?)
+        ..._consentEntries(consent.preferenceKey, step, answers),
     if (answers.gender != null) genderPreferenceKey: answers.gender!.name,
     heightPreferenceKey: answers.heightCm,
     weightPreferenceKey: answers.weightKg,
     bmiPreferenceKey: answers.bmi,
   });
+}
+
+Map<String, dynamic> _consentEntries(
+  String consentKey,
+  OnboardingStep step,
+  OnboardingAnswers answers,
+) {
+  final given =
+      answers.selectionsOf(step.key).isNotEmpty &&
+      answers.hasConsented(consentKey);
+  final date = answers.consents[consentKey];
+  return {
+    consentKey: given,
+    consentDatePreferenceKey(consentKey):
+        given && date != null && date.isNotEmpty ? date : null,
+  };
 }
 
 /// Rebuilds the answers from a stored document, to pre-fill the quizz when the
@@ -68,6 +93,17 @@ OnboardingAnswers answersFrom(
         if (step.otherField case final field?)
           if (preferences[field.preferenceKey] case final String text)
             field.preferenceKey: text,
+    },
+    consents: {
+      for (final step in steps)
+        if (step.consent case final consent?)
+          if (preferences[consent.preferenceKey] == true)
+            consent.preferenceKey: switch (preferences[consentDatePreferenceKey(
+              consent.preferenceKey,
+            )]) {
+              final String date => date,
+              _ => '',
+            },
     },
   );
 }
