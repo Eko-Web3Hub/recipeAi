@@ -22,6 +22,7 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/receipe/presentation/cook_mode_controller.dart';
 import 'package:recipe_ai/receipe/presentation/food_fact_card.dart';
+import 'package:recipe_ai/receipe/presentation/recipe_source_card.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_cook/recipe_cook_ship.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_cook/recipe_cook_ship_controller.dart';
@@ -407,6 +408,12 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                         padding: const EdgeInsets.fromLTRB(20, 8, 20, 170),
                         child: Column(
                           children: [
+                            if (receipeDetailsState.userReceipeV2?.source
+                                case final source?)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: RecipeSourceCard(source: source),
+                              ),
                             if (receipe.foodFact case final foodFact?)
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 40.0),

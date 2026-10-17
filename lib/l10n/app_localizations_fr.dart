@@ -566,6 +566,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get recipeDetailsPreparationTitle => 'Préparation';
 
   @override
+  String get recipeDetailsSourceTitle => 'Source';
+
+  @override
+  String recipeDetailsSourceAuthor(String value) {
+    return 'Par $value';
+  }
+
+  @override
   String get cookModeStepLabel => 'Étape';
 
   @override

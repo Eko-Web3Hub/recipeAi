@@ -552,6 +552,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipeDetailsPreparationTitle => 'Preparation';
 
   @override
+  String get recipeDetailsSourceTitle => 'Source';
+
+  @override
+  String recipeDetailsSourceAuthor(String value) {
+    return 'By $value';
+  }
+
+  @override
   String get cookModeStepLabel => 'Step';
 
   @override
