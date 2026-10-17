@@ -682,6 +682,19 @@
     "@recipeDetailsPreparationTitle": {
         "description": "Titre de la section des étapes de préparation sur l'écran détail recette"
     },
+    "recipeDetailsSourceTitle": "Source",
+    "@recipeDetailsSourceTitle": {
+        "description": "Titre de l'encart indiquant la provenance de la recette, sur l'écran détail recette"
+    },
+    "recipeDetailsSourceAuthor": "Par {value}",
+    "@recipeDetailsSourceAuthor": {
+        "description": "Contenu de l'encart source quand la source est une personne, ex. 'Par Jamie Oliver'",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
     "cookModeStepLabel": "Étape",
     "@cookModeStepLabel": {
         "description": "Mot affiché avant le numéro de l'étape en mode cuisine (ex: \"Étape 2\")"
