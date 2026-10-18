@@ -1,14 +1,13 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
-import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 import 'package:recipe_ai/utils/safe_emit.dart';
@@ -30,10 +29,8 @@ class ReceipeDetailsState extends Equatable {
 class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
   ReceipeDetailsController(
     this.receipeId,
-    this.appLanguage,
     this.seconds,
-    this._authUserService,
-    this._userAccountMetaDataRepository,
+    this._translationController,
     this._userReceipeRepositoryV2,
   ) : super(const ReceipeDetailsState.loading()) {
     _loadRecipeUsingId();
@@ -41,10 +38,14 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
 
   ReceipeDetailsController.fromReceipe(
     UserRecipeV2 receipe,
-    this._authUserService,
-    this._userAccountMetaDataRepository,
+    this._translationController,
     this._userReceipeRepositoryV2,
-  ) : super(ReceipeDetailsState.loaded(receipe.receipeEn, receipe)) {
+  ) : super(
+        ReceipeDetailsState.loaded(
+          _receipeFor(receipe, _translationController.currentLanguageEnum),
+          receipe,
+        ),
+      ) {
     _load(receipe);
   }
 
@@ -55,45 +56,43 @@ class ReceipeDetailsController extends Cubit<ReceipeDetailsState> {
       log('No recipe found for ID: $receipeId');
       return;
     }
+    safeEmit(
+      ReceipeDetailsState.loaded(
+        _receipeFor(recipe, _translationController.currentLanguageEnum),
+        recipe,
+      ),
+    );
     _load(recipe);
   }
 
-  void _load(UserRecipeV2 userRecipe) async {
-    _subscription = _userAccountMetaDataRepository
-        .watchUserAccount(_authUserService.currentUser!.uid)
-        .listen((userAccount) async {
-          if (userAccount != null) {
-            if (userAccount.appLanguage == AppLanguage.fr) {
-              safeEmit(
-                ReceipeDetailsState.loaded(userRecipe.receipeFr, userRecipe),
-              );
-              return;
-            }
-
-            safeEmit(
-              ReceipeDetailsState.loaded(userRecipe.receipeEn, userRecipe),
-            );
-          } else {
-            // If user account is null, emit the recipe in English by default
-
-            safeEmit(
-              ReceipeDetailsState.loaded(userRecipe.receipeEn, userRecipe),
-            );
-          }
-        });
+  /// Keeps the shown language in sync if the user changes it (e.g. from
+  /// Settings) while this screen is open.
+  void _load(UserRecipeV2 userRecipe) {
+    _onLanguageChanged = () {
+      safeEmit(
+        ReceipeDetailsState.loaded(
+          _receipeFor(userRecipe, _translationController.currentLanguageEnum),
+          userRecipe,
+        ),
+      );
+    };
+    _translationController.addListener(_onLanguageChanged!);
   }
+
+  static Receipe _receipeFor(UserRecipeV2 userRecipe, AppLanguage language) =>
+      language == AppLanguage.fr ? userRecipe.receipeFr : userRecipe.receipeEn;
 
   @override
   Future<void> close() {
-    _subscription?.cancel();
+    if (_onLanguageChanged case final listener?) {
+      _translationController.removeListener(listener);
+    }
     return super.close();
   }
 
   int? seconds;
   EntityId? receipeId;
-  final IAuthUserService _authUserService;
-  final IUserAccountMetaDataRepository _userAccountMetaDataRepository;
+  final TranslationController _translationController;
   final IUserReceipeRepositoryV2 _userReceipeRepositoryV2;
-  AppLanguage? appLanguage;
-  StreamSubscription? _subscription;
+  VoidCallback? _onLanguageChanged;
 }

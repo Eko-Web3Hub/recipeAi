@@ -1,31 +1,24 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
-import 'package:recipe_ai/user_account/domain/models/user_account_meta_data.dart';
-import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
+import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
-class AuthUserServiceMock extends Mock implements IAuthUserService {}
-
-class UserAccountMetaDataRepositoryMock extends Mock
-    implements IUserAccountMetaDataRepository {}
+class TranslationControllerMock extends Mock implements TranslationController {}
 
 class UserReceipeRepositoryV2Mock extends Mock
     implements IUserReceipeRepositoryV2 {}
 
 void main() {
-  late IAuthUserService authUserService;
-  late IUserAccountMetaDataRepository userAccountMetaDataRepository;
+  late TranslationController translationController;
   late IUserReceipeRepositoryV2 userReceipeRepositoryV2;
 
   const receipeId = EntityId('1');
-  const authUser = AuthUser(uid: EntityId('uid'), email: 'test@gmail.com');
 
   const receipeEn = Receipe(
     name: 'nameEn',
@@ -50,34 +43,29 @@ void main() {
   );
 
   setUp(() {
-    authUserService = AuthUserServiceMock();
-    userAccountMetaDataRepository = UserAccountMetaDataRepositoryMock();
+    translationController = TranslationControllerMock();
     userReceipeRepositoryV2 = UserReceipeRepositoryV2Mock();
-
-    when(() => authUserService.currentUser).thenReturn(authUser);
   });
 
   ReceipeDetailsController buildSut() {
     return ReceipeDetailsController(
       receipeId,
-      AppLanguage.en,
       0,
-      authUserService,
-      userAccountMetaDataRepository,
+      translationController,
       userReceipeRepositoryV2,
     );
   }
 
   blocTest<ReceipeDetailsController, ReceipeDetailsState>(
-    'should load the receipe details in english by default',
+    'should load the receipe details in the current app language (en)',
     build: () => buildSut(),
     setUp: () {
       when(
         () => userReceipeRepositoryV2.getRecipeById(receipeId),
       ).thenAnswer((_) => Future.value(userRecipe));
       when(
-        () => userAccountMetaDataRepository.watchUserAccount(authUser.uid),
-      ).thenAnswer((_) => Stream.value(null));
+        () => translationController.currentLanguageEnum,
+      ).thenReturn(AppLanguage.en);
     },
     expect: () => [
       ReceipeDetailsState.loaded(userRecipe.receipeEn, userRecipe),
@@ -85,22 +73,15 @@ void main() {
   );
 
   blocTest<ReceipeDetailsController, ReceipeDetailsState>(
-    'should load the receipe details in the user account language (fr)',
+    'should load the receipe details in the current app language (fr)',
     build: () => buildSut(),
     setUp: () {
       when(
         () => userReceipeRepositoryV2.getRecipeById(receipeId),
       ).thenAnswer((_) => Future.value(userRecipe));
       when(
-        () => userAccountMetaDataRepository.watchUserAccount(authUser.uid),
-      ).thenAnswer(
-        (_) => Stream.value(
-          const UserAccountMetaData(
-            appLanguage: AppLanguage.fr,
-            lastLogin: null,
-          ),
-        ),
-      );
+        () => translationController.currentLanguageEnum,
+      ).thenReturn(AppLanguage.fr);
     },
     expect: () => [
       ReceipeDetailsState.loaded(userRecipe.receipeFr, userRecipe),
@@ -109,17 +90,16 @@ void main() {
 
   blocTest<ReceipeDetailsController, ReceipeDetailsState>(
     'should load the receipe details from the fromReceipe constructor',
-    build: () => ReceipeDetailsController.fromReceipe(
-      userRecipe,
-      authUserService,
-      userAccountMetaDataRepository,
-      userReceipeRepositoryV2,
-    ),
     setUp: () {
       when(
-        () => userAccountMetaDataRepository.watchUserAccount(authUser.uid),
-      ).thenAnswer((_) => Stream.value(null));
+        () => translationController.currentLanguageEnum,
+      ).thenReturn(AppLanguage.en);
     },
+    build: () => ReceipeDetailsController.fromReceipe(
+      userRecipe,
+      translationController,
+      userReceipeRepositoryV2,
+    ),
     verify: (bloc) {
       expect(
         bloc.state,

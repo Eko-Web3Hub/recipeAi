@@ -46,7 +46,6 @@ import 'package:recipe_ai/saved_receipe/presentation/saved_receipe_screen.dart';
 import 'package:recipe_ai/user_account/presentation/reset_password_screen.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/user_preferences_view.dart';
-import 'package:recipe_ai/utils/constant.dart';
 
 /// Holds a deep link (recipe details, list invitation) that couldn't be
 /// reached because the user wasn't authenticated yet, so it can be resumed
@@ -213,11 +212,7 @@ GoRouter createRouter() => GoRouter(
         final receipeId = extra['receipeId'] as EntityId?;
         final receipe = extra['receipe'] as UserRecipeV2?;
 
-        return RecipeDetailsView(
-          receipeId: receipeId,
-          receipe: receipe,
-          appLanguage: null,
-        );
+        return RecipeDetailsView(receipeId: receipeId, receipe: receipe);
       },
     ),
 
@@ -303,9 +298,6 @@ GoRouter createRouter() => GoRouter(
                   redirect: _guardAuth,
                   builder: (context, state) {
                     return RecipeDetailsView(
-                      appLanguage: appLanguageFromString(
-                        state.pathParameters['language']!,
-                      ),
                       receipeId: EntityId(state.pathParameters['receipeId']!),
                       receipe: null,
                     );
@@ -321,7 +313,6 @@ GoRouter createRouter() => GoRouter(
                     final receipe = extra['receipe'] as UserRecipeV2?;
 
                     return RecipeDetailsView(
-                      appLanguage: null,
                       receipeId: receipeId,
                       receipe: receipe,
                     );
