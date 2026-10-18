@@ -1106,6 +1106,18 @@ abstract class AppLocalizations {
   /// **'Preparation'**
   String get recipeDetailsPreparationTitle;
 
+  /// Title of the card showing where a recipe comes from, on the recipe detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get recipeDetailsSourceTitle;
+
+  /// Source card content when the recipe's source is a person, e.g. 'By Jamie Oliver'
+  ///
+  /// In en, this message translates to:
+  /// **'By {value}'**
+  String recipeDetailsSourceAuthor(String value);
+
   /// Word shown before the step number in cook mode (e.g. "Step 2")
   ///
   /// In en, this message translates to:

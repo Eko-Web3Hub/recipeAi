@@ -686,6 +686,19 @@
     "@recipeDetailsPreparationTitle": {
         "description": "Section title for the preparation steps on the recipe detail screen"
     },
+    "recipeDetailsSourceTitle": "Source",
+    "@recipeDetailsSourceTitle": {
+        "description": "Title of the card showing where a recipe comes from, on the recipe detail screen"
+    },
+    "recipeDetailsSourceAuthor": "By {value}",
+    "@recipeDetailsSourceAuthor": {
+        "description": "Source card content when the recipe's source is a person, e.g. 'By Jamie Oliver'",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
     "cookModeStepLabel": "Step",
     "@cookModeStepLabel": {
         "description": "Word shown before the step number in cook mode (e.g. \"Step 2\")"
