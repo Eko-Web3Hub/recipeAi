@@ -2,14 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/recipe_image_loader.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/home/presentation/recipe_metadata_card_loader.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_tag_style.dart';
-import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -60,8 +58,7 @@ class RecipeCard extends StatelessWidget {
                   child: BlocProvider(
                     create: (context) => RecipeMetadataCardLoader(
                       receipe,
-                      di<IUserAccountMetaDataRepository>(),
-                      di<IAuthUserService>(),
+                      di<TranslationController>(),
                     ),
                     child: BlocBuilder<RecipeMetadataCardLoader, Receipe>(
                       builder: (context, translatedReceipe) =>

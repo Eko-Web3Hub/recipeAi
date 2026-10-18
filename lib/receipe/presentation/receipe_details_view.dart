@@ -10,7 +10,6 @@ import 'package:recipe_ai/receipe/presentation/widget/primary_action_button.dart
 import 'package:share_plus/share_plus.dart';
 import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
-import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/home_screen.dart';
@@ -27,7 +26,6 @@ import 'package:recipe_ai/receipe/presentation/receipe_details_controller.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_cook/recipe_cook_ship.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_cook/recipe_cook_ship_controller.dart';
 import 'package:recipe_ai/receipe/presentation/recipe_tag_style.dart';
-import 'package:recipe_ai/user_account/domain/repositories/user_account_meta_data_repository.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_circular_loader.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -79,12 +77,10 @@ class RecipeDetailsView extends StatefulWidget {
     super.key,
     required this.receipeId,
     required this.receipe,
-    required this.appLanguage,
   });
 
   final EntityId? receipeId;
   final UserRecipeV2? receipe;
-  final AppLanguage? appLanguage;
 
   @override
   State<RecipeDetailsView> createState() => _RecipeDetailsViewState();
@@ -132,16 +128,13 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
       create: (_) => widget.receipeId != null
           ? ReceipeDetailsController(
               widget.receipeId,
-              widget.appLanguage,
               null,
-              di<IAuthUserService>(),
-              di<IUserAccountMetaDataRepository>(),
+              di<TranslationController>(),
               di<IUserReceipeRepositoryV2>(),
             )
           : ReceipeDetailsController.fromReceipe(
               widget.receipe!,
-              di<IAuthUserService>(),
-              di<IUserAccountMetaDataRepository>(),
+              di<TranslationController>(),
               di<IUserReceipeRepositoryV2>(),
             ),
       child: Builder(
