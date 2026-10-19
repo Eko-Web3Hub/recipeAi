@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/di/container.dart';
-import 'package:recipe_ai/home/presentation/home_screen.dart';
 import 'package:recipe_ai/home/presentation/recipe_generation_loader.dart';
 
 import 'package:recipe_ai/kitchen/application/retrieve_recipes_based_on_user_ingredient_and_preferences_usecase.dart';
@@ -12,6 +12,7 @@ import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredi
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+import 'package:recipe_ai/receipe/presentation/recipe_card.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/onboarding_primary_button.dart';
 import 'package:recipe_ai/utils/colors.dart';
@@ -214,10 +215,12 @@ class _DisplayLoadedRecipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.only(bottom: 20, top: 15),
       itemCount: receipes.length,
-      itemBuilder: (context, index) => ReceipeItem(
+      separatorBuilder: (context, index) => const Gap(16),
+      itemBuilder: (context, index) => RecipeCard(
+        key: ValueKey(receipes[index].id),
         receipe: receipes[index],
         redirectionPath: '/recipe-details',
       ),

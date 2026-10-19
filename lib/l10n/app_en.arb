@@ -1134,6 +1134,36 @@
             }
         }
     },
+    "fridgeSelectIngredient": "Select {name}",
+    "@fridgeSelectIngredient": {
+        "description": "Fridge tab: accessibility label to select an ingredient for recipe generation",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeDeselectIngredient": "Deselect {name}",
+    "@fridgeDeselectIngredient": {
+        "description": "Fridge tab: accessibility label to deselect an ingredient for recipe generation",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "fridgeNotEnoughIngredientsSelected": "Select at least {minimum} available ingredients (currently {provided})",
+    "@fridgeNotEnoughIngredientsSelected": {
+        "description": "Fridge tab: error when too few selected ingredients are available to generate a recipe",
+        "placeholders": {
+            "minimum": {
+                "type": "int"
+            },
+            "provided": {
+                "type": "int"
+            }
+        }
+    },
     "fridgeAlreadyInToast": "{name} is already in your fridge",
     "@fridgeAlreadyInToast": {
         "description": "Fridge tab: fridgeAlreadyInToast",

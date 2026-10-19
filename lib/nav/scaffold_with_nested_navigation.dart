@@ -231,9 +231,11 @@ class _AiGenRecipeBottomSheetState extends State<_AiGenRecipeBottomSheet> {
                     'assets/images/groceryList.svg',
                     appText.generateRecipeWithGrocerieList,
                     onTap: () {
-                      context.push(
-                        '/display-receipes-based-on-ingredient-user-preference',
-                      );
+                      // "Mon frigo" now does the selecting itself (checkboxes
+                      // + its own "Générer ma recette" button) — this just
+                      // gets the user there instead of generating blind from
+                      // the whole fridge straight away.
+                      context.go('/inventory-screen');
                       Navigator.of(context).pop();
                     },
                   ),

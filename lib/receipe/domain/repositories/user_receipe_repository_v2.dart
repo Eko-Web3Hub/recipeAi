@@ -1,9 +1,25 @@
 import 'dart:io';
 
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
+
+/// Thrown by [IUserReceipeRepositoryV2.generateRecipesWithIngredientList]
+/// when the backend refuses with its explicit `not-enough-ingredients` code
+/// (fewer available ingredients than it needs for a meaningful suggestion),
+/// so the UI can tell the user exactly what to do (select more) instead of a
+/// generic failure.
+class NotEnoughIngredientsException implements Exception {
+  const NotEnoughIngredientsException({
+    required this.minimum,
+    required this.provided,
+  });
+
+  final int minimum;
+  final int provided;
+}
 
 abstract class IUserReceipeRepositoryV2 {
   /// Looks up a recipe by id in the global `recipes` collection (the shared
@@ -20,6 +36,16 @@ abstract class IUserReceipeRepositoryV2 {
     EntityId uid,
     String token,
     File file,
+  );
+
+  /// Suggests recipes from a caller-picked ingredient list (e.g. a selection
+  /// from "Mon frigo") rather than a photo. Throws
+  /// [NotEnoughIngredientsException] when the backend refuses for having too
+  /// few available ingredients.
+  Future<List<UserRecipeV2>> generateRecipesWithIngredientList(
+    EntityId uid,
+    String token,
+    List<FridgeItem> ingredients,
   );
 
   Future<RawRecipeFindWithImage> findRecipeWithImage(String recipePathImage);
