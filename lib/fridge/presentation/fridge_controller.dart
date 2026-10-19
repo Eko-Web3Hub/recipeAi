@@ -61,6 +61,7 @@ final class FridgeState extends Equatable {
     this.highlightedId,
     this.highlightToken = 0,
     this.feedback,
+    this.deselectedIds = const {},
   });
 
   final FridgeStatus status;
@@ -77,6 +78,15 @@ final class FridgeState extends Equatable {
   final int highlightToken;
   final FridgeFeedback? feedback;
 
+  /// [FridgeItem.selectionKey]s excluded from "Générer ma recette" — tracked
+  /// as an exclusion set, not an inclusion one, so an item newly added to the
+  /// fridge (or seen for the first time this session) defaults to selected
+  /// without this state having to know about it in advance.
+  final Set<String> deselectedIds;
+
+  List<FridgeItem> get selectedItems =>
+      items.where((item) => !deselectedIds.contains(item.selectionKey)).toList();
+
   FridgeState copyWith({
     FridgeStatus? status,
     List<FridgeItem>? items,
@@ -87,6 +97,7 @@ final class FridgeState extends Equatable {
     String? highlightedId,
     int? highlightToken,
     FridgeFeedback? feedback,
+    Set<String>? deselectedIds,
   }) => FridgeState(
     status: status ?? this.status,
     items: items ?? this.items,
@@ -97,6 +108,7 @@ final class FridgeState extends Equatable {
     highlightedId: highlightedId ?? this.highlightedId,
     highlightToken: highlightToken ?? this.highlightToken,
     feedback: feedback ?? this.feedback,
+    deselectedIds: deselectedIds ?? this.deselectedIds,
   );
 
   @override
@@ -110,6 +122,7 @@ final class FridgeState extends Equatable {
     highlightedId,
     highlightToken,
     feedback,
+    deselectedIds,
   ];
 }
 
@@ -144,11 +157,16 @@ class FridgeController extends Cubit<FridgeState> {
         .watchItems(_uid)
         .listen(
           (items) {
+            final currentKeys = items.map((item) => item.selectionKey).toSet();
             safeEmit(
               state.copyWith(
                 status: FridgeStatus.loaded,
                 items: items,
                 usuals: _usualsToOffer(items),
+                // Drops keys of removed items rather than leaking them
+                // forever; a newly-seen item is simply absent here, so it
+                // defaults to selected without this set knowing about it.
+                deselectedIds: state.deselectedIds.intersection(currentKeys),
               ),
             );
             if (state.query.isNotEmpty) onQueryChanged(state.query);
@@ -295,6 +313,14 @@ class FridgeController extends Cubit<FridgeState> {
       log('Fridge remove failed: $error');
       safeEmit(state.copyWith(feedback: FridgeErrorFeedback(++_feedbackCount)));
     }
+  }
+
+  /// Toggles whether [item] is included in "Générer ma recette".
+  void toggleSelected(FridgeItem item) {
+    final key = item.selectionKey;
+    final updated = Set<String>.from(state.deselectedIds);
+    if (!updated.remove(key)) updated.add(key);
+    safeEmit(state.copyWith(deselectedIds: updated));
   }
 
   Future<void> undoRemove(FridgeItem item) async {

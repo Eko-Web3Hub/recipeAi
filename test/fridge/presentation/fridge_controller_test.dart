@@ -316,4 +316,57 @@ void main() {
     expect(draft.unit, FridgeUnit.tas);
     await controller.close();
   });
+
+  group('ingredient selection for recipe generation', () {
+    final okra = FridgeItem.draft(
+      name: 'Okra',
+      nameFr: 'Gombo',
+      amount: 1,
+      unit: FridgeUnit.tas,
+      catalogId: 'okra',
+    ).copyWith(id: const EntityId('o1'));
+
+    test('every item is selected by default', () async {
+      final controller = await sut(initial: [tomatoes, okra]);
+
+      expect(controller.state.selectedItems, [tomatoes, okra]);
+      await controller.close();
+    });
+
+    test('toggling an item excludes it, toggling again includes it back', () async {
+      final controller = await sut(initial: [tomatoes, okra]);
+
+      controller.toggleSelected(tomatoes);
+      expect(controller.state.selectedItems, [okra]);
+
+      controller.toggleSelected(tomatoes);
+      expect(controller.state.selectedItems, [tomatoes, okra]);
+      await controller.close();
+    });
+
+    test('a newly loaded item defaults to selected even after a deselection', () async {
+      final controller = await sut(initial: [tomatoes]);
+      controller.toggleSelected(tomatoes);
+      expect(controller.state.selectedItems, isEmpty);
+
+      items.add([tomatoes, okra]);
+      await pumpEventQueue();
+
+      expect(controller.state.selectedItems, [okra]);
+      await controller.close();
+    });
+
+    test('removing a deselected item does not leak its key onto a later item reusing it', () async {
+      final controller = await sut(initial: [tomatoes]);
+      controller.toggleSelected(tomatoes);
+
+      items.add([]);
+      await pumpEventQueue();
+      items.add([okra]);
+      await pumpEventQueue();
+
+      expect(controller.state.selectedItems, [okra]);
+      await controller.close();
+    });
+  });
 }

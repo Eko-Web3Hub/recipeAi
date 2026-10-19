@@ -889,6 +889,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String fridgeSelectIngredient(String name) {
+    return 'Select $name';
+  }
+
+  @override
+  String fridgeDeselectIngredient(String name) {
+    return 'Deselect $name';
+  }
+
+  @override
+  String fridgeNotEnoughIngredientsSelected(int minimum, int provided) {
+    return 'Select at least $minimum available ingredients (currently $provided)';
+  }
+
+  @override
   String fridgeAlreadyInToast(String name) {
     return '$name is already in your fridge';
   }

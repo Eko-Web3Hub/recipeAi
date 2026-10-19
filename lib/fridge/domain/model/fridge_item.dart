@@ -45,6 +45,10 @@ class FridgeItem extends Equatable {
 
   bool get isAsNeeded => amount == null;
 
+  /// Stable key for selection/toggle UIs: the Firestore id once saved, the
+  /// normalized name before that — same fallback as [sameIngredientAs].
+  String get selectionKey => id?.value ?? nameKey;
+
   String displayName(String languageCode) =>
       languageCode == 'fr' && (nameFr?.isNotEmpty ?? false) ? nameFr! : name;
 

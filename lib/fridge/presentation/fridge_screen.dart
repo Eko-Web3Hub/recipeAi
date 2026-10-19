@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_ai/analytics/analytics_event.dart';
 import 'package:recipe_ai/analytics/analytics_repository.dart';
 import 'package:recipe_ai/auth/application/auth_user_service.dart';
 import 'package:recipe_ai/auth/presentation/components/custom_snack_bar.dart';
@@ -12,10 +13,13 @@ import 'package:recipe_ai/fridge/domain/repositories/fridge_repository.dart';
 import 'package:recipe_ai/fridge/presentation/fridge_controller.dart';
 import 'package:recipe_ai/fridge/presentation/fridge_labels.dart';
 import 'package:recipe_ai/fridge/presentation/fridge_quantity_sheet.dart';
+import 'package:recipe_ai/fridge/presentation/generate_recipe_from_fridge_selection_controller.dart';
 import 'package:recipe_ai/fridge/presentation/widgets/ingredient_widgets.dart';
+import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/receipe/presentation/widget/primary_action_button.dart';
 import 'package:recipe_ai/user_account/presentation/translation_controller.dart';
 import 'package:recipe_ai/user_preferences/presentation/components/custom_progress.dart';
+import 'package:recipe_ai/utils/colors.dart';
 import 'package:recipe_ai/utils/styles.dart';
 import 'package:recipe_ai/utils/widgets/empty_state_view.dart';
 
@@ -36,9 +40,24 @@ class FridgeScreen extends StatelessWidget {
         di<IAuthUserService>(),
         di<IAnalyticsRepository>(),
       ),
-      child: ListenableBuilder(
-        listenable: di<TranslationController>(),
-        builder: (context, _) => const _FridgeView(),
+      child: BlocProvider(
+        create: (context) => GenerateRecipeFromFridgeSelectionController(
+          di<IUserReceipeRepositoryV2>(),
+          di<IAuthUserService>(),
+          (recipes) {
+            di<IAnalyticsRepository>().logEvent(
+              RecipesGeneratedWithIngredientListEvent(),
+            );
+            context.push(
+              '/receipe-idea-with-ingredient-photo',
+              extra: {'recipes': recipes},
+            );
+          },
+        ),
+        child: ListenableBuilder(
+          listenable: di<TranslationController>(),
+          builder: (context, _) => const _FridgeView(),
+        ),
       ),
     );
   }
@@ -147,6 +166,29 @@ class _FridgeViewState extends State<_FridgeView> {
     }
   }
 
+  void _showGenerationFeedback(
+    BuildContext context,
+    GenerateRecipeFromFridgeSelectionState state,
+  ) {
+    final appTexts = di<TranslationController>().currentLanguage;
+    switch (state) {
+      case GenerateRecipeFromFridgeSelectionNotEnoughIngredients(
+        :final minimum,
+        :final provided,
+      ):
+        showSnackBar(
+          context,
+          appTexts.fridgeNotEnoughIngredientsSelected(minimum, provided),
+          isError: true,
+        );
+      case GenerateRecipeFromFridgeSelectionFailure():
+        showSnackBar(context, appTexts.somethingWentWrong, isError: true);
+      case GenerateRecipeFromFridgeSelectionIdle():
+      case GenerateRecipeFromFridgeSelectionLoading():
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
@@ -154,10 +196,18 @@ class _FridgeViewState extends State<_FridgeView> {
     // docked chef FAB sticks out 27 px above it.
     final bottomInset = MediaQuery.paddingOf(context).bottom + _fabOverhang;
 
-    return BlocListener<FridgeController, FridgeState>(
-      listenWhen: (previous, current) =>
-          current.feedback != null && previous.feedback != current.feedback,
-      listener: (context, state) => _showFeedback(state.feedback!),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<FridgeController, FridgeState>(
+          listenWhen: (previous, current) =>
+              current.feedback != null && previous.feedback != current.feedback,
+          listener: (context, state) => _showFeedback(state.feedback!),
+        ),
+        BlocListener<
+          GenerateRecipeFromFridgeSelectionController,
+          GenerateRecipeFromFridgeSelectionState
+        >(listener: (context, state) => _showGenerationFeedback(context, state)),
+      ],
       child: SafeArea(
         bottom: false,
         child: BlocBuilder<FridgeController, FridgeState>(
@@ -203,6 +253,7 @@ class _FridgeViewState extends State<_FridgeView> {
                               bottomPadding: bottomInset + _ctaHeight + 36,
                               onEdit: (item) => _openSheet(item, isEdit: true),
                               onPickUsual: _pickUsual,
+                              onToggleSelected: _controller.toggleSelected,
                             ),
                           ),
                         ],
@@ -211,7 +262,24 @@ class _FridgeViewState extends State<_FridgeView> {
                         left: 0,
                         right: 0,
                         bottom: bottomInset,
-                        child: _GenerateButton(count: state.items.length),
+                        child:
+                            BlocBuilder<
+                              GenerateRecipeFromFridgeSelectionController,
+                              GenerateRecipeFromFridgeSelectionState
+                            >(
+                              builder: (context, generationState) =>
+                                  _GenerateButton(
+                                    count: state.selectedItems.length,
+                                    isLoading:
+                                        generationState
+                                        is GenerateRecipeFromFridgeSelectionLoading,
+                                    onTap: () => context
+                                        .read<
+                                          GenerateRecipeFromFridgeSelectionController
+                                        >()
+                                        .generate(state.selectedItems),
+                                  ),
+                            ),
                       ),
                       if (_queryFocus.hasFocus)
                         Positioned(
@@ -249,12 +317,14 @@ class _FridgeContent extends StatelessWidget {
     required this.bottomPadding,
     required this.onEdit,
     required this.onPickUsual,
+    required this.onToggleSelected,
   });
 
   final FridgeState state;
   final double bottomPadding;
   final ValueChanged<FridgeItem> onEdit;
   final ValueChanged<FridgeItem> onPickUsual;
+  final ValueChanged<FridgeItem> onToggleSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -297,36 +367,101 @@ class _FridgeContent extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = state.items[index];
         final isHighlighted = item.id?.value == state.highlightedId;
+        final isSelected = !state.deselectedIds.contains(item.selectionKey);
         return IngredientRow(
-          key: ValueKey(item.id?.value ?? item.nameKey),
+          key: ValueKey(item.selectionKey),
           item: item,
           flashToken: isHighlighted ? state.highlightToken : null,
           onTap: () => onEdit(item),
+          leading: _SelectToggle(
+            selected: isSelected,
+            name: item.displayName(appTexts.localeName),
+            onTap: () => onToggleSelected(item),
+          ),
         );
       },
     );
   }
 }
 
-class _GenerateButton extends StatelessWidget {
-  const _GenerateButton({required this.count});
+/// Whether [FridgeItem] is included in "Générer ma recette" — same round
+/// check style as the shopping list's own selection toggle
+/// (shopping_list_screen.dart's `_CheckToggle`), kept separate since that one
+/// is private to its file.
+class _SelectToggle extends StatelessWidget {
+  const _SelectToggle({
+    required this.selected,
+    required this.name,
+    required this.onTap,
+  });
 
-  final int count;
+  final bool selected;
+  final String name;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final appTexts = di<TranslationController>().currentLanguage;
+    return Semantics(
+      button: true,
+      checked: selected,
+      label: selected
+          ? appTexts.fridgeDeselectIngredient(name)
+          : appTexts.fridgeSelectIngredient(name),
+      child: InkResponse(
+        onTap: onTap,
+        radius: 20,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          width: 22,
+          height: 22,
+          decoration: BoxDecoration(
+            color: selected ? recipeLoaderGreenColor : Colors.transparent,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: selected
+                  ? recipeLoaderGreenColor
+                  : onboardingCheckBorderColor,
+              width: 1.6,
+            ),
+          ),
+          child: selected
+              ? const Icon(Icons.check_rounded, size: 15, color: Colors.white)
+              : null,
+        ),
+      ),
+    );
+  }
+}
+
+class _GenerateButton extends StatelessWidget {
+  const _GenerateButton({
+    required this.count,
+    required this.isLoading,
+    required this.onTap,
+  });
+
+  final int count;
+  final bool isLoading;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final appTexts = di<TranslationController>().currentLanguage;
+
+    if (isLoading) {
+      return const Padding(
+        padding: EdgeInsets.fromLTRB(20, 28, 20, 8),
+        child: SizedBox(height: 52, child: Center(child: CustomProgress())),
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 28, 20, 8),
       child: PrimaryActionButton(
         label: appTexts.fridgeGenerate,
         badge: count > 0 ? appTexts.fridgeIngredientCount(count) : null,
-        onTap: count == 0
-            ? null
-            : () => context.push(
-                '/display-receipes-based-on-ingredient-user-preference',
-              ),
+        onTap: count == 0 ? null : onTap,
       ),
     );
   }

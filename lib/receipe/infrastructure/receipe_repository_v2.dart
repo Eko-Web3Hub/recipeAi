@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:recipe_ai/ddd/entity.dart';
+import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
 import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
@@ -234,6 +235,78 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
         e,
         stackTrace,
         reason: 'genererateRecipesWithIngredientPicture failed',
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<UserRecipeV2>> generateRecipesWithIngredientList(
+    EntityId uid,
+    String token,
+    List<FridgeItem> ingredients,
+  ) async {
+    try {
+      final apiRoute =
+          "$recipesSuggestionEngineBaseUrl/suggestions/${uid.value}/from-ingredients";
+      final response = await _dio.post(
+        apiRoute,
+        data: {
+          'ingredients': ingredients
+              .map(
+                (item) => {
+                  'name': item.name,
+                  'nameFr': item.nameFr,
+                  'nameKey': item.nameKey,
+                  'amount': item.amount,
+                  'unit': item.unit.key,
+                },
+              )
+              .toList(),
+        },
+        options: Options(
+          receiveTimeout: timeOutDuration,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      return (response.data['recipes'] as List)
+          .map<UserRecipeV2>((recipe) => UserRecipeV2.fromJson(recipe))
+          .toList();
+    } on DioException catch (e, stackTrace) {
+      final data = e.response?.data;
+      if (e.response?.statusCode == 422 &&
+          data is Map &&
+          data['detail'] is Map) {
+        final detail = data['detail'] as Map;
+        if (detail['code'] == 'not-enough-ingredients') {
+          throw NotEnoughIngredientsException(
+            minimum: detail['minimum'] as int,
+            provided: detail['provided'] as int,
+          );
+        }
+      }
+      final detail = e.response != null
+          ? 'status=${e.response?.statusCode} body=${e.response?.data}'
+          : e.message;
+      log(
+        'An error occurred while generating recipes with ingredient list: $detail',
+      );
+      await FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'generateRecipesWithIngredientList failed: $detail',
+      );
+      rethrow;
+    } catch (e, stackTrace) {
+      log('An error occurred while generating recipes with ingredient list: $e');
+      await FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'generateRecipesWithIngredientList failed',
       );
       rethrow;
     }

@@ -1712,6 +1712,24 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 ingredient} other{{count} ingredients}}'**
   String fridgeIngredientCount(int count);
 
+  /// Fridge tab: accessibility label to select an ingredient for recipe generation
+  ///
+  /// In en, this message translates to:
+  /// **'Select {name}'**
+  String fridgeSelectIngredient(String name);
+
+  /// Fridge tab: accessibility label to deselect an ingredient for recipe generation
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect {name}'**
+  String fridgeDeselectIngredient(String name);
+
+  /// Fridge tab: error when too few selected ingredients are available to generate a recipe
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least {minimum} available ingredients (currently {provided})'**
+  String fridgeNotEnoughIngredientsSelected(int minimum, int provided);
+
   /// Fridge tab: fridgeAlreadyInToast
   ///
   /// In en, this message translates to:
