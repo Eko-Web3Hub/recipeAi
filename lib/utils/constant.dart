@@ -11,7 +11,7 @@ import 'package:recipe_ai/l10n/app_localizations.dart';
 import 'package:recipe_ai/l10n/app_localizations_fr.dart';
 import 'package:recipe_ai/l10n/app_localizations_en.dart';
 
-const baseApiUrl = 'https://langchain-server-819430206108.europe-west1.run.app';
+const eatEasyLandingPageUrl = 'https://eateasy.live';
 
 final appLanguages = <AppLanguage, AppLocalizations>{
   AppLanguage.fr: AppLocalizationsFr(),

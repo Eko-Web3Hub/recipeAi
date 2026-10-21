@@ -5,8 +5,21 @@
             "namespace": "android_app",
             "package_name": "com.receipeapi.app",
             "sha256_cert_fingerprints": [
-                "BD:02:D5:1D:DB:27:0D:0E:DE:E6:87:04:77:EE:97:34:D1:F9:71:60",
-                "F1:E1:2C:55:C9:A7:15:50:22:FD:C7:57:55:A9:C8:59:3F:12:09:84:0E:6E:FD:E9:7D:84:63:7D:79:5F:43:C3"
+                "4F:CE:2B:81:94:3D:3F:ED:C5:8F:C6:1D:B2:A3:BB:F8:A0:A6:5C:8E:3F:E5:E5:AE:76:10:51:D1:0C:D9:8C:66",
+                "04:83:D7:8C:4D:23:B7:E3:C0:90:34:94:DA:59:0A:8D:F4:D7:EF:D2:8C:C0:8F:7B:5A:FC:2B:D3:EE:C7:76:EB",
+                "D7:C6:D9:0F:A2:FD:70:B1:6A:2D:94:15:6D:14:54:14:25:84:C0:E5:D8:A4:FF:FB:80:69:F4:FB:B5:F4:C6:11"
+            ]
+        }
+    },
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.recipeai.app",
+            "sha256_cert_fingerprints": [
+                "4F:CE:2B:81:94:3D:3F:ED:C5:8F:C6:1D:B2:A3:BB:F8:A0:A6:5C:8E:3F:E5:E5:AE:76:10:51:D1:0C:D9:8C:66",
+                "04:83:D7:8C:4D:23:B7:E3:C0:90:34:94:DA:59:0A:8D:F4:D7:EF:D2:8C:C0:8F:7B:5A:FC:2B:D3:EE:C7:76:EB",
+                "D7:C6:D9:0F:A2:FD:70:B1:6A:2D:94:15:6D:14:54:14:25:84:C0:E5:D8:A4:FF:FB:80:69:F4:FB:B5:F4:C6:11"
             ]
         }
     }

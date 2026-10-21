@@ -5,11 +5,8 @@ import 'package:recipe_ai/receipe/domain/model/user_receipe.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository.dart';
 import 'package:recipe_ai/receipe/infrastructure/serialization/receipe_serialization.dart';
 import 'package:recipe_ai/receipe/infrastructure/user_receipe_serialization.dart';
-import 'package:recipe_ai/utils/constant.dart';
 
 class UserReceipeRepository implements IUserReceipeRepository {
-  static const String baseUrl =
-      "$baseApiUrl/v2/gen-receipe-with-user-preference";
   static const String kitchenInventoryCollection = "KitchenInventory";
   static const String receipesCollection = "receipes";
 
@@ -21,7 +18,10 @@ class UserReceipeRepository implements IUserReceipeRepository {
 
   @override
   Future<void> save(EntityId uid, UserReceipe userReceipe) {
-    return _firestore.collection(userReceipeCollection).doc(uid.value).set(
+    return _firestore
+        .collection(userReceipeCollection)
+        .doc(uid.value)
+        .set(
           UserReceipeSerialization.toJson(userReceipe),
           SetOptions(merge: true),
         );
@@ -35,12 +35,10 @@ class UserReceipeRepository implements IUserReceipeRepository {
         .collection(receipesCollection)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map<Receipe>(
-            (doc) => ReceipeSerialization.fromJson(doc.data()),
-          )
-          .toList();
-    });
+          return snapshot.docs
+              .map<Receipe>((doc) => ReceipeSerialization.fromJson(doc.data()))
+              .toList();
+        });
   }
 
   @override
@@ -92,14 +90,14 @@ class UserReceipeRepository implements IUserReceipeRepository {
         .doc(uid.value)
         .snapshots()
         .map((snapshot) {
-      if (!snapshot.exists) {
-        return null;
-      }
-      final data = snapshot.data()!;
-      final userReceipe = UserReceipeSerialization.fromJson(data);
+          if (!snapshot.exists) {
+            return null;
+          }
+          final data = snapshot.data()!;
+          final userReceipe = UserReceipeSerialization.fromJson(data);
 
-      return userReceipe;
-    });
+          return userReceipe;
+        });
   }
 
   @override

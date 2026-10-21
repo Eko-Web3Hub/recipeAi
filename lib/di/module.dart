@@ -1,6 +1,5 @@
 import 'package:recipe_ai/%20inventory/di/module.dart';
 import 'package:recipe_ai/auth/di/module.dart';
-import 'package:recipe_ai/chat_ai/di/module.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/di/core_module.dart';
 import 'package:recipe_ai/fridge/di/module.dart';
@@ -19,41 +18,16 @@ abstract class IDiModule {
 class AppModule implements IDiModule {
   @override
   void register(DiContainer di) {
-    di.registerModule(
-      const CoreModule(),
-    );
-    di.registerModule(
-      const AuthModule(),
-    );
-    di.registerModule(
-      NotificationModule(),
-    );
-    di.registerModule(
-      const UserPreferencesModule(),
-    );
-    di.registerModule(
-      const ReceipeModule(),
-    );
-    di.registerModule(
-      const KitchenModule(),
-    );
-    di.registerModule(
-      const InventoryModule(),
-    );
-    di.registerModule(
-      const FridgeModule(),
-    );
-    di.registerModule(
-      const ReceiptTicketScanModule(),
-    );
-    di.registerModule(
-      const UserAccountModule(),
-    );
-    di.registerModule(
-      const ChatAiModule(),
-    );
-    di.registerModule(
-      const ShoppingModule(),
-    );
+    di.registerModule(const CoreModule());
+    di.registerModule(const AuthModule());
+    di.registerModule(NotificationModule());
+    di.registerModule(const UserPreferencesModule());
+    di.registerModule(const ReceipeModule());
+    di.registerModule(const KitchenModule());
+    di.registerModule(const InventoryModule());
+    di.registerModule(const FridgeModule());
+    di.registerModule(const ReceiptTicketScanModule());
+    di.registerModule(const UserAccountModule());
+    di.registerModule(const ShoppingModule());
   }
 }

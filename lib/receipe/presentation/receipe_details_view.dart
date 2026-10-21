@@ -103,7 +103,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
     final appTexts = di<TranslationController>().currentLanguage;
     final language = di<TranslationController>().currentLanguageEnum.name;
     final url =
-        'https://recipe-ai-5e261.web.app/home/recipe-details/$language/${recipeId.value}';
+        '$eatEasyLandingPageUrl/home/recipe-details/$language/${recipeId.value}';
 
     SharePlus.instance.share(
       ShareParams(text: appTexts.recipeDetailsShareText(url)),

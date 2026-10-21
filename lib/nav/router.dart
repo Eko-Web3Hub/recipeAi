@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_ai/chat_ai/presentation/chat_ai_screen.dart';
 import 'package:recipe_ai/di/container.dart';
 import 'package:recipe_ai/home/presentation/setting/setting_screen.dart';
 import 'package:recipe_ai/l10n/app_localizations.dart';
@@ -28,7 +27,6 @@ import 'package:recipe_ai/home/presentation/profile_screen.dart';
 import 'package:recipe_ai/home/presentation/recipes_idea_with_ingredient_photo_screen.dart';
 import 'package:recipe_ai/fridge/presentation/fridge_screen.dart';
 import 'package:recipe_ai/kitchen/presentation/add_kitchen_inventory_screen.dart';
-import 'package:recipe_ai/kitchen/presentation/display_receipes_based_on_ingredient_user_preference.dart';
 import 'package:recipe_ai/kitchen/presentation/kitchen_inventory_screen.dart';
 import 'package:recipe_ai/nav/animated_branch_container.dart';
 import 'package:recipe_ai/nav/scaffold_with_nested_navigation.dart';
@@ -196,14 +194,6 @@ GoRouter createRouter() => GoRouter(
     ),
 
     GoRoute(
-      name: 'DisplayReceipesBasedOnIngredientUserPreferenceScreen',
-      path: '/display-receipes-based-on-ingredient-user-preference',
-      redirect: _guardAuth,
-      builder: (context, state) =>
-          const DisplayReceipesBasedOnIngredientUserPreferenceScreen(),
-    ),
-
-    GoRoute(
       name: 'RecipeDetailss',
       path: '/recipe-details',
       redirect: _guardAuth,
@@ -240,12 +230,6 @@ GoRouter createRouter() => GoRouter(
       ],
     ),
 
-    GoRoute(
-      name: 'ChatAiAppScreen',
-      path: '/chat-ai-app',
-      redirect: _guardAuth,
-      builder: (context, state) => const ChatAiScreen(),
-    ),
     GoRoute(
       name: 'CookMode',
       path: '/cook-mode',

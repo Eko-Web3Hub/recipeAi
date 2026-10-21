@@ -11,17 +11,12 @@ class FastApiReceiptTicketScanRepository
     implements IReceiptTicketScanRepository {
   final Dio _dio;
 
-  static const String path =
-      "$baseApiUrl/extract-ingrediants-from-receipt-picture";
+  static const String path = "/extract-ingrediants-from-receipt-picture";
 
-  FastApiReceiptTicketScanRepository(
-    this._dio,
-  );
+  FastApiReceiptTicketScanRepository(this._dio);
 
   @override
-  Future<ReceiptTicket> retrieve({
-    required File file,
-  }) async {
+  Future<ReceiptTicket> retrieve({required File file}) async {
     try {
       final formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(

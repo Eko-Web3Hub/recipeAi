@@ -6,16 +6,12 @@ import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 import 'package:recipe_ai/receipe/domain/repositories/user_receipe_repository_v2.dart';
 import 'package:recipe_ai/utils/constant.dart';
 
 class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
-  static const String baseUrl =
-      "$baseApiUrl/v2/gen-receipe-with-user-preference";
-
   static const String recipesSuggestionEngineBaseUrl =
       'https://recipes-suggestions-v7duguwfla-ew.a.run.app';
 
@@ -302,7 +298,9 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
       );
       rethrow;
     } catch (e, stackTrace) {
-      log('An error occurred while generating recipes with ingredient list: $e');
+      log(
+        'An error occurred while generating recipes with ingredient list: $e',
+      );
       await FirebaseCrashlytics.instance.recordError(
         e,
         stackTrace,
@@ -389,29 +387,6 @@ class UserReceipeRepositoryV2 implements IUserReceipeRepositoryV2 {
     // field, so it's assigned explicitly from the doc reference we already
     // queried by.
     return UserRecipeV2.fromJson(data).assignId(recipeId);
-  }
-
-  @override
-  Future<RawRecipeFindWithImage> findRecipeWithImage(
-    String recipePathImage,
-  ) async {
-    final apiRoute = "$baseApiUrl/find-recipe-with-picture";
-    final file = File(recipePathImage);
-
-    final fileToSend = await MultipartFile.fromFile(
-      file.path,
-      filename: file.path.split("/").last,
-    );
-    final formData = FormData.fromMap({"file": fileToSend});
-    final response = await _dio.post(
-      apiRoute,
-      data: formData,
-      options: timeOutOptions,
-    );
-
-    final json = response.data as Map<String, dynamic>;
-
-    return RawRecipeFindWithImage.fromJson(json);
   }
 
   @override
