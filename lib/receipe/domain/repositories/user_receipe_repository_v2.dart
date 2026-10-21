@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:recipe_ai/ddd/entity.dart';
 import 'package:recipe_ai/fridge/domain/model/fridge_item.dart';
-import 'package:recipe_ai/receipe/domain/model/receipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_finished_recipe.dart';
 import 'package:recipe_ai/receipe/domain/model/user_receipe_v2.dart';
 
@@ -47,8 +46,6 @@ abstract class IUserReceipeRepositoryV2 {
     String token,
     List<FridgeItem> ingredients,
   );
-
-  Future<RawRecipeFindWithImage> findRecipeWithImage(String recipePathImage);
 
   Future<List<UserRecipeV2>> save(EntityId uid, List<UserRecipeV2> userReceipe);
 
